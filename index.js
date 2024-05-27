@@ -19,3 +19,11 @@ function adrianaCuellar() {
     };
     return adriana;
 }
+
+function JuanMolina (){
+    return {
+        nombre:"Juan Ignacio Molina",
+        edad: 34,
+        nacionalidad:"Argentina"
+    }
+}

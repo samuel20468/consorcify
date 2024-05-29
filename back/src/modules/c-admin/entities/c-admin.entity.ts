@@ -1,3 +1,4 @@
+import { CADMIN_PASS, SAT } from 'src/utils/constants';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({
@@ -13,26 +14,26 @@ export class CAdmin {
   @Column({ length: 50 })
   email: string;
 
-  @Column({ length: 25 })
-  username: string;
-
   @Column({ type: 'char', length: 60 })
   password: string;
 
-  @Column({ type: 'bigint' })
-  phoneNumber: number;
+  @Column({ length: 25 })
+  phoneNumber: string;
 
-  @Column({ length: 50, nullable: true })
-  country: string;
-
-  @Column({ length: 50, nullable: true })
-  city: string;
+  @Column({ type: 'char', length: 11, unique: true })
+  cuit: string;
 
   @Column()
   address: string;
 
-  @Column({ type: 'date' })
-  hireDate: Date;
+  @Column('enum', { enum: SAT })
+  sat: SAT;
+
+  @Column({ type: 'char', length: 5, unique: true })
+  rpa: string;
+
+  @Column({ type: 'boolean' })
+  active: boolean;
 
   // Relación con Consortium 1:1
   //   @OneToOne(() => Consortium, consortium => consortium.cAdmin)

@@ -1,4 +1,14 @@
-import { IsBoolean, IsDecimal, IsEmail, IsNotEmpty, IsPhoneNumber, IsString, Length, Matches, MaxLength } from "class-validator";
+import {
+  IsBoolean,
+  IsDecimal,
+  IsEmail,
+  IsNotEmpty,
+  IsPhoneNumber,
+  IsString,
+  Length,
+  Matches,
+  MaxLength,
+} from 'class-validator';
 
 export class CreateProviderDto {
   @IsNotEmpty({ message: 'Name is required' })
@@ -8,8 +18,7 @@ export class CreateProviderDto {
 
   @IsNotEmpty({ message: 'CUIT is required' })
   @IsString({ message: 'CUIT must be a string' })
-  @Length(13, 13, { message: 'CUIT must be exactly 13 characters' })
-  @Matches(/^[0-9]{2}-[0-9]{8}-[0-9]$/, { message: 'CUIT format is invalid' })
+  @Length(11, 11, { message: 'CUIT must be exactly 11 characters' })
   cuit: string;
 
   @IsNotEmpty({ message: 'Email is required' })

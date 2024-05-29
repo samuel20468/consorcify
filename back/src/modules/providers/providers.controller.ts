@@ -3,11 +3,11 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   Query,
   ParseUUIDPipe,
+  Put,
 } from '@nestjs/common';
 import { ProvidersService } from './providers.service';
 import { CreateProviderDto } from './dto/create-provider.dto';
@@ -32,12 +32,12 @@ export class ProvidersController {
     return this.providersService.findOne(id);
   }
 
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
+  @Put(':id')
+  updateProvider(
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() updateProviderDto: UpdateProviderDto,
   ) {
-    return this.providersService.update(+id, updateProviderDto);
+    return this.providersService.updateProvider(id, updateProviderDto);
   }
 
   @Delete(':id')

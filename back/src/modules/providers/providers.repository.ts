@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Provider } from './entities/provider.entity';
+import { UpdateProviderDto } from './dto/update-provider.dto';
 
 const providers: Provider[] = [
   {
@@ -44,5 +45,9 @@ export class ProvidersRepository {
 
   async findOne(id: string): Promise<Provider> {
     return providers.find((provider) => provider.id === id);
+  }
+
+  async updateProvider(id: string, providerToUpdate: UpdateProviderDto) {
+   // return await this.providersRepository.update(id, {providerToUpdate});
   }
 }

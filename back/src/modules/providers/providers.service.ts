@@ -45,8 +45,25 @@ export class ProvidersService {
     return provider;
   }
 
-  async update(id: number, updateProviderDto: UpdateProviderDto) {
-    return `This action updates a #${id} provider`;
+  async updateProvider(
+    id: string,
+    updateProviderDto: UpdateProviderDto,
+  )/*: Promise<Provider> */{
+    if (!id) {
+      throw new BadRequestException('id is required');
+    }
+
+    const existingProvider: Provider =
+      await this.providersRepository.findOne(id);
+
+    if (!existingProvider) throw new NotFoundException('Provider not found');
+
+    const updatedProvider /*: Provider*/ =
+      await this.providersRepository.updateProvider(
+        existingProvider.id,
+        updateProviderDto,
+      );
+    //return updatedProvider;
   }
 
   async remove(id: number) {

@@ -10,7 +10,7 @@ export class Provider {
   @Column({ length: 50, unique: true })
   name: string;
 
-  @Column({ type: 'char', length: 13, unique: true })
+  @Column({ type: 'char', length: 11, unique: true })
   cuit: string;
 
   @Column({ length: 50 })

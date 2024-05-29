@@ -4,7 +4,7 @@ export interface ILoginData {
 }
 
 export interface ILoginDataError {
-    email?: string;
+    email: string;
     password?: string;
 }
 
@@ -25,9 +25,6 @@ export interface IAdmin extends IUser {
     phone: number;
     address: string;
     cuit: string;
-    rpa: number;
+    rpa: string;
     sat: string;
 }
-
-// registro de usuario Dto
-//name, lastname, email, password

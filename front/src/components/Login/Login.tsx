@@ -1,37 +1,86 @@
-import React, { useState } from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import { Input, Button, Label } from "../ui";
 import { ILoginData } from "@/Interfaces/Interfaces";
+import { EyeIcon, EyeIconOff } from "@/helpers/icons.helper";
+import { validateEmail } from "@/helpers/Validations/validate.email";
+import { useRouter } from "next/navigation";
 
 const Login = () => {
-    const [userData, setUserData] = useState<ILoginData>();
+    const router = useRouter();
+    const initialData = {
+        email: "",
+        password: "",
+    };
+    const [userData, setUserData] = useState<ILoginData>(initialData);
+    const [errors, SetErrors] = useState(initialData);
+    const [lock, setLock] = useState<boolean>(true);
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e?.preventDefault();
-
         try {
+            alert("Loggin correcto");
+            setUserData(initialData);
+            SetErrors(initialData);
+            router.push("/dashboard");
         } catch (error) {}
+    };
+
+    useEffect(() => {
+        const liveErrors = validateEmail(userData.email);
+        SetErrors((prevErrors) => ({
+            ...prevErrors,
+            ...liveErrors,
+        }));
+
+        console.log(errors);
+    }, [userData]);
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setUserData({
+            ...userData,
+            [name]: value,
+        });
+        console.log(userData);
+    };
+    const handleLock = () => {
+        setLock(!lock);
     };
 
     return (
         <div className="flex flex-col items-center justify-center w-screen h-screen gap-2 bg-fondo">
-            <div className="p-4 rounded-md bg-slate-200">
+            <div className="p-10 rounded-md bg-slate-200">
                 <h3 className="my-5 font-bold">Bienvenido a Consorcify</h3>
                 <p>bienvenido nuevamente. Loggeate para ver tu cuenta.</p>
 
                 <form className="" onSubmit={handleSubmit}>
                     <Label>E-mail</Label>
-                    <Input type="text" placeholder="example@mail.com" />
+                    <Input
+                        id="email"
+                        name="email"
+                        type="text"
+                        placeholder="example@mail.com"
+                        onChange={handleChange}
+                        value={userData.email}
+                    />
 
                     <Label>Password</Label>
                     <div className="flex justify-between w-full h-10 rounded-md bg-input">
-                        <Input type="password" placeholder="*********" />
-                        <button className="w-8 p-1">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 640 512"
-                            >
-                                <path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zm151 118.3C226 97.7 269.5 80 320 80c65.2 0 118.8 29.6 159.9 67.7C518.4 183.5 545 226 558.6 256c-12.6 28-36.6 66.8-70.9 100.9l-53.8-42.2c9.1-17.6 14.2-37.5 14.2-58.7c0-70.7-57.3-128-128-128c-32.2 0-61.7 11.9-84.2 31.5l-46.1-36.1zM394.9 284.2l-81.5-63.9c4.2-8.5 6.6-18.2 6.6-28.3c0-5.5-.7-10.9-2-16c.7 0 1.3 0 2 0c44.2 0 80 35.8 80 80c0 9.9-1.8 19.4-5.1 28.2zm51.3 163.3l-41.9-33C378.8 425.4 350.7 432 320 432c-65.2 0-118.8-29.6-159.9-67.7C121.6 328.5 95 286 81.4 256c8.3-18.4 21.5-41.5 39.4-64.8L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5zm-88-69.3L302 334c-23.5-5.4-43.1-21.2-53.7-42.3l-56.1-44.2c-.2 2.8-.3 5.6-.3 8.5c0 70.7 57.3 128 128 128c13.3 0 26.1-2 38.2-5.8z" />
-                            </svg>
+                        <Input
+                            id="password"
+                            name="password"
+                            type={lock ? "password" : "text"}
+                            placeholder="*****************"
+                            onChange={handleChange}
+                            value={userData.password}
+                        />
+                        <button
+                            type="button"
+                            className="w-8 p-1"
+                            onClick={handleLock}
+                        >
+                            {lock ? <EyeIconOff /> : <EyeIcon />}
                         </button>
                     </div>
 

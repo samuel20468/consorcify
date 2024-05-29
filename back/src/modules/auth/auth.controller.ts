@@ -19,9 +19,7 @@ export class AuthController {
   }
 
   @Post('register-c-admin')
-  async registerConsAdmin(
-    @Body() consAdmin: RegisterConsAdminDto,
-  ): Promise<string> {
-    return await this.authService.registerConsAdmin(consAdmin);
+  async signUpCAdmin(@Body() consAdmin: RegisterConsAdminDto): Promise<string> {
+    return await this.authService.singUpCAdmin(consAdmin);
   }
 }

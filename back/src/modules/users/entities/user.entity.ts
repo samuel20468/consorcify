@@ -20,7 +20,7 @@ export class User {
   password: string;
   
   @Column({ default: true })
-  isActive: boolean;
+  active: boolean;
 
   @Column({ default: false })
   isSuperAdmin: boolean;

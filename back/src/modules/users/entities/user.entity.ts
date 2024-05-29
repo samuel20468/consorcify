@@ -1,10 +1,10 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({
-    name: 'users',
-  })
+  name: 'users',
+})
 export class User {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({ length: 80, nullable: false })
@@ -18,7 +18,7 @@ export class User {
 
   @Column({ length: 72, nullable: false })
   password: string;
-  
+
   @Column({ default: true })
   active: boolean;
 

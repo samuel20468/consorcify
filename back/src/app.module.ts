@@ -8,6 +8,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { FunctionalUnitsModule } from './modules/functional-units/functional-units.module';
 import { JwtModule } from '@nestjs/jwt';
+import { ConsortiumsModule } from './modules/consortiums/consortiums.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { JwtModule } from '@nestjs/jwt';
     CAdminModule,
     UsersModule,
     FunctionalUnitsModule,
+    ConsortiumsModule,
   ],
 })
 export class AppModule {}

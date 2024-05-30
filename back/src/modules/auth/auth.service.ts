@@ -51,7 +51,7 @@ export class AuthService {
         throw new UnauthorizedException('Credenciales inválidas');
       }
       const role = [];
-      if (foundUser.isSuperAdmin) {
+      if (foundUser.is_super_admin) {
         role.push(ROLE.SUPERADMIN);
       } else {
         role.push(ROLE.USER);
@@ -68,7 +68,7 @@ export class AuthService {
 
   async signUp(user: CreateUserDto): Promise<User> {
     const { first_name, last_name, email, password } = user;
-    const foundUser = false;
+    const foundUser = await this.usersRepository.findOneBy({ email });
 
     if (foundUser) {
       throw new ConflictException('El email ya se encuentra registrado.');
@@ -83,14 +83,14 @@ export class AuthService {
 
     const createdUser = await this.usersRepository.save(newUser);
     delete createdUser.password;
-    delete createdUser.isSuperAdmin;
+    delete createdUser.is_super_admin;
     delete createdUser.active;
     return createdUser;
   }
 
   async singUpCAdmin(consAdmin: CreateCAdminDto): Promise<CAdmin> {
     const { name, address, email, phone_number, cuit, sat, rpa } = consAdmin;
-    const foundCAdmin = false;
+    const foundCAdmin = await this.cAdminRepository.findOneBy({ email });
     if (foundCAdmin) {
       throw new ConflictException('El email ya se encuentra registrado.');
     }
@@ -111,6 +111,7 @@ export class AuthService {
         satCAdmin = SAT.EXEMPT;
         break;
     }
+
     const newCAdmin = new CAdmin();
     newCAdmin.name = name;
     newCAdmin.email = email;

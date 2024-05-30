@@ -5,6 +5,7 @@ import { ILoginData } from "@/Interfaces/Interfaces";
 import { EyeIcon, EyeIconOff } from "@/helpers/icons.helper";
 import { validateEmail } from "@/helpers/Validations/validate.email";
 import { useRouter } from "next/navigation";
+import { loginFetch } from "@/helpers/button.helper";
 
 const Login = () => {
     const router = useRouter();
@@ -16,10 +17,11 @@ const Login = () => {
     const [errors, SetErrors] = useState(initialData);
     const [lock, setLock] = useState<boolean>(true);
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e?.preventDefault();
         try {
-            alert("Loggin correcto");
+            const response = await loginFetch(userData);
+
             setUserData(initialData);
             SetErrors(initialData);
             router.push("/dashboard");
@@ -66,7 +68,7 @@ const Login = () => {
                     />
 
                     <Label>Password</Label>
-                    <div className="flex justify-between w-full h-10 rounded-md bg-input">
+                    <div className="flex items-center justify-between w-full h-10 rounded-md">
                         <Input
                             id="password"
                             name="password"
@@ -86,6 +88,15 @@ const Login = () => {
 
                     <Button type="submit">Iniciar Sesion</Button>
                 </form>
+                <div className="mt-3">
+                    <p>
+                        Aun no tiene cuenta?{" "}
+                        <a href="/register">Crea tu cuenta aqui</a>
+                    </p>
+                    <p>
+                        Olvidate tu contraseña? <a href="#">Recuperala aqui</a>
+                    </p>
+                </div>
             </div>
         </div>
     );

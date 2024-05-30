@@ -2,31 +2,32 @@ import React from "react";
 import "./style.css";
 import Link from "next/link";
 
-const Navbar = ({ activeSection }) => {
+
+const Navbar = ({ activeSection}: any) => {
   return (
-    <nav class="fixed w-full z-20 mt-10">
-      <div class="w-screen flex flex-wrap items-center justify-between px-10">
-        <a class="flex flex-col space-x-3 rtl:space-x-reverse ">
-          <span class="principal text-[2rem] text-white font-[clash-medium]">
+    <nav className="fixed w-full z-20 mt-10">
+      <div className="w-screen flex flex-wrap items-center justify-between px-10">
+        <a className="flex flex-col space-x-3 rtl:space-x-reverse ">
+          <span className="principal text-[2rem] text-white font-[clash-medium]">
             CONSORCIFY
           </span>
-          <span class="secundario text-[1.5rem] text-white font-[clash-regular] absolute top-[3rem] left-[1.8rem]">
+          <span className="secundario text-[1.5rem] text-white font-[clash-regular] absolute top-[3rem] left-[1.8rem]">
             Network
           </span>
         </a>
 
-        <div class="flex lg:order-2  lg:space-x-0 font-[clash-regular]">
+        <div className="flex lg:order-2  lg:space-x-0 font-[clash-regular]">
           <Link
             href="/login"
             type="button"
-            class="button-log text-white rounded-[50px] px-5 py-3 border backdrop-blur-sm"
+            className="button-log text-white rounded-[50px] px-5 py-3 border backdrop-blur-sm"
           >
             Log in
           </Link>
           <Link
             href="/register"
             type="button"
-            class="button-log text-black rounded-[50px] px-5 py-3 bg-white font-bold"
+            className="button-log text-black rounded-[50px] px-5 py-3 bg-white font-bold"
           >
             Sign up
           </Link>
@@ -34,7 +35,7 @@ const Navbar = ({ activeSection }) => {
           <div className="dropdown">
             <button
               type="button"
-              class="inline-flex items-center pl-3 justify-center text-sm text-gray-300 rounded-lg lg:hidden"
+              className="inline-flex items-center pl-3 justify-center text-sm text-gray-300 rounded-lg lg:hidden"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -76,12 +77,12 @@ const Navbar = ({ activeSection }) => {
           </div>
         </div>
 
-        <div class="h-[6vh] items-center justify-between w-full lg:flex lg:w-auto ">
-          <ul class="list  bg-[#34343441] backdrop-blur-sm flex flex-col mt-10 font-medium border rounded-[50px] p-5 lg:space-x-14  lg:flex-row lg:mt-0 lg:border-1 ml-[0.5rem] font-[clash-regular]">
+        <div className="h-[6vh] items-center justify-between w-full lg:flex lg:w-auto ">
+          <ul className="list  bg-[#34343441] backdrop-blur-sm flex flex-col mt-10 font-medium border rounded-[50px] p-5 lg:space-x-14  lg:flex-row lg:mt-0 lg:border-1 ml-[0.5rem] font-[clash-regular]">
             <li className="py-[5px]">
               <a
                 href="#inicio"
-                class={`py-3 px-5 text-white${
+                className={`py-3 px-5 text-white${
                   activeSection === "inicio"
                     ? "  bg-white rounded-[50px] text-[black]"
                     : ""
@@ -93,7 +94,7 @@ const Navbar = ({ activeSection }) => {
             <li className="py-[5px]">
               <a
                 href="#nosotros"
-                class={`py-3 px-5 text-white ${
+                className={`py-3 px-5 text-white ${
                   activeSection === "nosotros"
                     ? " text-[black] bg-white rounded-[50px] "
                     : ""
@@ -105,7 +106,7 @@ const Navbar = ({ activeSection }) => {
             <li className="py-[5px]">
               <a
                 href="#preguntas"
-                class={`py-3 px-5 text-white ${
+                className={`py-3 px-5 text-white ${
                   activeSection === "preguntas"
                     ? " text-[black] bg-white rounded-[50px] "
                     : ""

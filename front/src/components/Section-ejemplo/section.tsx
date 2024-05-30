@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import Navbar from "@/Components/Navbar/Navbar";
+import Navbar from "../Navbar/Navbar";
+
 
 
 const Section = () => {

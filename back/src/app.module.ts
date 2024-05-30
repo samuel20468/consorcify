@@ -5,6 +5,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import typeormConfig from './config/typeorm';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './modules/auth/auth.module';
+import { UsersModule } from './modules/users/users.module';
+import { FunctionalUnitsModule } from './modules/functional-units/functional-units.module';
 
 @Module({
   imports: [
@@ -20,6 +22,8 @@ import { AuthModule } from './modules/auth/auth.module';
     AuthModule,
     ProvidersModule,
     CAdminModule,
+    UsersModule,
+    FunctionalUnitsModule,
   ],
 })
 export class AppModule {}

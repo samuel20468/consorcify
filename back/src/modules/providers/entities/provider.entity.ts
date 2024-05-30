@@ -17,7 +17,7 @@ export class Provider {
   email: string;
 
   @Column({ length: 25 })
-  phoneNumber: string;
+  phone_number: string;
 
   @Column()
   address: string;
@@ -25,6 +25,6 @@ export class Provider {
   @Column({ type: 'decimal', precision: 15, scale: 2 }) // Pendiente definir como se manejara el formato de número
   balance: number;
 
-  @Column({ type: 'boolean' })
+  @Column({ type: 'boolean', default: true })
   active: boolean;
 }

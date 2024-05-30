@@ -3,7 +3,6 @@ import { User } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { v4 as uuidv4 } from 'uuid';
 
-
 @Injectable()
 export class UsersRepository {
   private users: User[] = [
@@ -70,7 +69,7 @@ export class UsersRepository {
     }
 
     const user = {
-      ...createUserDto, 
+      ...createUserDto,
       id: uuidv4(),
       active: true,
       is_super_admin: false,

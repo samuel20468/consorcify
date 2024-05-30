@@ -22,3 +22,9 @@ export enum FUNCTIONAL_UNIT_TYPE {
   OFFICE = "Office",
   OTHER = "Other"
 }
+
+export enum STATUS {
+  ACTIVATED = 'activated',
+  DISABLED = 'disabled',
+}
+

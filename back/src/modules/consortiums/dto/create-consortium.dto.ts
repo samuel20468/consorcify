@@ -1,6 +1,16 @@
-import { IsInt, IsNotEmpty, IsString, Length, Max, MaxLength, Min } from 'class-validator';
+import {
+  IsInt,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  Length,
+  Max,
+  MaxLength,
+  Min,
+} from 'class-validator';
 
 export class CreateConsortiumDto {
+  @IsOptional()
   @IsString({ message: 'SUTERH key must be a string' })
   @MaxLength(20, { message: 'SUTERH key must be at most 20 characters' })
   suterh_key: string;

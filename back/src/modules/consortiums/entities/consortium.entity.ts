@@ -37,7 +37,7 @@ export class Consortium {
    * @example "30030345670"
    */
   @Column({
-    type: 'varchar',
+    type: 'char',
     length: 11,
     unique: true,
   })

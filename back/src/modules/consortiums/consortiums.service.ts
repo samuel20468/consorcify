@@ -7,22 +7,22 @@ export class ConsortiumsService {
   constructor(private readonly consortiumsRepository: ConsortiumsRepository) {};
 
   create(consortium: Partial<Consortium>) {
-    return 'This action adds a new consortium';
+    return this.consortiumsRepository.create(consortium);
   }
 
   findAll(page: number, limit: number) {
-    return `This action returns all consortiums`;
+    return this.consortiumsRepository.findAll(page, limit);
   }
 
   findOne(id: string) {
-    return `This action returns a #${id} consortium`;
+    return this.consortiumsRepository.findOne(id);
   }
 
   update(id: string, consortium: Partial<Consortium>) {
-    return `This action updates a #${id} consortium`;
+    return this.consortiumsRepository.update(id, consortium);
   }
 
   remove(id: string) {
-    return `This action removes a #${id} consortium`;
+    return this.consortiumsRepository.remove(id);
   }
 }

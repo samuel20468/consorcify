@@ -12,6 +12,17 @@ export class Consortium {
   id: string;
 
   /**
+   * La clave SUTERH del Consorcio
+   * @example "12345/01"
+   */
+  @Column({
+    type: 'varchar',
+    length: 20,
+    nullable: true,
+  })
+  suterh_key: string;
+
+  /**
    * La Razon Social del Consorcio
    * @example "Consorcio Edificio Rivadavia 456"
    */
@@ -19,15 +30,15 @@ export class Consortium {
     type: 'varchar',
     length: 50,
   })
-  razon_social: string;
+  name: string;
 
   /**
    * El CUIT del Consorcio (único)
-   * @example "30-03034567-0"
+   * @example "30030345670"
    */
   @Column({
     type: 'varchar',
-    length: 13,
+    length: 11,
     unique: true,
   })
   cuit: string;
@@ -40,7 +51,7 @@ export class Consortium {
     type: 'varchar',
     length: 30,
   })
-  calle: string;
+  street_name: string;
 
   /**
    * El número del domicilio del Consorcio
@@ -49,7 +60,7 @@ export class Consortium {
   @Column({
     type: 'integer',
   })
-  numero: number;
+  building_number: number;
 
   /**
    * El código postal del Consorcio
@@ -59,7 +70,7 @@ export class Consortium {
     type: 'varchar',
     length: 10,
   })
-  codigo_postal: string;
+  zip_code: string;
 
   /**
    * El país del Consorcio
@@ -68,7 +79,6 @@ export class Consortium {
   @Column({
     type: 'varchar',
     length: 50,
-    nullable: true,
   })
   country: string;
 
@@ -79,7 +89,6 @@ export class Consortium {
   @Column({
     type: 'varchar',
     length: 50,
-    nullable: true,
   })
   province: string;
 
@@ -90,7 +99,6 @@ export class Consortium {
   @Column({
     type: 'varchar',
     length: 50,
-    nullable: true,
   })
   city: string;
 
@@ -126,8 +134,7 @@ export class Consortium {
    * @example "10"
    */
   @Column({
-    type: 'varchar',
-    length: 2,
+    type: 'integer',
   })
-  first_due_date: string;
+  first_due_day: number;
 }

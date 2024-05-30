@@ -2,7 +2,7 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CredentialsDto } from './dto/credentials.dto';
 import { CreateUserDto } from './dto/create-user.dto';
-import { RegisterConsAdminDto } from './dto/register-cons-admin.dto';
+import { CreateCAdminDto } from '../c-admin/dto/create-c-admin.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -19,7 +19,7 @@ export class AuthController {
   }
 
   @Post('register-c-admin')
-  async signUpCAdmin(@Body() consAdmin: RegisterConsAdminDto): Promise<string> {
+  async signUpCAdmin(@Body() consAdmin: CreateCAdminDto): Promise<string> {
     return await this.authService.singUpCAdmin(consAdmin);
   }
 }

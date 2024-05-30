@@ -4,7 +4,6 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { CreateProviderDto } from './dto/create-provider.dto';
-import { UpdateProviderDto } from './dto/update-provider.dto';
 import { TPagination } from 'src/utils/types';
 import { Provider } from './entities/provider.entity';
 import { ProvidersRepository } from './providers.repository';
@@ -13,8 +12,8 @@ import { ProvidersRepository } from './providers.repository';
 export class ProvidersService {
   constructor(private readonly providersRepository: ProvidersRepository) {}
 
-  async create(createProviderDto: CreateProviderDto) {
-    return 'This action adds a new provider';
+  async createProvider(newProvider: CreateProviderDto): Promise<Provider> {
+    return this.providersRepository.createProvider(newProvider);
   }
 
   async findAll({ page, limit }: TPagination): Promise<Provider[]> {
@@ -47,8 +46,8 @@ export class ProvidersService {
 
   async updateProvider(
     id: string,
-    updateProviderDto: UpdateProviderDto,
-  )/*: Promise<Provider> */{
+    providerToUpdate: CreateProviderDto,
+  ): Promise<Provider> {
     if (!id) {
       throw new BadRequestException('id is required');
     }
@@ -58,15 +57,30 @@ export class ProvidersService {
 
     if (!existingProvider) throw new NotFoundException('Provider not found');
 
-    const updatedProvider /*: Provider*/ =
+    const updatedProvider: Provider =
       await this.providersRepository.updateProvider(
-        existingProvider.id,
-        updateProviderDto,
+        existingProvider,
+        providerToUpdate,
       );
-    //return updatedProvider;
+    return updatedProvider;
   }
 
-  async remove(id: number) {
-    return `This action removes a #${id} provider`;
+  async toggleStatus(id: string) {
+    let status: boolean;
+
+    if (!id) {
+      throw new BadRequestException('id is required');
+    }
+
+    const existingProvider: Provider =
+      await this.providersRepository.findOne(id);
+
+    status = existingProvider.active;
+
+    if (!existingProvider) throw new NotFoundException('Provider not found');
+
+    await this.providersRepository.toggleStatus(id, status);
+
+    return existingProvider;
   }
 }

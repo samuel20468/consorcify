@@ -13,7 +13,10 @@ import {
 export class CreateProviderDto {
   @IsNotEmpty({ message: 'Name is required' })
   @IsString({ message: 'Name must be a string' })
-  @Length(1, 50, { message: 'Name must be between 1 and 50 characters' })
+  @Length(3, 50, { message: 'Name must be between 3 and 50 characters' })
+  @Matches(/^[a-zA-Z\s]+$/, {
+    message: 'Name cannot containt numbers',
+  })
   name: string;
 
   @IsNotEmpty({ message: 'CUIT is required' })
@@ -32,7 +35,7 @@ export class CreateProviderDto {
 
   @IsNotEmpty({ message: 'Phone number is required' })
   @IsPhoneNumber(null, { message: 'Phone number must be a valid phone number' })
-  phoneNumber: number;
+  phone_number: string;
 
   @IsNotEmpty({ message: 'Address is required' })
   @IsString({ message: 'Address must be a string' })

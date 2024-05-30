@@ -5,10 +5,10 @@ import {
 } from '@nestjs/common';
 import { CredentialsDto } from './dto/credentials.dto';
 import { CreateUserDto } from './dto/create-user.dto';
-import { RegisterConsAdminDto } from './dto/register-cons-admin.dto';
 import * as bcrypt from 'bcrypt';
 import { User } from '../users/entities/user.entity';
 import { checkPassword } from 'src/helpers/hashPassword.helper';
+import { CreateCAdminDto } from '../c-admin/dto/create-c-admin.dto';
 
 @Injectable()
 export class AuthService {
@@ -51,8 +51,8 @@ export class AuthService {
     return 'Usuario Registrado';
   }
 
-  async singUpCAdmin(consAdmin: RegisterConsAdminDto): Promise<string> {
-    const { name, address, email, phone, cuit, sat, rpa } = consAdmin;
+  async singUpCAdmin(consAdmin: CreateCAdminDto): Promise<string> {
+    const { name, address, email, phone_number, cuit, sat, rpa } = consAdmin;
     const foundCAdmin = false;
     if (foundCAdmin) {
       throw new ConflictException('El email ya se encuentra registrado.');
@@ -62,9 +62,10 @@ export class AuthService {
     //   newCAdmin.name= name
     //   newCAdmin.address= address;
     //   newCAdmin.email=email
-    //   newCAdmin.phone= phone;
+    //   newCAdmin.phone_number= phone_number;
     //   newCAdmin.cuit= cuit;
     //   newCAdmin.sat= sat;
+    //   newCAdmin.rpa= rpa;
     return 'Administrador de Consorcio Registrado';
   }
 }

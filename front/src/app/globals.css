@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+    font-family: clash-medium;
+    src: url(../../public/fonts/ClashDisplay-Medium.otf);
+  }
+  
+  @font-face {
+    font-family: clash-regular;
+    src: url(../../public/fonts/ClashDisplay-Regular.otf);
+  }
+  

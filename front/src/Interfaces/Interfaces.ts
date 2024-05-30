@@ -28,3 +28,25 @@ export interface IAdmin extends IUser {
     rpa: string;
     sat: string;
 }
+
+export interface IRegisterConsortium {
+    name: string;
+    adress: string;
+    email: string;
+    phone_number: string;
+    cuit: string;
+    password: string;
+    sat: string;
+    rpa: string;
+}
+
+export interface IRegisterConsortiumError {
+    name?: string;
+    adress?: string;
+    email?: string;
+    phone_number?: string;
+    cuit?: string;
+    password?: string;
+    sat?: string;
+    rpa: string;
+}

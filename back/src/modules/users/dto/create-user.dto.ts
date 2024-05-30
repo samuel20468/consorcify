@@ -7,7 +7,7 @@ export class CreateUserDto {
   @Matches(/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+([\s']?[a-zA-ZÀ-ÿ\u00f1\u00d1]+)*$/, {
     message: 'First name must contain only letters, spaces, and apostrophes',
   })
-  firstName: string;
+  first_name: string;
 
   @IsString()
   @MinLength(2)
@@ -15,7 +15,7 @@ export class CreateUserDto {
   @Matches(/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+([\s']?[a-zA-ZÀ-ÿ\u00f1\u00d1]+)*$/, {
     message: 'Last name must contain only letters, spaces, and apostrophes',
   })
-  lastName: string;
+  last_name: string;
 
   @IsEmail()
   @MaxLength(320)

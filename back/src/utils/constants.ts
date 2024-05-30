@@ -14,3 +14,11 @@ export enum ROLE {
   USER = 'user',
   SUPERADMIN = 'superadmin',
 }
+
+export enum FUNCTIONAL_UNIT_TYPE {
+  APARTMENT = "Apartment",
+  GARAGE = "Garage",
+  COMMERCIAL_SPACE = "Commercial Space",
+  OFFICE = "Office",
+  OTHER = "Other"
+}

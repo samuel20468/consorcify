@@ -111,6 +111,7 @@ export class AuthService {
         satCAdmin = SAT.EXEMPT;
         break;
     }
+
     const newCAdmin = new CAdmin();
     newCAdmin.name = name;
     newCAdmin.email = email;

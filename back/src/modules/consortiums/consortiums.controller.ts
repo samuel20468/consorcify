@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ParseUUIDPipe,
+  Query,
+} from '@nestjs/common';
 import { ConsortiumsService } from './consortiums.service';
 import { CreateConsortiumDto } from './dto/create-consortium.dto';
 import { UpdateConsortiumDto } from './dto/update-consortium.dto';
@@ -8,27 +18,33 @@ export class ConsortiumsController {
   constructor(private readonly consortiumsService: ConsortiumsService) {}
 
   @Post()
-  create(@Body() createConsortiumDto: CreateConsortiumDto) {
-    return this.consortiumsService.create(createConsortiumDto);
+  create(@Body() consortium: CreateConsortiumDto) {
+    return this.consortiumsService.create(consortium);
   }
 
   @Get()
-  findAll() {
-    return this.consortiumsService.findAll();
+  findAll(@Query('page') page: string, @Query('limit') limit: string) {
+    if (page && limit) {
+      return this.consortiumsService.findAll(Number(page), Number(limit));
+    }
+    return this.consortiumsService.findAll(1,5);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.consortiumsService.findOne(+id);
+  findOne(@Param('id', ParseUUIDPipe) id: string) {
+    return this.consortiumsService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateConsortiumDto: UpdateConsortiumDto) {
-    return this.consortiumsService.update(+id, updateConsortiumDto);
+  update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() consortium: UpdateConsortiumDto,
+  ) {
+    return this.consortiumsService.update(id, consortium);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.consortiumsService.remove(+id);
+  remove(@Param('id', ParseUUIDPipe) id: string) {
+    return this.consortiumsService.remove(id);
   }
 }

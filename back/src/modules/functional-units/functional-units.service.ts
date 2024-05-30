@@ -1,23 +1,30 @@
 import { Injectable } from '@nestjs/common';
 import { CreateFunctionalUnitDto } from './dto/create-functional-unit.dto';
 import { UpdateFunctionalUnitDto } from './dto/update-functional-unit.dto';
+import { FunctionalUnitsRepository } from './functional-units.repository';
+import { FunctionalUnit } from './entities/functional-unit.entity';
 
 @Injectable()
 export class FunctionalUnitsService {
-  create(createFunctionalUnitDto: CreateFunctionalUnitDto) {
-    return 'This action adds a new functionalUnit';
+  
+  constructor(private readonly functionalUnitsRepository: FunctionalUnitsRepository) {}
+  async create(createFunctionalUnitDto: CreateFunctionalUnitDto): Promise<FunctionalUnit> {
+    return await this.functionalUnitsRepository.create(createFunctionalUnitDto);
   }
 
-  findAll() {
-    return `This action returns all functionalUnits`;
+  async findAll(): Promise<FunctionalUnit[]> {
+    return await this.functionalUnitsRepository.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} functionalUnit`;
+  async findOne(id: string): Promise<FunctionalUnit | undefined> {
+    return await this.functionalUnitsRepository.findOne(id);
   }
 
-  update(id: number, updateFunctionalUnitDto: UpdateFunctionalUnitDto) {
-    return `This action updates a #${id} functionalUnit`;
+  async findByConsortium(consortiumId: string): Promise<FunctionalUnit[]> {
+    return await this.functionalUnitsRepository.findByConsortium(consortiumId);
+  }
+  async update(id: string, updateFunctionalUnitDto: UpdateFunctionalUnitDto): Promise<FunctionalUnit> {
+    return await this.functionalUnitsRepository.update(id, updateFunctionalUnitDto);
   }
 
   remove(id: number) {

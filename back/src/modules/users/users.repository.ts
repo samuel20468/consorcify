@@ -13,7 +13,7 @@ export class UsersRepository {
       email: 'juan.perez@example.com',
       password: 'Password123!',
       active: true,
-      isSuperAdmin: false,
+      is_super_admin: false,
     },
     {
       id: 'eb93037a-4f48-45c4-bab0-77d7f2e35b3b',
@@ -22,7 +22,7 @@ export class UsersRepository {
       email: 'maria.lopez@example.com',
       password: 'SecureP@ss2',
       active: true,
-      isSuperAdmin: false,
+      is_super_admin: false,
     },
     {
       id: 'cda17006-3e13-42fb-ae5e-09e6a3f7e489',
@@ -31,7 +31,7 @@ export class UsersRepository {
       email: 'carlos.gomez@example.com',
       password: 'StrongP@ss3',
       active: true,
-      isSuperAdmin: true,
+      is_super_admin: true,
     },
     {
       id: '4f1c7fc8-c439-4f7a-92fb-bac487ef5ab7',
@@ -40,7 +40,7 @@ export class UsersRepository {
       email: 'ana.martinez@example.com',
       password: 'Passw0rd!',
       active: true,
-      isSuperAdmin: false,
+      is_super_admin: false,
     },
     {
       id: '0b4c8cfb-b82b-4b6d-9125-4903d130d4e4',
@@ -49,7 +49,7 @@ export class UsersRepository {
       email: 'luis.fernandez@example.com',
       password: 'MySecur3P@ss',
       active: true,
-      isSuperAdmin: false,
+      is_super_admin: false,
     },
   ];
 
@@ -72,7 +72,7 @@ export class UsersRepository {
       ...createUserDto,
       id: uuidv4(),
       active: true,
-      isSuperAdmin: false,
+      is_super_admin: false,
     };
     this.users.push(user);
     return user;

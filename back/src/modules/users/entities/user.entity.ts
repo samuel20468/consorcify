@@ -23,5 +23,5 @@ export class User {
   active: boolean;
 
   @Column({ default: false })
-  isSuperAdmin: boolean;
+  is_super_admin: boolean;
 }

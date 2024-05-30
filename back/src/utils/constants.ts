@@ -14,3 +14,8 @@ export enum ROLE {
   USER = 'user',
   SUPERADMIN = 'superadmin',
 }
+
+export enum STATUS {
+  ACTIVATED = 'activated',
+  DISABLED = 'disabled',
+}

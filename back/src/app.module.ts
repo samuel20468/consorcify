@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { FunctionalUnitsModule } from './modules/functional-units/functional-units.module';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -18,6 +19,13 @@ import { FunctionalUnitsModule } from './modules/functional-units/functional-uni
       inject: [ConfigService],
       useFactory: (configService: ConfigService) =>
         configService.get('typeorm'),
+    }),
+    JwtModule.register({
+      global: true,
+      secret: process.env.JWT_SECRET,
+      signOptions: {
+        expiresIn: '1h',
+      },
     }),
     AuthModule,
     ProvidersModule,

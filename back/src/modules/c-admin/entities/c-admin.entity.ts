@@ -1,4 +1,4 @@
-import { CADMIN_PASS, SAT } from 'src/utils/constants';
+import { SAT } from 'src/utils/constants';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({
@@ -18,7 +18,7 @@ export class CAdmin {
   password: string;
 
   @Column({ length: 25 })
-  phoneNumber: string;
+  phone_number: string;
 
   @Column({ type: 'char', length: 11, unique: true })
   cuit: string;

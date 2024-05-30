@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
+import { ConsortiumsModule } from './modules/consortiums/consortiums.module';
 
 
 @Module({
-  imports: [],
+  imports: [ConsortiumsModule],
 })
 export class AppModule {}

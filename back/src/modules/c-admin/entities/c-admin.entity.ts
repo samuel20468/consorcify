@@ -1,4 +1,4 @@
-import { CADMIN_PASS, SAT } from 'src/utils/constants';
+import { SAT } from 'src/utils/constants';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({

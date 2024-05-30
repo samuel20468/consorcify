@@ -8,26 +8,36 @@ import {
   ParseUUIDPipe,
   Put,
   Patch,
-} from '@nestjs/common';
+  UseGuards,
+  } from '@nestjs/common';
+
 import { ProvidersService } from './providers.service';
 import { CreateProviderDto } from './dto/create-provider.dto';
+import { UpdateProviderDto } from './dto/update-provider.dto';
+import { AuthGuard } from 'src/guards/auth.guard';
+import { Roles } from 'src/decorators/role.decorator';
+import { ROLE } from 'src/utils/constants';
+import { RolesGuard } from 'src/guards/roles.guard';
 import { Provider } from './entities/provider.entity';
 import { STATUS } from 'src/utils/constants';
 
+
+@UseGuards(AuthGuard)
 @Controller('providers')
 export class ProvidersController {
   constructor(private readonly providersService: ProvidersService) {}
 
   @Post()
+  @Roles(ROLE.CADMIN)
+  @UseGuards(RolesGuard)
   async createProvider(@Body() newProvider: CreateProviderDto) {
     return await this.providersService.createProvider(newProvider);
   }
 
   @Get()
-  async findAll(
-    @Query('page') page: number = 1,
-    @Query('limit') limit: number = 5,
-  ) {
+  @Roles(ROLE.CADMIN)
+  @UseGuards(RolesGuard)
+  async findAll(@Query('page') page: number = 1, @Query('limit') limit: number = 5) {
     return await this.providersService.findAll({ page, limit });
   }
 

@@ -6,6 +6,7 @@ import { CreateCAdminDto } from '../c-admin/dto/create-c-admin.dto';
 import { User } from '../users/entities/user.entity';
 import { CAdmin } from '../c-admin/entities/c-admin.entity';
 
+
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}

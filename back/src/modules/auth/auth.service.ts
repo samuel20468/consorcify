@@ -94,6 +94,7 @@ export class AuthService {
     if (foundCAdmin) {
       throw new ConflictException('El email ya se encuentra registrado.');
     }
+
     const hashedPassword = await bcrypt.hash(CADMIN_PASS, 10);
     let satCAdmin: SAT;
     switch (sat) {

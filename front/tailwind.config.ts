@@ -12,6 +12,10 @@ const config: Config = {
                 fondo: "#0f0e0e",
                 input: "#232426",
             },
+          backdropFilter: {
+        'none': 'none',
+        'blur': 'blur(20px)',
+      }, 
         },
     },
     plugins: [],

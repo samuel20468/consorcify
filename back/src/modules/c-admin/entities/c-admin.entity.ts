@@ -32,13 +32,10 @@ export class CAdmin {
   @Column({ type: 'char', length: 5, unique: true })
   rpa: string;
 
-  @Column({ type: 'boolean' })
+  @Column({ type: 'boolean', default: true })
   active: boolean;
 
-  // Relación con Consortium 1:1
-  //   @OneToOne(() => Consortium, consortium => consortium.cAdmin)
-  //   @JoinColumn({
-  //     name: 'consortium_id',
-  //   })
-  //   consortium: Consortium;
+  // Relación con Consortium 1:N
+  //   @OneToMany(() => Consortium, consortium => consortium.cAdmin)
+  //   consortium: Consortium[];
 }

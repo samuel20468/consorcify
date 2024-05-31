@@ -1,9 +1,9 @@
+import FormRegisterSuperAdmin from "@/components/formRegisterSuperAdmin/FormRegisterSuperAdmin";
 
 export default function Home() {
     return (
         <>
-            <h1>landing</h1>
+            <FormRegisterSuperAdmin />
         </>
     );
-
 }

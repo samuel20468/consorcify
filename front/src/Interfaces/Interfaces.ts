@@ -32,10 +32,10 @@ export interface IAdmin extends IUser {
 export interface IRegisterConsortium {
     name: string;
     email: string;
-    password: string;
+    password?: string;
     phone_number: string;
     cuit: string;
-    adress: string;
+    address: string;
     sat: string;
     rpa: string;
 }

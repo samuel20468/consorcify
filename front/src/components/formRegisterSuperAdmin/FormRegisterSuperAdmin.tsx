@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Button, Input, Label } from "../ui";
-import { handleRegisterConsortium } from "@/helpers/form.helper";
+import { adminFetch } from "@/helpers/form.helper";
 import { useRouter } from "next/navigation";
 import {
     IRegisterConsortium,
@@ -13,11 +13,10 @@ const FormRegisterSuperAdmin = () => {
     const router = useRouter();
     const initialData = {
         name: "",
-        adress: "",
+        address: "",
         email: "",
         phone_number: "",
         sat: "",
-        password: "",
         rpa: "",
         cuit: "",
     };
@@ -38,8 +37,9 @@ const FormRegisterSuperAdmin = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e?.preventDefault();
         try {
-            await handleRegisterConsortium(consortiumRegister);
+            const response = await adminFetch(consortiumRegister);
             alert("Registro del consorcio exitoso.");
+            console.log(response);
             // router.push("/") Definir donde nos va a pataear una vez creado el consorcio
             setConsortiumRegister(initialData);
         } catch (error: any) {
@@ -59,7 +59,7 @@ const FormRegisterSuperAdmin = () => {
                 onSubmit={handleSubmit}
             >
                 <Label htmlFor="name">
-                    Nombre:<span className="text-red-600">*</span>
+                    Nombre Completo:<span className="text-red-600">*</span>
                 </Label>
                 <Input
                     id="name"
@@ -69,13 +69,13 @@ const FormRegisterSuperAdmin = () => {
                     placeholder="Nombre"
                     onChange={handleChange}
                 />
-                <Label htmlFor="adress">
+                <Label htmlFor="address">
                     Dirección:<span className="text-red-600">*</span>
                 </Label>
                 <Input
-                    id="adress"
-                    name="adress"
-                    value={consortiumRegister.adress}
+                    id="address"
+                    name="address"
+                    value={consortiumRegister.address}
                     type="text"
                     placeholder="Dirección"
                     onChange={handleChange}
@@ -88,18 +88,18 @@ const FormRegisterSuperAdmin = () => {
                     name="phone_number"
                     value={consortiumRegister.phone_number}
                     type="text"
-                    placeholder="Teléfono"
+                    placeholder="example: +541144332211"
                     onChange={handleChange}
                 />
                 <Label htmlFor="cuit">
-                    Cuit:<span className="text-red-600">*</span>
+                    CUIT:<span className="text-red-600">*</span>
                 </Label>
                 <Input
                     id="cuit"
                     name="cuit"
                     value={consortiumRegister.cuit}
                     type="text"
-                    placeholder="Número de CUIT"
+                    placeholder="CUIT sin guiones"
                     onChange={handleChange}
                 />
                 <Label htmlFor="sat">
@@ -122,7 +122,7 @@ const FormRegisterSuperAdmin = () => {
                     name="rpa"
                     value={consortiumRegister.rpa}
                     type="text"
-                    placeholder="Inscripción RPA"
+                    placeholder="example: 12345"
                     onChange={handleChange}
                 />
                 <Label htmlFor="email">
@@ -136,34 +136,9 @@ const FormRegisterSuperAdmin = () => {
                     placeholder="Correo electrónico"
                     onChange={handleChange}
                 />
-                <Label htmlFor="password">
-                    Password:
-                    <span className="text-red-600">*</span>
-                </Label>
-                <Input
-                    id="password"
-                    name="password"
-                    value={consortiumRegister.password}
-                    type="password"
-                    placeholder="**********"
-                    onChange={handleChange}
-                />
+
                 <div className="mt-4">
-                    <Button
-                        type="submit"
-                        disabled={
-                            consortiumRegister.name === "" ||
-                            consortiumRegister.adress === "" ||
-                            consortiumRegister.email === "" ||
-                            consortiumRegister.phone_number === "" ||
-                            consortiumRegister.password === "" ||
-                            consortiumRegister.cuit === "" ||
-                            consortiumRegister.sat === "" ||
-                            consortiumRegister.rpa === ""
-                        }
-                    >
-                        Registrar
-                    </Button>
+                    <Button type="submit">Registrar</Button>
                 </div>
             </form>
         </div>

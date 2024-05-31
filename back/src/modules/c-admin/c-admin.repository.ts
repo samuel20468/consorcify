@@ -12,7 +12,9 @@ export class CAdminsRepository {
   ) {}
 
   async findAll(): Promise<CAdmin[]> {
-    return await this.cAdminRepository.find();
+    return await this.cAdminRepository.find({
+      where: { active: true },
+    });
   }
 
   async findOne(id: string): Promise<CAdmin> {

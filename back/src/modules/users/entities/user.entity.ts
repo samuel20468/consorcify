@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { FunctionalUnit } from 'src/modules/functional-units/entities/functional-unit.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({
   name: 'users',
@@ -24,4 +25,7 @@ export class User {
 
   @Column({ default: false })
   is_super_admin: boolean;
+
+  @OneToMany(() => FunctionalUnit, (funcionalUnit) => funcionalUnit.user)
+  functional_units: FunctionalUnit[];
 }

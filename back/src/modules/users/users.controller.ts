@@ -34,6 +34,21 @@ export class UsersController {
     return await this.usersService.update(id, updateUserDto);
   }
 
+  // @Patch('toggle-status/:id')
+  // async toggleStatus(@Param('id', ParseUUIDPipe) id: string) {
+  //   let statusMessage: string;
+
+  //   const userToggled: User = await this.usersService.toggleStatus(id);
+
+  //   !userToggled.active
+  //     ? (statusMessage = 'Activated')
+  //     : (statusMessage = 'Disabled');
+  
+  //   return {
+  //     message: `User with id ${userToggled.id} has been ${statusMessage}`,
+  //   }
+  // }
+
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.usersService.remove(+id);

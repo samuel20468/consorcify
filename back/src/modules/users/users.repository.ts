@@ -6,7 +6,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersRepository {
-
+  
   constructor(@InjectRepository(User) private usersRepository: Repository<User>) {}
 
   async findAll(page: number, limit: number): Promise<User[]> {
@@ -39,4 +39,8 @@ export class UsersRepository {
 
     return await this.usersRepository.save({ ...user, ...updateUserDto });
   }
+
+  // async toggleStatus(id: string, status: boolean) {
+  //   throw new Error('Method not implemented.');
+  // }
 }

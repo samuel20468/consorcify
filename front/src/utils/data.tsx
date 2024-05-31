@@ -522,3 +522,19 @@ export const itemsNavbarUser = [
         link: "/workers",
     },
 ];
+
+// SideBarSuperAdmin
+export const itemsNavbarSuperAdmin = [
+    {
+        id: 1,
+        title: "Consorcios",
+        icon: Building,
+        link: "/dashboard/consorcios",
+    },
+    {
+        id: 2,
+        title: "Admins",
+        icon: News,
+        link: "/dashboard/administracion",
+    },
+];

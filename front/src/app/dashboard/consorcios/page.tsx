@@ -1,24 +1,25 @@
 import NavbarDashboard from "@/components/NavbarDashboard/NavbarDashboard";
-import SideBarUser from "@/components/SideBarUser/SideBarUser";
-import SideBarAdmin from "@/components/SidebarAdmin/SideBarAdmin";
 import SidebarSuperAdmin from "@/components/SidebarSuperAdmin/SidebarSuperAdmin";
 import { Button, ContainerDashboard } from "@/components/ui";
-import React from "react";
+import Link from "next/link";
 
-const Dashboard = () => {
+const ConsorciosCrud = () => {
     return (
         <div className="bg-white h-screen">
-            {/* <SideBarAdmin /> */}
-            {/* <SideBarUser /> */}
             <SidebarSuperAdmin />
             <NavbarDashboard />
             <ContainerDashboard>
                 <div className="">
-                    <h1>Este es el dashboard del super admin / admin / user</h1>
+                    <Link href="/addConsortium">
+                        <Button>Crear Consorcio</Button>
+                    </Link>
+                    <Button>Modificar Consorcio</Button>
+                    <Button>Ver Consorcio</Button>
+                    <Button>Eliminar Consorcio</Button>
                 </div>
             </ContainerDashboard>
         </div>
     );
 };
 
-export default Dashboard;
+export default ConsorciosCrud;

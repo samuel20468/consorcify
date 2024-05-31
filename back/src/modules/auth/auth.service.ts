@@ -51,7 +51,7 @@ export class AuthService {
         throw new UnauthorizedException('Credenciales inválidas');
       }
       const role = [];
-      if (foundUser.isSuperAdmin) {
+      if (foundUser.is_super_admin) {
         role.push(ROLE.SUPERADMIN);
       } else {
         role.push(ROLE.USER);
@@ -83,7 +83,7 @@ export class AuthService {
 
     const createdUser = await this.usersRepository.save(newUser);
     delete createdUser.password;
-    delete createdUser.isSuperAdmin;
+    delete createdUser.is_super_admin;
     delete createdUser.active;
     return createdUser;
   }

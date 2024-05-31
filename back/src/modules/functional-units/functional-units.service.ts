@@ -12,16 +12,16 @@ export class FunctionalUnitsService {
     return await this.functionalUnitsRepository.create(createFunctionalUnitDto);
   }
 
-  async findAll(): Promise<FunctionalUnit[]> {
-    return await this.functionalUnitsRepository.findAll();
+  async findAll(page: number, limit: number): Promise<FunctionalUnit[]> {
+    return await this.functionalUnitsRepository.findAll(page, limit);
   }
 
   async findOne(id: string): Promise<FunctionalUnit | undefined> {
     return await this.functionalUnitsRepository.findOne(id);
   }
 
-  async findByConsortium(consortiumId: string): Promise<FunctionalUnit[]> {
-    return await this.functionalUnitsRepository.findByConsortium(consortiumId);
+  async findByConsortium(consortiumId: string, page: number, limit: number): Promise<FunctionalUnit[]> {
+    return await this.functionalUnitsRepository.findByConsortium(consortiumId, page, limit);
   }
   async update(id: string, updateFunctionalUnitDto: UpdateFunctionalUnitDto): Promise<FunctionalUnit> {
     return await this.functionalUnitsRepository.update(id, updateFunctionalUnitDto);

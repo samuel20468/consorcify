@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { FunctionalUnit } from 'src/modules/functional-units/entities/functional-unit.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({
   name: 'consortiums',
@@ -137,4 +138,7 @@ export class Consortium {
     type: 'integer',
   })
   first_due_day: number;
+
+  @OneToMany(() => FunctionalUnit, (functionalUnit) => functionalUnit.consortium)
+  functional_units: FunctionalUnit[];
 }

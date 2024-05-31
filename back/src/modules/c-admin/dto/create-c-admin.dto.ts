@@ -1,5 +1,6 @@
 import {
   IsEmail,
+  IsEnum,
   IsNotEmpty,
   IsPhoneNumber,
   IsString,
@@ -7,6 +8,7 @@ import {
   Matches,
   MaxLength,
 } from 'class-validator';
+import { SAT } from 'src/utils/constants';
 
 export class CreateCAdminDto {
   @IsNotEmpty({ message: 'Name is required' })
@@ -42,7 +44,8 @@ export class CreateCAdminDto {
 
   @IsNotEmpty({ message: 'SAT is required' })
   @IsString({ message: 'SAT must be a string' })
-  sat: string;
+  @IsEnum(SAT, { message: 'SAT must be a valid enum value' })
+  sat: SAT;
 
   @IsNotEmpty({ message: 'RPA is required' })
   @IsString({ message: 'RPA must be a string' })

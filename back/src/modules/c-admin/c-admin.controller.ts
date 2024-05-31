@@ -39,7 +39,7 @@ export class CAdminsController {
   }
 
   @Patch('disable/:id')
-  async remove(@Param('id', ParseUUIDPipe) id: string): Promise<CAdmin> {
+  async delete(@Param('id', ParseUUIDPipe) id: string): Promise<CAdmin> {
     const cAdminDisabled: CAdmin = await this.cAdminsService.delete(id);
 
     cAdminDisabled.active = false;

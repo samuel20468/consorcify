@@ -37,6 +37,9 @@ export class FunctionalUnit {
   @Column({ type: 'decimal', precision: 15, scale: 2 }) // Pendiente definir como se manejara el formato de número
   balance: number;
 
+  @Column({ length: 8, nullable: false, unique: true })
+  code: string;
+
   @ManyToOne(() => Consortium, (consortium) => consortium.functional_units)
   @JoinColumn({ name: 'consortium_id' })
   consortium: Consortium;

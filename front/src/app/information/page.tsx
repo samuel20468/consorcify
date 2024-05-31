@@ -1,20 +1,18 @@
 import NavbarDashboard from "@/components/NavbarDashboard/NavbarDashboard";
-import SideBarAdmin from "@/components/SidebarAdmin/SideBarAdmin";
+import SideBarUser from "@/components/SideBarUser/SideBarUser";
 import { ContainerDashboard } from "@/components/ui";
 
-const Money = () => {
+const Information = () => {
     return (
         <div>
-            <SideBarAdmin />
+            <SideBarUser />
             <NavbarDashboard />
             <ContainerDashboard>
                 <h1 className="flex items-center justify-center m-auto">
-                    Acá van a ir toda la plata de la caja que tiene esta
-                    administración
+                    Acá van a ir la información útil para los usuarios
                 </h1>
             </ContainerDashboard>
         </div>
     );
 };
-
-export default Money;
+export default Information;

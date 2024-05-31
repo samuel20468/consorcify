@@ -8,12 +8,14 @@ import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
 import { User } from '../users/entities/user.entity';
 import { CreateCAdminDto } from '../c-admin/dto/create-c-admin.dto';
-import { checkPassword } from 'src/helpers/hashPassword.helper';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CAdmin } from '../c-admin/entities/c-admin.entity';
-import { CADMIN_PASS, ROLE, SAT } from 'src/utils/constants';
+import { CADMIN_PASS, SAT } from 'src/utils/constants';
 import { JwtService } from '@nestjs/jwt';
+import { signInHelper } from 'src/helpers/signIn.helper';
+import { TObjectToken } from 'src/utils/types';
+import satSetter from 'src/helpers/satSetter.helper';
 
 @Injectable()
 export class AuthService {
@@ -24,7 +26,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async signIn(credentials: CredentialsDto): Promise<object> {
+  async signIn(credentials: CredentialsDto): Promise<TObjectToken> {
     const { email, password } = credentials;
     const foundCAdmin = await this.cAdminRepository.findOneBy({ email });
     const foundUser = await this.usersRepository.findOneBy({ email });
@@ -32,44 +34,19 @@ export class AuthService {
       throw new UnauthorizedException('Credenciales inválidas');
     }
     if (foundCAdmin) {
-      const validatePassword = await checkPassword(
+      const tokenAdmin: Promise<TObjectToken> = signInHelper(
+        foundCAdmin,
         password,
-        foundCAdmin.password,
+        this.jwtService,
       );
-      if (!validatePassword) {
-        throw new UnauthorizedException('Credenciales inválidas');
-      }
-      const role = [];
-      role.push(ROLE.CADMIN);
-      const userPayload = {
-        id: foundCAdmin.id,
-        email: foundCAdmin.email,
-        roles: [...role],
-      };
-      const token = this.jwtService.sign(userPayload);
-      return { token };
+      return tokenAdmin;
     } else if (foundUser) {
-      const validatePassword = await checkPassword(
+      const tokenUser: Promise<TObjectToken> = signInHelper(
+        foundUser,
         password,
-        foundUser.password,
+        this.jwtService,
       );
-
-      if (!validatePassword) {
-        throw new UnauthorizedException('Credenciales inválidas');
-      }
-      const role = [];
-      if (foundUser.is_super_admin) {
-        role.push(ROLE.SUPERADMIN);
-      } else {
-        role.push(ROLE.USER);
-      }
-      const userPayload = {
-        id: foundUser.id,
-        email: foundUser.email,
-        roles: [...role],
-      };
-      const token = this.jwtService.sign(userPayload);
-      return { token };
+      return tokenUser;
     }
   }
 
@@ -103,21 +80,7 @@ export class AuthService {
     }
 
     const hashedPassword = await bcrypt.hash(CADMIN_PASS, 10);
-    let satCAdmin: SAT;
-    switch (sat) {
-      case 'Monotributo':
-        satCAdmin = SAT.MONOTAX;
-        break;
-      case 'Responsable Inscripto':
-        satCAdmin = SAT.REGISTERED_RESPONSIBLE;
-        break;
-      case 'Responsable No Inscripto':
-        satCAdmin = SAT.NON_REGISTERED_RESPONSIBLE;
-        break;
-      case 'Exento':
-        satCAdmin = SAT.EXEMPT;
-        break;
-    }
+    const satCAdmin: SAT = satSetter(sat);
 
     const newCAdmin = new CAdmin();
     newCAdmin.name = name;

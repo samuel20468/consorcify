@@ -1,7 +1,7 @@
 // ENUMS, CONSTANTS
-import { config as dotenvConfig } from "dotenv";
+import { config as dotenvConfig } from 'dotenv';
 
-dotenvConfig({ path: "./.env.development" });
+dotenvConfig({ path: './.env.development' });
 
 export const CADMIN_PASS = process.env.CADMIN_PASS;
 

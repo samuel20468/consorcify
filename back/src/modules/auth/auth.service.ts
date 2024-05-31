@@ -13,7 +13,7 @@ import { Repository } from 'typeorm';
 import { CAdmin } from '../c-admin/entities/c-admin.entity';
 import { CADMIN_PASS, SAT } from 'src/utils/constants';
 import { JwtService } from '@nestjs/jwt';
-import { signInHelper } from 'src/helpers/loggedin.helper';
+import { signInHelper } from 'src/helpers/signIn.helper';
 import { TObjectToken } from 'src/utils/types';
 import satSetter from 'src/helpers/satSetter.helper';
 

@@ -10,6 +10,5 @@ export const checkPassword = async (
   storedPassword: string,
 ): Promise<boolean> => {
   const result = await bcrypt.compare(receivedPassword, storedPassword);
-
   return result;
 };

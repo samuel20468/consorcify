@@ -25,7 +25,7 @@ const FormRegisterConsortium = () => {
                     </div>
                 </div>
 
-                <div className="flex flex-row gap-4">
+                <div className="flex flex-row gap-4 ">
                     <div className="flex flex-col lg:w-3/4">
                         <Label>Dirección:</Label>
                         <Input />

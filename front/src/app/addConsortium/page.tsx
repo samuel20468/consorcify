@@ -15,7 +15,7 @@ const AddConsortium = () => {
                 <div className="flex items-center justify-center mt-10 bg-white rounded-lg">
                     <FormRegisterConsortium />
                 </div>
-                <div className="absolute bottom-0 w-[80%] lg:w-[90%]">
+                <div className="absolute bottom-0 w-[80%] lg:w-[90%] ">
                     <Footer />
                 </div>
             </ContainerDashboard>

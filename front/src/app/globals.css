@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  background-color: #0b0c0d;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+
 @font-face {
     font-family: clash-medium;
     src: url(../../public/fonts/ClashDisplay-Medium.otf);

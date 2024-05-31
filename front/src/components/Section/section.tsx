@@ -1,14 +1,17 @@
+"use client";
 import { useEffect, useRef, useState } from "react";
 import Navbar from "../Navbar/Navbar";
+import Hero from "../Landing/Hero/Hero";
+import Background from "../../components/Landing/Background/background";
 
+type SectionType = "home" | "about" | "questions";
 
+const Section: React.FC = () => {
+  const [activeSection, setActiveSection] = useState<SectionType>("home");
 
-const Section = () => {
-  const [activeSection, setActiveSection] = useState("home");
-
-  const homeRef = useRef(null);
-  const aboutRef = useRef(null);
-  const questionsRef = useRef(null);
+  const homeRef = useRef<HTMLDivElement>(null);
+  const aboutRef = useRef<HTMLDivElement>(null);
+  const questionsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const options = {
@@ -17,10 +20,10 @@ const Section = () => {
       threshold: 0.6,
     };
 
-    const callback = (entries: any) => {
-      entries.forEach((entry: any) => {
+    const callback = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          setActiveSection(entry.target.id);
+          setActiveSection(entry.target.id as SectionType);
         }
       });
     };
@@ -38,15 +41,18 @@ const Section = () => {
       });
     };
   }, []);
+
   return (
     <>
-    <Navbar activeSection={activeSection}/>
+      <Navbar activeSection={activeSection} />
+      <Background/>
       <section
         id="inicio"
         ref={homeRef}
-        className="flex items-center justify-center h-screen"
+        className="flex justify-center h-screen "
       >
-        <h1 className="text-white ">HOME</h1>
+        <span className="text-[#ffffff3a] absolute top-40 font-[clash-regular]">CONSORCIFY</span>
+        <Hero/>
       </section>
       <section
         id="nosotros"
@@ -66,5 +72,4 @@ const Section = () => {
   );
 };
 
-
-export default Section
+export default Section;

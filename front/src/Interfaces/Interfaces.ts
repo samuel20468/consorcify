@@ -32,10 +32,10 @@ export interface IAdmin extends IUser {
 export interface IRegisterConsortium {
     name: string;
     email: string;
-    password: string;
+    password?: string;
     phone_number: string;
     cuit: string;
-    adress: string;
+    address: string;
     sat: string;
     rpa: string;
 }
@@ -51,7 +51,7 @@ export interface IRegisterConsortiumError {
     rpa?: string;
 }
 export interface IConsortium {
-    id: string;
+    id?: string;
     suterh_key: string;
     name: string;
     cuit: string;

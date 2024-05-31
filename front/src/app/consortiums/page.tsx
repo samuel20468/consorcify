@@ -5,13 +5,13 @@ import { ContainerDashboard } from "@/components/ui";
 
 const Consortium = () => {
     return (
-        <>
+        <div>
             <SideBarAdmin />
             <NavbarDashboard />
             <ContainerDashboard>
                 <ConsortiumsAdmin />
             </ContainerDashboard>
-        </>
+        </div>
     );
 };
 

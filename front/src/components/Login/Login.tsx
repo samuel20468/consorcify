@@ -21,7 +21,7 @@ const Login = () => {
         e?.preventDefault();
         try {
             const response = await loginFetch(userData);
-
+            console.log(response);
             setUserData(initialData);
             SetErrors(initialData);
             router.push("/dashboard");

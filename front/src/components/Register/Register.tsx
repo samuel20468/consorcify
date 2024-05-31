@@ -11,8 +11,8 @@ import { useRouter } from "next/navigation";
 const Register = () => {
     const router = useRouter();
     const initialData = {
-        firstName: "",
-        lastName: "",
+        first_name: "",
+        last_name: "",
         email: "",
         password: "",
     };
@@ -24,8 +24,8 @@ const Register = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (
-            !registerData.firstName ||
-            !registerData.lastName ||
+            !registerData.first_name ||
+            !registerData.last_name ||
             !registerData.email ||
             !registerData.password
         ) {
@@ -46,8 +46,8 @@ const Register = () => {
 
     useEffect(() => {
         const namesErrors = validateNombreCompleto(
-            registerData.firstName.trim(),
-            registerData.lastName.trim()
+            registerData.first_name.trim(),
+            registerData.last_name.trim()
         );
         const emailErrors = validateEmail(registerData.email);
         const pwdErrors = validatePwd(registerData.password);
@@ -59,7 +59,6 @@ const Register = () => {
             ...pwdErrors,
         }));
     }, [registerData]);
-    console.log(errors);
 
     const handlerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -89,36 +88,36 @@ const Register = () => {
                 <form onSubmit={handleSubmit} className="flex flex-col gap-1">
                     <div className="flex items-center justify-between w-full">
                         <Label>Nombre</Label>
-                        {errors.firstName && registerData.firstName && (
+                        {errors.first_name && registerData.first_name && (
                             <span className="self-end text-xs text-red-500 ">
-                                {errors.firstName}
+                                {errors.first_name}
                             </span>
                         )}
                     </div>
                     <Input
                         id="nombre"
-                        name="firstName"
+                        name="first_name"
                         type="text"
                         placeholder="nombre"
                         onChange={handlerChange}
-                        value={registerData.firstName}
+                        value={registerData.first_name}
                     />
 
                     <div className="flex items-center justify-between w-full">
                         <Label>Apellido</Label>
-                        {errors.lastName && registerData.lastName && (
+                        {errors.last_name && registerData.last_name && (
                             <span className="self-end text-xs text-red-500 ">
-                                {errors.lastName}
+                                {errors.last_name}
                             </span>
                         )}
                     </div>
                     <Input
                         id="apellido"
-                        name="lastName"
+                        name="last_name"
                         type="text"
                         placeholder="Apellido"
                         onChange={handlerChange}
-                        value={registerData.lastName}
+                        value={registerData.last_name}
                     />
 
                     <div className="flex items-center justify-between w-full">

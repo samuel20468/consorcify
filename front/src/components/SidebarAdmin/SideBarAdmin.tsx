@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import ContainerSideBar from "../ui/ContainerSideBar";
 import { itemsNavbarAdmin } from "@/utils/data";
+import { ContainerSideBar } from "../ui";
 
 const SideBarAdmin = () => {
     return (

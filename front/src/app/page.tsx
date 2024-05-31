@@ -1,8 +1,12 @@
 
+import Section from "@/components/Section/section";
+
+
+
 export default function Home() {
     return (
         <>
-            <h1>landing</h1>
+            <Section/>
         </>
     );
 

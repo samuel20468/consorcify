@@ -1,9 +1,13 @@
 import { Module } from '@nestjs/common';
-import { CAdminService } from './c-admin.service';
-import { CAdminController } from './c-admin.controller';
+import { CAdminsService } from './c-admin.service';
+import { CAdminsController } from './c-admin.controller';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { CAdmin } from './entities/c-admin.entity';
+import { CAdminsRepository } from './c-admin.repository';
 
 @Module({
-  controllers: [CAdminController],
-  providers: [CAdminService],
+  imports: [TypeOrmModule.forFeature([CAdmin])],
+  controllers: [CAdminsController],
+  providers: [CAdminsService, CAdminsRepository],
 })
 export class CAdminModule {}

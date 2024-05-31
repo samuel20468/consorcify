@@ -1,22 +1,4 @@
-export interface IRegisterConsortium {
-    name: string;
-    adress: string;
-    email: string;
-    phone: string;
-    adminName: string;
-    adminEmail: string;
-    adminPhone: string;
-}
-
-export interface IRegisterConsortiumError {
-    name?: string;
-    adress?: string;
-    email?: string;
-    phone?: string;
-    adminName?: string;
-    adminEmail?: string;
-    adminPhone?: string;
-}
+import { IRegisterConsortium } from "@/Interfaces/Interfaces";
 
 export async function handleRegisterConsortium(
     registerConsortium: IRegisterConsortium

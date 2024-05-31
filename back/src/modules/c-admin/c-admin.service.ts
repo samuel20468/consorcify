@@ -1,26 +1,74 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateCAdminDto } from './dto/create-c-admin.dto';
 import { UpdateCAdminDto } from './dto/update-c-admin.dto';
+import { CAdminsRepository } from './c-admin.repository';
+import { TPagination } from 'src/utils/types';
+import { CAdmin } from './entities/c-admin.entity';
 
 @Injectable()
-export class CAdminService {
-  create(createCAdminDto: CreateCAdminDto) {
-    return 'This action adds a new cAdmin';
+export class CAdminsService {
+  constructor(private readonly cAdminsRepository: CAdminsRepository) {}
+
+  async findAll({ page, limit }: TPagination): Promise<CAdmin[]> {
+    const cAdmins: CAdmin[] = await this.cAdminsRepository.findAll();
+
+    if (cAdmins.length == 0) throw new NotFoundException('No cAdmins found');
+
+    page = Math.max(1, page);
+
+    limit = Math.max(1, limit);
+
+    const startIndex = (page - 1) * limit;
+    const endIndex = startIndex + limit;
+
+    return cAdmins.slice(startIndex, endIndex);
   }
 
-  findAll() {
-    return `This action returns all cAdmin`;
+  async findOne(id: string): Promise<CAdmin> {
+    if (!id) {
+      throw new BadRequestException('id is required');
+    }
+
+    const cAdmin: CAdmin = await this.cAdminsRepository.findOne(id);
+
+    if (!cAdmin) throw new NotFoundException('CAdmin not found');
+
+    return cAdmin;
+  }
+  async updateCAdmin(
+    id: string,
+    cAdminToUpdate: CreateCAdminDto,
+  ): Promise<CAdmin> {
+    if (!id) {
+      throw new BadRequestException('id is required');
+    }
+
+    const existingCAdmin: CAdmin = await this.cAdminsRepository.findOne(id);
+
+    if (!existingCAdmin) throw new NotFoundException('CAdmin not found');
+
+    const updatedCAdmin: CAdmin = await this.cAdminsRepository.updateCAdmin(
+      existingCAdmin,
+      cAdminToUpdate,
+    );
+    return updatedCAdmin;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} cAdmin`;
-  }
+  async delete(id: string): Promise<CAdmin> {
+    if (!id) {
+      throw new BadRequestException('id is required');
+    }
 
-  update(id: number, updateCAdminDto: UpdateCAdminDto) {
-    return `This action updates a #${id} cAdmin`;
-  }
+    const existingCAdmin: CAdmin = await this.findOne(id);
 
-  remove(id: number) {
-    return `This action removes a #${id} cAdmin`;
+    if (!existingCAdmin) throw new NotFoundException('CAdmin not found');
+
+    await this.cAdminsRepository.delete(id);
+
+    return existingCAdmin;
   }
 }

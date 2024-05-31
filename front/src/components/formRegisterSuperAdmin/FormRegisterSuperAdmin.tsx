@@ -2,12 +2,12 @@
 
 import { useState } from "react";
 import { Button, Input, Label } from "../ui";
+import { handleRegisterConsortium } from "@/helpers/form.helper";
+import { useRouter } from "next/navigation";
 import {
     IRegisterConsortium,
     IRegisterConsortiumError,
-    handleRegisterConsortium,
-} from "@/helpers/form.helper";
-import { useRouter } from "next/navigation";
+} from "@/Interfaces/Interfaces";
 
 const FormRegisterSuperAdmin = () => {
     const router = useRouter();
@@ -15,10 +15,11 @@ const FormRegisterSuperAdmin = () => {
         name: "",
         adress: "",
         email: "",
-        phone: "",
-        adminName: "",
-        adminEmail: "",
-        adminPhone: "",
+        phone_number: "",
+        sat: "",
+        password: "",
+        rpa: "",
+        cuit: "",
     };
 
     const [consortiumRegister, setConsortiumRegister] =
@@ -37,7 +38,7 @@ const FormRegisterSuperAdmin = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e?.preventDefault();
         try {
-            // await handleRegisterConsortium(consortiumRegister);
+            await handleRegisterConsortium(consortiumRegister);
             alert("Registro del consorcio exitoso.");
             // router.push("/") Definir donde nos va a pataear una vez creado el consorcio
             setConsortiumRegister(initialData);
@@ -49,7 +50,7 @@ const FormRegisterSuperAdmin = () => {
     // Resta hacer las validaciones !!!
 
     return (
-        <div className="flex flex-col items-center w-full p-10 rounded-lg shadow-lg bg-slate-200">
+        <div className="flex flex-col items-center w-full p-10 rounded-lg shadow-lg bg-slate-200 ">
             <h1>El formulario de registro del superadmin</h1>
 
             <form
@@ -58,14 +59,14 @@ const FormRegisterSuperAdmin = () => {
                 onSubmit={handleSubmit}
             >
                 <Label htmlFor="name">
-                    Nombre consorcio:<span className="text-red-600">*</span>
+                    Nombre:<span className="text-red-600">*</span>
                 </Label>
                 <Input
                     id="name"
                     name="name"
                     value={consortiumRegister.name}
                     type="text"
-                    placeholder="Nombre nuevo consorcio"
+                    placeholder="Nombre"
                     onChange={handleChange}
                 />
                 <Label htmlFor="adress">
@@ -76,7 +77,52 @@ const FormRegisterSuperAdmin = () => {
                     name="adress"
                     value={consortiumRegister.adress}
                     type="text"
-                    placeholder="Dirección del consorcio"
+                    placeholder="Dirección"
+                    onChange={handleChange}
+                />
+                <Label htmlFor="phone_number">
+                    Teléfono:<span className="text-red-600">*</span>
+                </Label>
+                <Input
+                    id="phone_number"
+                    name="phone_number"
+                    value={consortiumRegister.phone_number}
+                    type="text"
+                    placeholder="Teléfono"
+                    onChange={handleChange}
+                />
+                <Label htmlFor="cuit">
+                    Cuit:<span className="text-red-600">*</span>
+                </Label>
+                <Input
+                    id="cuit"
+                    name="cuit"
+                    value={consortiumRegister.cuit}
+                    type="text"
+                    placeholder="Número de CUIT"
+                    onChange={handleChange}
+                />
+                <Label htmlFor="sat">
+                    Situación Fiscal:<span className="text-red-600">*</span>
+                </Label>
+                <Input
+                    id="sat"
+                    name="sat"
+                    value={consortiumRegister.sat}
+                    type="text"
+                    placeholder="Situación Fiscal"
+                    onChange={handleChange}
+                />
+                <Label htmlFor="rpa">
+                    Inscripción RPA:
+                    <span className="text-red-600">*</span>
+                </Label>
+                <Input
+                    id="rpa"
+                    name="rpa"
+                    value={consortiumRegister.rpa}
+                    type="text"
+                    placeholder="Inscripción RPA"
                     onChange={handleChange}
                 />
                 <Label htmlFor="email">
@@ -86,53 +132,20 @@ const FormRegisterSuperAdmin = () => {
                     id="email"
                     name="email"
                     value={consortiumRegister.email}
-                    type="text"
-                    placeholder="Correo electrónico del consorcio"
+                    type="email"
+                    placeholder="Correo electrónico"
                     onChange={handleChange}
                 />
-                <Label htmlFor="phone">
-                    Teléfono:<span className="text-red-600">*</span>
-                </Label>
-                <Input
-                    id="phone"
-                    name="phone"
-                    value={consortiumRegister.phone}
-                    type="text"
-                    placeholder="Teléfono del consorcio"
-                    onChange={handleChange}
-                />
-                <Label htmlFor="adminName">
-                    Nombre administrador:<span className="text-red-600">*</span>
-                </Label>
-                <Input
-                    id="adminName"
-                    name="adminName"
-                    value={consortiumRegister.adminName}
-                    type="text"
-                    placeholder="Nombre del administrador"
-                    onChange={handleChange}
-                />
-                <Label htmlFor="adminEmail">
-                    Email administrador:<span className="text-red-600">*</span>
-                </Label>
-                <Input
-                    id="adminEmail"
-                    name="adminEmail"
-                    value={consortiumRegister.adminEmail}
-                    type="text"
-                    placeholder="Correo del administrador"
-                    onChange={handleChange}
-                />
-                <Label htmlFor="adminPhone">
-                    Teléfono administrador:
+                <Label htmlFor="password">
+                    Password:
                     <span className="text-red-600">*</span>
                 </Label>
                 <Input
-                    id="adminPhone"
-                    name="adminPhone"
-                    value={consortiumRegister.adminPhone}
-                    type="text"
-                    placeholder="Teléfono del administrador"
+                    id="password"
+                    name="password"
+                    value={consortiumRegister.password}
+                    type="password"
+                    placeholder="**********"
                     onChange={handleChange}
                 />
                 <div className="mt-4">
@@ -142,10 +155,11 @@ const FormRegisterSuperAdmin = () => {
                             consortiumRegister.name === "" ||
                             consortiumRegister.adress === "" ||
                             consortiumRegister.email === "" ||
-                            consortiumRegister.phone === "" ||
-                            consortiumRegister.adminName === "" ||
-                            consortiumRegister.adminEmail === "" ||
-                            consortiumRegister.adminPhone === ""
+                            consortiumRegister.phone_number === "" ||
+                            consortiumRegister.password === "" ||
+                            consortiumRegister.cuit === "" ||
+                            consortiumRegister.sat === "" ||
+                            consortiumRegister.rpa === ""
                         }
                     >
                         Registrar

@@ -1,0 +1,69 @@
+.background {
+    position:absolute ;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 300vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+   z-index: -1;
+  }
+
+  .line {
+    position: relative;
+    width: 2px;
+    height: 80%;
+    background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.219), transparent);
+
+  }
+  
+
+
+  .line2 {
+    position: relative;
+    width: 2px;
+    height: 80%;
+    background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.103), transparent);
+
+  }
+
+
+  .line3 {
+    position: relative;
+    width: 2px;
+    height: 80%;
+    background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.103), transparent);
+
+  }
+  
+
+
+  .line4 {
+    position: relative;
+    width: 2px;
+    height: 80%;
+    background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.103), transparent);
+
+  }
+  
+
+
+  .line5 {
+    position: relative;
+    width: 2px;
+    height: 80%;
+    background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.103), transparent);
+
+  }
+  
+
+  .line6 {
+    position: relative;
+    width: 2px;
+    height: 80%;
+    background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.103), transparent);
+
+  }
+  

@@ -1,6 +1,13 @@
 import { Consortium } from 'src/modules/consortiums/entities/consortium.entity';
+import { User } from 'src/modules/users/entities/user.entity';
 import { FUNCTIONAL_UNIT_TYPE } from 'src/utils/constants';
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity({
   name: 'functional_units',
@@ -36,4 +43,8 @@ export class FunctionalUnit {
   @ManyToOne(() => Consortium, (consortium) => consortium.functional_units)
   @JoinColumn({ name: 'consortium_id' })
   consortium: Consortium;
+
+  @ManyToOne(() => User, (user) => user.functional_units)
+  @JoinColumn({ name: 'user_id' })
+  user: User;
 }

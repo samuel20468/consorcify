@@ -7,14 +7,14 @@ const Navbar = ({ activeSection}: any) => {
   return (
     <nav className="fixed w-full z-20 mt-10">
       <div className="w-screen flex flex-wrap items-center justify-between px-10">
-        <a className="flex flex-col space-x-3 rtl:space-x-reverse ">
+        <div className="flex flex-col space-x-3">
           <span className="principal text-[2rem] text-white font-[clash-medium]">
             CONSORCIFY
           </span>
           <span className="secundario text-[1.5rem] text-white font-[clash-regular] absolute top-[3rem] left-[1.8rem]">
             Network
           </span>
-        </a>
+        </div>
 
         <div className="flex lg:order-2  lg:space-x-0 font-[clash-regular]">
           <Link
@@ -48,23 +48,23 @@ const Navbar = ({ activeSection}: any) => {
                 <path
                   d="M4 5L20 5"
                   stroke="currentColor"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
                 <path
                   d="M4 12L20 12"
                   stroke="currentColor"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
                 <path
                   d="M4 19L20 19"
                   stroke="currentColor"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
               </svg>
             </button>
@@ -84,7 +84,7 @@ const Navbar = ({ activeSection}: any) => {
                 href="#inicio"
                 className={`py-3 px-5 text-white${
                   activeSection === "inicio"
-                    ? "  bg-white rounded-[50px] text-[black]"
+                    ? "  bg-white rounded-[50px] text-[#000]"
                     : ""
                 }`}
               >
@@ -96,7 +96,7 @@ const Navbar = ({ activeSection}: any) => {
                 href="#nosotros"
                 className={`py-3 px-5 text-white ${
                   activeSection === "nosotros"
-                    ? " text-[black] bg-white rounded-[50px] "
+                    ? " text-[#000] bg-white rounded-[50px] "
                     : ""
                 }`}
               >
@@ -108,7 +108,7 @@ const Navbar = ({ activeSection}: any) => {
                 href="#preguntas"
                 className={`py-3 px-5 text-white ${
                   activeSection === "preguntas"
-                    ? " text-[black] bg-white rounded-[50px] "
+                    ? " text-[#000] bg-white rounded-[50px] "
                     : ""
                 }`}
               >

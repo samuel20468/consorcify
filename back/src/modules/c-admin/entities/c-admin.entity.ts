@@ -1,5 +1,6 @@
+import { Consortium } from 'src/modules/consortiums/entities/consortium.entity';
 import { SAT } from 'src/utils/constants';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({
   name: 'consortium_admins',
@@ -11,7 +12,7 @@ export class CAdmin {
   @Column({ length: 50 })
   name: string;
 
-  @Column({ length: 50 })
+  @Column({ length: 50, unique: true })
   email: string;
 
   @Column({ type: 'char', length: 60 })
@@ -35,7 +36,6 @@ export class CAdmin {
   @Column({ type: 'boolean', default: true })
   active: boolean;
 
-  // Relación con Consortium 1:N
-  //   @OneToMany(() => Consortium, consortium => consortium.cAdmin)
-  //   consortium: Consortium[];
+  @OneToMany(() => Consortium, (consortium) => consortium.cAdmin)
+  consortiums: Consortium[];
 }

@@ -1,5 +1,14 @@
+import { CAdmin } from 'src/modules/c-admin/entities/c-admin.entity';
 import { FunctionalUnit } from 'src/modules/functional-units/entities/functional-unit.entity';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Supplier } from 'src/modules/suppliers/entities/supplier.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity({
   name: 'consortiums',
@@ -139,6 +148,16 @@ export class Consortium {
   })
   first_due_day: number;
 
-  @OneToMany(() => FunctionalUnit, (functionalUnit) => functionalUnit.consortium)
+  @ManyToOne(() => CAdmin, (cAdmin) => cAdmin.consortiums)
+  @JoinColumn({ name: 'c_admin_id' })
+  cAdmin: CAdmin;
+
+  @OneToMany(
+    () => FunctionalUnit,
+    (functionalUnit) => functionalUnit.consortium,
+  )
   functional_units: FunctionalUnit[];
+
+  // @OneToMany(() => Supplier, (supplier) => supplier.consortium)
+  // suppliers: Supplier[];
 }

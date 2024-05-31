@@ -51,7 +51,7 @@ export interface IRegisterConsortiumError {
     rpa?: string;
 }
 export interface IConsortium {
-    id: string;
+    id?: string;
     suterh_key: string;
     name: string;
     cuit: string;

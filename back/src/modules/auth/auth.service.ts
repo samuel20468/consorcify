@@ -32,7 +32,10 @@ export class AuthService {
       throw new UnauthorizedException('Credenciales inválidas');
     }
     if (foundCAdmin) {
-      const validatePassword = checkPassword(password, foundCAdmin.password);
+      const validatePassword = await checkPassword(
+        password,
+        foundCAdmin.password,
+      );
       if (!validatePassword) {
         throw new UnauthorizedException('Credenciales inválidas');
       }
@@ -46,7 +49,11 @@ export class AuthService {
       const token = this.jwtService.sign(userPayload);
       return { token };
     } else if (foundUser) {
-      const validatePassword = checkPassword(password, foundUser.password);
+      const validatePassword = await checkPassword(
+        password,
+        foundUser.password,
+      );
+
       if (!validatePassword) {
         throw new UnauthorizedException('Credenciales inválidas');
       }
@@ -122,7 +129,7 @@ export class AuthService {
     newCAdmin.sat = satCAdmin;
     newCAdmin.rpa = rpa;
 
-    const createdCAdmin = await this.usersRepository.save(newCAdmin);
+    const createdCAdmin = await this.cAdminRepository.save(newCAdmin);
     delete createdCAdmin.active;
     delete createdCAdmin.password;
     return createdCAdmin;

@@ -1,30 +1,40 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe, NotFoundException } from '@nestjs/common';
 import { FunctionalUnitsService } from './functional-units.service';
 import { CreateFunctionalUnitDto } from './dto/create-functional-unit.dto';
 import { UpdateFunctionalUnitDto } from './dto/update-functional-unit.dto';
+import { FunctionalUnit } from './entities/functional-unit.entity';
 
 @Controller('functional-units')
 export class FunctionalUnitsController {
   constructor(private readonly functionalUnitsService: FunctionalUnitsService) {}
 
   @Post()
-  create(@Body() createFunctionalUnitDto: CreateFunctionalUnitDto) {
-    return this.functionalUnitsService.create(createFunctionalUnitDto);
+  async create(@Body() createFunctionalUnitDto: CreateFunctionalUnitDto): Promise<FunctionalUnit> {
+    return await this.functionalUnitsService.create(createFunctionalUnitDto);
   }
 
   @Get()
-  findAll() {
-    return this.functionalUnitsService.findAll();
+  async findAll(): Promise<FunctionalUnit[]> {
+    return await this.functionalUnitsService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.functionalUnitsService.findOne(+id);
+  async findOne(@Param('id', ParseUUIDPipe) id: string): Promise<FunctionalUnit> {
+    const functionalUnit = await this.functionalUnitsService.findOne(id);
+    if (!functionalUnit) {
+      throw new NotFoundException(`Functional unit with id ${id} not found`);
+    }
+    return functionalUnit;
+  }
+
+  @Get('consortium/:consortiumId')
+  async findByConsortium(@Param('consortiumId', ParseUUIDPipe) consortiumId: string): Promise<FunctionalUnit[]> {
+    return await this.functionalUnitsService.findByConsortium(consortiumId);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateFunctionalUnitDto: UpdateFunctionalUnitDto) {
-    return this.functionalUnitsService.update(+id, updateFunctionalUnitDto);
+  async update(@Param('id', ParseUUIDPipe) id: string, @Body() updateFunctionalUnitDto: UpdateFunctionalUnitDto): Promise<FunctionalUnit> {
+    return await this.functionalUnitsService.update(id, updateFunctionalUnitDto);
   }
 
   @Delete(':id')

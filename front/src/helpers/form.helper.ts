@@ -1,34 +1,29 @@
-export interface IRegisterConsortium {
-    name: string;
-    adress: string;
-    email: string;
-    phone: string;
-    adminName: string;
-    adminEmail: string;
-    adminPhone: string;
-}
+import { IRegisterConsortium } from "@/Interfaces/Interfaces";
 
-export interface IRegisterConsortiumError {
-    name?: string;
-    adress?: string;
-    email?: string;
-    phone?: string;
-    adminName?: string;
-    adminEmail?: string;
-    adminPhone?: string;
-}
+export async function adminFetch(registerAdmin: IRegisterConsortium) {
+    console.log(registerAdmin);
 
-export async function handleRegisterConsortium(
-    registerConsortium: IRegisterConsortium
-) {
     try {
-        const response = await fetch(`http://localhost:3001`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(registerConsortium),
-        });
+        const response = await fetch(
+            `http://localhost:3001/auth/register-c-admin`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(registerAdmin),
+            }
+        );
+        if (!response.ok) {
+            return response.json().then((errorInfo) => {
+                throw new Error(
+                    `Error ${response.status}: ${
+                        errorInfo.message || response.statusText
+                    }`
+                );
+            });
+        }
+
         return response;
 
         // Definir que vamos a mostrar una vez creado el consorcio

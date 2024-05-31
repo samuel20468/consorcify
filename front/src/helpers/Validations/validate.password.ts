@@ -6,7 +6,9 @@ export const validatePwd = (password: string) => {
 
     if (!reGexPwd.test(password)) {
         errors.password =
-            "La contraseña debe ser de 8 caractener y debe contener al menos una mayúscula y un numero";
+            "La contraseña debe contener 8 caracteres, al menos una mayúcula y un numero";
+    } else {
+        errors.password = "";
     }
 
     return errors;

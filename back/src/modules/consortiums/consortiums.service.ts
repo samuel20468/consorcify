@@ -14,6 +14,10 @@ export class ConsortiumsService {
     return this.consortiumsRepository.findAll(page, limit);
   }
 
+  findAllByCAdmin(id: string) {
+    return this.consortiumsRepository.findAllByCAdmin(id);
+  }
+
   findOne(id: string) {
     return this.consortiumsRepository.findOne(id);
   }

@@ -6,13 +6,25 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Consortium } from './entities/consortium.entity';
 import { Repository } from 'typeorm';
+import { CAdmin } from '../c-admin/entities/c-admin.entity';
 
 @Injectable()
 export class ConsortiumsRepository {
   constructor(
     @InjectRepository(Consortium)
     private consortiumsRepository: Repository<Consortium>,
+    @InjectRepository(CAdmin)
+    private readonly cAdminRepository: Repository<CAdmin>,
   ) {}
+
+  private removeActiveField(consortium: Partial<Consortium>): Partial<Consortium> {
+    const { active, ...rest } = consortium;
+    return rest;
+  }
+
+  private removeActiveFieldFromArray(consortiums: Partial<Consortium>[]): Partial<Consortium>[] {
+    return consortiums.map(consortium => this.removeActiveField(consortium));
+  }
 
   async create(consortium: Partial<Consortium>) {
     const foundConsortium = await this.consortiumsRepository.findOne({
@@ -23,28 +35,50 @@ export class ConsortiumsRepository {
         `Consorcio CUIT: ${consortium.cuit} ya se encuentra cargado.`,
       );
     }
+    const foundCAdmin = await this.cAdminRepository.findOne({
+      where: { id: consortium.c_admin as unknown as string },
+    });
+    if (!foundCAdmin) {
+      throw new NotFoundException(
+        `CAdmin ID: ${consortium.c_admin} no encontrado.`,
+      );
+    }
     const newConsortium = await this.consortiumsRepository.save(consortium);
-    return newConsortium;
+    return this.removeActiveField(newConsortium);
   }
 
   async findAll(page: number, limit: number) {
     const skip = (page - 1) * limit;
-    return await this.consortiumsRepository.find({ skip, take: limit });
+    const consortiums = await this.consortiumsRepository.find({ where: { active: true }, skip, take: limit });
+    return this.removeActiveFieldFromArray(consortiums);
+  }
+
+  async findAllByCAdmin(id: string) {
+    const foundCAdmin = await this.cAdminRepository.findOne({
+      where: { id: id, active: true },
+    });
+    if (!foundCAdmin) {
+      throw new NotFoundException(`CAdmin ID: ${id} no encontrado.`);
+    }
+    const consortiums = await this.consortiumsRepository.find({
+      where: { c_admin: foundCAdmin, active: true },
+    });
+    return this.removeActiveFieldFromArray(consortiums);
   }
 
   async findOne(id: string) {
     const consortium = await this.consortiumsRepository.findOne({
-      where: { id: id },
+      where: { id: id, active: true },
     });
     if (!consortium) {
       throw new NotFoundException(`Consorcio ID: ${id} no encontrado.`);
     }
-    return consortium;
+    return this.removeActiveField(consortium);
   }
 
   async update(id: string, consortium: Partial<Consortium>) {
     const consortiumToUpdate = await this.consortiumsRepository.findOne({
-      where: { id: id },
+      where: { id: id, active: true },
     });
 
     if (!consortiumToUpdate) {
@@ -57,19 +91,20 @@ export class ConsortiumsRepository {
     }
     await this.consortiumsRepository.update(id, consortium);
     const updatedConsortium = await this.consortiumsRepository.findOne({
-      where: { id: id },
+      where: { id: id, active: true },
     });
-    return updatedConsortium;
+    return this.removeActiveField(updatedConsortium);
   }
 
   async remove(id: string) {
     const consortiumToDelete = await this.consortiumsRepository.findOne({
-      where: { id: id },
+      where: { id: id, active: true },
     });
     if (!consortiumToDelete) {
       throw new NotFoundException(`Consorcio ID: ${id} no encontrado.`);
     }
-    this.consortiumsRepository.remove(consortiumToDelete);
-    return consortiumToDelete;
+    consortiumToDelete.active = false;
+    await this.consortiumsRepository.save(consortiumToDelete);
+    return this.removeActiveField(consortiumToDelete);
   }
 }

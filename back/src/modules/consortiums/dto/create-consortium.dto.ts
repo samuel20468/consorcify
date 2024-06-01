@@ -3,11 +3,13 @@ import {
   IsNotEmpty,
   IsOptional,
   IsString,
+  IsUUID,
   Length,
   Max,
   MaxLength,
   Min,
 } from 'class-validator';
+import { CAdmin } from 'src/modules/c-admin/entities/c-admin.entity';
 
 export class CreateConsortiumDto {
   @IsOptional()
@@ -72,4 +74,8 @@ export class CreateConsortiumDto {
   @Min(1, { message: 'First due day must be at least 1' })
   @Max(31, { message: 'First due day must be at most 31' })
   first_due_day: number;
+
+  @IsNotEmpty({ message: 'C Admin is required' })
+  @IsUUID()
+  c_admin: CAdmin;
 }

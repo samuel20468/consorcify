@@ -82,3 +82,11 @@ export interface IConsortiumError {
     category?: number;
     first_due_day?: number;
 }
+
+export interface IUserData {
+    email: string;
+    exp: number;
+    iat: number;
+    id: string;
+    roles: string[];
+}

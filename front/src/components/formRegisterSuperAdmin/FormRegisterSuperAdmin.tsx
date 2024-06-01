@@ -36,6 +36,18 @@ const FormRegisterSuperAdmin = () => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e?.preventDefault();
+        if (
+            !consortiumRegister.address ||
+            !consortiumRegister.name ||
+            !consortiumRegister.email ||
+            !consortiumRegister.phone_number ||
+            !consortiumRegister.sat ||
+            !consortiumRegister.rpa ||
+            !consortiumRegister.cuit
+        ) {
+            alert("faltan datos en el formulario");
+            return;
+        }
         try {
             const response = await adminFetch(consortiumRegister);
             alert("Registro del consorcio exitoso.");
@@ -47,11 +59,20 @@ const FormRegisterSuperAdmin = () => {
         }
     };
 
+    const handleReturn = () => {
+        router.push("/dashboard/administracion");
+    };
+
     // Resta hacer las validaciones !!!
 
     return (
         <div className="flex flex-col items-center w-full p-10 rounded-lg shadow-lg bg-slate-200 ">
-            <h1>El formulario de registro del superadmin</h1>
+            <div className="flex items-center justify-between w-full">
+                <h1>Formulario de registro de Administrador</h1>
+                <button onClick={handleReturn} className="font-bold">
+                    Volver
+                </button>
+            </div>
 
             <form
                 className="flex flex-col w-full max-w-xl"

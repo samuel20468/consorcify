@@ -40,7 +40,7 @@ export class UsersRepository {
     return await this.usersRepository.save({ ...user, ...updateUserDto });
   }
 
-  // async toggleStatus(id: string, status: boolean) {
-  //   throw new Error('Method not implemented.');
-  // }
+  async toggleStatus(id: string, status: boolean): Promise<void> {
+    await this.usersRepository.update(id, { active: !status });
+  }
 }

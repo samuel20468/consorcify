@@ -23,15 +23,16 @@ export class UsersService {
     return await this.usersRepository.update(id, updateUserDto);
   }
 
-  // async toggleStatus(id: string): Promise<User> {
-  //   let status: boolean;
-  //   const user = await this.usersRepository.findOne(id);
-  //   if (!user) {
-  //     throw new NotFoundException(`User with id ${id} not found`);
-  //   }
-  //   status = user.active;
-  //   await this.usersRepository.toggleStatus(id, status);
-  // }
+  async toggleStatus(id: string): Promise<User> {
+    let status: boolean;
+    const user = await this.usersRepository.findOne(id);
+    if (!user) {
+      throw new NotFoundException(`User with id ${id} not found`);
+    }
+    status = user.active;
+    await this.usersRepository.toggleStatus(id, status);
+    return await this.usersRepository.findOne(id);
+  }
 
   remove(id: number) {
     return `This action removes a #${id} user`;

@@ -1,12 +1,12 @@
 "use client";
 import { IUserData } from "@/Interfaces/Interfaces";
 import Footer from "@/components/Footer/Footer";
-import FormRegisterConsortium from "@/components/FormRegisterConsortium/FormRegisterConsortium";
 import NavbarDashboard from "@/components/NavbarDashboard/NavbarDashboard";
 import SideBarUser from "@/components/SideBarUser/SideBarUser";
 import SideBarAdmin from "@/components/SidebarAdmin/SideBarAdmin";
 import SidebarSuperAdmin from "@/components/SidebarSuperAdmin/SidebarSuperAdmin";
 import SideBarSuperAdmin from "@/components/SidebarSuperAdmin/SidebarSuperAdmin";
+import FormRegisterSuperAdmin from "@/components/formRegisterSuperAdmin/FormRegisterSuperAdmin";
 import { ContainerDashboard } from "@/components/ui";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -33,8 +33,8 @@ const AddConsortium = () => {
                 (userData?.roles?.[0] == "superadmin" && <SidebarSuperAdmin />)}
             <NavbarDashboard />
             <ContainerDashboard>
-                <div className="flex items-center justify-center my-10 rounded-lg h-content bg-slate-200">
-                    <FormRegisterConsortium />
+                <div className="flex items-center justify-center w-1/2 my-10 rounded-lg h-content bg-slate-200">
+                    <FormRegisterSuperAdmin />
                 </div>
                 <div className="bottom-0 w-full bg-black">
                     <Footer />

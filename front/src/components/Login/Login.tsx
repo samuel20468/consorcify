@@ -5,7 +5,8 @@ import { ILoginData } from "@/Interfaces/Interfaces";
 import { EyeIcon, EyeIconOff } from "@/helpers/icons.helper";
 import { validateEmail } from "@/helpers/Validations/validate.email";
 import { useRouter } from "next/navigation";
-import { loginFetch } from "@/helpers/button.helper";
+import { loginFetch } from "@/helpers/fetch.helper";
+import { jwtDecode } from "jwt-decode";
 
 const Login = () => {
     const router = useRouter();
@@ -21,7 +22,14 @@ const Login = () => {
         e?.preventDefault();
         try {
             const response = await loginFetch(userData);
-            console.log(response);
+
+            const decodeData = jwtDecode(response.token);
+
+            localStorage.setItem(
+                "userData",
+                JSON.stringify({ user: decodeData })
+            );
+
             setUserData(initialData);
             SetErrors(initialData);
             router.push("/dashboard");

@@ -5,7 +5,7 @@ import { EyeIcon, EyeIconOff } from "@/helpers/icons.helper";
 import { validateNombreCompleto } from "@/helpers/Validations/validate.nombre";
 import { validateEmail } from "@/helpers/Validations/validate.email";
 import { validatePwd } from "@/helpers/Validations/validate.password";
-import { registerFetch } from "@/helpers/button.helper";
+import { registerFetch } from "@/helpers/fetch.helper";
 import { useRouter } from "next/navigation";
 
 const Register = () => {

@@ -83,6 +83,20 @@ export interface IConsortiumError {
     first_due_day?: number;
 }
 
+
+export interface IReviews {
+    profilePic: string;
+    text: string;
+    author: string;
+    date: string;
+    rating: number;
+
+}
+
+export interface IReviewCardProps {
+    review: IReviews;
+}
+
 export interface IUserData {
     email: string;
     exp: number;
@@ -90,3 +104,4 @@ export interface IUserData {
     id: string;
     roles: string[];
 }
+

@@ -36,6 +36,6 @@ export class CAdmin {
   @Column({ type: 'boolean', default: true })
   active: boolean;
 
-  @OneToMany(() => Consortium, (consortium) => consortium.cAdmin)
+  @OneToMany(() => Consortium, (consortium) => consortium.c_admin)
   consortiums: Consortium[];
 }

@@ -82,3 +82,45 @@ export interface IConsortiumError {
     category?: number;
     first_due_day?: number;
 }
+
+export interface IReviews {
+    profilePic: string;
+    text: string;
+    author: string;
+    date: string;
+    rating: number;
+}
+
+export interface IReviewCardProps {
+    review: IReviews;
+}
+
+export interface IUserData {
+    email: string;
+    exp: number;
+    iat: number;
+    id: string;
+    roles: string[];
+}
+
+export interface Props {
+    children?: React.ReactNode;
+    className?: string;
+}
+
+export interface IConsortium {
+    building_number: number;
+    category: number;
+    city: string;
+    country: string;
+    cuit: string;
+    first_due_day: number;
+    floors: number;
+    id?: string;
+    name: string;
+    province: string;
+    street_name: string;
+    suterh_key: string;
+    ufs: number;
+    zip_code: string;
+}

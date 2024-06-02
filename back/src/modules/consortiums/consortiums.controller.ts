@@ -8,12 +8,15 @@ import {
   Delete,
   ParseUUIDPipe,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ConsortiumsService } from './consortiums.service';
 import { CreateConsortiumDto } from './dto/create-consortium.dto';
 import { UpdateConsortiumDto } from './dto/update-consortium.dto';
+import { AuthGuard } from 'src/guards/auth.guard';
 
 @Controller('consortiums')
+@UseGuards(AuthGuard)
 export class ConsortiumsController {
   constructor(private readonly consortiumsService: ConsortiumsService) {}
 
@@ -27,7 +30,12 @@ export class ConsortiumsController {
     if (page && limit) {
       return this.consortiumsService.findAll(Number(page), Number(limit));
     }
-    return this.consortiumsService.findAll(1,5);
+    return this.consortiumsService.findAll(1, 5);
+  }
+
+  @Get('cadmin/:id')
+  findAllByCAdmin(@Param('id', ParseUUIDPipe) id: string) {
+    return this.consortiumsService.findAllByCAdmin(id);
   }
 
   @Get(':id')

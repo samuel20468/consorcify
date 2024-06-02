@@ -1,12 +1,24 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Input, Label } from "../ui";
-import { IConsortium, IConsortiumError } from "@/Interfaces/Interfaces";
+import {
+    IConsortium,
+    IConsortiumError,
+    IUserData,
+} from "@/Interfaces/Interfaces";
 import { consortiumFetch } from "@/helpers/consortium.helper";
 import { useRouter } from "next/navigation";
 
 const FormRegisterConsortium = () => {
+    const [userData, setUserData] = useState<IUserData>();
+
+    useEffect(() => {
+        const { user } = JSON.parse(localStorage.getItem("userData")!);
+        if (user) {
+            setUserData(user);
+        }
+    }, []);
     const initialData = {
         suterh_key: "",
         name: "",
@@ -48,25 +60,59 @@ const FormRegisterConsortium = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        if (
+            !consortiumRegister.building_number ||
+            !consortiumRegister.category ||
+            !consortiumRegister.city ||
+            !consortiumRegister.country ||
+            !consortiumRegister.cuit ||
+            !consortiumRegister.first_due_day ||
+            !consortiumRegister.floors ||
+            !consortiumRegister.name ||
+            !consortiumRegister.province ||
+            !consortiumRegister.street_name ||
+            !consortiumRegister.suterh_key ||
+            !consortiumRegister.ufs ||
+            !consortiumRegister.zip_code
+        ) {
+            alert("faltan datos en el formulario");
+            return;
+        }
+
         try {
             const response = await consortiumFetch(consortiumRegister);
             if (response?.ok) {
                 alert("Consorcio creado correctamente");
-                router.push("/consortiums");
+                if (userData?.roles?.[0] == "superadmin") {
+                    router.push("/dashboard");
+                }
             }
         } catch (error) {
             console.error(error);
         }
     };
 
+    const handleReturn = () => {
+        if (userData?.roles?.[0] == "cadmin") {
+            router.push("/consortiums");
+        } else {
+            router.push("/dashboard/consorcios");
+        }
+    };
+
     return (
-        <div className="w-full h-auto p-4">
-            <h1 className="mb-2 text-lg font-bold">
-                Consorcios{" "}
-                <span className="text-sm font-normal">
-                    | Registro de nuevo consorcio
-                </span>
-            </h1>
+        <div className="w-full h-auto p-4 text-black">
+            <div className="flex items-center justify-between px-5">
+                <h1 className="mb-2 text-lg font-bold">
+                    Consorcios{" "}
+                    <span className="text-sm font-normal">
+                        | Registro de nuevo consorcio
+                    </span>
+                </h1>
+                <button onClick={handleReturn} className="text-lg font-bold">
+                    Volver
+                </button>
+            </div>
             <form
                 className="mx-10 my-5"
                 autoComplete="off"

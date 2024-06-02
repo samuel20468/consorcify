@@ -1,19 +1,15 @@
-import NavbarDashboard from "@/components/NavbarDashboard/NavbarDashboard";
-import SideBarUser from "@/components/SideBarUser/SideBarUser";
-import SideBarAdmin from "@/components/SidebarAdmin/SideBarAdmin";
-import SidebarSuperAdmin from "@/components/SidebarSuperAdmin/SidebarSuperAdmin";
-import { Button, ContainerDashboard } from "@/components/ui";
-import React from "react";
+"use client";
+
+import { ContainerDashboard } from "@/components/ui";
+import useAuth from "@/helpers/useAuth";
 
 const Dashboard = () => {
+    useAuth();
+
     return (
-        <div className="bg-white h-screen">
-            {/* <SideBarAdmin /> */}
-            {/* <SideBarUser /> */}
-            <SidebarSuperAdmin />
-            <NavbarDashboard />
+        <div className="h-screen">
             <ContainerDashboard>
-                <div className="">
+                <div>
                     <h1>Este es el dashboard del super admin / admin / user</h1>
                 </div>
             </ContainerDashboard>

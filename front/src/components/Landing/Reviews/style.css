@@ -1,0 +1,26 @@
+.embla {
+    width: 98vw;
+    margin: auto;
+    --slide-spacing: 1rem;
+    --slide-size: 40rem;
+    cursor: grab;
+  }
+
+  .embla.grabbing {
+    cursor: grabbing;
+  }
+
+  .embla__viewport {
+    overflow: hidden;
+  }
+  .embla__container {
+    backface-visibility: hidden;
+    display: flex;
+    touch-action: pan-y pinch-zoom;
+    margin-left: calc(var(--slide-spacing) * -1);
+  }
+  .embla__slide {
+    flex: 0 0 var(--slide-size);
+    width: 300px;
+    padding-left: var(--slide-spacing);
+  }

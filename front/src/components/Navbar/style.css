@@ -10,7 +10,16 @@
   }
 }
 
-@media (max-width: 413px) {
+/* @media (max-width: 413px) {
+  .principal {
+    font-size: 15px;
+  }
+  .button-log {
+    font-size: 10px;
+  }
+} */
+
+@media (max-width: 530px) {
   .principal {
     font-size: 15px;
   }

@@ -1,0 +1,28 @@
+.parent {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 10px;
+  width: 90vw;
+  height: 50vh;
+}
+
+.child {
+  background-color: rgb(218, 218, 218);
+  height: 150px;
+  display: flex;
+  border-radius: 40px;
+  height: 70vh;
+  box-shadow: 11px 20px 15px -3px rgba(0, 0, 0, 0.336);
+}
+
+.sombra {
+  box-shadow: 7px 10px 15px -3px rgba(0, 0, 0, 0.336);
+}
+
+@media (max-width: 600px) {
+  .parent {
+      grid-template-columns: 1fr;
+  }
+}
+
+

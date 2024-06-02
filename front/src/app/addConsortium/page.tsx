@@ -1,22 +1,17 @@
-import Footer from "@/components/Footer/Footer";
+"use client";
+
 import FormRegisterConsortium from "@/components/FormRegisterConsortium/FormRegisterConsortium";
-import NavbarDashboard from "@/components/NavbarDashboard/NavbarDashboard";
-import SideBarAdmin from "@/components/SidebarAdmin/SideBarAdmin";
-import SideBarSuperAdmin from "@/components/SidebarSuperAdmin/SidebarSuperAdmin";
 import { ContainerDashboard } from "@/components/ui";
+import useAuth from "@/helpers/useAuth";
 
 const AddConsortium = () => {
+    useAuth();
+
     return (
-        <div className="flex flex-col h-screen">
-            <SideBarAdmin />
-            {/* <SideBarSuperAdmin /> */}
-            <NavbarDashboard />
+        <div className="flex flex-col h-auto">
             <ContainerDashboard>
-                <div className="flex items-center justify-center mt-10 bg-white rounded-lg">
+                <div className="flex items-center justify-center my-10 rounded-lg h-content bg-slate-200">
                     <FormRegisterConsortium />
-                </div>
-                <div className="absolute bottom-0 w-[80%] lg:w-[90%] ">
-                    <Footer />
                 </div>
             </ContainerDashboard>
         </div>

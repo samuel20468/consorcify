@@ -33,7 +33,7 @@ const ConsortiumsAdmin = () => {
                     Consorcio 5
                 </div>
             </div>
-            <div className="flex justify-center w-full">
+            <div className="flex justify-center w-full mt-4">
                 <Button onClick={navegar}>Agregar consorcio</Button>
             </div>
         </div>

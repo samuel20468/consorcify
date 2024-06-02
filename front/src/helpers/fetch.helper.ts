@@ -1,5 +1,4 @@
-import { ILogedUser, ILoginData } from "@/Interfaces/Interfaces";
-import React from "react";
+import { ILoginData } from "@/Interfaces/Interfaces";
 
 export const loginFetch = async (UserData: ILoginData) => {
     try {
@@ -73,8 +72,23 @@ export const getConsortiums = async () => {
         const response = await fetch("http://localhost:3001/consortiums", {
             method: "GET",
         });
-        console.log(response);
-
         return response;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+export const getConsortiumById = async (id: string) => {
+    console.log(id);
+
+    try {
+        const response = await fetch(
+            `http://localhost:3001/consortiums/${id}`,
+            {
+                method: "GET",
+            }
+        );
+        const data = response.json();
+        return data;
     } catch (error) {}
 };

@@ -27,7 +27,12 @@ export class ConsortiumsController {
     if (page && limit) {
       return this.consortiumsService.findAll(Number(page), Number(limit));
     }
-    return this.consortiumsService.findAll(1,5);
+    return this.consortiumsService.findAll(1, 5);
+  }
+
+  @Get('cadmin/:id')
+  findAllByCAdmin(@Param('id', ParseUUIDPipe) id: string) {
+    return this.consortiumsService.findAllByCAdmin(id);
   }
 
   @Get(':id')

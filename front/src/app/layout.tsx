@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Oswald } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar/Navbar";
 import Footer from "@/components/Footer/Footer";
+import Ocultar from "@/components/ui/Ocultar";
+import Mostrar from "@/components/ui/Mostrar";
+import NavbarDashboard from "@/components/NavbarDashboard/NavbarDashboard";
+import Sidebars from "@/components/Sidebars/Sidebars";
 
-const inter = Inter({ subsets: ["latin"] });
+const oswald = Oswald({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
     title: "Consorcify",
@@ -18,8 +21,15 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body className={inter.className}>{children}
-            <Footer/>
+            <body className={`bg-fondo text-white ${oswald.className}`}>
+                <Ocultar>
+                    <Sidebars />
+                    <NavbarDashboard />
+                </Ocultar>
+                {children}
+                <Mostrar>
+                    <Footer />
+                </Mostrar>
             </body>
         </html>
     );

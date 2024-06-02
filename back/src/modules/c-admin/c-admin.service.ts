@@ -17,6 +17,9 @@ export class CAdminsService {
     const cAdmins: CAdmin[] = await this.cAdminsRepository.findAll();
 
     if (cAdmins.length == 0) throw new NotFoundException('No cAdmins found');
+    cAdmins.forEach((cAdmin) => {
+      delete cAdmin.password;
+    });
 
     page = Math.max(1, page);
 
@@ -37,6 +40,9 @@ export class CAdminsService {
 
     if (!cAdmin) throw new NotFoundException('CAdmin not found');
 
+    delete cAdmin.active;
+    delete cAdmin.password;
+
     return cAdmin;
   }
   async updateCAdmin(
@@ -55,6 +61,10 @@ export class CAdminsService {
       existingCAdmin,
       cAdminToUpdate,
     );
+
+    delete updatedCAdmin.active;
+    delete updatedCAdmin.password;
+
     return updatedCAdmin;
   }
 
@@ -68,6 +78,8 @@ export class CAdminsService {
     if (!existingCAdmin) throw new NotFoundException('CAdmin not found');
 
     await this.cAdminsRepository.delete(id);
+
+    delete existingCAdmin.password;
 
     return existingCAdmin;
   }

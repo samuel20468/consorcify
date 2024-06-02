@@ -14,40 +14,44 @@ const OPTIONS: EmblaOptionsType = { loop: true };
 
 
 const Section: React.FC = () => {
-  const [activeSection, setActiveSection] = useState<SectionType>("home");
+    const [activeSection, setActiveSection] = useState<SectionType>("home");
 
-  const homeRef = useRef<HTMLDivElement>(null);
-  const aboutRef = useRef<HTMLDivElement>(null);
-  const questionsRef = useRef<HTMLDivElement>(null);
+    const homeRef = useRef<HTMLDivElement>(null);
+    const aboutRef = useRef<HTMLDivElement>(null);
+    const questionsRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const options = {
-      root: null,
-      rootMargin: "0px",
-      threshold: 0.6,
-    };
+    useEffect(() => {
+        const options = {
+            root: null,
+            rootMargin: "0px",
+            threshold: 0.6,
+        };
 
-    const callback = (entries: IntersectionObserverEntry[]) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          setActiveSection(entry.target.id as SectionType);
-        }
-      });
-    };
+        const callback = (entries: IntersectionObserverEntry[]) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    setActiveSection(entry.target.id as SectionType);
+                }
+            });
+        };
 
-    const observer = new IntersectionObserver(callback, options);
-    const sections = [homeRef.current, aboutRef.current, questionsRef.current];
+        const observer = new IntersectionObserver(callback, options);
+        const sections = [
+            homeRef.current,
+            aboutRef.current,
+            questionsRef.current,
+        ];
 
-    sections.forEach((section) => {
-      if (section) observer.observe(section);
-    });
+        sections.forEach((section) => {
+            if (section) observer.observe(section);
+        });
 
-    return () => {
-      sections.forEach((section) => {
-        if (section) observer.unobserve(section);
-      });
-    };
-  }, []);
+        return () => {
+            sections.forEach((section) => {
+                if (section) observer.unobserve(section);
+            });
+        };
+    }, []);
 
   return (
     <>
@@ -79,6 +83,7 @@ const Section: React.FC = () => {
       </section>
     </>
   );
+
 };
 
 export default Section;

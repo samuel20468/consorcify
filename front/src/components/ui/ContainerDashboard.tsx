@@ -5,7 +5,7 @@ export const ContainerDashboard = (props: Props) => {
     const { children } = props;
 
     return (
-        <div className="ml-[20%] lg:ml-[10%] flex justify-center items-center">
+        <div className="ml-[20%] lg:ml-[10%] flex flex-col justify-center items-center">
             {children}
         </div>
     );

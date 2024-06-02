@@ -17,7 +17,9 @@ export class SuppliersRepository {
   }
 
   async findAll(): Promise<Supplier[]> {
-    return this.supplierRepository.find();
+    return this.supplierRepository.find({
+      where: { active: true },
+    });
   }
 
   async findOne(id: string): Promise<Supplier> {

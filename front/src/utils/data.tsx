@@ -516,6 +516,7 @@ export const itemsNavbarUser = [
 ];
 
 
+
 export const reviews = [
   {
     profilePic: "https://randomuser.me/api/portraits/women/4.jpg",
@@ -560,3 +561,20 @@ export const reviews = [
     rating: 4,
   }
 ];
+
+// SideBarSuperAdmin
+export const itemsNavbarSuperAdmin = [
+    {
+        id: 1,
+        title: "Consorcios",
+        icon: Building,
+        link: "/dashboard/consorcios",
+    },
+    {
+        id: 2,
+        title: "Admins",
+        icon: News,
+        link: "/dashboard/administracion",
+    },
+];
+

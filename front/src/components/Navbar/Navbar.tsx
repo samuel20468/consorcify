@@ -1,18 +1,41 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./style.css";
 import Link from "next/link";
 
 
 const Navbar = ({ activeSection}: any) => {
+  const [showNavbar, setShowNavbar] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  const controlNavbar = () => {
+    if (typeof window !== 'undefined') {
+      if (window.scrollY > lastScrollY) {
+        // Scrolling down
+        setShowNavbar(false);
+      } else {
+        // Scrolling up
+        setShowNavbar(true);
+      }
+      setLastScrollY(window.scrollY);
+    }
+  };
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.addEventListener('scroll', controlNavbar);
+
+      return () => {
+        window.removeEventListener('scroll', controlNavbar);
+      };
+    }
+  }, [lastScrollY]);
+
   return (
-    <nav className="fixed w-full z-20 mt-10">
+    <nav className={` fixed w-full z-20 mt-10 transition-transform duration-[1s] ${showNavbar ? 'translate-y-0' : '-translate-y-[130px]'}`}>
       <div className="w-screen flex flex-wrap items-center justify-between px-10">
         <div className="flex flex-col space-x-3">
           <span className="principal text-[2rem] text-white font-[clash-medium]">
             CONSORCIFY
-          </span>
-          <span className="secundario text-[1.5rem] text-white font-[clash-regular] absolute top-[3rem] left-[1.8rem]">
-            Network
           </span>
         </div>
 
@@ -22,14 +45,14 @@ const Navbar = ({ activeSection}: any) => {
             type="button"
             className="button-log text-white rounded-[50px] px-5 py-3 border backdrop-blur-sm"
           >
-            Log in
+            Entrar
           </Link>
           <Link
             href="/register"
             type="button"
             className="button-log text-black rounded-[50px] px-5 py-3 bg-white font-bold"
           >
-            Sign up
+            Registar
           </Link>
 
           <div className="dropdown">
@@ -84,7 +107,7 @@ const Navbar = ({ activeSection}: any) => {
                 href="#inicio"
                 className={`py-3 px-5 text-white${
                   activeSection === "inicio"
-                    ? "  bg-white rounded-[50px] text-[#000]"
+                    ? "  bg-white rounded-[50px] !text-[#000000]"
                     : ""
                 }`}
               >
@@ -96,7 +119,7 @@ const Navbar = ({ activeSection}: any) => {
                 href="#nosotros"
                 className={`py-3 px-5 text-white ${
                   activeSection === "nosotros"
-                    ? " text-[#000] bg-white rounded-[50px] "
+                    ? " !text-[#000000] bg-white rounded-[50px] "
                     : ""
                 }`}
               >
@@ -108,11 +131,11 @@ const Navbar = ({ activeSection}: any) => {
                 href="#preguntas"
                 className={`py-3 px-5 text-white ${
                   activeSection === "preguntas"
-                    ? " text-[#000] bg-white rounded-[50px] "
+                    ? " !text-[#000000] bg-white rounded-[50px] "
                     : ""
                 }`}
               >
-                PREGUNTAS
+                OPINIONES
               </a>
             </li>
           </ul>

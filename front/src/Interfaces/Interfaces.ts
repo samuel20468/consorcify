@@ -82,3 +82,16 @@ export interface IConsortiumError {
     category?: number;
     first_due_day?: number;
 }
+
+export interface IReviews {
+    profilePic: string;
+    text: string;
+    author: string;
+    date: string;
+    rating: number;
+
+}
+
+export interface IReviewCardProps {
+    review: IReviews;
+}

@@ -9,13 +9,16 @@ import {
   ParseUUIDPipe,
   NotFoundException,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { FunctionalUnitsService } from './functional-units.service';
 import { CreateFunctionalUnitDto } from './dto/create-functional-unit.dto';
 import { UpdateFunctionalUnitDto } from './dto/update-functional-unit.dto';
 import { FunctionalUnit } from './entities/functional-unit.entity';
+import { AuthGuard } from 'src/guards/auth.guard';
 
 @Controller('functional-units')
+@UseGuards(AuthGuard)
 export class FunctionalUnitsController {
   constructor(
     private readonly functionalUnitsService: FunctionalUnitsService,
@@ -53,9 +56,15 @@ export class FunctionalUnitsController {
     @Query('limit') limit: number = 10,
     @Param('consortiumId', ParseUUIDPipe) consortiumId: string,
   ): Promise<FunctionalUnit[]> {
-    const functionalUnits = await this.functionalUnitsService.findByConsortium(consortiumId, +page, +limit);
+    const functionalUnits = await this.functionalUnitsService.findByConsortium(
+      consortiumId,
+      +page,
+      +limit,
+    );
     if (functionalUnits.length === 0) {
-      throw new NotFoundException(`Functional units with consortium ${consortiumId} not found`);
+      throw new NotFoundException(
+        `Functional units with consortium ${consortiumId} not found`,
+      );
     }
     return functionalUnits;
   }

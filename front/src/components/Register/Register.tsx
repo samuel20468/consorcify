@@ -76,18 +76,21 @@ const Register = () => {
     };
 
     return (
-        <div className="flex items-center justify-center w-screen h-screen bg-fondo">
-            <div className="flex flex-col gap-3 w-[50%] bg-slate-200 p-10 rounded-md">
-                <div className="mb-5">
-                    <h3 className="font-bold">Registro</h3>
-                    <p>
-                        Crea una nueva cuenta para estar al alcance de tus
-                        Expensas
-                    </p>
+        <div className="flex content-center justify-center text-black">
+            <div className="px-10 pb-8 w-[500px] rounded-md bg-slate-200">
+                <div className="mb-5 text-center">
+                    <div>
+                        <h3 className="mt-5 text-2xl font-bold">Registro</h3>
+                        <p className="font-light">
+                            Crea una nueva cuenta para estar al alcance de tus
+                            Expensas
+                        </p>
+                    </div>
                 </div>
-                <form onSubmit={handleSubmit} className="flex flex-col gap-1">
+
+                <form className="flex flex-col" onSubmit={handleSubmit}>
                     <div className="flex items-center justify-between w-full">
-                        <Label>Nombre</Label>
+                        <Label htmlFor="nombre">Nombre:</Label>
                         {errors.first_name && registerData.first_name && (
                             <span className="self-end text-xs text-red-500 ">
                                 {errors.first_name}
@@ -98,13 +101,13 @@ const Register = () => {
                         id="nombre"
                         name="first_name"
                         type="text"
-                        placeholder="nombre"
+                        placeholder="Nombre"
                         onChange={handlerChange}
                         value={registerData.first_name}
                     />
 
                     <div className="flex items-center justify-between w-full">
-                        <Label>Apellido</Label>
+                        <Label htmlFor="apellido">Apellido:</Label>
                         {errors.last_name && registerData.last_name && (
                             <span className="self-end text-xs text-red-500 ">
                                 {errors.last_name}
@@ -121,9 +124,9 @@ const Register = () => {
                     />
 
                     <div className="flex items-center justify-between w-full">
-                        <Label>email</Label>
+                        <Label htmlFor="email">E-mail:</Label>
                         {errors.email && registerData.email && (
-                            <span className="self-end text-xs text-red-500 ">
+                            <span className="self-end text-xs text-red-500">
                                 {errors.email}
                             </span>
                         )}
@@ -132,25 +135,25 @@ const Register = () => {
                         id="email"
                         name="email"
                         type="text"
-                        placeholder="email"
+                        placeholder="example@mail.com"
                         onChange={handlerChange}
                         value={registerData.email}
                     />
 
                     <div className="flex items-center justify-between w-full">
-                        <Label>Password</Label>
+                        <Label htmlFor="pwd">Password:</Label>
                         {errors.password && registerData.password && (
                             <span className="self-end text-xs text-red-500 ">
                                 {errors.password}
                             </span>
                         )}
                     </div>
-                    <div className="flex items-center justify-between w-full h-10 rounded-md">
+                    <div className="flex items-center justify-between w-full h-10 my-1 rounded-md">
                         <Input
                             id="pwd"
                             name="password"
                             type={lock ? "password" : "text"}
-                            placeholder="Password"
+                            placeholder="**********"
                             onChange={handlerChange}
                             value={registerData.password}
                         />
@@ -164,7 +167,7 @@ const Register = () => {
                     </div>
 
                     <div className="flex items-center justify-between w-full">
-                        <Label>Repetir Password</Label>
+                        <Label htmlFor="pwd2">Repetir Password:</Label>
                         {registerData.password &&
                             pass2 &&
                             registerData.password !== pass2.trim() && (
@@ -174,12 +177,12 @@ const Register = () => {
                             )}
                     </div>
 
-                    <div className="flex items-center justify-between w-full h-10 rounded-md ">
+                    <div className="flex items-center justify-between w-full h-10 my-1 rounded-md ">
                         <Input
                             id="pwd2"
                             name="password2"
                             type={lock ? "password" : "text"}
-                            placeholder="Repetir password"
+                            placeholder="**********"
                             onChange={handlePass2}
                             value={pass2}
                         />
@@ -191,11 +194,16 @@ const Register = () => {
                             {lock ? <EyeIconOff /> : <EyeIcon />}
                         </button>
                     </div>
-                    <Button type="submit">Registrase</Button>
+                    <div className="mt-4">
+                        <Button type="submit">Registrase</Button>
+                    </div>
                 </form>
-                <div className="mt-3">
-                    <p>
-                        Ya estas Registrado?<a href="/login">Inicia Sesion</a>
+                <div className="pt-2 mt-3">
+                    <p className="mb-1 font-light text-center">
+                        ¿Ya estás registrado?{" "}
+                        <a href="/login" className="text-blue-500">
+                            Iniciar sesión
+                        </a>
                     </p>
                 </div>
             </div>

@@ -1,6 +1,4 @@
-import { ILogedUser, ILoginData } from "@/Interfaces/Interfaces";
-import { log } from "console";
-import React from "react";
+import { ILoginData } from "@/Interfaces/Interfaces";
 
 export const loginFetch = async (UserData: ILoginData) => {
     try {

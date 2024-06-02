@@ -59,13 +59,17 @@ const Login = () => {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center w-screen h-screen gap-2 bg-fondo">
-            <div className="p-10 rounded-md bg-slate-200">
-                <h3 className="my-5 font-bold">Bienvenido a Consorcify</h3>
-                <p>bienvenido nuevamente. Loggeate para ver tu cuenta.</p>
+        <div className="flex content-center justify-center text-black">
+            <div className="px-10 pb-8 rounded-md w-[500px] bg-slate-200">
+                <div className="mb-5 text-center">
+                    <h3 className="mt-5 text-2xl font-bold">
+                        Bienvenido a Consorcify
+                    </h3>
+                    <p className="font-light">Loggeate para ver tu cuenta.</p>
+                </div>
 
-                <form className="" onSubmit={handleSubmit}>
-                    <Label>E-mail</Label>
+                <form className="flex flex-col gap-1" onSubmit={handleSubmit}>
+                    <Label htmlFor="email">E-mail:</Label>
                     <Input
                         id="email"
                         name="email"
@@ -75,13 +79,13 @@ const Login = () => {
                         value={userData.email}
                     />
 
-                    <Label>Password</Label>
+                    <Label htmlFor="password">Password:</Label>
                     <div className="flex items-center justify-between w-full h-10 rounded-md">
                         <Input
                             id="password"
                             name="password"
                             type={lock ? "password" : "text"}
-                            placeholder="*****************"
+                            placeholder="**********"
                             onChange={handleChange}
                             value={userData.password}
                         />
@@ -93,16 +97,22 @@ const Login = () => {
                             {lock ? <EyeIconOff /> : <EyeIcon />}
                         </button>
                     </div>
-
-                    <Button type="submit">Iniciar Sesion</Button>
+                    <div className="mt-4">
+                        <Button type="submit">Iniciar Sesion</Button>
+                    </div>
                 </form>
-                <div className="mt-3">
-                    <p>
-                        Aun no tiene cuenta?{" "}
-                        <a href="/register">Crea tu cuenta aqui</a>
+                <div className="pt-2 mt-3">
+                    <p className="mb-1 font-light text-center">
+                        ¿Aún no estás registrado?{" "}
+                        <a href="/register" className="text-blue-500">
+                            Crea tu cuenta aqui
+                        </a>
                     </p>
-                    <p>
-                        Olvidate tu contraseña? <a href="#">Recuperala aqui</a>
+                    <p className="font-light text-center">
+                        ¿Olvidaste tu contraseña?{" "}
+                        <a href="#" className="text-blue-500">
+                            Recupérala aqui
+                        </a>
                     </p>
                 </div>
             </div>

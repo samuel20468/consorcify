@@ -1,4 +1,6 @@
 "use client";
+
+import { IConsortium } from "@/Interfaces/Interfaces";
 import { getConsortiumById } from "@/helpers/fetch.helper";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -6,19 +8,17 @@ import React, { useEffect, useState } from "react";
 
 const page = () => {
     const params: { id: string } = useParams();
-    const [consorcio, setConsorcio] = useState();
+    const [consorcio, setConsorcio] = useState<IConsortium>();
 
     useEffect(() => {
         const fetchData = async () => {
             const response = await getConsortiumById(params.id);
-
             setConsorcio(response);
         };
         try {
         } catch (error) {
             console.error(error);
         }
-
         fetchData();
     }, []);
 
@@ -37,8 +37,7 @@ const page = () => {
             <div className="flex flex-col w-1/2 p-8 rounded bg-slate-200 ">
                 <h3>{consorcio?.name}</h3>
                 <p>{`
-                    CUIT: ${consorcio?.cuit} \t
-                    
+                    CUIT: ${consorcio?.cuit}
                     DIRECCION: ${consorcio?.street_name}, ${consorcio?.building_number}
                 `}</p>
             </div>

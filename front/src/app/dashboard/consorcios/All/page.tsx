@@ -1,5 +1,7 @@
 "use client";
 
+import { IConsortium } from "@/Interfaces/Interfaces";
+import ConsortiumCard from "@/components/ConsortiumCard/ConsortiumCard";
 import { ContainerDashboard } from "@/components/ui";
 import { getConsortiums } from "@/helpers/fetch.helper";
 import Link from "next/link";
@@ -16,6 +18,8 @@ const page = () => {
 
             if (response) {
                 const data = await response.json();
+                console.log(data);
+
                 setConsortiums(data);
             }
         };
@@ -23,24 +27,19 @@ const page = () => {
     }, [path]);
 
     return (
-        <div className="h-screen bg-white">
-            <ContainerDashboard>
-                {consortiums?.map((consortium: any) => {
-                    return (
-                        <Link
-                            href={`/dashboard/consorcios/All/${consortium.id}`}
-                            className="border rounded w-[50%] flex flex-col items-center justify-center my-3 p-5 bg-slate-200"
-                        >
-                            <div key={consortium.id}>
-                                <p className="flex items-center justify-center font-bold">
-                                    {consortium.name}
-                                </p>
-                            </div>
-                        </Link>
-                    );
-                })}
-            </ContainerDashboard>
-        </div>
+        <ContainerDashboard className="grid items-center justify-center h-[70vh] grid-flow-col gap-3 justify-items-stretch place-content-center">
+            {consortiums?.map((consortium: IConsortium) => {
+                return (
+                    <Link
+                        key={consortium.id}
+                        href={`/dashboard/consorcios/All/${consortium.id}`}
+                        className="flex items-center justify-center w-full my-1"
+                    >
+                        <ConsortiumCard consortium={consortium} />
+                    </Link>
+                );
+            })}
+        </ContainerDashboard>
     );
 };
 

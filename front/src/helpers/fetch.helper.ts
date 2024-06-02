@@ -71,6 +71,7 @@ export const getConsortiums = async () => {
     try {
         const response = await fetch("http://localhost:3001/consortiums", {
             method: "GET",
+            cache: "no-cache",
         });
         return response;
     } catch (error) {
@@ -79,8 +80,6 @@ export const getConsortiums = async () => {
 };
 
 export const getConsortiumById = async (id: string) => {
-    console.log(id);
-
     try {
         const response = await fetch(
             `http://localhost:3001/consortiums/${id}`,
@@ -88,7 +87,9 @@ export const getConsortiumById = async (id: string) => {
                 method: "GET",
             }
         );
-        const data = response.json();
+
+        const data = await response.json();
+        console.log(data);
         return data;
     } catch (error) {}
 };

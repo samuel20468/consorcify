@@ -82,4 +82,8 @@ export class FunctionalUnitsRepository {
       ...updateFunctionalUnitDto,
     });
   }
+
+  async toggleStatus(id: string, status: boolean): Promise<void> {
+    await this.functionalUnitsRepository.update(id, { active: !status });
+  }
 }

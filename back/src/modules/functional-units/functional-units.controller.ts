@@ -72,7 +72,17 @@ export class FunctionalUnitsController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.functionalUnitsService.remove(+id);
+  async toggleStatus(@Param('id', ParseUUIDPipe) id: string) {
+    let statusMessage: string;
+
+    const functilonaUnitToggled: FunctionalUnit = await this.functionalUnitsService.toggleStatus(id);
+
+    functilonaUnitToggled.active
+      ? (statusMessage = 'Activada')
+      : (statusMessage = 'Desactivada');
+  
+    return {
+      message: `La unidad funcional con el id ${functilonaUnitToggled.id} ha sido ${statusMessage}`,
+    }
   }
 }

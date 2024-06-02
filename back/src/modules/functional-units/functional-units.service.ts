@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateFunctionalUnitDto } from './dto/create-functional-unit.dto';
 import { UpdateFunctionalUnitDto } from './dto/update-functional-unit.dto';
 import { FunctionalUnitsRepository } from './functional-units.repository';
@@ -27,7 +27,14 @@ export class FunctionalUnitsService {
     return await this.functionalUnitsRepository.update(id, updateFunctionalUnitDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} functionalUnit`;
+  async toggleStatus(id: string): Promise<FunctionalUnit> {
+    let status: boolean;
+    const functionalUnit = await this.functionalUnitsRepository.findOne(id);
+    if (!functionalUnit) {
+      throw new NotFoundException(`Functional unit with id ${id} not found`);
+    }
+    status = functionalUnit.active;
+    await this.functionalUnitsRepository.toggleStatus(id, status);
+    return await this.functionalUnitsRepository.findOne(id);
   }
 }

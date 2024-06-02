@@ -40,6 +40,9 @@ export class FunctionalUnit {
   @Column({ length: 8, nullable: false, unique: true })
   code: string;
 
+  @Column({ type: 'boolean', default: true })
+  active: boolean;
+
   @ManyToOne(() => Consortium, (consortium) => consortium.functional_units)
   @JoinColumn({ name: 'consortium_id' })
   consortium: Consortium;

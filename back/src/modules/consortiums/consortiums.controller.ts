@@ -8,12 +8,15 @@ import {
   Delete,
   ParseUUIDPipe,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ConsortiumsService } from './consortiums.service';
 import { CreateConsortiumDto } from './dto/create-consortium.dto';
 import { UpdateConsortiumDto } from './dto/update-consortium.dto';
+import { AuthGuard } from 'src/guards/auth.guard';
 
 @Controller('consortiums')
+@UseGuards(AuthGuard)
 export class ConsortiumsController {
   constructor(private readonly consortiumsService: ConsortiumsService) {}
 

@@ -101,7 +101,7 @@ const FormRegisterConsortium = () => {
     };
 
     return (
-        <div className="w-full h-auto p-4">
+        <div className="w-full h-auto p-4 text-black">
             <div className="flex items-center justify-between px-5">
                 <h1 className="mb-2 text-lg font-bold">
                     Consorcios{" "}
@@ -110,7 +110,7 @@ const FormRegisterConsortium = () => {
                     </span>
                 </h1>
                 <button onClick={handleReturn} className="text-lg font-bold">
-                    volver
+                    Volver
                 </button>
             </div>
             <form

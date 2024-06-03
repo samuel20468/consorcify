@@ -15,8 +15,8 @@ import {
     getConsortiumById,
     updateConsortium,
 } from "@/helpers/fetch.helper";
-import { log } from "console";
-import { register } from "module";
+import { validateSuterh } from "@/helpers/Validations/validate.suterh";
+import { validateCuit } from "@/helpers/Validations/validate.cuit";
 
 const FormRegisterConsortium = ({ update = false }) => {
     const initialData = {
@@ -168,6 +168,17 @@ const FormRegisterConsortium = ({ update = false }) => {
         }
     };
 
+    useEffect(() => {
+        const suterhErrors = validateSuterh(consortiumRegister.suterh_key);
+        const cuitErrors = validateCuit(consortiumRegister.cuit!);
+
+        setConsortiumRegisterError((prevErrors) => ({
+            ...prevErrors,
+            ...suterhErrors,
+            ...cuitErrors,
+        }));
+    }, [consortiumRegister]);
+
     return (
         <div className="w-full h-auto p-4 text-black">
             <div className="flex items-center justify-between px-5">
@@ -199,6 +210,12 @@ const FormRegisterConsortium = ({ update = false }) => {
                             value={consortiumRegister.suterh_key}
                             onChange={handleChange}
                         />
+                        {consortiumRegisterError.suterh_key &&
+                            consortiumRegister.suterh_key && (
+                                <span className="self-end text-xs text-red-500">
+                                    {consortiumRegisterError.suterh_key}
+                                </span>
+                            )}
                     </div>
                     <div className="flex flex-col lg:w-1/2">
                         <Label htmlFor="name">
@@ -225,6 +242,12 @@ const FormRegisterConsortium = ({ update = false }) => {
                             value={consortiumRegister.cuit}
                             onChange={handleChange}
                         />
+                        {consortiumRegisterError.cuit &&
+                            consortiumRegister.cuit && (
+                                <span className="self-end text-xs text-red-500">
+                                    {consortiumRegisterError.cuit}
+                                </span>
+                            )}
                     </div>
                 </div>
 
@@ -396,6 +419,7 @@ const FormRegisterConsortium = ({ update = false }) => {
                         <div className="flex flex-col lg:w-full">
                             <Label>Administrador </Label>
                             <select
+                                className="h-10 px-2 text-white rounded-lg bg-input"
                                 name="c_admin"
                                 id="c-admin"
                                 onChange={handleSelect}

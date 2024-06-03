@@ -12,8 +12,9 @@ import { validateCuit } from "@/helpers/Validations/validate.cuit";
 import { validateNombre } from "@/helpers/Validations/validate.name";
 import { validateRPA } from "@/helpers/Validations/validate.rpa";
 import { validateEmail } from "@/helpers/Validations/validate.email";
-import { getAdminById } from "@/helpers/fetch.helper";
+import { getAdminById, updateAdmin } from "@/helpers/fetch.helper";
 import useAuth from "@/helpers/useAuth";
+import Swal from "sweetalert2";
 
 const FormRegisterSuperAdmin = ({ update = false }) => {
     useAuth();
@@ -35,6 +36,7 @@ const FormRegisterSuperAdmin = ({ update = false }) => {
         useState<IRegisterConsortiumError>(initialData);
 
     const params: { id: string } = useParams();
+    console.log(consortiumRegister);
 
     useEffect(() => {
         const data = JSON.parse(localStorage.getItem("userData")!);
@@ -58,7 +60,7 @@ const FormRegisterSuperAdmin = ({ update = false }) => {
         if (token) {
             fetchData();
         }
-    }, []);
+    }, [token, path]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setConsortiumRegister({
@@ -82,9 +84,24 @@ const FormRegisterSuperAdmin = ({ update = false }) => {
             return;
         }
         try {
-            const response = await adminFetch(consortiumRegister, token);
-            alert("Registro del consorcio exitoso.");
-            console.log(response);
+            if (update == true) {
+                const response = await updateAdmin(
+                    consortiumRegister,
+                    params.id,
+                    token
+                );
+                if (response) {
+                    Swal.fire({
+                        title: "Actualizacion exitosa",
+                    });
+                    router.push(`/dashboard/administracion/All/${params.id}`);
+                }
+            } else {
+                const response = await adminFetch(consortiumRegister, token);
+                if (response) {
+                    alert("Registro del consorcio exitoso.");
+                }
+            }
             // router.push("/") Definir donde nos va a pataear una vez creado el consorcio
             setConsortiumRegister(initialData);
         } catch (error: any) {
@@ -118,7 +135,11 @@ const FormRegisterSuperAdmin = ({ update = false }) => {
     return (
         <div className="flex flex-col items-center w-full p-10 text-black rounded-lg shadow-lg bg-slate-200">
             <div className="flex items-center justify-center w-full pb-4 text-2xl">
-                <h1>Formulario de registro de Administrador</h1>
+                {update ? (
+                    <h1>Formulario de Actualizacion de Administrador</h1>
+                ) : (
+                    <h1>Formulario de registro de Administrador</h1>
+                )}
             </div>
 
             <form
@@ -234,7 +255,11 @@ const FormRegisterSuperAdmin = ({ update = false }) => {
                 )}
 
                 <div className="mt-4">
-                    <Button type="submit">Registrar</Button>
+                    <Button type="submit">
+                        {update
+                            ? "Modificar Administrador"
+                            : "Registrar Administrador"}
+                    </Button>
                 </div>
             </form>
         </div>

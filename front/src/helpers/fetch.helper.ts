@@ -1,4 +1,8 @@
-import { IConsortium, ILoginData } from "@/Interfaces/Interfaces";
+import {
+    IConsortium,
+    ILoginData,
+    IRegisterConsortium,
+} from "@/Interfaces/Interfaces";
 
 export const loginFetch = async (UserData: ILoginData) => {
     try {
@@ -82,6 +86,38 @@ export const deleteAdmin = async (id: string, token: string) => {
             return data;
         }
     } catch (error) {}
+};
+
+export const updateAdmin = async (
+    data: IRegisterConsortium,
+    id: string,
+    token: string
+) => {
+    try {
+        const response = await fetch(`http://localhost:3001/c-admins/${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(data),
+        });
+        if (response.ok) {
+            const data = await response.json();
+            return data;
+        }
+        if (!response.ok) {
+            return response.json().then((errorInfo) => {
+                throw new Error(
+                    `Error ${response.status}: ${
+                        errorInfo.message || response.statusText
+                    }`
+                );
+            });
+        }
+    } catch (error) {
+        console.error(error);
+    }
 };
 
 //? ENDPOINTS USUARIOS

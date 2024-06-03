@@ -33,7 +33,7 @@ const FormRegisterConsortium = ({ update = false }) => {
         ufs: 0,
         category: 0,
         first_due_day: 0,
-        c_admin: [] as any[],
+        c_admin: "",
     };
     const params: { id: string } = useParams();
     const [userData, setUserData] = useState<IUserData>();
@@ -422,6 +422,7 @@ const FormRegisterConsortium = ({ update = false }) => {
                                 className="h-10 px-2 text-white rounded-lg bg-input"
                                 name="c_admin"
                                 id="c-admin"
+                                value={consortiumRegister.c_admin}
                                 onChange={handleSelect}
                             >
                                 {admins?.map((admin) => {

@@ -79,6 +79,9 @@ const page = () => {
                         {consorcio?.name}
                     </h3>
                     <p className="px-5 py-4  rounded-[50px] bg-[#e5e7eb] shadow text-fondo border-fondo">
+                        Administrador: {consorcio?.c_admin?.name!}
+                    </p>
+                    <p className="px-5 py-4  rounded-[50px] bg-[#e5e7eb] shadow text-fondo border-fondo">
                         CATEGORIA: {consorcio?.category}
                     </p>
                     <p className="px-5 py-4  rounded-[50px] bg-[#e5e7eb] shadow text-fondo border-fondo">

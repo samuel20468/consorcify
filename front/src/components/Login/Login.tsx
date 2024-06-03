@@ -42,8 +42,6 @@ const Login = () => {
             ...prevErrors,
             ...liveErrors,
         }));
-
-        console.log(errors);
     }, [userData]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,7 +50,6 @@ const Login = () => {
             ...userData,
             [name]: value,
         });
-        console.log(userData);
     };
     const handleLock = () => {
         setLock(!lock);

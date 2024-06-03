@@ -66,6 +66,24 @@ export const getAdmins = async (token: string) => {
     }
 };
 
+export const deleteAdmin = async (id: string, token: string) => {
+    try {
+        const response = await fetch(
+            `http://localhost:3001/c-admins/disable/${id}`,
+            {
+                method: "PATCH",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
+        if (response.ok) {
+            const data = await response.json();
+            return data;
+        }
+    } catch (error) {}
+};
+
 //? ENDPOINTS USUARIOS
 export const getUserById = async (id: string, token: string) => {
     try {

@@ -124,3 +124,14 @@ export interface IConsortium {
     ufs: number;
     zip_code: string;
 }
+
+export interface IUFs {
+    type: string;
+    location: string;
+    number: string;
+    owner: string;
+    owner_phone_number: string;
+    owner_email: string;
+    balance: number;
+    consortium_id: string;
+}

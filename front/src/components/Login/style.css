@@ -1,0 +1,13 @@
+.col-izquierda {
+  background: rgb(11, 12, 13);
+  background: linear-gradient(
+    0deg,
+    rgba(11, 12, 13, 1) 18%,
+    rgba(32, 30, 30, 1) 81%
+  );
+}
+
+.imagen {
+    background-image: url(../../../public/Swatch.png);
+    background-size: cover;
+}

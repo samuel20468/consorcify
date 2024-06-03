@@ -20,7 +20,7 @@
   width: 90vw;
   border-radius: 60px;
   margin-top: 150px;
-  height: 740px;
+  height: 80vh;
   overflow: hidden;
 }
 
@@ -73,5 +73,18 @@
 @media (max-width: 768px) {
   .building {
     margin-top: -665px;
+  }
+}
+
+@media (max-height: 795px) {
+  .gradient {
+    height: 75vh;
+  }
+}
+
+
+@media (max-height: 650px) {
+  .gradient {
+    height: 70vh;
   }
 }

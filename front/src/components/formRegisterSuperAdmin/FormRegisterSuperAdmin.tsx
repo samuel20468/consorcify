@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Button, Input, Label } from "../ui";
 import { adminFetch } from "@/helpers/form.helper";
-import { usePathname, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import {
     IRegisterConsortium,
     IRegisterConsortiumError,
@@ -12,8 +12,11 @@ import { validateCuit } from "@/helpers/Validations/validate.cuit";
 import { validateNombre } from "@/helpers/Validations/validate.name";
 import { validateRPA } from "@/helpers/Validations/validate.rpa";
 import { validateEmail } from "@/helpers/Validations/validate.email";
+import { getAdminById } from "@/helpers/fetch.helper";
+import useAuth from "@/helpers/useAuth";
 
-const FormRegisterSuperAdmin = () => {
+const FormRegisterSuperAdmin = ({ update = false }) => {
+    useAuth();
     const path = usePathname();
     const router = useRouter();
     const initialData = {
@@ -28,9 +31,10 @@ const FormRegisterSuperAdmin = () => {
     const [token, setToken] = useState<string>("");
     const [consortiumRegister, setConsortiumRegister] =
         useState<IRegisterConsortium>(initialData);
-
     const [errorConsortiumRegister, setErrorConsortiumRegister] =
         useState<IRegisterConsortiumError>(initialData);
+
+    const params: { id: string } = useParams();
 
     useEffect(() => {
         const data = JSON.parse(localStorage.getItem("userData")!);
@@ -38,6 +42,23 @@ const FormRegisterSuperAdmin = () => {
             setToken(data.token);
         }
     }, [path, token]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await getAdminById(params.id, token);
+                if (response) {
+                    const data = await response.json();
+                    setConsortiumRegister(data);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        if (token) {
+            fetchData();
+        }
+    }, []);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setConsortiumRegister({

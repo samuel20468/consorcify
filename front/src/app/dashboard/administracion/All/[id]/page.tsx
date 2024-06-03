@@ -78,7 +78,7 @@ const page = () => {
                 </div>
                 <div className="flex items-center justify-end w-3/4 gap-2">
                     <Link
-                        href="/#"
+                        href={`/updateAdministrator/${admin?.id}`}
                         className="border  bg-[#e5e7eb] px-4 py-2 rounded-[50px] hover:bg-black hover:text-white"
                     >
                         <button>Modificar Administrador</button>

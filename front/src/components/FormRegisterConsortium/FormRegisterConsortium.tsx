@@ -9,7 +9,7 @@ import {
     IUserData,
 } from "@/Interfaces/Interfaces";
 import { consortiumFetch } from "@/helpers/consortium.helper";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { getAdmins } from "@/helpers/fetch.helper";
 import { log } from "console";
 
@@ -34,17 +34,26 @@ const FormRegisterConsortium = ({ update = false }) => {
     const [userData, setUserData] = useState<IUserData>();
     const [admins, setAdmins] = useState<IAdmin[]>();
     const [adminId, setAdminId] = useState<string>("");
+    const [token, setToken] = useState<string>("");
+    const path = usePathname();
     const [consortiumRegister, setConsortiumRegister] =
         useState<IConsortium>(initialData);
     const [consortiumRegisterError, setConsortiumRegisterError] =
         useState<IConsortiumError>(initialData);
-
     const router = useRouter();
+
+    useEffect(() => {
+        const data = JSON.parse(localStorage.getItem("userData")!);
+        if (data) {
+            setToken(data.token);
+            setUserData(data.user);
+        }
+    }, [path]);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await getAdmins();
+                const response = await getAdmins(token);
                 if (response) {
                     setAdmins(response);
                 }
@@ -52,15 +61,10 @@ const FormRegisterConsortium = ({ update = false }) => {
                 console.error(error);
             }
         };
-        fetchData();
-    }, []);
-
-    useEffect(() => {
-        const { user } = JSON.parse(localStorage.getItem("userData")!);
-        if (user) {
-            setUserData(user);
+        if (token) {
+            fetchData();
         }
-    }, []);
+    }, [token]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -112,7 +116,7 @@ const FormRegisterConsortium = ({ update = false }) => {
         console.log(consortiumRegister);
 
         try {
-            const response = await consortiumFetch(consortiumRegister);
+            const response = await consortiumFetch(consortiumRegister, token);
             if (response?.ok) {
                 alert("Consorcio creado correctamente");
                 if (userData?.roles?.[0] == "superadmin") {

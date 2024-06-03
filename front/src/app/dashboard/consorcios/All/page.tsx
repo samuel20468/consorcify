@@ -10,21 +10,29 @@ import React, { useEffect, useState } from "react";
 
 const page = () => {
     const [consortiums, setConsortiums] = useState<any>();
+    const [token, setToken] = useState<string>("");
     const path = usePathname();
 
     useEffect(() => {
-        const fechtData = async () => {
-            const response = await getConsortiums();
+        const data = JSON.parse(localStorage.getItem("userData")!);
+        if (data) {
+            setToken(data.token);
+        }
+    }, [path]);
+
+    useEffect(() => {
+        const fechtData = async (token: string) => {
+            const response = await getConsortiums(token);
 
             if (response) {
                 const data = await response.json();
-                console.log(data);
-
                 setConsortiums(data);
             }
         };
-        fechtData();
-    }, [path]);
+        if (token) {
+            fechtData(token);
+        }
+    }, [token]);
 
     return (
         <ContainerDashboard className="grid items-center justify-center h-[92vh] grid-flow-col gap-3 justify-items-stretch place-content-center bg-[#e5e7eb]">

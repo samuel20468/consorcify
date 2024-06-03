@@ -8,26 +8,39 @@ import {
     getConsortiumById,
 } from "@/helpers/fetch.helper";
 import { formatearNumero } from "@/helpers/functions.helper";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import React, { use, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
 const page = () => {
     const params: { id: string } = useParams();
+    const [token, setToken] = useState<string>("");
     const router = useRouter();
+    const path = usePathname();
     const [consorcio, setConsorcio] = useState<IConsortium>();
     const [cuit, setCuit] = useState<string>("");
 
     useEffect(() => {
-        const fetchData = async () => {
-            const response = await getConsortiumById(params.id);
+        const data = JSON.parse(localStorage.getItem("userData")!);
+        if (data) {
+            setToken(data.token);
+        }
+    }, [path]);
+
+    useEffect(() => {
+        const fetchData = async (token: string) => {
+            const response = await getConsortiumById(params.id, token);
+            console.log(response);
+
             setConsorcio(response);
         };
         try {
         } catch (error) {
             console.error(error);
         }
-        fetchData();
+        if (token) {
+            fetchData(token);
+        }
     }, []);
 
     useEffect(() => {

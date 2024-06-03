@@ -1,0 +1,77 @@
+.gradient {
+  background-image: linear-gradient(
+    180deg,
+    hsl(210deg 8% 5%) 20%,
+    hsl(211deg 2% 10%) 54%,
+    hsl(211deg 1% 14%) 65%,
+    hsl(211deg 1% 19%) 72%,
+    hsl(211deg 1% 23%) 76%,
+    hsl(211deg 0% 28%) 80%,
+    hsl(211deg 0% 33%) 83%,
+    hsl(211deg 0% 38%) 87%,
+    hsl(211deg 0% 43%) 91%,
+    hsl(211deg 0% 49%) 95%,
+    hsl(0deg 0% 54%) 100%
+  );
+  border: 1px solid white;
+
+  border-bottom-left-radius: 40px;
+  border-bottom-right-radius: 40px;
+  width: 90vw;
+  border-radius: 60px;
+  margin-top: 150px;
+  height: 740px;
+  overflow: hidden;
+}
+
+.building {
+  position: relative;
+  width: 700px;
+  height: 700px;
+  margin-top: -900px;
+  object-fit: cover;
+  z-index: 10;
+}
+
+.lighting {
+  position: relative;
+  z-index: 1;
+  background-color: rgba(209, 209, 209, 0.699);
+  border-radius: 50%;
+  width: 750px;
+  height: 625px;
+  filter: blur(40px);
+}
+
+
+.reveal-text {
+  display: block;
+  animation: reveal 1.5s cubic-bezier(0.77, 0, 0.175, 1) 0.5s;
+}
+
+@keyframes reveal {
+  0% {
+    transform: translate(0, 100%);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+@media (max-width: 1650px) {
+  .building {
+    margin-top: -725px;
+    width: 550px;
+    height: 525px;
+  }
+  .lighting {
+    width: 450px;
+    height: 625px;
+  }
+}
+
+@media (max-width: 768px) {
+  .building {
+    margin-top: -665px;
+  }
+}

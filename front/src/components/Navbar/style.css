@@ -1,0 +1,102 @@
+@media (max-width: 512px) {
+  .principal {
+    font-size: 20px;
+  }
+  .secundario {
+    display: none;
+  }
+  .button-log {
+    font-size: 13px;
+  }
+}
+
+/* @media (max-width: 413px) {
+  .principal {
+    font-size: 15px;
+  }
+  .button-log {
+    font-size: 10px;
+  }
+} */
+
+@media (max-width: 530px) {
+  .principal {
+    font-size: 15px;
+  }
+  .button-log {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .list {
+    display: none;
+  }
+}
+
+.dropdown {
+  position: relative;
+  display: flex;
+}
+
+.dropdown > a > span {
+  font-size: 20px;
+  color: rgb(0, 255, 136);
+  translate: 0 2px;
+}
+
+.menu {
+  position: absolute;
+  top: 70px;
+  right: -15px;
+  width: 180px;
+  border-radius: 25px;
+  border: 1px solid white;
+  padding: 8px 0;
+  display: grid;
+  background: #34343441;
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.5s;
+}
+
+.dropdown:hover .menu {
+  opacity: 1;
+  visibility: visible;
+}
+
+.menu::before {
+  content: "";
+  position: absolute;
+  background: #34343400;
+  border-top: 1px solid white;
+  border-right: 1px solid white;
+  top: -7px;
+  right: 22px;
+  width: 12px;
+  height: 12px;
+  rotate: -44deg;
+}
+
+.menu > a {
+  padding: 20px;
+  transition: background-color 0.5s ease;
+  margin-left: 10px;
+  margin-right: 10px;
+  border-radius: 25px;
+  font-size: 14px;
+}
+
+.menu > a:hover {
+  margin-left: 10px;
+  margin-right: 10px;
+  background: white;
+  border-radius: 25px;
+  transition: background-color 1s ease;
+  color: black;
+}
+
+.list a {
+  border-radius: 50px;
+  transition: background-color 0.6s ease;
+}

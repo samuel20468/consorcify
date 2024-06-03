@@ -1,22 +1,35 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Oswald } from "next/font/google";
 import "./globals.css";
+import Footer from "@/components/Footer/Footer";
+import NavbarDashboard from "@/components/NavbarDashboard/NavbarDashboard";
+import Sidebars from "@/components/Sidebars/Sidebars";
+import { Mostrar, Ocultar } from "@/components/ui";
 
-const inter = Inter({ subsets: ["latin"] });
+const oswald = Oswald({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Consorcify",
-  description: "Tus administraciones en un click",
+    title: "Consorcify",
+    description: "Tus administraciones en un click",
 };
 
 export default function RootLayout({
-  children,
+    children,
 }: Readonly<{
-  children: React.ReactNode;
+    children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
-    </html>
-  );
+    return (
+        <html lang="en">
+            <body className={`bg-fondo text-white ${oswald.className}`}>
+                <Ocultar>
+                    <Sidebars />
+                    <NavbarDashboard />
+                </Ocultar>
+                {children}
+                <Mostrar>
+                    <Footer />
+                </Mostrar>
+            </body>
+        </html>
+    );
 }

@@ -1,3 +1,32 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+    background-color: #0b0c0d;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+@font-face {
+    font-family: clash-medium;
+    src: url(../../public/fonts/ClashDisplay-Medium.otf);
+}
+
+@font-face {
+    font-family: clash-regular;
+    src: url(../../public/fonts/ClashDisplay-Regular.otf);
+}
+
+/* Estilos personalizados */
+.no-spinners::-webkit-outer-spin-button,
+.no-spinners::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.no-spinners {
+    -moz-appearance: textfield;
+}

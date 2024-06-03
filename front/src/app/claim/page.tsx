@@ -9,7 +9,7 @@ const Claim = () => {
     return (
         <div>
             <ContainerDashboard>
-                <Title>Raclamos</Title>
+                <Title>Raclamos </Title>
             </ContainerDashboard>
         </div>
     );

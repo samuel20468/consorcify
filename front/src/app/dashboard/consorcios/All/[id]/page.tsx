@@ -8,11 +8,14 @@ import {
     getConsortiumById,
 } from "@/helpers/fetch.helper";
 import { formatearNumero } from "@/helpers/functions.helper";
+import useAuth from "@/helpers/useAuth";
+import Link from "next/link";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import React, { use, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
 const page = () => {
+    useAuth();
     const params: { id: string } = useParams();
     const [token, setToken] = useState<string>("");
     const router = useRouter();
@@ -41,7 +44,7 @@ const page = () => {
         if (token) {
             fetchData(token);
         }
-    }, []);
+    }, [token, params.id]);
 
     useEffect(() => {
         if (consorcio) {
@@ -51,17 +54,14 @@ const page = () => {
     });
 
     const handleDelete = async () => {
-        const response = await deleteConsortiumById(params.id);
+        const response = await deleteConsortiumById(params.id, token);
         console.log(response);
         if (response?.ok) {
             Swal.fire({
                 title: "Consorcio eliminado correctamente",
             });
+            router.push("dashboard/consorcios/All");
         }
-    };
-
-    const handlePut = () => {
-        return;
     };
 
     return (
@@ -101,12 +101,11 @@ const page = () => {
                     </p>
                 </div>
                 <div className="flex justify-end w-full gap-3 border-black">
-                    <button
-                        onClick={handlePut}
-                        className="p-3 rounded-[50px] bg-fondo hover:bg-slate-50 hover:text-black"
-                    >
-                        Modificar Info
-                    </button>
+                    <Link href={`/updateConsortium/${consorcio?.id}`}>
+                        <button className="p-3 rounded-[50px] bg-fondo hover:bg-slate-50 hover:text-black">
+                            Modificar Info
+                        </button>
+                    </Link>
                     <button
                         onClick={handleDelete}
                         className="px-5 rounded-[50px] bg-fondo hover:bg-slate-50 hover:text-black"

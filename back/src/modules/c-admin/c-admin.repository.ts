@@ -3,6 +3,8 @@ import { CAdmin } from './entities/c-admin.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateCAdminDto } from './dto/create-c-admin.dto';
+import { UpdateCAdminDto } from './dto/update-c-admin.dto';
+import { checkForDuplicates } from 'src/helpers/check-for-duplicates.helper';
 
 @Injectable()
 export class CAdminsRepository {
@@ -27,8 +29,12 @@ export class CAdminsRepository {
 
   async updateCAdmin(
     existingCAdmin: CAdmin,
-    cAdminToUpdate: CreateCAdminDto,
+    cAdminToUpdate: UpdateCAdminDto,
   ): Promise<CAdmin> {
+    const { email } = cAdminToUpdate;
+
+    await checkForDuplicates(this.cAdminRepository, email, 'email', 'El Email');
+
     const mergedCAdmin: CAdmin = this.cAdminRepository.merge(
       existingCAdmin,
       cAdminToUpdate,

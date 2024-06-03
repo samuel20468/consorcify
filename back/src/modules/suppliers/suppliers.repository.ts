@@ -3,6 +3,7 @@ import { Supplier } from './entities/supplier.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateSupplierDto } from './dto/create-supplier.dto';
+import { UpdateSupplierDto } from './dto/update-supplier.dto';
 
 @Injectable()
 export class SuppliersRepository {
@@ -28,7 +29,7 @@ export class SuppliersRepository {
 
   async updateSupplier(
     existingSupplier: Supplier,
-    supplierToUpdate: CreateSupplierDto,
+    supplierToUpdate: UpdateSupplierDto,
   ): Promise<Supplier> {
     const mergedSupplier: Supplier = this.supplierRepository.merge(
       existingSupplier,

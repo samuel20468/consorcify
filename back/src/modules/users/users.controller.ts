@@ -20,7 +20,9 @@ import { AuthGuard } from 'src/guards/auth.guard';
 import { Roles } from 'src/decorators/role.decorator';
 import { ROLE } from 'src/utils/constants';
 import { RolesGuard } from 'src/guards/roles.guard';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags("User")
 @Controller('users')
 @UseGuards(AuthGuard)
 @UseInterceptors(ExcludePasswordInterceptor)

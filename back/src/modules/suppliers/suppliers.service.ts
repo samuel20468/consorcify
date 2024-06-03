@@ -7,6 +7,7 @@ import { CreateSupplierDto } from './dto/create-supplier.dto';
 import { TPagination } from 'src/utils/types';
 import { Supplier } from './entities/supplier.entity';
 import { SuppliersRepository } from './suppliers.repository';
+import { UpdateSupplierDto } from './dto/update-supplier.dto';
 
 @Injectable()
 export class SuppliersService {
@@ -46,7 +47,7 @@ export class SuppliersService {
 
   async updateSupplier(
     id: string,
-    supplierToUpdate: CreateSupplierDto,
+    supplierToUpdate: UpdateSupplierDto,
   ): Promise<Supplier> {
     if (!id) {
       throw new BadRequestException('id is required');
@@ -56,6 +57,8 @@ export class SuppliersService {
       await this.suppliersRepository.findOne(id);
 
     if (!existingSupplier) throw new NotFoundException('Supplier not found');
+
+    
 
     const updatedSupplier: Supplier =
       await this.suppliersRepository.updateSupplier(

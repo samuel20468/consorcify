@@ -12,9 +12,6 @@ const ConsortiumsAdmin = () => {
 
     return (
         <div className="w-full h-auto p-4">
-            <div>
-                <h1 className="mb-2 text-lg font-bold">Consorcios</h1>
-            </div>
             <div className="flex flex-col gap-2">
                 <div className="flex items-center justify-between h-12 px-2 bg-red-200 rounded-lg hover:bg-red-300 hover:cursor-pointer hover:font-bold">
                     Consorcio 1

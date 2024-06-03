@@ -1,10 +1,11 @@
 import ConsortiumsAdmin from "@/components/ConsortiumAdmin/ConsortiumAdmin";
-import { ContainerDashboard } from "@/components/ui";
+import { ContainerDashboard, Title } from "@/components/ui";
 
 const Consortium = () => {
     return (
         <div>
             <ContainerDashboard>
+                <Title>Consorcios</Title>
                 <ConsortiumsAdmin />
             </ContainerDashboard>
         </div>

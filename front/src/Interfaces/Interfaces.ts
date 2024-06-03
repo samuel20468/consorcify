@@ -22,6 +22,7 @@ export interface IUser {
 }
 
 export interface IAdmin extends IUser {
+    id?: string;
     phone: number;
     address: string;
     cuit: string;
@@ -65,6 +66,7 @@ export interface IConsortium {
     ufs: number;
     category: number;
     first_due_day: number;
+    c_admin: string;
 }
 export interface IConsortiumError {
     id?: string;
@@ -81,6 +83,7 @@ export interface IConsortiumError {
     ufs?: number;
     category?: number;
     first_due_day?: number;
+    c_admin: string;
 }
 
 export interface IReviews {
@@ -106,21 +109,4 @@ export interface IUserData {
 export interface Props {
     children?: React.ReactNode;
     className?: string;
-}
-
-export interface IConsortium {
-    building_number: number;
-    category: number;
-    city: string;
-    country: string;
-    cuit: string;
-    first_due_day: number;
-    floors: number;
-    id?: string;
-    name: string;
-    province: string;
-    street_name: string;
-    suterh_key: string;
-    ufs: number;
-    zip_code: string;
 }

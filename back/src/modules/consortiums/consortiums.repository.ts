@@ -49,7 +49,9 @@ export class ConsortiumsRepository {
 
   async findAll(page: number, limit: number) {
     const skip = (page - 1) * limit;
-    const consortiums = await this.consortiumsRepository.find({ where: { active: true }, skip, take: limit });
+    const consortiums = await this.consortiumsRepository.find({
+      relations: { c_admin: true },
+      where: { active: true }, skip, take: limit });
     return this.removeActiveFieldFromArray(consortiums);
   }
 
@@ -61,6 +63,7 @@ export class ConsortiumsRepository {
       throw new NotFoundException(`CAdmin ID: ${id} no encontrado.`);
     }
     const consortiums = await this.consortiumsRepository.find({
+      relations: { c_admin: true },
       where: { c_admin: foundCAdmin, active: true },
     });
     return this.removeActiveFieldFromArray(consortiums);
@@ -68,6 +71,7 @@ export class ConsortiumsRepository {
 
   async findOne(id: string) {
     const consortium = await this.consortiumsRepository.findOne({
+      relations: { c_admin: true },
       where: { id: id, active: true },
     });
     if (!consortium) {
@@ -91,6 +95,7 @@ export class ConsortiumsRepository {
     }
     await this.consortiumsRepository.update(id, consortium);
     const updatedConsortium = await this.consortiumsRepository.findOne({
+      relations: { c_admin: true },
       where: { id: id, active: true },
     });
     return this.removeActiveField(updatedConsortium);
@@ -98,6 +103,7 @@ export class ConsortiumsRepository {
 
   async remove(id: string) {
     const consortiumToDelete = await this.consortiumsRepository.findOne({
+      relations: { c_admin: true },
       where: { id: id, active: true },
     });
     if (!consortiumToDelete) {

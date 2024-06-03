@@ -27,7 +27,7 @@ const page = () => {
     }, [path]);
 
     return (
-        <ContainerDashboard className="grid items-center justify-center h-[70vh] grid-flow-col gap-3 justify-items-stretch place-content-center">
+        <ContainerDashboard className="grid items-center justify-center h-[92vh] grid-flow-col gap-3 justify-items-stretch place-content-center bg-[#e5e7eb]">
             {consortiums?.map((consortium: IConsortium) => {
                 return (
                     <Link

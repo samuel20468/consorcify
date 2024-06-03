@@ -7,6 +7,7 @@ import {
   IsDecimal,
   IsUUID,
   IsNotEmpty,
+  IsNumber,
 } from 'class-validator';
 import { FUNCTIONAL_UNIT_TYPE } from 'src/utils/constants';
 
@@ -85,11 +86,8 @@ export class CreateFunctionalUnitDto {
    * El saldo de la Unidad Funcional
    * @example "1500.50"
    */
-  @IsNotEmpty({ message: 'El saldo es requerido' })
-  @IsDecimal(
-    { decimal_digits: '2', force_decimal: true },
-    { message: 'El saldo debe ser un número decimal con hasta 2 decimales' },
-  )
+  @IsNotEmpty()
+  @IsNumber({ maxDecimalPlaces: 2 })
   balance: number;
 
   /**

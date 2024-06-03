@@ -9,6 +9,15 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
+export class ColumnNumericTransformer {
+  to(data: number): number {
+    return data;
+  }
+  from(data: string): number {
+    return parseFloat(data);
+  }
+}
+
 @Entity({
   name: 'functional_units',
 })
@@ -66,7 +75,13 @@ export class FunctionalUnit {
    * El saldo de la Unidad Funcional
    * @example "1500.50"
    */
-  @Column({ type: 'decimal', precision: 15, scale: 2 })
+  @Column({
+    type: 'numeric',
+    precision: 10,
+    scale: 2,
+    nullable: false,
+    transformer: new ColumnNumericTransformer(),
+  })
   balance: number;
 
   /**

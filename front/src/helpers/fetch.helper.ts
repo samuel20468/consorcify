@@ -1,4 +1,5 @@
 import { ILoginData } from "@/Interfaces/Interfaces";
+import { log } from "console";
 
 export const loginFetch = async (UserData: ILoginData) => {
     try {
@@ -51,6 +52,18 @@ export const getAdminById = async (id: any, token: any) => {
     } catch (error) {}
 };
 
+export const getAdmins = async () => {
+    try {
+        const response = await fetch("http://localhost:3001/c-admins", {
+            method: "GET",
+        });
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
 //? ENDPOINTS USUARIOS
 export const getUserById = async (id: any, token: any) => {
     try {
@@ -91,5 +104,18 @@ export const getConsortiumById = async (id: string) => {
         const data = await response.json();
         console.log(data);
         return data;
+    } catch (error) {}
+};
+
+export const deleteConsortiumById = async (id: string) => {
+    try {
+        const response = await fetch(
+            `http://localhost:3001/consortiums/${id}`,
+            {
+                method: "DELETE",
+            }
+        );
+        console.log(response);
+        return response;
     } catch (error) {}
 };

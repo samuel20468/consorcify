@@ -3,22 +3,17 @@
 import React, { useEffect, useState } from "react";
 import { Button, Input, Label } from "../ui";
 import {
+    IAdmin,
     IConsortium,
     IConsortiumError,
     IUserData,
 } from "@/Interfaces/Interfaces";
 import { consortiumFetch } from "@/helpers/consortium.helper";
 import { useRouter } from "next/navigation";
+import { getAdmins } from "@/helpers/fetch.helper";
+import { log } from "console";
 
-const FormRegisterConsortium = () => {
-    const [userData, setUserData] = useState<IUserData>();
-
-    useEffect(() => {
-        const { user } = JSON.parse(localStorage.getItem("userData")!);
-        if (user) {
-            setUserData(user);
-        }
-    }, []);
+const FormRegisterConsortium = ({ update = false }) => {
     const initialData = {
         suterh_key: "",
         name: "",
@@ -33,17 +28,43 @@ const FormRegisterConsortium = () => {
         ufs: 0,
         category: 0,
         first_due_day: 0,
+        c_admin: "",
     };
-    const router = useRouter();
 
+    const [userData, setUserData] = useState<IUserData>();
+    const [admins, setAdmins] = useState<IAdmin[]>();
+    const [adminId, setAdminId] = useState<string>("");
     const [consortiumRegister, setConsortiumRegister] =
         useState<IConsortium>(initialData);
-
     const [consortiumRegisterError, setConsortiumRegisterError] =
         useState<IConsortiumError>(initialData);
 
+    const router = useRouter();
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await getAdmins();
+                if (response) {
+                    setAdmins(response);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        const { user } = JSON.parse(localStorage.getItem("userData")!);
+        if (user) {
+            setUserData(user);
+        }
+    }, []);
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
+
         setConsortiumRegister({
             ...consortiumRegister,
             [name]:
@@ -54,6 +75,16 @@ const FormRegisterConsortium = () => {
                 name === "first_due_day"
                     ? Number(value)
                     : value,
+        });
+    };
+
+    const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const { name, value } = e.target;
+        console.log(name, value);
+
+        setConsortiumRegister({
+            ...consortiumRegister,
+            [name]: value,
         });
     };
 
@@ -78,6 +109,7 @@ const FormRegisterConsortium = () => {
             alert("faltan datos en el formulario");
             return;
         }
+        console.log(consortiumRegister);
 
         try {
             const response = await consortiumFetch(consortiumRegister);
@@ -290,6 +322,26 @@ const FormRegisterConsortium = () => {
                         />
                     </div>
                 </div>
+                {userData?.roles?.[0] === "superadmin" && (
+                    <div>
+                        <div className="flex flex-col lg:w-full">
+                            <Label>Administrador </Label>
+                            <select
+                                name="c_admin"
+                                id="c-admin"
+                                onChange={handleSelect}
+                            >
+                                {admins?.map((admin) => {
+                                    return (
+                                        <option key={admin.id} value={admin.id}>
+                                            {admin.name} {admin.lastname}
+                                        </option>
+                                    );
+                                })}
+                            </select>
+                        </div>
+                    </div>
+                )}
                 <div className="mt-4">
                     <Button type="submit">Crear Consorcio</Button>
                 </div>

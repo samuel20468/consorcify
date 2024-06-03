@@ -22,6 +22,7 @@ export interface IUser {
 }
 
 export interface IAdmin extends IUser {
+    id?: string;
     phone: number;
     address: string;
     cuit: string;
@@ -65,6 +66,7 @@ export interface IConsortium {
     ufs: number;
     category: number;
     first_due_day: number;
+    c_admin: string;
 }
 export interface IConsortiumError {
     id?: string;
@@ -81,6 +83,7 @@ export interface IConsortiumError {
     ufs?: number;
     category?: number;
     first_due_day?: number;
+    c_admin: string;
 }
 
 export interface IReviews {

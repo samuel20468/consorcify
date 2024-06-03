@@ -1,5 +1,4 @@
 import { ILoginData } from "@/Interfaces/Interfaces";
-import { log } from "console";
 
 export const loginFetch = async (UserData: ILoginData) => {
     try {
@@ -38,7 +37,7 @@ export const registerFetch = async (registerData: any) => {
     }
 };
 
-export const getAdminById = async (id: any, token: any) => {
+export const getAdminById = async (id: string, token: string) => {
     try {
         const response = await fetch(`http://localhost:3001/c-admins/${id}`, {
             method: "GET",
@@ -52,10 +51,13 @@ export const getAdminById = async (id: any, token: any) => {
     } catch (error) {}
 };
 
-export const getAdmins = async () => {
+export const getAdmins = async (token: string) => {
     try {
         const response = await fetch("http://localhost:3001/c-admins", {
             method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
         });
         const data = await response.json();
         return data;
@@ -65,7 +67,7 @@ export const getAdmins = async () => {
 };
 
 //? ENDPOINTS USUARIOS
-export const getUserById = async (id: any, token: any) => {
+export const getUserById = async (id: string, token: string) => {
     try {
         const response = await fetch(`http://localhost:3001/users/${id}`, {
             method: "GET",
@@ -80,11 +82,13 @@ export const getUserById = async (id: any, token: any) => {
 };
 
 //? endpoint consorcios
-export const getConsortiums = async () => {
+export const getConsortiums = async (token: string) => {
     try {
         const response = await fetch("http://localhost:3001/consortiums", {
             method: "GET",
-            cache: "no-cache",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
         });
         return response;
     } catch (error) {
@@ -92,12 +96,16 @@ export const getConsortiums = async () => {
     }
 };
 
-export const getConsortiumById = async (id: string) => {
+export const getConsortiumById = async (id: string, token: string) => {
     try {
         const response = await fetch(
             `http://localhost:3001/consortiums/${id}`,
             {
                 method: "GET",
+                cache: "no-cache",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
             }
         );
 

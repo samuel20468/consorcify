@@ -27,7 +27,7 @@ const Login = () => {
 
             localStorage.setItem(
                 "userData",
-                JSON.stringify({ user: decodeData })
+                JSON.stringify({ user: decodeData, token: response.token })
             );
 
             setUserData(initialData);

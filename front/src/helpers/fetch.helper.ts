@@ -1,4 +1,4 @@
-import { ILoginData } from "@/Interfaces/Interfaces";
+import { IConsortium, ILoginData } from "@/Interfaces/Interfaces";
 
 export const loginFetch = async (UserData: ILoginData) => {
     try {
@@ -115,12 +115,47 @@ export const getConsortiumById = async (id: string, token: string) => {
     } catch (error) {}
 };
 
-export const deleteConsortiumById = async (id: string) => {
+export const updateConsortium = async (
+    id: string,
+    token: string,
+    data: IConsortium
+) => {
+    try {
+        const response = await fetch(
+            `http://localhost:3001/consortiums/${id}`,
+            {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify(data),
+            }
+        );
+        if (!response.ok) {
+            return response.json().then((errorInfo) => {
+                throw new Error(
+                    `Error ${response.status}: ${
+                        errorInfo.message || response.statusText
+                    }`
+                );
+            });
+        }
+        return response;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+export const deleteConsortiumById = async (id: string, token: string) => {
     try {
         const response = await fetch(
             `http://localhost:3001/consortiums/${id}`,
             {
                 method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
             }
         );
         console.log(response);

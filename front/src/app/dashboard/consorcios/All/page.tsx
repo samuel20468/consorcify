@@ -18,7 +18,7 @@ const page = () => {
         if (data) {
             setToken(data.token);
         }
-    }, [path]);
+    }, [path, token]);
 
     useEffect(() => {
         const fechtData = async (token: string) => {

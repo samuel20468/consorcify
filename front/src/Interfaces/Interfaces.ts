@@ -15,19 +15,20 @@ export interface ILogedUser {
 
 export interface IUser {
     name: string;
-    lastname: string;
+    lastname?: string;
     email: string;
     password: string;
-    role: string;
+    role?: string;
 }
 
 export interface IAdmin extends IUser {
     id?: string;
-    phone: number;
+    phone_number: number;
     address: string;
     cuit: string;
     rpa: string;
     sat: string;
+    active: boolean;
 }
 
 export interface IRegisterConsortium {
@@ -55,7 +56,7 @@ export interface IConsortium {
     id?: string;
     suterh_key: string;
     name: string;
-    cuit: string;
+    cuit?: string;
     street_name: string;
     building_number: number;
     zip_code: string;
@@ -66,7 +67,7 @@ export interface IConsortium {
     ufs: number;
     category: number;
     first_due_day: number;
-    c_admin: string;
+    c_admin: any[];
 }
 export interface IConsortiumError {
     id?: string;
@@ -83,7 +84,7 @@ export interface IConsortiumError {
     ufs?: number;
     category?: number;
     first_due_day?: number;
-    c_admin: string;
+    c_admin: any[];
 }
 
 export interface IReviews {

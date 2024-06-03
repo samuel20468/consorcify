@@ -7,6 +7,7 @@ import {
   IsUUID,
   Matches,
   IsDecimal,
+  IsNumber,
 } from 'class-validator';
 import { FUNCTIONAL_UNIT_TYPE } from 'src/utils/constants';
 
@@ -44,10 +45,7 @@ export class CreateFunctionalUnitDto {
   owner_email: string;
 
   @IsNotEmpty()
-  @IsDecimal(
-    { decimal_digits: '2', force_decimal: true },
-    { message: 'Balance must be a decimal number with up to 2 decimal places' },
-  )
+  @IsNumber({ maxDecimalPlaces: 2 })
   balance: number;
 
   @IsUUID()

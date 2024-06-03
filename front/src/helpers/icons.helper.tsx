@@ -89,7 +89,7 @@ export const AddCross = (props: Props) => {
                     d="M12 8V16M16 12L8 12"
                     stroke="currentColor"
                     strokeWidth="1.5"
-                    stroke-linecap="round"
+                    strokeLinecap="round"
                     strokeLinejoin="round"
                 />
                 <path
@@ -131,7 +131,7 @@ export const AllConsortium = (props: Props) => {
                     d="M8 6L10 6M8 9L10 9M8 12L10 12"
                     stroke="currentColor"
                     strokeWidth="1.5"
-                    stroke-linecap="round"
+                    strokeLinecap="round"
                     strokeLinejoin="round"
                 />
                 <path

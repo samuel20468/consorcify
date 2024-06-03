@@ -1,6 +1,6 @@
 import { CAdmin } from 'src/modules/c-admin/entities/c-admin.entity';
 import { User } from 'src/modules/users/entities/user.entity';
-import { checkPassword } from './hashPassword.helper';
+import { checkPassword } from './hash-password.helper';
 import { UnauthorizedException } from '@nestjs/common';
 import { ROLE } from 'src/utils/constants';
 import { JwtService } from '@nestjs/jwt';

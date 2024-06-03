@@ -15,18 +15,20 @@ export interface ILogedUser {
 
 export interface IUser {
     name: string;
-    lastname: string;
+    lastname?: string;
     email: string;
     password: string;
-    role: string;
+    role?: string;
 }
 
 export interface IAdmin extends IUser {
-    phone: number;
+    id?: string;
+    phone_number: number;
     address: string;
     cuit: string;
     rpa: string;
     sat: string;
+    active: boolean;
 }
 
 export interface IRegisterConsortium {
@@ -54,7 +56,7 @@ export interface IConsortium {
     id?: string;
     suterh_key: string;
     name: string;
-    cuit: string;
+    cuit?: string;
     street_name: string;
     building_number: number;
     zip_code: string;
@@ -65,6 +67,7 @@ export interface IConsortium {
     ufs: number;
     category: number;
     first_due_day: number;
+    c_admin: any[];
 }
 export interface IConsortiumError {
     id?: string;
@@ -81,8 +84,8 @@ export interface IConsortiumError {
     ufs?: number;
     category?: number;
     first_due_day?: number;
+    c_admin: any[];
 }
-
 
 export interface IReviews {
     profilePic: string;
@@ -90,7 +93,6 @@ export interface IReviews {
     author: string;
     date: string;
     rating: number;
-
 }
 
 export interface IReviewCardProps {
@@ -105,3 +107,18 @@ export interface IUserData {
     roles: string[];
 }
 
+export interface Props {
+    children?: React.ReactNode;
+    className?: string;
+}
+
+export interface IUFs {
+    type: string;
+    location: string;
+    number: string;
+    owner: string;
+    owner_phone_number: string;
+    owner_email: string;
+    balance: number;
+    consortium_id: string;
+}

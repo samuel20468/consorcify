@@ -3,22 +3,22 @@
 import React, { useEffect, useState } from "react";
 import { Button, Input, Label } from "../ui";
 import {
+    IAdmin,
     IConsortium,
     IConsortiumError,
     IUserData,
 } from "@/Interfaces/Interfaces";
 import { consortiumFetch } from "@/helpers/consortium.helper";
-import { useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
+import {
+    getAdmins,
+    getConsortiumById,
+    updateConsortium,
+} from "@/helpers/fetch.helper";
+import { validateSuterh } from "@/helpers/Validations/validate.suterh";
+import { validateCuit } from "@/helpers/Validations/validate.cuit";
 
-const FormRegisterConsortium = () => {
-    const [userData, setUserData] = useState<IUserData>();
-
-    useEffect(() => {
-        const { user } = JSON.parse(localStorage.getItem("userData")!);
-        if (user) {
-            setUserData(user);
-        }
-    }, []);
+const FormRegisterConsortium = ({ update = false }) => {
     const initialData = {
         suterh_key: "",
         name: "",
@@ -33,17 +33,59 @@ const FormRegisterConsortium = () => {
         ufs: 0,
         category: 0,
         first_due_day: 0,
+        c_admin: [] as any[],
     };
-    const router = useRouter();
-
+    const params: { id: string } = useParams();
+    const [userData, setUserData] = useState<IUserData>();
+    const [admins, setAdmins] = useState<IAdmin[]>();
+    const [token, setToken] = useState<string>("");
+    const path = usePathname();
     const [consortiumRegister, setConsortiumRegister] =
         useState<IConsortium>(initialData);
-
     const [consortiumRegisterError, setConsortiumRegisterError] =
         useState<IConsortiumError>(initialData);
+    const router = useRouter();
+
+    useEffect(() => {
+        const data = JSON.parse(localStorage.getItem("userData")!);
+        if (data) {
+            setToken(data.token);
+            setUserData(data.user);
+        }
+    }, [path]);
+
+    useEffect(() => {
+        const fetchConsortium = async () => {
+            if (update) {
+                try {
+                    const response = await getConsortiumById(params.id, token);
+                    setConsortiumRegister(response);
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+        };
+        const fetchData = async () => {
+            try {
+                const response = await getAdmins(token);
+                if (response) {
+                    setAdmins(response);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        if (token) {
+            fetchData();
+            if (update) {
+                fetchConsortium();
+            }
+        }
+    }, [token]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
+
         setConsortiumRegister({
             ...consortiumRegister,
             [name]:
@@ -54,6 +96,16 @@ const FormRegisterConsortium = () => {
                 name === "first_due_day"
                     ? Number(value)
                     : value,
+        });
+    };
+
+    const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const { name, value } = e.target;
+        console.log(name, value);
+
+        setConsortiumRegister({
+            ...consortiumRegister,
+            [name]: value,
         });
     };
 
@@ -78,27 +130,54 @@ const FormRegisterConsortium = () => {
             alert("faltan datos en el formulario");
             return;
         }
-
-        try {
-            const response = await consortiumFetch(consortiumRegister);
-            if (response?.ok) {
-                alert("Consorcio creado correctamente");
-                if (userData?.roles?.[0] == "superadmin") {
-                    router.push("/dashboard");
+        console.log(consortiumRegister);
+        if (update) {
+            try {
+                const response = await updateConsortium(
+                    params.id,
+                    token,
+                    consortiumRegister
+                );
+                if (response?.ok) {
+                    alert("Consorcio moficado correctamente");
+                    if (userData?.roles?.[0] == "superadmin") {
+                        router.push(`/dashboard/consorcios/All/${params.id}`);
+                    }
                 }
+            } catch (error) {
+                console.error(error);
             }
-        } catch (error) {
-            console.error(error);
+        } else {
+            try {
+                const response = await consortiumFetch(
+                    consortiumRegister,
+                    token
+                );
+                if (response?.ok) {
+                    alert("Consorcio Creado correctamente");
+
+                    const data = await response.json();
+                    console.log(data);
+                    if (userData?.roles?.[0] == "superadmin") {
+                        router.push(`/dashboard/consorcios/All/${data.id}`);
+                    }
+                }
+            } catch (error) {
+                console.error(error);
+            }
         }
     };
 
-    const handleReturn = () => {
-        if (userData?.roles?.[0] == "cadmin") {
-            router.push("/consortiums");
-        } else {
-            router.push("/dashboard/consorcios");
-        }
-    };
+    useEffect(() => {
+        const suterhErrors = validateSuterh(consortiumRegister.suterh_key);
+        const cuitErrors = validateCuit(consortiumRegister.cuit!);
+
+        setConsortiumRegisterError((prevErrors) => ({
+            ...prevErrors,
+            ...suterhErrors,
+            ...cuitErrors,
+        }));
+    }, [consortiumRegister]);
 
     return (
         <div className="w-full h-auto p-4 text-black">
@@ -106,12 +185,12 @@ const FormRegisterConsortium = () => {
                 <h1 className="mb-2 text-lg font-bold">
                     Consorcios{" "}
                     <span className="text-sm font-normal">
-                        | Registro de nuevo consorcio
+                        |
+                        {update
+                            ? " Modificar consorcio"
+                            : " Crear nuevo Consorcio"}
                     </span>
                 </h1>
-                <button onClick={handleReturn} className="text-lg font-bold">
-                    Volver
-                </button>
             </div>
             <form
                 className="mx-10 my-5"
@@ -128,8 +207,15 @@ const FormRegisterConsortium = () => {
                             name="suterh_key"
                             type="text"
                             placeholder="12345/01"
+                            value={consortiumRegister.suterh_key}
                             onChange={handleChange}
                         />
+                        {consortiumRegisterError.suterh_key &&
+                            consortiumRegister.suterh_key && (
+                                <span className="self-end text-xs text-red-500">
+                                    {consortiumRegisterError.suterh_key}
+                                </span>
+                            )}
                     </div>
                     <div className="flex flex-col lg:w-1/2">
                         <Label htmlFor="name">
@@ -140,6 +226,7 @@ const FormRegisterConsortium = () => {
                             name="name"
                             type="text"
                             placeholder="Consorcio Edificio Rivadavia 456"
+                            value={consortiumRegister.name}
                             onChange={handleChange}
                         />
                     </div>
@@ -152,8 +239,15 @@ const FormRegisterConsortium = () => {
                             name="cuit"
                             type="cuit"
                             placeholder="30030345670"
+                            value={consortiumRegister.cuit}
                             onChange={handleChange}
                         />
+                        {consortiumRegisterError.cuit &&
+                            consortiumRegister.cuit && (
+                                <span className="self-end text-xs text-red-500">
+                                    {consortiumRegisterError.cuit}
+                                </span>
+                            )}
                     </div>
                 </div>
 
@@ -167,6 +261,7 @@ const FormRegisterConsortium = () => {
                             name="street_name"
                             type="text"
                             placeholder="Av. Rivadavia"
+                            value={consortiumRegister.street_name}
                             onChange={handleChange}
                         />
                     </div>
@@ -179,6 +274,11 @@ const FormRegisterConsortium = () => {
                             name="building_number"
                             type="number"
                             placeholder="456"
+                            value={
+                                consortiumRegister.building_number == 0
+                                    ? ""
+                                    : consortiumRegister.building_number
+                            }
                             onChange={handleChange}
                         />
                     </div>
@@ -194,6 +294,7 @@ const FormRegisterConsortium = () => {
                             name="country"
                             type="text"
                             placeholder="Argentina"
+                            value={consortiumRegister.country}
                             onChange={handleChange}
                         />
                     </div>
@@ -206,6 +307,7 @@ const FormRegisterConsortium = () => {
                             name="province"
                             type="text"
                             placeholder="CABA"
+                            value={consortiumRegister.province}
                             onChange={handleChange}
                         />
                     </div>
@@ -218,6 +320,7 @@ const FormRegisterConsortium = () => {
                             name="city"
                             type="text"
                             placeholder="CABA"
+                            value={consortiumRegister.city}
                             onChange={handleChange}
                         />
                     </div>
@@ -229,8 +332,9 @@ const FormRegisterConsortium = () => {
                         <Input
                             id="zip_code"
                             name="zip_code"
-                            type="string"
+                            type="text"
                             placeholder="C1002AAP"
+                            value={consortiumRegister.zip_code}
                             onChange={handleChange}
                         />
                     </div>
@@ -247,6 +351,11 @@ const FormRegisterConsortium = () => {
                             name="floors"
                             type="number"
                             placeholder="5"
+                            value={
+                                consortiumRegister.floors == 0
+                                    ? ""
+                                    : consortiumRegister.floors
+                            }
                             onChange={handleChange}
                         />
                     </div>
@@ -260,6 +369,11 @@ const FormRegisterConsortium = () => {
                             name="ufs"
                             type="number"
                             placeholder="17"
+                            value={
+                                consortiumRegister.ufs == 0
+                                    ? ""
+                                    : consortiumRegister.ufs
+                            }
                             onChange={handleChange}
                         />
                     </div>
@@ -273,6 +387,11 @@ const FormRegisterConsortium = () => {
                             name="category"
                             type="number"
                             placeholder="1"
+                            value={
+                                consortiumRegister.category == 0
+                                    ? ""
+                                    : consortiumRegister.category
+                            }
                             onChange={handleChange}
                         />
                     </div>
@@ -286,12 +405,40 @@ const FormRegisterConsortium = () => {
                             name="first_due_day"
                             type="number"
                             placeholder="10"
+                            value={
+                                consortiumRegister.first_due_day == 0
+                                    ? ""
+                                    : consortiumRegister.first_due_day
+                            }
                             onChange={handleChange}
                         />
                     </div>
                 </div>
+                {userData?.roles?.[0] === "superadmin" && (
+                    <div>
+                        <div className="flex flex-col lg:w-full">
+                            <Label>Administrador </Label>
+                            <select
+                                className="h-10 px-2 text-white rounded-lg bg-input"
+                                name="c_admin"
+                                id="c-admin"
+                                onChange={handleSelect}
+                            >
+                                {admins?.map((admin) => {
+                                    return (
+                                        <option key={admin.id} value={admin.id}>
+                                            {admin.name} {admin.lastname}
+                                        </option>
+                                    );
+                                })}
+                            </select>
+                        </div>
+                    </div>
+                )}
                 <div className="mt-4">
-                    <Button type="submit">Crear Consorcio</Button>
+                    <Button type="submit">
+                        {update ? "Modificar Consorcio" : "Crear Consorcio"}
+                    </Button>
                 </div>
             </form>
         </div>

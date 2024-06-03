@@ -5,6 +5,7 @@ import { UpdateFunctionalUnitDto } from './dto/update-functional-unit.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Consortium } from '../consortiums/entities/consortium.entity';
+import { generateFunctionalUnitCode } from 'src/helpers/generate-functional-unit-code.helper';
 
 @Injectable()
 export class FunctionalUnitsRepository {
@@ -81,5 +82,9 @@ export class FunctionalUnitsRepository {
       ...functionalUnit,
       ...updateFunctionalUnitDto,
     });
+  }
+
+  async toggleStatus(id: string, status: boolean): Promise<void> {
+    await this.functionalUnitsRepository.update(id, { active: !status });
   }
 }

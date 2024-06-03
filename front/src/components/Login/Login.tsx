@@ -8,7 +8,6 @@ import { useRouter } from "next/navigation";
 import { loginFetch } from "@/helpers/fetch.helper";
 import { jwtDecode } from "jwt-decode";
 import "./style.css";
-import Navbar from "../Navbar/Navbar";
 import Link from "next/link";
 
 const Login = () => {
@@ -28,7 +27,10 @@ const Login = () => {
 
       const decodeData = jwtDecode(response.token);
 
-      localStorage.setItem("userData", JSON.stringify({ user: decodeData }));
+            localStorage.setItem(
+                "userData",
+                JSON.stringify({ user: decodeData, token: response.token })
+            );
 
       setUserData(initialData);
       SetErrors(initialData);
@@ -36,28 +38,25 @@ const Login = () => {
     } catch (error) {}
   };
 
-  useEffect(() => {
-    const liveErrors = validateEmail(userData.email);
-    SetErrors((prevErrors) => ({
-      ...prevErrors,
-      ...liveErrors,
-    }));
 
-    console.log(errors);
-  }, [userData]);
+    useEffect(() => {
+        const liveErrors = validateEmail(userData.email);
+        SetErrors((prevErrors) => ({
+            ...prevErrors,
+            ...liveErrors,
+        }));
+    }, [userData]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setUserData({
-      ...userData,
-      [name]: value,
-    });
-    console.log(userData);
-  };
-  const handleLock = () => {
-    setLock(!lock);
-  };
-
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setUserData({
+            ...userData,
+            [name]: value,
+        });
+    };
+    const handleLock = () => {
+        setLock(!lock);
+    };
   return (
     <>
       <div className="flex flex-col lg:flex-row w-screen font-sans h-screen">

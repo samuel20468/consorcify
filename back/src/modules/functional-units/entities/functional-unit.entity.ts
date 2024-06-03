@@ -9,6 +9,15 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
+export class ColumnNumericTransformer {
+  to(data: number): number {
+    return data;
+  }
+  from(data: string): number {
+    return parseFloat(data);
+  }
+}
+
 @Entity({
   name: 'functional_units',
 })
@@ -34,11 +43,20 @@ export class FunctionalUnit {
   @Column({ length: 50, nullable: false })
   owner_email: string;
 
-  @Column({ type: 'decimal', precision: 15, scale: 2 }) // Pendiente definir como se manejara el formato de número
+  @Column({
+    type: 'numeric',
+    precision: 10,
+    scale: 2,
+    nullable: false,
+    transformer: new ColumnNumericTransformer(),
+  })
   balance: number;
 
   @Column({ length: 8, nullable: false, unique: true })
   code: string;
+
+  @Column({ type: 'boolean', default: true })
+  active: boolean;
 
   @ManyToOne(() => Consortium, (consortium) => consortium.functional_units)
   @JoinColumn({ name: 'consortium_id' })

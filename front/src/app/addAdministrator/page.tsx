@@ -1,6 +1,6 @@
 "use client";
 
-import FormRegisterSuperAdmin from "@/components/FormRegisterSuperAdmin/FormRegisterSuperAdmin";
+import FormRegisterSuperAdmin from "@/components/formRegisterSuperAdmin/FormRegisterSuperAdmin";
 import { ContainerDashboard } from "@/components/ui";
 import useAuth from "@/helpers/useAuth";
 

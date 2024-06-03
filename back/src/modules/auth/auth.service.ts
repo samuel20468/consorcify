@@ -13,9 +13,10 @@ import { Repository } from 'typeorm';
 import { CAdmin } from '../c-admin/entities/c-admin.entity';
 import { CADMIN_PASS, SAT } from 'src/utils/constants';
 import { JwtService } from '@nestjs/jwt';
-import { signInHelper } from 'src/helpers/signIn.helper';
+import { signInHelper } from 'src/helpers/sign-in.helper';
 import { TObjectToken } from 'src/utils/types';
-import satSetter from 'src/helpers/satSetter.helper';
+import satSetter from 'src/helpers/sat-setter.helper';
+import { checkForDuplicates } from 'src/helpers/check-for-duplicates.helper';
 
 @Injectable()
 export class AuthService {
@@ -66,18 +67,19 @@ export class AuthService {
     newUser.password = hashedPassword;
 
     const createdUser = await this.usersRepository.save(newUser);
-    delete createdUser.password;
-    delete createdUser.is_super_admin;
-    delete createdUser.active;
     return createdUser;
   }
 
   async singUpCAdmin(consAdmin: CreateCAdminDto): Promise<CAdmin> {
     const { name, address, email, phone_number, cuit, sat, rpa } = consAdmin;
-    const foundCAdmin = await this.cAdminRepository.findOneBy({ email });
-    if (foundCAdmin) {
-      throw new ConflictException('El email ya se encuentra registrado.');
-    }
+    await checkForDuplicates(this.cAdminRepository, email, 'email', 'El email');
+    await checkForDuplicates(this.cAdminRepository, cuit, 'cuit', 'El CUIT');
+    await checkForDuplicates(
+      this.cAdminRepository,
+      rpa,
+      'rpa',
+      'El número de mátrícula RPA',
+    );
 
     const hashedPassword = await bcrypt.hash(CADMIN_PASS, 10);
     const satCAdmin: SAT = satSetter(sat);
@@ -93,8 +95,6 @@ export class AuthService {
     newCAdmin.rpa = rpa;
 
     const createdCAdmin = await this.cAdminRepository.save(newCAdmin);
-    delete createdCAdmin.active;
-    delete createdCAdmin.password;
     return createdCAdmin;
   }
 }

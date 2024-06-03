@@ -1,7 +1,10 @@
 import { IConsortium } from "@/Interfaces/Interfaces";
 
 // Creación de consorcios
-export async function consortiumFetch(consortiumData: IConsortium) {
+export async function consortiumFetch(
+    consortiumData: IConsortium,
+    token: string
+) {
     console.log(consortiumData);
 
     try {
@@ -9,6 +12,7 @@ export async function consortiumFetch(consortiumData: IConsortium) {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify(consortiumData),
         });
@@ -19,7 +23,7 @@ export async function consortiumFetch(consortiumData: IConsortium) {
                     Error ${response.status}: ${
                     errorInfo.message || response.statusText
                 }
-               `);
+            `);
             });
         }
         return response;

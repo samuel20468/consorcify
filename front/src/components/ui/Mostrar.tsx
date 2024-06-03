@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 
-const Mostrar = ({ children }: any) => {
+export const Mostrar = ({ children }: any) => {
     const pathname = usePathname();
 
     return (

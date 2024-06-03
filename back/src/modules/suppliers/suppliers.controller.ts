@@ -8,36 +8,34 @@ import {
   ParseUUIDPipe,
   Put,
   Patch,
+  UseInterceptors,
   UseGuards,
-  } from '@nestjs/common';
+} from '@nestjs/common';
 
 import { SuppliersService } from './suppliers.service';
 import { CreateSupplierDto } from './dto/create-supplier.dto';
-import { UpdateSupplierDto } from './dto/update-supplier.dto';
-import { AuthGuard } from 'src/guards/auth.guard';
-import { Roles } from 'src/decorators/role.decorator';
-import { ROLE } from 'src/utils/constants';
-import { RolesGuard } from 'src/guards/roles.guard';
 import { Supplier } from './entities/supplier.entity';
 import { STATUS } from 'src/utils/constants';
+import { ExcludeActiveInterceptor } from 'src/interceptors/exclude-active.interceptor';
+import { AuthGuard } from 'src/guards/auth.guard';
+import { Roles } from 'src/decorators/role.decorator';
 
-
-@UseGuards(AuthGuard)
 @Controller('suppliers')
+@UseGuards(AuthGuard)
+@UseInterceptors(ExcludeActiveInterceptor)
 export class SuppliersController {
   constructor(private readonly suppliersService: SuppliersService) {}
 
   @Post()
-  @Roles(ROLE.CADMIN)
-  @UseGuards(RolesGuard)
   async createSupplier(@Body() newSupplier: CreateSupplierDto) {
     return await this.suppliersService.createSupplier(newSupplier);
   }
 
   @Get()
-  @Roles(ROLE.CADMIN)
-  @UseGuards(RolesGuard)
-  async findAll(@Query('page') page: number = 1, @Query('limit') limit: number = 5) {
+  async findAll(
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 5,
+  ) {
     return await this.suppliersService.findAll({ page, limit });
   }
 

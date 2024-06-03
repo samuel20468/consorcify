@@ -3,7 +3,7 @@ import { IReviewCardProps } from "@/Interfaces/Interfaces";
 
 const ReviewCard = ({ review }: IReviewCardProps) => {
     return (
-      <div className="mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6 w-[30rem]">
+      <div className="mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6 w-[30rem] font-sans">
         <div className="flex items-start space-x-4">
           <img
             className="w-12 h-12 rounded-full"

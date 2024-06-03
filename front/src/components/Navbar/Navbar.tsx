@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import "./style.css";
 import Link from "next/link";
 
-
 const Navbar = ({ activeSection}: any) => {
+
+
+
   const [showNavbar, setShowNavbar] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 
@@ -29,6 +31,7 @@ const Navbar = ({ activeSection}: any) => {
       };
     }
   }, [lastScrollY]);
+
 
   return (
     <nav className={` fixed w-full z-20 mt-10 transition-transform duration-[1s] ${showNavbar ? 'translate-y-0' : '-translate-y-[130px]'}`}>
@@ -117,6 +120,7 @@ const Navbar = ({ activeSection}: any) => {
             <li className="py-[5px]">
               <a
                 href="#nosotros"
+                
                 className={`py-3 px-5 text-white ${
                   activeSection === "nosotros"
                     ? " !text-[#000000] bg-white rounded-[50px] "

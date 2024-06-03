@@ -7,7 +7,7 @@ export const EyeIcon = () => {
             viewBox="0 0 24 24"
             width="24"
             height="24"
-            color="#000000"
+            color="#ffffff"
             fill="none"
         >
             <path
@@ -31,7 +31,7 @@ export const EyeIconOff = () => {
             viewBox="0 0 24 24"
             width="24"
             height="24"
-            color="#000000"
+            color="#ffffff"
             fill="none"
         >
             <path

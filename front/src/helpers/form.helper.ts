@@ -1,6 +1,9 @@
 import { IRegisterConsortium } from "@/Interfaces/Interfaces";
 
-export async function adminFetch(registerAdmin: IRegisterConsortium) {
+export async function adminFetch(
+    registerAdmin: IRegisterConsortium,
+    token: string
+) {
     console.log(registerAdmin);
 
     try {
@@ -10,6 +13,7 @@ export async function adminFetch(registerAdmin: IRegisterConsortium) {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
                 },
                 body: JSON.stringify(registerAdmin),
             }

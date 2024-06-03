@@ -1,15 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Input, Label } from "../ui";
 import { adminFetch } from "@/helpers/form.helper";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
     IRegisterConsortium,
     IRegisterConsortiumError,
 } from "@/Interfaces/Interfaces";
 
 const FormRegisterSuperAdmin = () => {
+    const path = usePathname();
     const router = useRouter();
     const initialData = {
         name: "",
@@ -20,12 +21,19 @@ const FormRegisterSuperAdmin = () => {
         rpa: "",
         cuit: "",
     };
-
+    const [token, setToken] = useState<string>("");
     const [consortiumRegister, setConsortiumRegister] =
         useState<IRegisterConsortium>(initialData);
 
     const [errorConsortiumRegister, setErrorConsortiumRegister] =
         useState<IRegisterConsortiumError>(initialData);
+
+    useEffect(() => {
+        const data = JSON.parse(localStorage.getItem("userData")!);
+        if (data) {
+            setToken(data.token);
+        }
+    }, [path, token]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setConsortiumRegister({
@@ -49,7 +57,7 @@ const FormRegisterSuperAdmin = () => {
             return;
         }
         try {
-            const response = await adminFetch(consortiumRegister);
+            const response = await adminFetch(consortiumRegister, token);
             alert("Registro del consorcio exitoso.");
             console.log(response);
             // router.push("/") Definir donde nos va a pataear una vez creado el consorcio

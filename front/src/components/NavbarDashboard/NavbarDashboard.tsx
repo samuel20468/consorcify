@@ -8,7 +8,7 @@ const NavbarDashboard = () => {
 
     const handleLogout = () => {
         localStorage.removeItem("userData");
-        router.push("/login");
+        router.push("/");
     };
 
     const handleReturn = () => {

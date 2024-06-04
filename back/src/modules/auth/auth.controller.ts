@@ -1,7 +1,9 @@
 import {
   Body,
   Controller,
+  Get,
   Post,
+  Req,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -29,6 +31,12 @@ export class AuthController {
   @Post('signin')
   async signIn(@Body() credentials: CredentialsDto): Promise<object> {
     return await this.authService.signIn(credentials);
+  }
+
+  @Get('auth0/protected')
+  getAuth0Protected(@Req() req: Request) {
+    console.log(req.headers)
+    return JSON.stringify(req.headers)
   }
 
   @Post('signup')

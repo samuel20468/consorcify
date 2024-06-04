@@ -14,7 +14,9 @@ import { ConsortiumsService } from './consortiums.service';
 import { CreateConsortiumDto } from './dto/create-consortium.dto';
 import { UpdateConsortiumDto } from './dto/update-consortium.dto';
 import { AuthGuard } from 'src/guards/auth.guard';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags("Consortium")
 @Controller('consortiums')
 @UseGuards(AuthGuard)
 export class ConsortiumsController {

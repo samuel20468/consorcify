@@ -8,6 +8,7 @@ import { UpdateCAdminDto } from './dto/update-c-admin.dto';
 import { CAdminsRepository } from './c-admin.repository';
 import { TPagination } from 'src/utils/types';
 import { CAdmin } from './entities/c-admin.entity';
+import { checkForDuplicates } from 'src/helpers/check-for-duplicates.helper';
 
 @Injectable()
 export class CAdminsService {
@@ -44,7 +45,7 @@ export class CAdminsService {
   }
   async updateCAdmin(
     id: string,
-    cAdminToUpdate: CreateCAdminDto,
+    cAdminToUpdate: UpdateCAdminDto,
   ): Promise<CAdmin> {
     if (!id) {
       throw new BadRequestException('id is required');

@@ -4,7 +4,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { CredentialsDto } from './dto/credentials.dto';
-import { CreateUserDto } from './dto/create-user.dto';
+import { CreateUserDto } from '../users/dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
 import { User } from '../users/entities/user.entity';
 import { CreateCAdminDto } from '../c-admin/dto/create-c-admin.dto';
@@ -14,7 +14,7 @@ import { CAdmin } from '../c-admin/entities/c-admin.entity';
 import { CADMIN_PASS, SAT } from 'src/utils/constants';
 import { JwtService } from '@nestjs/jwt';
 import { signInHelper } from 'src/helpers/sign-in.helper';
-import { TObjectToken } from 'src/utils/types';
+import { TDuplicateCheck, TObjectToken } from 'src/utils/types';
 import satSetter from 'src/helpers/sat-setter.helper';
 import { checkForDuplicates } from 'src/helpers/check-for-duplicates.helper';
 
@@ -72,15 +72,33 @@ export class AuthService {
 
   async singUpCAdmin(consAdmin: CreateCAdminDto): Promise<CAdmin> {
     const { name, address, email, phone_number, cuit, sat, rpa } = consAdmin;
-    await checkForDuplicates(this.cAdminRepository, email, 'email', 'El email');
-    await checkForDuplicates(this.cAdminRepository, cuit, 'cuit', 'El CUIT');
-    await checkForDuplicates(
-      this.cAdminRepository,
-      rpa,
-      'rpa',
-      'El número de mátrícula RPA',
-    );
+    const toCheck: TDuplicateCheck[] = [
+      {
+        value: email,
+        field: 'email',
+        errorMessage: 'El email',
+      },
+      {
+        value: cuit,
+        field: 'cuit',
+        errorMessage: 'El CUIT',
+      },
+      {
+        value: rpa,
+        field: 'rpa',
+        errorMessage: 'El número de mátrícula RPA',
+      },
+    ];
 
+    toCheck.forEach((checking) =>
+      checkForDuplicates(
+        this.cAdminRepository,
+        checking.value,
+        checking.field,
+        checking.errorMessage,
+      ),
+    );
+    
     const hashedPassword = await bcrypt.hash(CADMIN_PASS, 10);
     const satCAdmin: SAT = satSetter(sat);
 

@@ -67,7 +67,7 @@ export interface IConsortium {
     ufs: number;
     category: number;
     first_due_day: number;
-    c_admin?: string;
+    c_admin?: string | IAdmin;
 }
 export interface IConsortiumError {
     id?: string;

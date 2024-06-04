@@ -4,7 +4,7 @@ import React from "react";
 const ConsortiumCard = (props: Props & { consortium: IConsortium }) => {
     const { className, consortium } = props;
     return (
-        <div className="p-1 border rounded-[50px] min-w-96 h-1/2 hover:scale-110 hover:shadow-xl hover:shadow-black bg-[#dadada] shadow-2xl">
+        <div className="p-1 border rounded-[50px] min-w-96 w-3/4 h-1/2 hover:scale-110 hover:shadow-xl hover:shadow-black bg-[#dadada] shadow-2xl">
             <div className="flex">
                 <img
                     src="https://i.pinimg.com/564x/47/f2/10/47f2109057d426d054e473fccff5faea.jpg"

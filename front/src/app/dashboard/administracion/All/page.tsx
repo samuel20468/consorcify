@@ -3,23 +3,19 @@
 import { IAdmin } from "@/Interfaces/Interfaces";
 import { ContainerDashboard } from "@/components/ui";
 import { getAdmins } from "@/helpers/fetch.helper";
+import useAuth from "@/helpers/useAuth";
+import useSesion from "@/helpers/useSesion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 const page = () => {
+    useAuth();
     const [admins, setAdmins] = useState<IAdmin[]>([]);
-    const [token, setToken] = useState<string>("");
+    const token = useSesion();
     const path = usePathname();
 
     console.log(admins);
-
-    useEffect(() => {
-        const data = JSON.parse(localStorage.getItem("userData")!);
-        if (data) {
-            setToken(data.token);
-        }
-    }, [path, token]);
 
     useEffect(() => {
         const fetchData = async () => {

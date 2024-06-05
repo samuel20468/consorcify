@@ -4,7 +4,7 @@ import "./style.css";
 export const Footer = () => {
   return (
     <>
-      <footer className="relative bg-black-background z-1 font-sans">
+      <footer className="relative bg-[#0b0c0d] z-1 font-sans">
         <hr className="my-0 border-white" />
         <div className="w-full max-w-screen-xl p-4 mx-auto md:py-8">
           <div className="md:flex md:items-center md:justify-between">

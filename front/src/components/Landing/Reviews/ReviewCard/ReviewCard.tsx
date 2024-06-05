@@ -2,22 +2,18 @@ import { IReviewCardProps } from "@/Interfaces/Interfaces";
 
 
 const ReviewCard = ({ review }: IReviewCardProps) => {
-    return (
-      <div className="mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6 w-[30rem] font-sans">
-        <div className="flex items-start space-x-4">
-          <img
-            className="w-12 h-12 rounded-full"
-            src={review.profilePic}
-            alt="Profile"
-          />
-          <div className="flex-1">
-            <p className="text-gray-700 font-semibold mb-3">{review.text}</p>
-            <p className="text-gray-500">{review.author}</p>
+  return (
+    <>
+      <div className="w-full max-w-md p-6 grid gap-6 font-sans bg-white rounded-[20px]">
+        <div className="flex items-center gap-4">
+          <div className="w-16 h-16">
+            <img
+              src={review.profilePic}
+              alt="Customer"
+              className="rounded-full"
+            />
           </div>
-          <div className="text-gray-400 text-sm">{review.date}</div>
-        </div>
-        <div className="flex items-center mt-4">
-          <div className="flex space-x-1 text-yellow-400 justify-end w-full">
+          <div className="flex items-center gap-2 text-black">
             {[...Array(5)].map((_, index) => (
               <svg
                 key={index}
@@ -33,9 +29,16 @@ const ReviewCard = ({ review }: IReviewCardProps) => {
             ))}
           </div>
         </div>
+        <p className="text-lg leading-relaxed text-gray-500 dark:text-gray-400">
+          {review.text}
+        </p>
+        <div className="text-sm">
+          <p className="font-semibold text-black">{review.author}</p>
+          <p className="text-gray-500 dark:text-gray-400">{review.type}</p>
+        </div>
       </div>
-    );
-  };
-  
-  export default ReviewCard;
+    </>
+  );
+};
 
+export default ReviewCard;

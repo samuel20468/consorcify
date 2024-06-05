@@ -11,7 +11,7 @@ type PropType = {
     profilePic: string;
     text: string;
     author: string;
-    date: string;
+    type: string;
     rating: number;
   }[];
   options?: EmblaOptionsType;

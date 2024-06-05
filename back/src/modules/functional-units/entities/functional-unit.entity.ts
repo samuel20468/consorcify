@@ -1,3 +1,4 @@
+import ColumnNumericTransformer from 'src/helpers/numeric-transformer.helper';
 import { Consortium } from 'src/modules/consortiums/entities/consortium.entity';
 import { User } from 'src/modules/users/entities/user.entity';
 import { FUNCTIONAL_UNIT_TYPE } from 'src/utils/constants';
@@ -8,15 +9,6 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-
-export class ColumnNumericTransformer {
-  to(data: number): number {
-    return data;
-  }
-  from(data: string): number {
-    return parseFloat(data);
-  }
-}
 
 @Entity({
   name: 'functional_units',

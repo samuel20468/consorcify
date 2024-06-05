@@ -8,6 +8,7 @@ import { TPagination } from 'src/utils/types';
 import { Supplier } from './entities/supplier.entity';
 import { SuppliersRepository } from './suppliers.repository';
 import { UpdateSupplierDto } from './dto/update-supplier.dto';
+import { checkForDuplicates } from 'src/helpers/check-for-duplicates.helper';
 
 @Injectable()
 export class SuppliersService {

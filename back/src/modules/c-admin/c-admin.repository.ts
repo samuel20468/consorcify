@@ -31,9 +31,6 @@ export class CAdminsRepository {
     existingCAdmin: CAdmin,
     cAdminToUpdate: UpdateCAdminDto,
   ): Promise<CAdmin> {
-    const { email } = cAdminToUpdate;
-
-    await checkForDuplicates(this.cAdminRepository, email, 'email', 'El Email');
 
     const mergedCAdmin: CAdmin = this.cAdminRepository.merge(
       existingCAdmin,

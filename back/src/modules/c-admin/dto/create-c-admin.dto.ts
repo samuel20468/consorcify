@@ -48,7 +48,7 @@ export class CreateCAdminDto {
 
   /**
    * El número de teléfono del administrador del consorcio
-   * @example "1145678901"
+   * @example "+5491145678901"
    */
   @IsNotEmpty({ message: 'El número de teléfono es requerido' })
   @IsPhoneNumber(null, {

@@ -32,25 +32,8 @@ export class UpdateCAdminDto extends PartialType(CreateCAdminDto) {
   address: string;
 
   /**
-   * El correo electrónico del administrador del consorcio
-   * @example "pedro.sanchez@example.com"
-   */
-  @IsNotEmpty({ message: 'El correo electrónico es requerido' })
-  @IsEmail(
-    {},
-    {
-      message: 'El correo electrónico debe ser una dirección de correo válida',
-    },
-  )
-  @IsString({ message: 'El correo electrónico debe ser una cadena de texto' })
-  @Length(1, 50, {
-    message: 'El correo electrónico debe tener como máximo 50 caracteres',
-  })
-  email: string;
-
-  /**
    * El número de teléfono del administrador del consorcio
-   * @example "1145678901"
+   * @example "+5491145678901"
    */
   @IsNotEmpty({ message: 'El número de teléfono es requerido' })
   @IsPhoneNumber(null, {

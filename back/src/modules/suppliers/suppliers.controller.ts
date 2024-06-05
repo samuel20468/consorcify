@@ -18,11 +18,12 @@ import { STATUS } from 'src/utils/constants';
 import { ExcludeActiveInterceptor } from 'src/interceptors/exclude-active.interceptor';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { Roles } from 'src/decorators/role.decorator';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { UpdateSupplierDto } from './dto/update-supplier.dto';
 
 @ApiTags('Supplier')
 @Controller('suppliers')
+@ApiBearerAuth()
 @UseGuards(AuthGuard)
 @UseInterceptors(ExcludeActiveInterceptor)
 export class SuppliersController {

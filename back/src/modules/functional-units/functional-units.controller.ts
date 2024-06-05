@@ -16,9 +16,10 @@ import { CreateFunctionalUnitDto } from './dto/create-functional-unit.dto';
 import { UpdateFunctionalUnitDto } from './dto/update-functional-unit.dto';
 import { FunctionalUnit } from './entities/functional-unit.entity';
 import { AuthGuard } from 'src/guards/auth.guard';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 @ApiTags('Functional Units')
 @Controller('functional-units')
+@ApiBearerAuth()
 @UseGuards(AuthGuard)
 export class FunctionalUnitsController {
   constructor(

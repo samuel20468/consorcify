@@ -20,10 +20,11 @@ import { AuthGuard } from 'src/guards/auth.guard';
 import { Roles } from 'src/decorators/role.decorator';
 import { ROLE } from 'src/utils/constants';
 import { RolesGuard } from 'src/guards/roles.guard';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 @ApiTags("User")
 @Controller('users')
+@ApiBearerAuth()
 @UseGuards(AuthGuard)
 @UseInterceptors(ExcludePasswordInterceptor)
 export class UsersController {

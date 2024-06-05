@@ -1,8 +1,13 @@
 "use client";
 
+// Estilos y componentes
 import { Button, ContainerDashboard, Title } from "@/components/ui";
 import { AddCross, AllAdmins } from "@/helpers/icons.helper";
+
+// Hooks
 import Link from "next/link";
+
+// ---------------
 
 const ConsorciosCrud = () => {
     return (

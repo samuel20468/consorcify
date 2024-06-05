@@ -1,20 +1,27 @@
 "use client";
 
-import { useEffect, useState } from "react";
+// Estilos y componentes
 import { Button, Input, Label } from "../ui";
-import { adminFetch } from "@/helpers/form.helper";
-import { useParams, usePathname, useRouter } from "next/navigation";
-import {
-    IRegisterConsortium,
-    IRegisterConsortiumError,
-} from "@/Interfaces/Interfaces";
+import Swal from "sweetalert2";
+
+// Iterfaces
+import { IRegisterAdmin, IRegisterAdminError } from "@/Interfaces/Interfaces";
+
+// Validaciones
 import { validateCuit } from "@/helpers/Validations/validate.cuit";
 import { validateNombre } from "@/helpers/Validations/validate.name";
 import { validateRPA } from "@/helpers/Validations/validate.rpa";
 import { validateEmail } from "@/helpers/Validations/validate.email";
-import { getAdminById, updateAdmin } from "@/helpers/fetch.helper";
+
+// Endpoints
+import { adminFetch, getAdminById, updateAdmin } from "@/helpers/fetch.helper";
+
+// Hooks
+import { useEffect, useState } from "react";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
-import Swal from "sweetalert2";
+
+// -----------------
 
 const FormRegisterSuperAdmin = ({ update = false }) => {
     useAuth();
@@ -23,20 +30,18 @@ const FormRegisterSuperAdmin = ({ update = false }) => {
     const initialData = {
         name: "",
         address: "",
-        email: "",
         phone_number: "",
+        cuit: "",
         sat: "",
         rpa: "",
-        cuit: "",
+        email: "",
     };
-    const [token, setToken] = useState<string>("");
-    const [consortiumRegister, setConsortiumRegister] =
-        useState<IRegisterConsortium>(initialData);
-    const [errorConsortiumRegister, setErrorConsortiumRegister] =
-        useState<IRegisterConsortiumError>(initialData);
-
     const params: { id: string } = useParams();
-    console.log(consortiumRegister);
+    const [token, setToken] = useState<string>("");
+    const [adminRegister, setAdminRegister] =
+        useState<IRegisterAdmin>(initialData);
+    const [errorAdminRegister, setErrorAdminRegister] =
+        useState<IRegisterAdminError>(initialData);
 
     useEffect(() => {
         const data = JSON.parse(localStorage.getItem("userData")!);
@@ -47,87 +52,93 @@ const FormRegisterSuperAdmin = ({ update = false }) => {
 
     useEffect(() => {
         const fetchData = async () => {
+            if (update && !params.id) {
+                console.error("El ID del administrador es undefined o vacío");
+                return;
+            }
             try {
                 const response = await getAdminById(params.id, token);
-                if (response) {
+                if (response && response.ok) {
                     const data = await response.json();
-                    setConsortiumRegister(data);
+                    setAdminRegister(data);
+                } else {
+                    console.error(`Error: ${response?.statusText}`);
                 }
             } catch (error) {
                 console.error(error);
             }
         };
-        if (token) {
+        if (token && update) {
             fetchData();
         }
     }, [token, path]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setConsortiumRegister({
-            ...consortiumRegister,
+        setAdminRegister({
+            ...adminRegister,
             [e.target.name]: e.target.value,
         });
     };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e?.preventDefault();
+
         if (
-            !consortiumRegister.address ||
-            !consortiumRegister.name ||
-            !consortiumRegister.email ||
-            !consortiumRegister.phone_number ||
-            !consortiumRegister.sat ||
-            !consortiumRegister.rpa ||
-            !consortiumRegister.cuit
+            !adminRegister.address ||
+            !adminRegister.name ||
+            !adminRegister.email ||
+            !adminRegister.phone_number ||
+            !adminRegister.sat ||
+            !adminRegister.rpa ||
+            !adminRegister.cuit
         ) {
             alert("faltan datos en el formulario");
             return;
         }
         try {
-            if (update == true) {
+            if (update) {
                 const response = await updateAdmin(
-                    consortiumRegister,
+                    adminRegister,
                     params.id,
                     token
                 );
+
                 if (response) {
-                    Swal.fire({
-                        title: "Actualizacion exitosa",
-                    });
+                    alert("Actualizacion exitosa");
                     router.push(`/dashboard/administracion/All/${params.id}`);
                 }
             } else {
-                const response = await adminFetch(consortiumRegister, token);
-                if (response) {
-                    alert("Registro del consorcio exitoso.");
+                const response = await adminFetch(adminRegister, token);
+                if (response.ok) {
+                    alert("Registro de la administración exitoso.");
+                } else {
+                    console.error("Se dió un error en adminFetch");
                 }
             }
-            // router.push("/") Definir donde nos va a pataear una vez creado el consorcio
-            setConsortiumRegister(initialData);
         } catch (error: any) {
-            console.error(error);
+            console.error(`Error en handleSubmit: ${error.message}`);
         }
     };
 
     useEffect(() => {
-        const nameErrors = validateNombre(consortiumRegister.name);
-        const cuitErrors = validateCuit(consortiumRegister.cuit!);
-        const rpaErrors = validateRPA(consortiumRegister.rpa);
-        const emailErrors = validateEmail(consortiumRegister.email);
+        const nameErrors = validateNombre(adminRegister.name);
+        const cuitErrors = validateCuit(adminRegister.cuit!);
+        const rpaErrors = validateRPA(adminRegister.rpa);
+        const emailErrors = validateEmail(adminRegister.email);
 
-        setErrorConsortiumRegister((prevErrors) => ({
+        setErrorAdminRegister((prevErrors) => ({
             ...prevErrors,
             ...nameErrors,
             ...cuitErrors,
             ...rpaErrors,
             ...emailErrors,
         }));
-    }, [consortiumRegister]);
+    }, [adminRegister]);
 
     const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = e.target;
-        setConsortiumRegister({
-            ...consortiumRegister,
+        setAdminRegister({
+            ...adminRegister,
             [name]: value,
         });
     };
@@ -153,14 +164,14 @@ const FormRegisterSuperAdmin = ({ update = false }) => {
                 <Input
                     id="name"
                     name="name"
-                    value={consortiumRegister.name}
+                    value={adminRegister.name}
                     type="text"
                     placeholder="Nombre"
                     onChange={handleChange}
                 />
-                {errorConsortiumRegister.name && consortiumRegister.name && (
+                {errorAdminRegister.name && adminRegister.name && (
                     <span className="self-end text-xs text-red-500">
-                        {errorConsortiumRegister.name}
+                        {errorAdminRegister.name}
                     </span>
                 )}
                 <Label htmlFor="address">
@@ -169,7 +180,7 @@ const FormRegisterSuperAdmin = ({ update = false }) => {
                 <Input
                     id="address"
                     name="address"
-                    value={consortiumRegister.address}
+                    value={adminRegister.address}
                     type="text"
                     placeholder="Dirección"
                     onChange={handleChange}
@@ -180,7 +191,7 @@ const FormRegisterSuperAdmin = ({ update = false }) => {
                 <Input
                     id="phone_number"
                     name="phone_number"
-                    value={consortiumRegister.phone_number}
+                    value={adminRegister.phone_number}
                     type="text"
                     placeholder="example: +541144332211"
                     onChange={handleChange}
@@ -191,26 +202,30 @@ const FormRegisterSuperAdmin = ({ update = false }) => {
                 <Input
                     id="cuit"
                     name="cuit"
-                    value={consortiumRegister.cuit}
+                    value={adminRegister.cuit}
                     type="text"
                     placeholder="CUIT sin guiones"
                     onChange={handleChange}
+                    disabled={update}
                 />
-                {errorConsortiumRegister.cuit && consortiumRegister.cuit && (
+                {errorAdminRegister.cuit && adminRegister.cuit && (
                     <span className="self-end text-xs text-red-500">
-                        {errorConsortiumRegister.cuit}
+                        {errorAdminRegister.cuit}
                     </span>
                 )}
                 <Label htmlFor="sat">
                     Situación Fiscal:<span className="text-red-600">*</span>
                 </Label>
                 <select
-                    className="h-10 px-2 text-white rounded-lg bg-input"
+                    className="h-10 px-2 my-1 text-gray-200 border rounded-md shadow-xl cursor-pointer bg-input focus:outline-none no-spinners"
                     name="sat"
                     id="sat"
-                    value={consortiumRegister.sat}
+                    value={adminRegister.sat}
                     onChange={handleSelect}
                 >
+                    <option value="" disabled>
+                        Seleccionar la situación tributaria
+                    </option>
                     <option value="Monotributo">Monotributo</option>
                     <option value="Responsable Inscripto">
                         Responsable Inscripto
@@ -227,14 +242,15 @@ const FormRegisterSuperAdmin = ({ update = false }) => {
                 <Input
                     id="rpa"
                     name="rpa"
-                    value={consortiumRegister.rpa}
+                    value={adminRegister.rpa}
                     type="text"
                     placeholder="example: 12345"
                     onChange={handleChange}
+                    disabled={update}
                 />
-                {errorConsortiumRegister.rpa && consortiumRegister.rpa && (
+                {errorAdminRegister.rpa && adminRegister.rpa && (
                     <span className="self-end text-xs text-red-500">
-                        {errorConsortiumRegister.rpa}
+                        {errorAdminRegister.rpa}
                     </span>
                 )}
                 <Label htmlFor="email">
@@ -243,14 +259,14 @@ const FormRegisterSuperAdmin = ({ update = false }) => {
                 <Input
                     id="email"
                     name="email"
-                    value={consortiumRegister.email}
+                    value={adminRegister.email}
                     type="email"
                     placeholder="Correo electrónico"
                     onChange={handleChange}
                 />
-                {errorConsortiumRegister.email && consortiumRegister.email && (
+                {errorAdminRegister.email && adminRegister.email && (
                     <span className="self-end text-xs text-red-500">
-                        {errorConsortiumRegister.email}
+                        {errorAdminRegister.email}
                     </span>
                 )}
 

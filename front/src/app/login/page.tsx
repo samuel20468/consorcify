@@ -1,3 +1,4 @@
+// Estilos y componentes
 import Login from "@/components/Login/Login";
 
 const page = () => {

@@ -2,7 +2,7 @@
 
 // Estilos y componentes
 import "./style.css";
-import { Label } from "../ui";
+import { Button, Input, Label } from "../ui";
 import { EyeIcon, EyeIconOff } from "@/helpers/icons.helper";
 
 // Validaciones
@@ -233,6 +233,7 @@ const Register = () => {
                     <form
                         className="flex flex-col w-[27vw]"
                         onSubmit={handleSubmit}
+                        autoComplete="off"
                     >
                         <div className="flex items-center justify-between w-full">
                             <Label htmlFor="nombre">Nombre:</Label>
@@ -242,8 +243,7 @@ const Register = () => {
                                 </span>
                             )}
                         </div>
-                        <input
-                            className="h-10 p-2 my-1 text-gray-200 rounded-md shadow-xl bg-input placeholder:font-extralight placeholder:text-gray-500 focus:outline-none no-spinners"
+                        <Input
                             id="nombre"
                             name="first_name"
                             type="text"
@@ -260,8 +260,7 @@ const Register = () => {
                                 </span>
                             )}
                         </div>
-                        <input
-                            className="h-10 p-2 my-1 text-gray-200 rounded-md shadow-xl bg-input placeholder:font-extralight placeholder:text-gray-500 focus:outline-none no-spinners"
+                        <Input
                             id="apellido"
                             name="last_name"
                             type="text"
@@ -278,8 +277,7 @@ const Register = () => {
                                 </span>
                             )}
                         </div>
-                        <input
-                            className="h-10 p-2 my-1 text-gray-200 rounded-md shadow-xl bg-input placeholder:font-extralight placeholder:text-gray-500 focus:outline-none no-spinners"
+                        <Input
                             id="email"
                             name="email"
                             type="text"
@@ -297,8 +295,7 @@ const Register = () => {
                             )}
                         </div>
                         <div className="flex items-center justify-between w-full h-10 my-1 rounded-md">
-                            <input
-                                className="w-[14vw] h-10 p-2 my-1 text-gray-200 rounded-md shadow-xl bg-input placeholder:font-extralight placeholder:text-gray-500 focus:outline-none no-spinners"
+                            <Input
                                 id="pwd"
                                 name="password"
                                 type={lock ? "password" : "text"}
@@ -308,7 +305,7 @@ const Register = () => {
                             />
                             <button
                                 type="button"
-                                className="w-8 p-1"
+                                className="w-8 ml-2"
                                 onClick={handleLock}
                             >
                                 {lock ? <EyeIconOff /> : <EyeIcon />}
@@ -327,8 +324,7 @@ const Register = () => {
                         </div>
 
                         <div className="flex items-center justify-between w-full h-10 my-1 rounded-md ">
-                            <input
-                                className="w-[14vw] h-10 p-2 my-1 text-gray-200 rounded-md shadow-xl bg-input placeholder:font-extralight placeholder:text-gray-500 focus:outline-none no-spinners"
+                            <Input
                                 id="pwd2"
                                 name="password2"
                                 type={lock ? "password" : "text"}
@@ -338,19 +334,19 @@ const Register = () => {
                             />
                             <button
                                 type="button"
-                                className="w-8 p-1"
+                                className="w-8 ml-2"
                                 onClick={handleLock}
                             >
                                 {lock ? <EyeIconOff /> : <EyeIcon />}
                             </button>
                         </div>
                         <div className="mt-10">
-                            <button
+                            <Button
                                 type="submit"
-                                className="w-full py-2 text-black rounded-[50px] shadow-md bg-neutral-50 hover:bg-input hover:text-white disabled:pointer-events-none duration-500"
+                                className="w-full py-2 rounded-[50px] "
                             >
                                 Registrase
-                            </button>
+                            </Button>
                         </div>
                     </form>
                     <div className="pt-2 mt-3">

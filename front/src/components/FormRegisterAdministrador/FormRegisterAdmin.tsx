@@ -20,6 +20,7 @@ import { adminFetch, getAdminById, updateAdmin } from "@/helpers/fetch.helper";
 import { useEffect, useState } from "react";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
+import useSesion from "@/helpers/useSesion";
 
 // -----------------
 
@@ -36,19 +37,12 @@ const FormRegisterAdmin = ({ update = false }) => {
         rpa: "",
         email: "",
     };
+    const { token, data } = useSesion();
     const params: { id: string } = useParams();
-    const [token, setToken] = useState<string>("");
     const [adminRegister, setAdminRegister] =
         useState<IRegisterAdmin>(initialData);
     const [errorAdminRegister, setErrorAdminRegister] =
         useState<IRegisterAdminError>(initialData);
-
-    useEffect(() => {
-        const data = JSON.parse(localStorage.getItem("userData")!);
-        if (data) {
-            setToken(data.token);
-        }
-    }, [path, token]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -57,7 +51,7 @@ const FormRegisterAdmin = ({ update = false }) => {
                 return;
             }
             try {
-                const response = await getAdminById(params.id, token);
+                const response = await getAdminById(data, token);
                 if (response && response.ok) {
                     const data = await response.json();
                     setAdminRegister(data);
@@ -111,9 +105,9 @@ const FormRegisterAdmin = ({ update = false }) => {
                 const response = await adminFetch(adminRegister, token);
                 if (response) {
                     alert("Registro del consorcio exitoso.");
+                    router.push(`/dashboard/administracion/All/${params.id}`);
                 }
             }
-            // router.push("/") Definir donde nos va a pataear una vez creado el consorcio
             setAdminRegister(initialData);
         } catch (error: any) {
             console.error(error);
@@ -223,7 +217,7 @@ const FormRegisterAdmin = ({ update = false }) => {
                     value={adminRegister.sat}
                     onChange={handleSelect}
                 >
-                    <option value="" disabled>
+                    <option value="" disabled selected>
                         Seleccionar la situación tributaria
                     </option>
                     <option value="Monotributo">Monotributo</option>

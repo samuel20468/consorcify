@@ -21,6 +21,7 @@ import { RolesGuard } from 'src/guards/roles.guard';
 import { Roles } from 'src/decorators/role.decorator';
 import { ROLE } from 'src/utils/constants';
 import { ApiTags } from '@nestjs/swagger';
+import { Request } from 'express';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -35,8 +36,8 @@ export class AuthController {
 
   @Get('auth0/protected')
   getAuth0Protected(@Req() req: Request) {
-    console.log(req.headers);
-    return JSON.stringify(req.headers);
+    console.log(req.oidc.idToken);
+    return JSON.stringify(req.oidc.user);
   }
 
   @Post('signup')

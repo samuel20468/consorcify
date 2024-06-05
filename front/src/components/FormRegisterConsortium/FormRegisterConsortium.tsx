@@ -8,9 +8,9 @@ import {
     IConsortiumError,
     IUserData,
 } from "@/Interfaces/Interfaces";
-import { consortiumFetch } from "@/helpers/consortium.helper";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import {
+    consortiumFetch,
     getAdmins,
     getConsortiumById,
     updateConsortium,
@@ -142,6 +142,8 @@ const FormRegisterConsortium = ({ update = false }) => {
                     token,
                     consortiumRegister
                 );
+                console.log(response);
+
                 if (response?.ok) {
                     alert("Consorcio moficado correctamente");
                     if (userData?.roles?.[0] == "superadmin") {

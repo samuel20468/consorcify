@@ -5,7 +5,7 @@ export const ContainerSideBar = (props: Props) => {
     const { children } = props;
 
     return (
-        <aside className="fixed flex flex-col items-center justify-around w-[20%] lg:w-[10%] h-full bg-slate-200 shadow-2xl">
+        <aside className="fixed flex-col items-center justify-around w-[16%] lg:w-[8%] h-[90%] bg-slate-200 shadow-2xl ml-3 my-10 rounded-xl">
             {children}
         </aside>
     );

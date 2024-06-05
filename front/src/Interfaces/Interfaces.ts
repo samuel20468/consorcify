@@ -31,7 +31,7 @@ export interface IAdmin extends IUser {
     active: boolean;
 }
 
-export interface IRegisterConsortium {
+export interface IRegisterAdmin {
     name: string;
     email: string;
     password?: string;
@@ -40,9 +40,10 @@ export interface IRegisterConsortium {
     address: string;
     sat: string;
     rpa: string;
+    id?: string;
 }
 
-export interface IRegisterConsortiumError {
+export interface IRegisterAdminError {
     name?: string;
     email?: string;
     password?: string;

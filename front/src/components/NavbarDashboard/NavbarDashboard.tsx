@@ -1,17 +1,22 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Button, ContainerHeaderDashboard } from "../ui";
 
 const NavbarDashboard = () => {
     const router = useRouter();
+    const path = usePathname();
 
     const handleLogout = () => {
         localStorage.removeItem("userData");
-        router.push("/login");
+        router.push("/");
     };
 
     const handleReturn = () => {
+        router.push("/dashboard");
+    };
+
+    const handleBack = () => {
         router.back();
     };
 
@@ -19,7 +24,9 @@ const NavbarDashboard = () => {
         <ContainerHeaderDashboard>
             <div className="flex items-center justify-end w-full gap-1 mr-4">
                 <div className="w-1/12">
-                    <Button onClick={handleReturn}>Volver Atrás</Button>
+                    {path !== "/dashboard" && (
+                        <Button onClick={handleReturn}>Inicio</Button>
+                    )}
                 </div>
                 <div className="w-1/12">
                     <Button onClick={handleLogout}>Cerrar sesión</Button>

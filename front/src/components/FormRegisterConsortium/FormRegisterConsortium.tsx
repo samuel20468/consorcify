@@ -8,9 +8,9 @@ import {
     IConsortiumError,
     IUserData,
 } from "@/Interfaces/Interfaces";
-import { consortiumFetch } from "@/helpers/consortium.helper";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import {
+    consortiumFetch,
     getAdmins,
     getConsortiumById,
     updateConsortium,
@@ -33,12 +33,13 @@ const FormRegisterConsortium = ({ update = false }) => {
         ufs: 0,
         category: 0,
         first_due_day: 0,
-        c_admin: [] as any[],
+        c_admin: "",
     };
     const params: { id: string } = useParams();
     const [userData, setUserData] = useState<IUserData>();
     const [admins, setAdmins] = useState<IAdmin[]>();
     const [token, setToken] = useState<string>("");
+    const [admin, setAdmin] = useState("");
     const path = usePathname();
     const [consortiumRegister, setConsortiumRegister] =
         useState<IConsortium>(initialData);
@@ -60,6 +61,10 @@ const FormRegisterConsortium = ({ update = false }) => {
                 try {
                     const response = await getConsortiumById(params.id, token);
                     setConsortiumRegister(response);
+                    setConsortiumRegister((prevState) => ({
+                        ...prevState,
+                        c_admin: response.c_admin.id,
+                    }));
                 } catch (error) {
                     console.error(error);
                 }
@@ -101,7 +106,6 @@ const FormRegisterConsortium = ({ update = false }) => {
 
     const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = e.target;
-        console.log(name, value);
 
         setConsortiumRegister({
             ...consortiumRegister,
@@ -138,6 +142,8 @@ const FormRegisterConsortium = ({ update = false }) => {
                     token,
                     consortiumRegister
                 );
+                console.log(response);
+
                 if (response?.ok) {
                     alert("Consorcio moficado correctamente");
                     if (userData?.roles?.[0] == "superadmin") {
@@ -241,6 +247,7 @@ const FormRegisterConsortium = ({ update = false }) => {
                             placeholder="30030345670"
                             value={consortiumRegister.cuit}
                             onChange={handleChange}
+                            disabled={update}
                         />
                         {consortiumRegisterError.cuit &&
                             consortiumRegister.cuit && (
@@ -421,9 +428,13 @@ const FormRegisterConsortium = ({ update = false }) => {
                             <select
                                 className="h-10 px-2 text-white rounded-lg bg-input"
                                 name="c_admin"
-                                id="c-admin"
+                                id="c_admin"
+                                value={consortiumRegister.c_admin}
                                 onChange={handleSelect}
                             >
+                                <option value="" disabled>
+                                    Selecciona un Administrador
+                                </option>
                                 {admins?.map((admin) => {
                                     return (
                                         <option key={admin.id} value={admin.id}>

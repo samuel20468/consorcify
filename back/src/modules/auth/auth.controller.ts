@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CredentialsDto } from './dto/credentials.dto';
-import { CreateUserDto } from './dto/create-user.dto';
+import { CreateUserDto } from '../users/dto/create-user.dto';
 import { CreateCAdminDto } from '../c-admin/dto/create-c-admin.dto';
 import { User } from '../users/entities/user.entity';
 import { CAdmin } from '../c-admin/entities/c-admin.entity';
@@ -18,7 +18,9 @@ import { AuthGuard } from 'src/guards/auth.guard';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { Roles } from 'src/decorators/role.decorator';
 import { ROLE } from 'src/utils/constants';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Auth')
 @Controller('auth')
 @UseInterceptors(ExcludePasswordInterceptor, ExcludeActiveInterceptor)
 export class AuthController {
@@ -36,8 +38,9 @@ export class AuthController {
   }
 
   @Post('register-c-admin')
-  @Roles(ROLE.SUPERADMIN)
-  @UseGuards(AuthGuard, RolesGuard)
+  @ApiBearerAuth()
+  // @Roles(ROLE.SUPERADMIN)
+  // @UseGuards(AuthGuard, RolesGuard)
   async signUpCAdmin(@Body() consAdmin: CreateCAdminDto): Promise<CAdmin> {
     return await this.authService.singUpCAdmin(consAdmin);
   }

@@ -6,7 +6,6 @@ import {
   Param,
   Query,
   ParseUUIDPipe,
-  Put,
   UseInterceptors,
   UseGuards,
 } from '@nestjs/common';
@@ -16,8 +15,12 @@ import { CAdmin } from './entities/c-admin.entity';
 import { ExcludePasswordInterceptor } from 'src/interceptors/exclude-password.interceptor';
 import { ExcludeActiveInterceptor } from 'src/interceptors/exclude-active.interceptor';
 import { AuthGuard } from 'src/guards/auth.guard';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { UpdateCAdminDto } from './dto/update-c-admin.dto';
 
+@ApiTags('Consortium Admin')
 @Controller('c-admins')
+@ApiBearerAuth()
 @UseGuards(AuthGuard)
 @UseInterceptors(ExcludePasswordInterceptor)
 export class CAdminsController {
@@ -37,11 +40,11 @@ export class CAdminsController {
     return await this.cAdminsService.findOne(id);
   }
 
-  @Put(':id')
+  @Patch(':id')
   @UseInterceptors(ExcludeActiveInterceptor)
   async updateCAdmin(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() cAdminToUpdate: CreateCAdminDto,
+    @Body() cAdminToUpdate: UpdateCAdminDto,
   ): Promise<CAdmin> {
     return await this.cAdminsService.updateCAdmin(id, cAdminToUpdate);
   }

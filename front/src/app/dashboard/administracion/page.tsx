@@ -1,8 +1,13 @@
 "use client";
 
+// Estilos y componentes
 import { Button, ContainerDashboard, Title } from "@/components/ui";
 import { AddCross, AllAdmins } from "@/helpers/icons.helper";
+
+// Hooks
 import Link from "next/link";
+
+// ---------------
 
 const ConsorciosCrud = () => {
     return (
@@ -16,7 +21,7 @@ const ConsorciosCrud = () => {
                             href="/addAdministrator"
                             className="w-[80%] px-2 "
                         >
-                            <Button>Crear Administración</Button>
+                            <Button>Nuevo Administrador</Button>
                         </Link>
                     </div>
                     <div className="flex flex-col items-center w-1/2 py-2 border rounded-[50px] h-3/4 bg-[#dadada] shadow-2xl">
@@ -25,7 +30,7 @@ const ConsorciosCrud = () => {
                             href="/dashboard/administracion/All"
                             className="w-[80%] px-2"
                         >
-                            <Button>Ver Administraciones</Button>
+                            <Button>Ver Administradores</Button>
                         </Link>
                     </div>
                 </div>

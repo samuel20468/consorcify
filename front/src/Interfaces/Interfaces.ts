@@ -31,7 +31,7 @@ export interface IAdmin extends IUser {
     active: boolean;
 }
 
-export interface IRegisterConsortium {
+export interface IRegisterAdmin {
     name: string;
     email: string;
     password?: string;
@@ -40,9 +40,10 @@ export interface IRegisterConsortium {
     address: string;
     sat: string;
     rpa: string;
+    id?: string;
 }
 
-export interface IRegisterConsortiumError {
+export interface IRegisterAdminError {
     name?: string;
     email?: string;
     password?: string;
@@ -67,7 +68,7 @@ export interface IConsortium {
     ufs: number;
     category: number;
     first_due_day: number;
-    c_admin: any[];
+    c_admin?: string | IAdmin;
 }
 export interface IConsortiumError {
     id?: string;
@@ -84,7 +85,7 @@ export interface IConsortiumError {
     ufs?: number;
     category?: number;
     first_due_day?: number;
-    c_admin: any[];
+    c_admin?: string;
 }
 
 export interface IReviews {

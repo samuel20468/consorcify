@@ -2,23 +2,22 @@
 
 import { IConsortium } from "@/Interfaces/Interfaces";
 import ConsortiumCard from "@/components/ConsortiumCard/ConsortiumCard";
+import SearchBar from "@/components/SearchBar/SearchBar";
 import { ContainerDashboard } from "@/components/ui";
 import { getConsortiums } from "@/helpers/fetch.helper";
+import useAuth from "@/helpers/useAuth";
+import useSesion from "@/helpers/useSesion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 const page = () => {
-    const [consortiums, setConsortiums] = useState<any>();
-    const [token, setToken] = useState<string>("");
-    const path = usePathname();
+    useAuth();
+    const token = useSesion();
+    const [consortiums, setConsortiums] = useState<IConsortium[]>([]);
+    const [result, setResult] = useState<IConsortium[]>([]);
 
-    useEffect(() => {
-        const data = JSON.parse(localStorage.getItem("userData")!);
-        if (data) {
-            setToken(data.token);
-        }
-    }, [path, token]);
+    const path = usePathname();
 
     useEffect(() => {
         const fechtData = async (token: string) => {
@@ -27,6 +26,7 @@ const page = () => {
             if (response) {
                 const data = await response.json();
                 setConsortiums(data);
+                setResult(data);
             }
         };
         if (token) {
@@ -34,9 +34,33 @@ const page = () => {
         }
     }, [token, path]);
 
+    const handleSearch = (query: string) => {
+        if (!query.trim()) {
+            setResult(consortiums || []);
+            return;
+        }
+
+        const filteredData = (consortiums || []).filter(
+            (consortium: IConsortium) => {
+                return Object.values(consortium).some(
+                    (value) =>
+                        typeof value === "string" &&
+                        value
+                            .toLocaleLowerCase()
+                            .includes(query.toLocaleLowerCase())
+                );
+            }
+        );
+
+        setResult(filteredData);
+    };
+
     return (
-        <ContainerDashboard className="grid items-center justify-center h-[92vh] grid-flow-col gap-3 justify-items-stretch place-content-center bg-[#e5e7eb]">
-            {consortiums?.map((consortium: IConsortium) => {
+        <ContainerDashboard className="flex flex-col items-center py-5 justify-center  grid-flow-col gap-3 justify-items-stretch place-content-center bg-[#e5e7eb]">
+            <div className="w-full">
+                <SearchBar onSearch={handleSearch} />
+            </div>
+            {result?.map((consortium: IConsortium) => {
                 return (
                     <Link
                         key={consortium.id}

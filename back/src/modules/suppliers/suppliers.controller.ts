@@ -6,7 +6,6 @@ import {
   Param,
   Query,
   ParseUUIDPipe,
-  Put,
   Patch,
   UseInterceptors,
   UseGuards,
@@ -19,8 +18,12 @@ import { STATUS } from 'src/utils/constants';
 import { ExcludeActiveInterceptor } from 'src/interceptors/exclude-active.interceptor';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { Roles } from 'src/decorators/role.decorator';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { UpdateSupplierDto } from './dto/update-supplier.dto';
 
+@ApiTags('Supplier')
 @Controller('suppliers')
+@ApiBearerAuth()
 @UseGuards(AuthGuard)
 @UseInterceptors(ExcludeActiveInterceptor)
 export class SuppliersController {
@@ -44,10 +47,10 @@ export class SuppliersController {
     return await this.suppliersService.findOne(id);
   }
 
-  @Put(':id')
+  @Patch(':id')
   async updateSupplier(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() supplierToUpdate: CreateSupplierDto,
+    @Body() supplierToUpdate: UpdateSupplierDto,
   ) {
     return await this.suppliersService.updateSupplier(id, supplierToUpdate);
   }

@@ -1,14 +1,28 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { Button, Input, Label } from "../ui";
+
+// Estilos y componentes
+import "./style.css";
+import { Label } from "../ui";
 import { EyeIcon, EyeIconOff } from "@/helpers/icons.helper";
+
+// Validaciones
 import { validateNombreCompleto } from "@/helpers/Validations/validate.nombre";
 import { validateEmail } from "@/helpers/Validations/validate.email";
 import { validatePwd } from "@/helpers/Validations/validate.password";
+
+// Endpoint
 import { registerFetch } from "@/helpers/fetch.helper";
+
+// Hooks
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+
+// Hoja de estilos
 import "./style.css";
+
+// Enrutamiento
 import Link from "next/link";
+
 
 const Register = () => {
   const router = useRouter();
@@ -395,3 +409,4 @@ const Register = () => {
 };
 
 export default Register;
+

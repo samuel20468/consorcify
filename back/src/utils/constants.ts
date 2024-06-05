@@ -26,7 +26,13 @@ export enum FUNCTIONAL_UNIT_TYPE {
   OTHER = 'Otro',
 }
 
-export enum STATUS {
+export enum STATUS_MESSAGE {
   ACTIVATED = 'activated',
   DISABLED = 'disabled',
+}
+
+export enum FINANCIAL_STATUS {
+  PENDING = 'Pending',
+  APPROVED = 'Approved',
+  REJECTED = 'Rejected',
 }

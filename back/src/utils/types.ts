@@ -14,12 +14,6 @@ export type TObjectToken = {
   token: string;
 };
 
-export type TDuplicateCheck = {
-  value: string;
-  field: string;
-  errorMessage: string;
-};
-
 // INTERFACES
 export interface IUser {
   id: string;

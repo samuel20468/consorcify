@@ -18,7 +18,7 @@ import { AuthGuard } from 'src/guards/auth.guard';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { Roles } from 'src/decorators/role.decorator';
 import { ROLE } from 'src/utils/constants';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -38,6 +38,7 @@ export class AuthController {
   }
 
   @Post('register-c-admin')
+  @ApiBearerAuth()
   // @Roles(ROLE.SUPERADMIN)
   // @UseGuards(AuthGuard, RolesGuard)
   async signUpCAdmin(@Body() consAdmin: CreateCAdminDto): Promise<CAdmin> {

@@ -54,7 +54,7 @@ export class CreateFunctionalUnitDto {
 
   /**
    * El número de teléfono del propietario de la Unidad Funcional
-   * @example "1145678901"
+   * @example "+5491145678901"
    */
   @IsString({ message: 'El número de teléfono debe ser una cadena de texto' })
   @Length(1, 20, {

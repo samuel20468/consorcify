@@ -14,6 +14,7 @@ import { deleteAdmin, getAdminById } from "@/helpers/fetch.helper";
 import { useEffect, useState } from "react";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
+import useSesion from "@/helpers/useSesion";
 import Link from "next/link";
 
 // -----------------------
@@ -22,16 +23,9 @@ const page = () => {
     useAuth();
     const router = useRouter();
     const params: { id: string } = useParams();
-    const [token, setToken] = useState<string>("");
+    const token = useSesion();
     const [admin, setAdmin] = useState<IAdmin>();
     const path = usePathname();
-
-    useEffect(() => {
-        const data = JSON.parse(localStorage.getItem("userData")!);
-        if (data) {
-            setToken(data.token);
-        }
-    }, [path, token]);
 
     useEffect(() => {
         const fecthData = async () => {

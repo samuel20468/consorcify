@@ -1,3 +1,4 @@
+import ColumnNumericTransformer from 'src/helpers/numeric-transformer.helper';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({
@@ -50,7 +51,12 @@ export class Supplier {
    * El saldo del Proveedor
    * @example "2000.00"
    */
-  @Column({ type: 'decimal', precision: 15, scale: 2 })
+  @Column({
+    type: 'decimal',
+    precision: 15,
+    scale: 2,
+    transformer: new ColumnNumericTransformer(),
+  })
   balance: number;
 
   /**

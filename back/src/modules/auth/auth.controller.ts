@@ -35,8 +35,8 @@ export class AuthController {
 
   @Get('auth0/protected')
   getAuth0Protected(@Req() req: Request) {
-    console.log(req.headers)
-    return JSON.stringify(req.headers)
+    console.log(req.headers);
+    return JSON.stringify(req.headers);
   }
 
   @Post('signup')

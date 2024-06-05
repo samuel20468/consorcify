@@ -23,7 +23,7 @@ import useAuth from "@/helpers/useAuth";
 
 // -----------------
 
-const FormRegisterSuperAdmin = ({ update = false }) => {
+const FormRegisterAdmin = ({ update = false }) => {
     useAuth();
     const path = usePathname();
     const router = useRouter();
@@ -82,7 +82,6 @@ const FormRegisterSuperAdmin = ({ update = false }) => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e?.preventDefault();
-
         if (
             !adminRegister.address ||
             !adminRegister.name ||
@@ -96,27 +95,28 @@ const FormRegisterSuperAdmin = ({ update = false }) => {
             return;
         }
         try {
-            if (update) {
+            if (update == true) {
                 const response = await updateAdmin(
                     adminRegister,
                     params.id,
                     token
                 );
-
                 if (response) {
-                    alert("Actualizacion exitosa");
+                    Swal.fire({
+                        title: "Actualizacion exitosa",
+                    });
                     router.push(`/dashboard/administracion/All/${params.id}`);
                 }
             } else {
                 const response = await adminFetch(adminRegister, token);
-                if (response.ok) {
-                    alert("Registro de la administración exitoso.");
-                } else {
-                    console.error("Se dió un error en adminFetch");
+                if (response) {
+                    alert("Registro del consorcio exitoso.");
                 }
             }
+            // router.push("/") Definir donde nos va a pataear una vez creado el consorcio
+            setAdminRegister(initialData);
         } catch (error: any) {
-            console.error(`Error en handleSubmit: ${error.message}`);
+            console.error(error);
         }
     };
 
@@ -263,6 +263,7 @@ const FormRegisterSuperAdmin = ({ update = false }) => {
                     type="email"
                     placeholder="Correo electrónico"
                     onChange={handleChange}
+                    disabled={update}
                 />
                 {errorAdminRegister.email && adminRegister.email && (
                     <span className="self-end text-xs text-red-500">
@@ -282,4 +283,4 @@ const FormRegisterSuperAdmin = ({ update = false }) => {
     );
 };
 
-export default FormRegisterSuperAdmin;
+export default FormRegisterAdmin;

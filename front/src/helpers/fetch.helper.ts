@@ -3,7 +3,6 @@ import {
     ILoginData,
     IRegisterAdmin,
 } from "@/Interfaces/Interfaces";
-import { log } from "console";
 
 // Inicio de sesión
 export const loginFetch = async (UserData: ILoginData) => {
@@ -158,19 +157,20 @@ export const updateAdmin = async (
             body: JSON.stringify(data),
         });
         if (response.ok) {
-            const responseData = await response.json();
-            return responseData;
-        } else {
-            const errorInfo = await response.json();
-            throw new Error(
-                `Error ${response.status}: ${
-                    errorInfo.message || response.statusText
-                }`
-            );
+            const data = await response.json();
+            return data;
         }
-    } catch (error: any) {
-        console.error(`Error en updateAdmin: ${error.message}`);
-        throw error;
+        if (!response.ok) {
+            return response.json().then((errorInfo) => {
+                throw new Error(
+                    `Error ${response.status}: ${
+                        errorInfo.message || response.statusText
+                    }`
+                );
+            });
+        }
+    } catch (error) {
+        console.error(error);
     }
 };
 

@@ -34,10 +34,12 @@ export class AuthController {
     return await this.authService.signIn(credentials);
   }
 
-  @Get('auth0/protected')
-  getAuth0Protected(@Req() req: Request) {
-    console.log(req.oidc.idToken);
-    return JSON.stringify(req.oidc.user);
+  @Get('signup/auth0')
+  async getAuth0Protected(@Req() req: Request) {
+    // console.log(req.oidc.idToken);
+    const user = JSON.stringify(req.oidc.user);
+    console.log(JSON.parse(user));
+    return await this.authService.signUpAuth0(JSON.parse(user));
   }
 
   @Post('signup')

@@ -41,11 +41,25 @@ export class User {
   password: string;
 
   /**
+   * El link a la imagen del Usuario
+   * @example "http://imagenDeSilueta.com"
+   */
+  @Column({ default: "http://imagenDeSilueta.com" })
+  picture: string;
+
+  /**
    * Indica si el Usuario está activo
    * @example true
    */
-  @Column({ default: true })
+  @Column({ default: false })
   active: boolean;
+
+  /**
+   * Indica si el Usuario se registro a traves de Auth0
+   * @example true
+   */
+  @Column({ default: false })
+  auth0: boolean;
 
   /**
    * Indica si el Usuario es super administrador

@@ -51,6 +51,26 @@ export class AuthService {
     }
   }
 
+  async signUpAuth0(user: any) {
+    const { given_name, family_name, email, picture } = user;
+    const foundUser = await this.usersRepository.findOneBy({ email });
+
+    if (foundUser) {
+      throw new ConflictException('El email ya se encuentra registrado.');
+    }
+
+    const newUser = new User();
+    newUser.first_name = given_name;
+    newUser.last_name = family_name;
+    newUser.email = email;
+    newUser.picture = picture;
+    newUser.password = "Auth0";
+    newUser.auth0 = true;
+
+    const createdUser = await this.usersRepository.save(newUser);
+    return createdUser;
+  }
+
   async signUp(user: CreateUserDto): Promise<User> {
     const { first_name, last_name, email, password } = user;
     const foundUser = await this.usersRepository.findOneBy({ email });

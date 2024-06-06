@@ -1,11 +1,34 @@
 import { Injectable } from '@nestjs/common';
 import { CreateExpenseDto } from './dto/create-expense.dto';
 import { UpdateExpenseDto } from './dto/update-expense.dto';
+import { ExpensesRepository } from './expenses.repository';
+import { Consortium } from '../consortiums/entities/consortium.entity';
+import checkEntityExistence from 'src/helpers/check-entity-existence.helper';
+import { ConsortiumsService } from '../consortiums/consortiums.service';
+import { Expense } from './entities/expense.entity';
 
 @Injectable()
 export class ExpensesService {
-  create(createExpenseDto: CreateExpenseDto) {
-    return 'This action adds a new expense';
+  constructor(
+    private readonly expensesRepository: ExpensesRepository,
+    private readonly consortiumsService: ConsortiumsService,
+  ) {}
+
+  async create(expenseToCreate: CreateExpenseDto) {
+    const { issue_date, expiration_date, consortium_id } = expenseToCreate;
+
+    const foundConsortium: Consortium = await checkEntityExistence(
+      this.consortiumsService,
+      consortium_id,
+      'el Consorcio',
+    );
+
+    const newExpense: Expense = new Expense()
+    newExpense.issue_date = issue_date;
+    newExpense.expiration_date = expiration_date;
+    newExpense.consortium = foundConsortium;
+    
+    return await this.expensesRepository.createExpense(newExpense);
   }
 
   findAll() {

@@ -10,6 +10,7 @@ import { FunctionalUnitsModule } from './modules/functional-units/functional-uni
 import { JwtModule } from '@nestjs/jwt';
 import { ConsortiumsModule } from './modules/consortiums/consortiums.module';
 import { ExpendituresModule } from './modules/expenditures/expenditures.module';
+import { ExpensesModule } from './modules/expenses/expenses.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { ExpendituresModule } from './modules/expenditures/expenditures.module';
     UsersModule,
     FunctionalUnitsModule,
     ConsortiumsModule,
+    ExpensesModule,
     ExpendituresModule,
   ],
 })

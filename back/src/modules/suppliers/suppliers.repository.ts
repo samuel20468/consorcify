@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { Supplier } from './entities/supplier.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateSupplierDto } from './dto/create-supplier.dto';
 import { UpdateSupplierDto } from './dto/update-supplier.dto';
 import { checkForDuplicates } from 'src/helpers/check-for-duplicates.helper';
 
@@ -26,6 +25,13 @@ export class SuppliersRepository {
       newSupplier.name,
       'name',
       'El nombre',
+    );
+
+    await checkForDuplicates(
+      this.supplierRepository,
+      newSupplier.cuit,
+      'cuit',
+      'El CUIT',
     );
 
     return this.supplierRepository.save(newSupplier);

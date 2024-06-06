@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import ColumnNumericTransformer from 'src/helpers/numeric-transformer.helper';
+import { Expense } from 'src/modules/expenses/entities/expense.entity';
 import { SupplierConsortium } from 'src/modules/suppliers/entities/suppliers-consortiums.entity';
 import { EXPENDITURE_CATEGORY, EXPENDITURE_STATUS } from 'src/utils/constants';
 import {
@@ -107,6 +108,10 @@ export class Expenditure {
    */
   @Column({ length: 12, nullable: false })
   invoice_number: string;
+
+  @ManyToOne(() => Expense, (expense) => expense.expenditures)
+  @JoinColumn({ name: 'expense_id' })
+  expense: Expense;
 
   /**
    * El proveedor del consorcio al que pertenece el gasto

@@ -5,7 +5,7 @@ import { Consortium } from 'src/modules/consortiums/entities/consortium.entity';
 import { Expenditure } from 'src/modules/expenditures/entities/expenditure.entity';
 
 @Entity({
-  name: 'supplier_consortium',
+  name: 'suppliers_consortiums',
 })
 export class SupplierConsortium {
   /**

@@ -2,7 +2,6 @@ import {
   ConflictException,
   Injectable,
   NotFoundException,
-  UseInterceptors,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Consortium } from './entities/consortium.entity';
@@ -11,7 +10,6 @@ import { CAdmin } from '../c-admin/entities/c-admin.entity';
 import { ExcludeActiveInterceptor } from 'src/interceptors/exclude-active.interceptor';
 
 @Injectable()
-@UseInterceptors(ExcludeActiveInterceptor)
 export class ConsortiumsRepository {
   constructor(
     @InjectRepository(Consortium)

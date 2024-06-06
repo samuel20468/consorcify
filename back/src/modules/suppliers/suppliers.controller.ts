@@ -20,6 +20,7 @@ import { AuthGuard } from 'src/guards/auth.guard';
 import { Roles } from 'src/decorators/role.decorator';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { UpdateSupplierDto } from './dto/update-supplier.dto';
+import { CreateSupplierConsortiumDto } from './dto/create-supplier-consortium.dto';
 
 @ApiTags('Supplier')
 @Controller('suppliers')
@@ -34,6 +35,16 @@ export class SuppliersController {
     return await this.suppliersService.createSupplier(newSupplier);
   }
 
+  @Post(':id/add-consortium')
+  async addConsortiumToSupplier(
+    @Param('id', ParseUUIDPipe) supplierId: string,
+    @Body() createSupplierConsortium: CreateSupplierConsortiumDto,
+  ) {
+    return await this.suppliersService.addConsortiumToSupplier(
+      supplierId,
+      createSupplierConsortium,
+    );
+  }
   @Get()
   async findAll(
     @Query('page') page: number = 1,

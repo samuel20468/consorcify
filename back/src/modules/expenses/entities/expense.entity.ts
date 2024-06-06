@@ -46,8 +46,8 @@ export class Expense {
   total_amount: number;
 
   /**
-   * El estado financiero de la expensa
-   * @example "Pendiente"
+   * El estado de la expensa
+   * @example "Abierta"
    */
   @Column('enum', { enum: EXPENSE_STATUS })
   status: EXPENSE_STATUS;

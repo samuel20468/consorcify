@@ -1,1 +1,3 @@
-export class CreateExpenseDto {}
+export class CreateExpenseDto {
+    
+}

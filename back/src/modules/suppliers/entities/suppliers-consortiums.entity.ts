@@ -1,7 +1,8 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
 import ColumnNumericTransformer from 'src/helpers/numeric-transformer.helper';
 import { Supplier } from './supplier.entity';
 import { Consortium } from 'src/modules/consortiums/entities/consortium.entity';
+import { Expenditure } from 'src/modules/expenditures/entities/expenditure.entity';
 
 @Entity({
   name: 'supplier_consortium',
@@ -48,4 +49,11 @@ export class SupplierConsortium {
   @ManyToOne(() => Consortium, (consortium) => consortium.suppliers_consortiums)
   @JoinColumn({ name: 'consortium_id' })
   consortium: Consortium;
+
+  /**
+   * Los gastos del consorcio
+   * @example "1000.50"
+   */
+  @OneToMany(() => Expenditure, (expenditure) => expenditure.supplier_consortium)
+  expenditures: Expenditure[];
 }

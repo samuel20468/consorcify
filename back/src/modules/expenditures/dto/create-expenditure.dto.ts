@@ -1,10 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
-    IsDate,
-  IsDateString,
+  IsDate,
   IsEnum,
   IsNotEmpty,
   IsNumber,
+  IsUUID,
   Length,
 } from 'class-validator';
 import { EXPENDITURE_CATEGORY, EXPENDITURE_STATUS } from 'src/utils/constants';
@@ -40,18 +40,6 @@ export class CreateExpenditureDto {
   @IsNotEmpty({ message: 'La fecha es requerida' })
   @IsDate({ message: 'La fecha debe ser una fecha' })
   date: Date;
-
-  /**
-   * El estado del Gasto
-   * @enum {EXPENDITURE_STATUS}
-   * @example "impago"
-   * @example "pagado"
-   * */
-  @IsEnum(EXPENDITURE_STATUS, {
-    message: 'El estado solo puede ser pagado o impago',
-  })
-  @IsNotEmpty({ message: 'El estado es requerido' })
-  status: EXPENDITURE_STATUS;
 
   @ApiProperty({
     enum: Object.values(EXPENDITURE_CATEGORY),
@@ -105,4 +93,20 @@ export class CreateExpenditureDto {
     message: 'El número de la factura debe tener 12 dígitos',
   })
   invoice_number: string;
+
+  /**
+   * El id del proveedor
+   * @example "5e4d5f8b-2e6d-4f49-9b3e-8d6c6f7e8a5b"
+   */
+  @IsUUID(4, { message: 'El id del proveedor debe ser UUID v4' })
+  @IsNotEmpty({ message: 'El proveedor es requerido' })
+  supplier_id: string;
+
+  /**
+   * El id del consorcio
+   * @example "5e4d5f8b-2e6d-4f49-9b3e-8d6c6f7e8a5b"
+   */
+  @IsUUID(4, { message: 'El id del consorcio debe ser UUID v4' })
+  @IsNotEmpty({ message: 'El consorcio es requerido' })
+  consortium_id: string;
 }

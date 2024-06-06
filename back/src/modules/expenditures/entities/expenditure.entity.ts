@@ -1,7 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
 import ColumnNumericTransformer from 'src/helpers/numeric-transformer.helper';
+import { SupplierConsortium } from 'src/modules/suppliers/entities/suppliers-consortiums.entity';
 import { EXPENDITURE_CATEGORY, EXPENDITURE_STATUS } from 'src/utils/constants';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity({
   name: 'expenditures',
@@ -100,4 +107,18 @@ export class Expenditure {
    */
   @Column({ length: 12, nullable: false })
   invoice_number: string;
+
+  /**
+   * El proveedor del consorcio al que pertenece el gasto
+   * @example "Proveedor XYZ"
+   * */
+  @ManyToOne(
+    () => SupplierConsortium,
+    (supplierConsortium) => supplierConsortium.expenditures,
+  )
+  @JoinColumn([
+    { name: 'supplier_id', referencedColumnName: 'supplier_id' },
+    { name: 'consortium_id', referencedColumnName: 'consortium_id' },
+  ])
+  supplier_consortium: SupplierConsortium;
 }

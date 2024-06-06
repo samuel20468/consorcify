@@ -5,9 +5,9 @@ import {
   Matches,
   IsEmail,
   IsPhoneNumber,
-  IsDecimal,
-  IsBoolean,
   MaxLength,
+  IsUUID,
+  IsNumber,
 } from 'class-validator';
 
 export class CreateSupplierDto {
@@ -73,9 +73,36 @@ export class CreateSupplierDto {
    * @example "2000.00"
    */
   @IsNotEmpty({ message: 'El saldo es requerido' })
-  @IsDecimal(
-    { decimal_digits: '2', force_decimal: true },
-    { message: 'El saldo debe ser un número decimal con hasta 2 decimales' },
+  @IsNumber(
+    { maxDecimalPlaces: 2 },
+    {
+      message: 'El saldo debe ser un número con hasta 2 decimales',
+    },
   )
   balance: number;
+
+  /**
+   * El saldo inicial entre el Proveedor y el Consorcio
+   * @example "1000.50"
+   */
+  @IsNotEmpty({ message: 'El saldo inicial es requerido' })
+  @IsNumber(
+    { maxDecimalPlaces: 2 },
+    {
+      message: 'El saldo inicial debe ser un número con hasta 2 decimales',
+    },
+  )
+  initial_balance: number;
+
+  /**
+   * El Consorcio a relacionar
+   * @example "5e4d5f8b-2e6d-4f49-9b3e-8d6c6f7e8a5b"
+   */
+  @IsNotEmpty({ message: 'El administrador de consorcio es requerido' })
+  @IsUUID()
+  @IsString({
+    message:
+      'El id del administrador de consorcio debe ser un valor alfanumérico',
+  })
+  consortium_id: string;
 }

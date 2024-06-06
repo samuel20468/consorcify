@@ -32,7 +32,12 @@ export enum STATUS_MESSAGE {
 }
 
 export enum FINANCIAL_STATUS {
-  PENDING = 'Pending',
-  APPROVED = 'Approved',
-  REJECTED = 'Rejected',
+  PENDING = 'Pendiente',
+  APPROVED = 'Aprobado',
+  REJECTED = 'Rechazado',
+}
+
+export enum EXPENSE_STATUS {
+  OPEN = "Abierta",
+  CLOSED = "Cerrada",
 }

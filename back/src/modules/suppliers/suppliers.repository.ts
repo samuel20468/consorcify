@@ -13,7 +13,7 @@ export class SuppliersRepository {
     private readonly supplierRepository: Repository<Supplier>,
   ) {}
 
-  async createSupplier(newSupplier: CreateSupplierDto): Promise<Supplier> {
+  async createSupplier(newSupplier: Supplier): Promise<Supplier> {
     await checkForDuplicates(
       this.supplierRepository,
       newSupplier.email,
@@ -28,8 +28,7 @@ export class SuppliersRepository {
       'El nombre',
     );
 
-    const supplier = this.supplierRepository.create(newSupplier);
-    return this.supplierRepository.save(supplier);
+    return this.supplierRepository.save(newSupplier);
   }
 
   async findAll(): Promise<Supplier[]> {

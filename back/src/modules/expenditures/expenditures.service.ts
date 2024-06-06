@@ -6,25 +6,48 @@ import { Expenditure } from './entities/expenditure.entity';
 
 @Injectable()
 export class ExpendituresService {
-
-  constructor(private readonly ExpendituresRepository: ExpendituresRepository) {}
-  async create(createExpenditureDto: CreateExpenditureDto): Promise<Expenditure> {
+  constructor(
+    private readonly ExpendituresRepository: ExpendituresRepository,
+  ) {}
+  async create(
+    createExpenditureDto: CreateExpenditureDto,
+  ): Promise<Expenditure> {
     return await this.ExpendituresRepository.create(createExpenditureDto);
   }
 
-  findAll() {
-    return `This action returns all expenditures`;
+  async findAllByConsortium(
+    consortiumId: string,
+    page: number,
+    limit: number,
+  ): Promise<Expenditure[]> {
+    return await this.ExpendituresRepository.findAllByConsortium(
+      consortiumId,
+      page,
+      limit,
+    );
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} expenditure`;
+  async findAllUnpaidByConsortium(
+    consortiumId: string,
+    page: number,
+    limit: number,
+  ): Promise<Expenditure[]> {
+    return await this.ExpendituresRepository.findAllUnpaidByConsortium(
+      consortiumId,
+      page,
+      limit,
+    );
   }
 
-  update(id: number, updateExpenditureDto: UpdateExpenditureDto) {
-    return `This action updates a #${id} expenditure`;
+  async findOne(id: string): Promise<Expenditure> {
+    return await this.ExpendituresRepository.findOne(id);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} expenditure`;
+  async update(id: string, updateExpenditureDto: UpdateExpenditureDto): Promise<Expenditure> {
+    return await this.ExpendituresRepository.update(id, updateExpenditureDto);
+  }
+
+  async disable(id: string): Promise<Expenditure> {
+    return await this.ExpendituresRepository.disable(id);
   }
 }

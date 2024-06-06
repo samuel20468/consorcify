@@ -1,13 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
-  IsDate,
+  IsDateString,
   IsEnum,
   IsNotEmpty,
   IsNumber,
   IsUUID,
   Length,
 } from 'class-validator';
-import { EXPENDITURE_CATEGORY, EXPENDITURE_STATUS } from 'src/utils/constants';
+import { EXPENDITURE_CATEGORY} from 'src/utils/constants';
 
 export class CreateExpenditureDto {
   /**
@@ -38,7 +38,7 @@ export class CreateExpenditureDto {
    * @example "2022-01-01"
    */
   @IsNotEmpty({ message: 'La fecha es requerida' })
-  @IsDate({ message: 'La fecha debe ser una fecha' })
+  @IsDateString()
   date: Date;
 
   @ApiProperty({

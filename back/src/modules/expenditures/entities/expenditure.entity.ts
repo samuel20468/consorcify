@@ -109,6 +109,13 @@ export class Expenditure {
   @Column({ length: 12, nullable: false })
   invoice_number: string;
 
+  /**
+   * Indica si el gasto se encuentra activo
+   * @example true
+   */
+  @Column({ type: 'boolean', default: true })
+  active: boolean;
+
   @ManyToOne(() => Expense, (expense) => expense.expenditures)
   @JoinColumn({ name: 'expense_id' })
   expense: Expense;

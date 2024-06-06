@@ -2,13 +2,15 @@
 
 // Estilos y componentes
 import { Button, ContainerDashboard, Select, Title } from "@/components/ui";
-import { useRouter } from "next/navigation";
 
 // Hooks
+import useAuth from "@/helpers/useAuth";
+import { useRouter } from "next/navigation";
 
 // ------------------
 
 const Spent = () => {
+    useAuth();
     const router = useRouter();
 
     const handleOnClick = () => {

@@ -58,16 +58,16 @@ const DashboardA = () => {
                     Agregar consorcio
                 </Link>
                 <Link
-                    href="#"
+                    href="/addSupplier"
                     className="flex justify-center items-end text-2xl bg-gray-100 hover:bg-gray-200 h-72 rounded-[50px] pb-2"
                 >
-                    Opcion 2
+                    Agregar Proveedor
                 </Link>
                 <Link
-                    href="#"
+                    href="/addSpent"
                     className="flex justify-center items-end text-2xl bg-gray-100 hover:bg-gray-200 h-72 rounded-[50px] pb-2"
                 >
-                    Opcion 3
+                    Agregar gasto
                 </Link>
             </div>
             <div className="grid w-full h-auto grid-cols-1 gap-10 p-4 mb-4 text-black md:grid-cols-2">

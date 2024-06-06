@@ -14,7 +14,6 @@ import { useEffect, useState } from "react";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
 // -------------------
 
@@ -22,7 +21,6 @@ const page = () => {
     useAuth();
     const [admins, setAdmins] = useState<IAdmin[]>([]);
     const { token } = useSesion();
-    const path = usePathname();
 
     useEffect(() => {
         const fetchData = async () => {

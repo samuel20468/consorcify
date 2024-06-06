@@ -48,7 +48,7 @@ const page = () => {
                             return (
                                 <Link
                                     key={elemento.id}
-                                    href={`/dashboard/administracion/All/${elemento.id}`}
+                                    href={`/dashboard/superadmin/administracion/All/${elemento.id}`}
                                     className="text-black flex w-3/4 rounded border border-black mx-2 p-3 bg-[#dadada] hover:scale-110 hover:transition hover:duration-700"
                                 >
                                     <div className="flex justify-between w-full text-center">

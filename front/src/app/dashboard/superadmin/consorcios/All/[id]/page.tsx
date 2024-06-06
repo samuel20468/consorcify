@@ -50,7 +50,7 @@ const page = () => {
             Swal.fire({
                 title: "Consorcio eliminado correctamente",
             });
-            router.push("/dashboard/consorcios/All");
+            router.push("/dashboard/superadmin/consorcios/All");
         }
     };
 

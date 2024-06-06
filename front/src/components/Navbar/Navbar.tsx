@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "./style.css";
 import Link from "next/link";
+import RoleIcon from "./RoleIcon/roleIcon";
 
-const Navbar = ({ activeSection}: any) => {
-
-
-
+const Navbar = ({ activeSection }: any) => {
   const [showNavbar, setShowNavbar] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 
   const controlNavbar = () => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       if (window.scrollY > lastScrollY) {
         // Scrolling down
         setShowNavbar(false);
@@ -23,18 +21,44 @@ const Navbar = ({ activeSection}: any) => {
   };
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      window.addEventListener('scroll', controlNavbar);
+    if (typeof window !== "undefined") {
+      window.addEventListener("scroll", controlNavbar);
 
       return () => {
-        window.removeEventListener('scroll', controlNavbar);
+        window.removeEventListener("scroll", controlNavbar);
       };
     }
   }, [lastScrollY]);
 
+//control del login y del rol del usuario.
+
+  const [token, setToken] = useState(null);
+  const [roles, setRoles] = useState([]);
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("userData");
+    if (storedToken) {
+      setToken(JSON.parse(storedToken));
+    }
+  }, []);
+
+  useEffect(() => {
+    const userData = localStorage.getItem("userData");
+    if (userData) {
+      const parsedUserData = JSON.parse(userData);
+
+      const userRoles = parsedUserData.user.roles;
+
+      setRoles(userRoles);
+    }
+  }, []);
 
   return (
-    <nav className={` fixed w-full z-20 mt-10 transition-transform duration-[1s] ${showNavbar ? 'translate-y-0' : '-translate-y-[130px]'}`}>
+    <nav
+      className={` fixed w-full z-20 mt-10 transition-transform duration-[1s] ${
+        showNavbar ? "translate-y-0" : "-translate-y-[130px]"
+      }`}
+    >
       <div className="w-screen flex flex-wrap items-center justify-between px-10">
         <div className="flex flex-col space-x-3">
           <span className="principal text-[2rem] text-white font-[clash-medium]">
@@ -43,20 +67,32 @@ const Navbar = ({ activeSection}: any) => {
         </div>
 
         <div className="flex lg:order-2  lg:space-x-0 font-[clash-regular]">
-          <Link
-            href="/login"
-            type="button"
-            className="button-log text-white rounded-[50px] px-5 py-3 border backdrop-blur-sm"
-          >
-            Entrar
-          </Link>
-          <Link
-            href="/register"
-            type="button"
-            className="button-log text-black rounded-[50px] px-5 py-3 bg-white font-bold"
-          >
-            Registar
-          </Link>
+          {token ? (
+            <Link
+              href="/dashboard"
+              className="flex justify-center no-underlin w-[195px] text-black rounded-[50px] px-5 py-3 bg-white font-bold gap-4"
+            >
+              {roles.length > 0 && roles[0]}
+              {roles.length > 0 && <RoleIcon role={roles[0]} />}
+            </Link>
+          ) : (
+            <>
+              <Link
+                href="/login"
+                type="button"
+                className="button-log text-white rounded-[50px] px-5 py-3 border backdrop-blur-sm"
+              >
+                Entrar
+              </Link>
+              <Link
+                href="/register"
+                type="button"
+                className="button-log text-black rounded-[50px] px-5 py-3 bg-white font-bold"
+              >
+                Registar
+              </Link>
+            </>
+          )}
 
           <div className="dropdown">
             <button
@@ -120,7 +156,6 @@ const Navbar = ({ activeSection}: any) => {
             <li className="py-[5px]">
               <a
                 href="#nosotros"
-                
                 className={`py-3 px-5 text-white ${
                   activeSection === "nosotros"
                     ? " !text-[#000000] bg-white rounded-[50px] "

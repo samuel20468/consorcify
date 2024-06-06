@@ -20,6 +20,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Footer from "../Footer/Footer";
+import useSesion from "@/helpers/useSesion";
 
 const Login = () => {
     const router = useRouter();
@@ -81,10 +82,10 @@ const Login = () => {
         alert("Modal para inicio con terceros");
     };
 
-    const token = localStorage.getItem("userData");
+    const { token } = useSesion();
 
     if (token) {
-        router.push("/");
+        router.push("/dashboard");
     } else {
     }
 

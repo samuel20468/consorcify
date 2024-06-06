@@ -23,6 +23,7 @@ import { Roles } from 'src/decorators/role.decorator';
 import { ROLE } from 'src/utils/constants';
 import { ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
+import { VerifyEntity } from 'src/guards/verifyEntity.guard';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -33,6 +34,16 @@ export class AuthController {
   @Post('signin')
   async signIn(@Body() credentials: CredentialsDto): Promise<object> {
     return await this.authService.signIn(credentials);
+  }
+
+  @Get('auth0')
+  @UseGuards(VerifyEntity)
+  async auth0(@Req() req: Request) {
+    const user = JSON.stringify(req.oidc?.user);
+    if (!user) {
+      throw new UnauthorizedException('Falla en autenticación de Auth0');
+    }
+    return await this.authService.auth0(JSON.parse(user));
   }
 
   @Get('signin/auth0')

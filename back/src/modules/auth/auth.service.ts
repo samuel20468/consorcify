@@ -27,6 +27,46 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
+  async auth0(user: Partial<IAuth0User>) {
+    const { given_name, family_name, email, picture } = user;
+    const foundUser = await this.usersRepository.findOneBy({ email });
+    if (foundUser) {
+      const role: ROLE[] = [];
+      if (foundUser.is_super_admin) {
+        role.push(ROLE.SUPERADMIN);
+      } else {
+        role.push(ROLE.USER);
+      }
+
+      const userPayload = {
+        id: foundUser.id,
+        email: foundUser.email,
+        roles: [...role],
+      };
+      const token = this.jwtService.sign(userPayload);
+
+      return token;
+    } else {
+      const newUser = new User();
+      newUser.first_name = given_name;
+      newUser.last_name = family_name;
+      newUser.email = email;
+      newUser.picture = picture;
+      newUser.password = 'Auth0';
+      newUser.auth0 = true;
+
+      const createdUser = await this.usersRepository.save(newUser);
+      const userPayload = {
+        id: createdUser.id,
+        email: createdUser.email,
+        roles: ['user'],
+      };
+      const token = this.jwtService.sign(userPayload);
+
+      return token;
+    }
+  }
+
   async signIn(credentials: CredentialsDto): Promise<TObjectToken> {
     const { email, password } = credentials;
     const foundCAdmin = await this.cAdminRepository.findOneBy({ email });
@@ -108,7 +148,7 @@ export class AuthService {
     newUser.last_name = family_name;
     newUser.email = email;
     newUser.picture = picture;
-    newUser.password = "Auth0";
+    newUser.password = 'Auth0';
     newUser.auth0 = true;
 
     const createdUser = await this.usersRepository.save(newUser);
@@ -143,7 +183,7 @@ export class AuthService {
         checking.errorMessage,
       ),
     );
-    
+
     const hashedPassword = await bcrypt.hash(CADMIN_PASS, 10);
     const satCAdmin: SAT = satSetter(sat);
 

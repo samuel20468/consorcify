@@ -1,14 +1,14 @@
 import { ContainerDashboard } from "@/components/ui";
 
-const Expenses = () => {
+const UnidadFuncional = () => {
     return (
         <div>
             <ContainerDashboard>
                 <h1 className="flex items-center justify-center m-auto">
-                    Acá van a ir todo el historias de las expensas del usuario
+                    Acá van a ir la información de la UF
                 </h1>
             </ContainerDashboard>
         </div>
     );
 };
-export default Expenses;
+export default UnidadFuncional;

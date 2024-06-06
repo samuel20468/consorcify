@@ -11,10 +11,10 @@ import { CreateCAdminDto } from '../c-admin/dto/create-c-admin.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CAdmin } from '../c-admin/entities/c-admin.entity';
-import { CADMIN_PASS, SAT } from 'src/utils/constants';
+import { CADMIN_PASS, ROLE, SAT } from 'src/utils/constants';
 import { JwtService } from '@nestjs/jwt';
 import { signInHelper } from 'src/helpers/sign-in.helper';
-import { TDuplicateCheck, TObjectToken } from 'src/utils/types';
+import { IAuth0User, TDuplicateCheck, TObjectToken } from 'src/utils/types';
 import satSetter from 'src/helpers/sat-setter.helper';
 import { checkForDuplicates } from 'src/helpers/check-for-duplicates.helper';
 
@@ -51,24 +51,29 @@ export class AuthService {
     }
   }
 
-  async signUpAuth0(user: any) {
-    const { given_name, family_name, email, picture } = user;
+  async signInAuth0(user: Partial<IAuth0User>) {
+    const { email } = user;
+    const foundCAdmin = await this.cAdminRepository.findOneBy({ email });
     const foundUser = await this.usersRepository.findOneBy({ email });
-
-    if (foundUser) {
-      throw new ConflictException('El email ya se encuentra registrado.');
+    if (foundCAdmin || !foundUser || foundUser.auth0 === false) {
+      throw new UnauthorizedException('Credenciales inválidas');
     }
 
-    const newUser = new User();
-    newUser.first_name = given_name;
-    newUser.last_name = family_name;
-    newUser.email = email;
-    newUser.picture = picture;
-    newUser.password = "Auth0";
-    newUser.auth0 = true;
+    const role: ROLE[] = [];
+    if (foundUser.is_super_admin) {
+      role.push(ROLE.SUPERADMIN);
+    } else {
+      role.push(ROLE.USER);
+    }
 
-    const createdUser = await this.usersRepository.save(newUser);
-    return createdUser;
+    const userPayload = {
+      id: foundUser.id,
+      email: foundUser.email,
+      roles: [...role],
+    };
+    const token = this.jwtService.sign(userPayload);
+
+    return token;
   }
 
   async signUp(user: CreateUserDto): Promise<User> {
@@ -85,6 +90,26 @@ export class AuthService {
     newUser.last_name = last_name;
     newUser.email = email;
     newUser.password = hashedPassword;
+
+    const createdUser = await this.usersRepository.save(newUser);
+    return createdUser;
+  }
+
+  async signUpAuth0(user: Partial<IAuth0User>) {
+    const { given_name, family_name, email, picture } = user;
+    const foundUser = await this.usersRepository.findOneBy({ email });
+
+    if (foundUser) {
+      throw new ConflictException('El email ya se encuentra registrado.');
+    }
+
+    const newUser = new User();
+    newUser.first_name = given_name;
+    newUser.last_name = family_name;
+    newUser.email = email;
+    newUser.picture = picture;
+    newUser.password = "Auth0";
+    newUser.auth0 = true;
 
     const createdUser = await this.usersRepository.save(newUser);
     return createdUser;

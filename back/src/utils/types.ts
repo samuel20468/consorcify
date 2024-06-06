@@ -53,3 +53,10 @@ export interface ISupplier {
   address: string;
   balance?: number;
 }
+
+export interface IAuth0User {
+  given_name: string;
+  family_name: string;
+  email: string;
+  picture: string;
+}

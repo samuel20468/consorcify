@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { CAdmin } from '../c-admin/entities/c-admin.entity';
@@ -11,8 +11,13 @@ import { requiresAuth } from 'express-openid-connect';
   controllers: [AuthController],
   providers: [AuthService],
 })
-export class AuthModule implements NestModule{
+export class AuthModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-      consumer.apply(requiresAuth()).forRoutes('signup/auth0')
+    consumer
+      .apply(requiresAuth())
+      .forRoutes(
+        { path: 'auth/signup/auth0', method: RequestMethod.GET },
+        { path: 'auth/signin/auth0', method: RequestMethod.GET },
+      );
   }
 }

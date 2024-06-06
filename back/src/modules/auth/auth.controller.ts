@@ -4,6 +4,7 @@ import {
   Get,
   Post,
   Req,
+  UnauthorizedException,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -34,18 +35,30 @@ export class AuthController {
     return await this.authService.signIn(credentials);
   }
 
-  @Get('signup/auth0')
-  async getAuth0Protected(@Req() req: Request) {
+  @Get('signin/auth0')
+  async signInAuth0(@Req() req: Request) {
     // console.log(req.oidc.idToken);
-    const user = JSON.stringify(req.oidc.user);
-    console.log(JSON.parse(user));
-    return await this.authService.signUpAuth0(JSON.parse(user));
+    const user = JSON.stringify(req.oidc?.user);
+    if (!user) {
+      throw new UnauthorizedException('Falla en autenticación de Auth0');
+    }
+    return await this.authService.signInAuth0(JSON.parse(user));
   }
 
   @Post('signup')
   @UseInterceptors(ExcludeSuperAdminInterceptor)
   async signUp(@Body() user: CreateUserDto): Promise<User> {
     return await this.authService.signUp(user);
+  }
+
+  @Get('signup/auth0')
+  async getAuth0Protected(@Req() req: Request) {
+    // console.log(req.oidc.idToken);
+    const user = JSON.stringify(req.oidc?.user);
+    if (!user) {
+      throw new UnauthorizedException('Falla en autenticación de Auth0');
+    }
+    return await this.authService.signUpAuth0(JSON.parse(user));
   }
 
   @Post('register-c-admin')

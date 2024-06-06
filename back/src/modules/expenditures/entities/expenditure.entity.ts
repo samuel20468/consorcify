@@ -1,7 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
 import ColumnNumericTransformer from 'src/helpers/numeric-transformer.helper';
+import { Expense } from 'src/modules/expenses/entities/expense.entity';
 import { EXPENDITURE_CATEGORY, EXPENDITURE_STATUS } from 'src/utils/constants';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity({
   name: 'expenditures',
@@ -100,4 +107,8 @@ export class Expenditure {
    */
   @Column({ length: 12, nullable: false })
   invoice_number: string;
+
+  @ManyToOne(() => Expense, (expense) => expense.expenditures)
+  @JoinColumn({ name: 'expense_id' })
+  expense: Expense;
 }

@@ -1,11 +1,13 @@
 import ColumnNumericTransformer from 'src/helpers/numeric-transformer.helper';
 import { Consortium } from 'src/modules/consortiums/entities/consortium.entity';
+import { Expenditure } from 'src/modules/expenditures/entities/expenditure.entity';
 import { EXPENSE_STATUS } from 'src/utils/constants';
 import {
   Column,
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -42,6 +44,7 @@ export class Expense {
     precision: 10,
     scale: 2,
     transformer: new ColumnNumericTransformer(),
+    default: 0,
   })
   total_amount: number;
 
@@ -49,10 +52,13 @@ export class Expense {
    * El estado de la expensa
    * @example "Abierta"
    */
-  @Column('enum', { enum: EXPENSE_STATUS })
+  @Column('enum', { enum: EXPENSE_STATUS, default: EXPENSE_STATUS.OPEN })
   status: EXPENSE_STATUS;
 
   @ManyToOne(() => Consortium, (consortium) => consortium.expenses)
   @JoinColumn({ name: 'consortium_id' })
   consortium: Consortium;
+
+  @OneToMany(() => Expenditure, (expenditure) => expenditure.expense)
+  expenditures: Expenditure[];
 }

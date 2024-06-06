@@ -1,4 +1,3 @@
-import { IUserData } from "@/Interfaces/Interfaces";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 

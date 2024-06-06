@@ -18,7 +18,7 @@ import Swal from "sweetalert2";
 const page = () => {
     useAuth();
     const params: { id: string } = useParams();
-    const token = useSesion();
+    const { token } = useSesion();
     const router = useRouter();
     const [consorcio, setConsorcio] = useState<IConsortium>();
     const [cuit, setCuit] = useState<string>("");

@@ -1,9 +1,20 @@
+"use client";
+
 // Estilos y componentes
 import { Button, ContainerDashboard, Select, Title } from "@/components/ui";
+import { useRouter } from "next/navigation";
+
+// Hooks
 
 // ------------------
 
 const Spent = () => {
+    const router = useRouter();
+
+    const handleOnClick = () => {
+        router.push("/addSpent");
+    };
+
     return (
         <div className="h-screen text-black bg-gray-100">
             <ContainerDashboard>
@@ -61,7 +72,10 @@ const Spent = () => {
                         </Select>
                     </div>
                     <div className="flex items-center ">
-                        <Button className="text-white bg-gray-900 w-[40px] h-[40px] rounded-full text-4xl">
+                        <Button
+                            onClick={handleOnClick}
+                            className="text-white bg-gray-900 w-[40px] h-[40px] rounded-full text-4xl"
+                        >
                             +
                         </Button>
                     </div>

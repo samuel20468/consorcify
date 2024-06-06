@@ -52,6 +52,8 @@ const FormRegisterAdmin = ({ update = false }) => {
             }
             try {
                 const response = await getAdminById(data, token);
+                console.log(data);
+
                 if (response && response.ok) {
                     const data = await response.json();
                     setAdminRegister(data);
@@ -95,6 +97,8 @@ const FormRegisterAdmin = ({ update = false }) => {
                     params.id,
                     token
                 );
+                console.log(response);
+
                 if (response) {
                     Swal.fire({
                         title: "Actualizacion exitosa",

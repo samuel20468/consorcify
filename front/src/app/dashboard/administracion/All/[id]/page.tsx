@@ -23,7 +23,7 @@ const page = () => {
     useAuth();
     const router = useRouter();
     const params: { id: string } = useParams();
-    const token = useSesion();
+    const { token } = useSesion();
     const [admin, setAdmin] = useState<IAdmin>();
     const path = usePathname();
 
@@ -31,8 +31,6 @@ const page = () => {
         const fecthData = async () => {
             try {
                 const response = await getAdminById(params.id, token);
-                console.log(response);
-
                 if (response) {
                     const data = await response.json();
                     setAdmin(data);

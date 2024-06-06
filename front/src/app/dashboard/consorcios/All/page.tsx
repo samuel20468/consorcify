@@ -13,7 +13,7 @@ import React, { useEffect, useState } from "react";
 
 const page = () => {
     useAuth();
-    const token = useSesion();
+    const { token } = useSesion();
     const [consortiums, setConsortiums] = useState<IConsortium[]>([]);
     const [result, setResult] = useState<IConsortium[]>([]);
 

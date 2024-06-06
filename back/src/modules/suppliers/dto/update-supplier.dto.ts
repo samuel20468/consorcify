@@ -1,6 +1,13 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateSupplierDto } from './create-supplier.dto';
-import { IsNotEmpty, IsString, Length, Matches, IsPhoneNumber, IsDecimal } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsString,
+  Length,
+  Matches,
+  IsPhoneNumber,
+  IsNumber,
+} from 'class-validator';
 
 export class UpdateSupplierDto extends PartialType(CreateSupplierDto) {
   /**
@@ -36,9 +43,11 @@ export class UpdateSupplierDto extends PartialType(CreateSupplierDto) {
    * @example "2000.00"
    */
   @IsNotEmpty({ message: 'El saldo es requerido' })
-  @IsDecimal(
-    { decimal_digits: '2', force_decimal: true },
-    { message: 'El saldo debe ser un número decimal con hasta 2 decimales' },
+  @IsNumber(
+    { maxDecimalPlaces: 2 },
+    {
+      message: 'El saldo debe ser un número con hasta 2 decimales',
+    },
   )
   balance: number;
 }

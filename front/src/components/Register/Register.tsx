@@ -22,6 +22,7 @@ import "./style.css";
 
 // Enrutamiento
 import Link from "next/link";
+import useSesion from "@/helpers/useSesion";
 
 const Register = () => {
     const router = useRouter();
@@ -94,10 +95,10 @@ const Register = () => {
         alert("Modal para inicio con terceros");
     };
 
-    const token = localStorage.getItem("userData");
+    const { token } = useSesion();
 
     if (token) {
-        router.push("/");
+        router.push("/dashboard");
     } else {
     }
 

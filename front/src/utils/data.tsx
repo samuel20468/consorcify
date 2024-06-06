@@ -309,7 +309,7 @@ const Expens = (
         <path
             d="M10 10H8"
             stroke="currentColor"
-            stroke-width="1.5"
+            strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"
         />

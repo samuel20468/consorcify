@@ -52,7 +52,7 @@ export class Supplier {
    * @example "2000.00"
    */
   @Column({
-    type: 'decimal',
+    type: 'numeric',
     precision: 15,
     scale: 2,
     transformer: new ColumnNumericTransformer(),

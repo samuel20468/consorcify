@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { Supplier } from './entities/supplier.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateSupplierDto } from './dto/create-supplier.dto';
 import { UpdateSupplierDto } from './dto/update-supplier.dto';
 import { checkForDuplicates } from 'src/helpers/check-for-duplicates.helper';
 
@@ -13,7 +12,7 @@ export class SuppliersRepository {
     private readonly supplierRepository: Repository<Supplier>,
   ) {}
 
-  async createSupplier(newSupplier: CreateSupplierDto): Promise<Supplier> {
+  async createSupplier(newSupplier: Supplier): Promise<Supplier> {
     await checkForDuplicates(
       this.supplierRepository,
       newSupplier.email,
@@ -28,8 +27,14 @@ export class SuppliersRepository {
       'El nombre',
     );
 
-    const supplier = this.supplierRepository.create(newSupplier);
-    return this.supplierRepository.save(supplier);
+    await checkForDuplicates(
+      this.supplierRepository,
+      newSupplier.cuit,
+      'cuit',
+      'El CUIT',
+    );
+
+    return this.supplierRepository.save(newSupplier);
   }
 
   async findAll(): Promise<Supplier[]> {

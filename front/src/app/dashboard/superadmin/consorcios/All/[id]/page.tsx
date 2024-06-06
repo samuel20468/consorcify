@@ -1,8 +1,7 @@
 "use client";
 
-import { IAdmin, IConsortium } from "@/Interfaces/Interfaces";
+import { IConsortium } from "@/Interfaces/Interfaces";
 import { ContainerDashboard } from "@/components/ui";
-import ContainerHeaderDashboard from "@/components/ui/ContainerHeaderDashboard";
 import {
     deleteConsortiumById,
     getConsortiumById,
@@ -11,8 +10,8 @@ import { formatearNumero } from "@/helpers/functions.helper";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
 import Link from "next/link";
-import { useParams, usePathname, useRouter } from "next/navigation";
-import React, { use, useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
 const page = () => {

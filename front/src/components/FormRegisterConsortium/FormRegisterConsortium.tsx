@@ -33,7 +33,7 @@ const FormRegisterConsortium = ({ update = false }) => {
         ufs: 0,
         category: 0,
         first_due_day: 0,
-        c_admin: "",
+        c_admin: "" || ({ id: "" } as IAdmin),
     };
     const params: { id: string } = useParams();
     const [userData, setUserData] = useState<IUserData>();
@@ -429,19 +429,29 @@ const FormRegisterConsortium = ({ update = false }) => {
                                 className="h-10 px-2 text-white rounded-lg bg-input"
                                 name="c_admin"
                                 id="c_admin"
-                                value={consortiumRegister.c_admin}
+                                value={
+                                    consortiumRegister.c_admin &&
+                                    typeof consortiumRegister.c_admin ===
+                                        "object"
+                                        ? consortiumRegister.c_admin.name
+                                        : consortiumRegister.c_admin
+                                }
                                 onChange={handleSelect}
                             >
                                 <option value="" disabled>
                                     Selecciona un Administrador
                                 </option>
-                                {admins?.map((admin) => {
-                                    return (
-                                        <option key={admin.id} value={admin.id}>
-                                            {admin.name} {admin.lastname}
-                                        </option>
-                                    );
-                                })}
+                                {admins &&
+                                    admins?.map((admin) => {
+                                        return (
+                                            <option
+                                                key={admin.id}
+                                                value={admin.id}
+                                            >
+                                                {admin.name} {admin.lastname}
+                                            </option>
+                                        );
+                                    })}
                             </select>
                         </div>
                     </div>

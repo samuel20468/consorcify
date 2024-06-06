@@ -85,14 +85,14 @@ export interface IConsortiumError {
     ufs?: number;
     category?: number;
     first_due_day?: number;
-    c_admin?: string;
+    c_admin?: string | IAdmin;
 }
 
 export interface IReviews {
     profilePic: string;
     text: string;
     author: string;
-    date: string;
+    type: string;
     rating: number;
 }
 

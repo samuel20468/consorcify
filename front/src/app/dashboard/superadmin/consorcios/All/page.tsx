@@ -64,7 +64,7 @@ const page = () => {
                 return (
                     <Link
                         key={consortium.id}
-                        href={`/dashboard/consorcios/All/${consortium.id}`}
+                        href={`/dashboard/superadmin/consorcios/All/${consortium.id}`}
                         className="flex items-center justify-center w-full my-1"
                     >
                         <ConsortiumCard consortium={consortium} />

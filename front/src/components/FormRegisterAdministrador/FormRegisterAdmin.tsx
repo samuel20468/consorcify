@@ -37,7 +37,7 @@ const FormRegisterAdmin = ({ update = false }) => {
         rpa: "",
         email: "",
     };
-    const { token, data } = useSesion();
+    const { token } = useSesion();
     const params: { id: string } = useParams();
     const [adminRegister, setAdminRegister] =
         useState<IRegisterAdmin>(initialData);
@@ -51,10 +51,8 @@ const FormRegisterAdmin = ({ update = false }) => {
                 return;
             }
             try {
-                const response = await getAdminById(data, token);
-                console.log(data);
-
-                if (response && response.ok) {
+                const response = await getAdminById(params.id, token);
+                if (response?.ok) {
                     const data = await response.json();
                     setAdminRegister(data);
                 } else {
@@ -97,19 +95,21 @@ const FormRegisterAdmin = ({ update = false }) => {
                     params.id,
                     token
                 );
-                console.log(response);
-
                 if (response) {
                     Swal.fire({
                         title: "Actualizacion exitosa",
                     });
-                    router.push(`/dashboard/administracion/All/${params.id}`);
+                    router.push(
+                        `/dashboard/superadmin/administracion/All/${params.id}`
+                    );
                 }
             } else {
                 const response = await adminFetch(adminRegister, token);
                 if (response) {
                     alert("Registro del consorcio exitoso.");
-                    router.push(`/dashboard/administracion/All/${params.id}`);
+                    router.push(
+                        `/dashboard/superadmin/administracion/All/${params.id}`
+                    );
                 }
             }
             setAdminRegister(initialData);

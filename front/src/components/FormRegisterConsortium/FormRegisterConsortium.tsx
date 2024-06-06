@@ -60,11 +60,13 @@ const FormRegisterConsortium = ({ update = false }) => {
             if (update) {
                 try {
                     const response = await getConsortiumById(params.id, token);
+                    if (response.c_admin !== null) {
+                        setConsortiumRegister((prevState) => ({
+                            ...prevState,
+                            c_admin: response.c_admin.id,
+                        }));
+                    }
                     setConsortiumRegister(response);
-                    setConsortiumRegister((prevState) => ({
-                        ...prevState,
-                        c_admin: response.c_admin.id,
-                    }));
                 } catch (error) {
                     console.error(error);
                 }
@@ -147,7 +149,9 @@ const FormRegisterConsortium = ({ update = false }) => {
                 if (response?.ok) {
                     alert("Consorcio moficado correctamente");
                     if (userData?.roles?.[0] == "superadmin") {
-                        router.push(`/dashboard/consorcios/All/${params.id}`);
+                        router.push(
+                            `/dashboard/superadmin/consorcios/All/${params.id}`
+                        );
                     }
                 }
             } catch (error) {

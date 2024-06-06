@@ -1,8 +1,13 @@
 "use client";
 
-import Link from "next/link";
-import { itemsNavbarAdmin } from "@/utils/data";
+// Estilos y componentes
 import { ContainerSideBar } from "../ui";
+import { itemsNavbarAdmin } from "@/utils/data";
+
+// Hooks
+import Link from "next/link";
+
+// -----------------------
 
 const SideBarAdmin = () => {
     return (

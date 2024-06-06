@@ -2,6 +2,8 @@ import {
     IConsortium,
     ILoginData,
     IRegisterAdmin,
+    ISuppliers,
+    IUser,
 } from "@/Interfaces/Interfaces";
 
 // Inicio de sesión
@@ -25,7 +27,7 @@ export const loginFetch = async (UserData: ILoginData) => {
 };
 
 // Creación de usuario
-export const registerFetch = async (registerData: any) => {
+export const registerFetch = async (registerData: IUser) => {
     try {
         const response = await fetch("http://localhost:3001/auth/signup", {
             method: "POST",
@@ -53,15 +55,12 @@ export const getUserById = async (id: string, token: string) => {
                 Authorization: `Bearer ${token}`,
             },
         });
-        console.log(response);
         return response;
     } catch (error) {}
 };
 
 // Creación del administrador
 export async function adminFetch(registerAdmin: IRegisterAdmin, token: string) {
-    console.log(registerAdmin);
-
     try {
         const response = await fetch(
             `http://localhost:3001/auth/register-c-admin`,
@@ -179,8 +178,6 @@ export async function consortiumFetch(
     consortiumData: IConsortium,
     token: string
 ) {
-    console.log(consortiumData);
-
     try {
         const response = await fetch(`http://localhost:3001/consortiums`, {
             method: "POST",
@@ -289,4 +286,32 @@ export const deleteConsortiumById = async (id: string, token: string) => {
         console.log(response);
         return response;
     } catch (error) {}
+};
+
+// Crear proveedor
+export const supplierFetch = async (
+    registerSupplier: ISuppliers,
+    token: string
+) => {
+    try {
+        const response = await fetch(`http://localhost:3001/suppliers`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(registerSupplier),
+        });
+        if (!response.ok) {
+            return response.json().then((errorInfo) => {
+                throw new Error(
+                    `Error ${response.status}: ${
+                        errorInfo.message || response.statusText
+                    }`
+                );
+            });
+        }
+    } catch (error) {
+        console.error(error);
+    }
 };

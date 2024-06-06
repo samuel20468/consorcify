@@ -21,7 +21,7 @@ const ConsorciosCrud = () => {
                     <div className="flex flex-col items-center w-1/2 py-2 border rounded-[50px] h-3/4 bg-[#dadada] shadow-2xl">
                         <AllConsortium className="flex items-center justify-center w-full h-full" />
                         <Link
-                            href="/dashboard/consorcios/All"
+                            href="/dashboard/superadmin/consorcios/All"
                             className="w-[80%] px-2"
                         >
                             <Button>Ver Consorcios</Button>

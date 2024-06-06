@@ -5,11 +5,14 @@ import { Button, ContainerDashboard, Title } from "@/components/ui";
 import { AddCross, AllAdmins } from "@/helpers/icons.helper";
 
 // Hooks
+import useAuth from "@/helpers/useAuth";
 import Link from "next/link";
 
 // ---------------
 
 const ConsorciosCrud = () => {
+    useAuth();
+
     return (
         <div className="flex w-full h-screen gap-3 bg-[#e5e7eb] text-black">
             <ContainerDashboard className="w-full h-full bg-[#e5e7eb]">

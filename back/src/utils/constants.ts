@@ -41,3 +41,20 @@ export enum EXPENSE_STATUS {
   OPEN = "Abierta",
   CLOSED = "Cerrada",
 }
+
+export enum EXPENDITURE_STATUS {
+  UNPAID = 'impago',
+  PAID = 'pagado',
+}
+
+export enum EXPENDITURE_CATEGORY {
+  UTILITIES = 'Servicios Públicos',
+  SERVICE_SUBSCRIPTION = 'Abono de Servicios',
+  COMMON_AREA_MAINTENANCE = 'Mantenimiento de partes comunes',
+  BANK_FEES = 'Gastos bancarios',
+  CLEANING_EXPENSES = 'Gastos de limpieza',
+  ADMINISTRATIVE_EXPENSES = 'Gastos administrativos',
+  INSURANCES = 'Seguro',
+  SALARIES = 'Sueldos',
+  OTHER_EXPENSES = 'Otros',
+}

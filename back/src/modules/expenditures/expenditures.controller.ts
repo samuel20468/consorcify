@@ -1,15 +1,21 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { ExpendituresService } from './expenditures.service';
 import { CreateExpenditureDto } from './dto/create-expenditure.dto';
 import { UpdateExpenditureDto } from './dto/update-expenditure.dto';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from 'src/guards/auth.guard';
+import { Expenditure } from './entities/expenditure.entity';
 
+@ApiTags('Expenditures')
+@ApiBearerAuth()
+@UseGuards(AuthGuard)
 @Controller('expenditures')
 export class ExpendituresController {
   constructor(private readonly expendituresService: ExpendituresService) {}
 
   @Post()
-  create(@Body() createExpenditureDto: CreateExpenditureDto) {
-    return this.expendituresService.create(createExpenditureDto);
+  async create(@Body() createExpenditureDto: CreateExpenditureDto): Promise<Expenditure> {
+    return await this.expendituresService.create(createExpenditureDto);
   }
 
   @Get()

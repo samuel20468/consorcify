@@ -7,8 +7,21 @@
     );
   }
   
-  .imagen {
-      background-image: url(../../../public/Swatch.png);
-      background-size: cover;
+  @media (max-height: 725px) {
+    .col-izquierda {
+      font-size: 13px;
+    }
+    .col-izquierda h1{
+      font-size: 20px;
+    }
+    .col-izquierda p{
+      font-size: 14px;
+    }
   }
   
+  @media (max-height: 600px) {
+    .contenedor {
+      height: 100%;
+    }
+  
+  }

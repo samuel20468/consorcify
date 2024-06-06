@@ -1,6 +1,6 @@
 "use client";
 
-import { IConsortium } from "@/Interfaces/Interfaces";
+import { IAdmin, IConsortium } from "@/Interfaces/Interfaces";
 import { ContainerDashboard } from "@/components/ui";
 import ContainerHeaderDashboard from "@/components/ui/ContainerHeaderDashboard";
 import {
@@ -9,6 +9,7 @@ import {
 } from "@/helpers/fetch.helper";
 import { formatearNumero } from "@/helpers/functions.helper";
 import useAuth from "@/helpers/useAuth";
+import useSesion from "@/helpers/useSesion";
 import Link from "next/link";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import React, { use, useEffect, useState } from "react";
@@ -17,24 +18,14 @@ import Swal from "sweetalert2";
 const page = () => {
     useAuth();
     const params: { id: string } = useParams();
-    const [token, setToken] = useState<string>("");
+    const token = useSesion();
     const router = useRouter();
-    const path = usePathname();
     const [consorcio, setConsorcio] = useState<IConsortium>();
     const [cuit, setCuit] = useState<string>("");
 
     useEffect(() => {
-        const data = JSON.parse(localStorage.getItem("userData")!);
-        if (data) {
-            setToken(data.token);
-        }
-    }, [path]);
-
-    useEffect(() => {
         const fetchData = async (token: string) => {
             const response = await getConsortiumById(params.id, token);
-            console.log(response);
-
             setConsorcio(response);
         };
         try {
@@ -79,7 +70,7 @@ const page = () => {
                         {consorcio?.name}
                     </h3>
                     <p className="px-5 py-4  rounded-[50px] bg-[#e5e7eb] shadow text-fondo border-fondo">
-                        Administrador: {consorcio?.c_admin?.name!}
+                        Administrador: {consorcio?.c_admin?.name}
                     </p>
                     <p className="px-5 py-4  rounded-[50px] bg-[#e5e7eb] shadow text-fondo border-fondo">
                         CATEGORIA: {consorcio?.category}

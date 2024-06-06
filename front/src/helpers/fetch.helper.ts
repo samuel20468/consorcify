@@ -1,9 +1,10 @@
 import {
     IConsortium,
     ILoginData,
-    IRegisterConsortium,
+    IRegisterAdmin,
 } from "@/Interfaces/Interfaces";
 
+// Inicio de sesión
 export const loginFetch = async (UserData: ILoginData) => {
     try {
         const response = await fetch("http://localhost:3001/auth/signin", {
@@ -23,6 +24,7 @@ export const loginFetch = async (UserData: ILoginData) => {
     }
 };
 
+// Creación de usuario
 export const registerFetch = async (registerData: any) => {
     try {
         const response = await fetch("http://localhost:3001/auth/signup", {
@@ -41,9 +43,10 @@ export const registerFetch = async (registerData: any) => {
     }
 };
 
-export const getAdminById = async (id: string, token: string) => {
+// Obtener usuario por ID
+export const getUserById = async (id: string, token: string) => {
     try {
-        const response = await fetch(`http://localhost:3001/c-admins/${id}`, {
+        const response = await fetch(`http://localhost:3001/users/${id}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -55,6 +58,39 @@ export const getAdminById = async (id: string, token: string) => {
     } catch (error) {}
 };
 
+// Creación del administrador
+export async function adminFetch(registerAdmin: IRegisterAdmin, token: string) {
+    console.log(registerAdmin);
+
+    try {
+        const response = await fetch(
+            `http://localhost:3001/auth/register-c-admin`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify(registerAdmin),
+            }
+        );
+        if (!response.ok) {
+            return response.json().then((errorInfo) => {
+                throw new Error(
+                    `Error ${response.status}: ${
+                        errorInfo.message || response.statusText
+                    }`
+                );
+            });
+        }
+
+        return response;
+    } catch (error: any) {
+        throw new Error(error);
+    }
+}
+
+// Obtener administrador
 export const getAdmins = async (token: string) => {
     try {
         const response = await fetch("http://localhost:3001/c-admins", {
@@ -70,6 +106,23 @@ export const getAdmins = async (token: string) => {
     }
 };
 
+// Obtener administrador por ID
+export const getAdminById = async (id: string, token: string) => {
+    try {
+        const response = await fetch(`http://localhost:3001/c-admins/${id}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return response;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+// Borrar administrador
 export const deleteAdmin = async (id: string, token: string) => {
     try {
         const response = await fetch(
@@ -88,14 +141,15 @@ export const deleteAdmin = async (id: string, token: string) => {
     } catch (error) {}
 };
 
+// Modificar administrador
 export const updateAdmin = async (
-    data: IRegisterConsortium,
+    data: IRegisterAdmin,
     id: string,
     token: string
 ) => {
     try {
         const response = await fetch(`http://localhost:3001/c-admins/${id}`, {
-            method: "PUT",
+            method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
@@ -120,22 +174,39 @@ export const updateAdmin = async (
     }
 };
 
-//? ENDPOINTS USUARIOS
-export const getUserById = async (id: string, token: string) => {
+// Creación de consorcios
+export async function consortiumFetch(
+    consortiumData: IConsortium,
+    token: string
+) {
+    console.log(consortiumData);
+
     try {
-        const response = await fetch(`http://localhost:3001/users/${id}`, {
-            method: "GET",
+        const response = await fetch(`http://localhost:3001/consortiums`, {
+            method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
+            body: JSON.stringify(consortiumData),
         });
-        console.log(response);
-        return response;
-    } catch (error) {}
-};
 
-//? endpoint consorcios
+        if (!response.ok) {
+            return response.json().then((errorInfo) => {
+                throw new Error(`
+                    Error ${response.status}: ${
+                    errorInfo.message || response.statusText
+                }
+            `);
+            });
+        }
+        return response;
+    } catch (error: any) {
+        throw new Error(error);
+    }
+}
+
+// Obtener consorcios
 export const getConsortiums = async (token: string) => {
     try {
         const response = await fetch("http://localhost:3001/consortiums", {
@@ -150,6 +221,7 @@ export const getConsortiums = async (token: string) => {
     }
 };
 
+// Obtener consorcio por ID
 export const getConsortiumById = async (id: string, token: string) => {
     try {
         const response = await fetch(
@@ -164,11 +236,11 @@ export const getConsortiumById = async (id: string, token: string) => {
         );
 
         const data = await response.json();
-        console.log(data);
         return data;
     } catch (error) {}
 };
 
+// Modificar consorcio
 export const updateConsortium = async (
     id: string,
     token: string,
@@ -186,6 +258,7 @@ export const updateConsortium = async (
                 body: JSON.stringify(data),
             }
         );
+        console.log(response);
         if (!response.ok) {
             return response.json().then((errorInfo) => {
                 throw new Error(
@@ -201,6 +274,7 @@ export const updateConsortium = async (
     }
 };
 
+// Borrar consorcio
 export const deleteConsortiumById = async (id: string, token: string) => {
     try {
         const response = await fetch(

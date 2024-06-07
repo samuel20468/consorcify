@@ -2,7 +2,6 @@ import {
   IsEnum,
   IsString,
   Length,
-  Matches,
   IsEmail,
   IsUUID,
   IsNotEmpty,
@@ -14,11 +13,11 @@ import { FUNCTIONAL_UNIT_TYPE } from 'src/utils/constants';
 export class CreateFunctionalUnitDto {
   /**
    * El tipo de la Unidad Funcional
-   * @example "Apartamento"
+   * @example "Departamento"
    */
   @IsEnum(FUNCTIONAL_UNIT_TYPE, {
     message:
-      'El tipo debe ser uno de los siguientes: Apartmento, Garaje, Espacio Comercial, Oficina, Otro',
+      'El tipo debe ser uno de los siguientes: Departamento, Garaje, Espacio Comercial, Oficina, Otro',
   })
   @IsNotEmpty({ message: 'El tipo es requerido' })
   type: FUNCTIONAL_UNIT_TYPE;

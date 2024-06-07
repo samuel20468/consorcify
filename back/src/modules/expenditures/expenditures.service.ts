@@ -15,30 +15,12 @@ export class ExpendituresService {
     return await this.ExpendituresRepository.create(createExpenditureDto);
   }
 
-  async findAllByConsortium(
-    consortiumId: string,
-    page: number,
-    limit: number,
+  async findAll(
+    page: number = 1,
+    limit: number = 10,
   ): Promise<Expenditure[]> {
-    return await this.ExpendituresRepository.findAllByConsortium(
-      consortiumId,
-      page,
-      limit,
-    );
+    return await this.ExpendituresRepository.findAll(page, limit);
   }
-
-  async findAllUnpaidByConsortium(
-    consortiumId: string,
-    page: number,
-    limit: number,
-  ): Promise<Expenditure[]> {
-    return await this.ExpendituresRepository.findAllUnpaidByConsortium(
-      consortiumId,
-      page,
-      limit,
-    );
-  }
-
   async findOne(id: string): Promise<Expenditure> {
     return await this.ExpendituresRepository.findOne(id);
   }

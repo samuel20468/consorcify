@@ -11,7 +11,7 @@ import { validateEmail } from "@/helpers/Validations/validate.email";
 import { validatePwd } from "@/helpers/Validations/validate.password";
 
 // Endpoint
-import { registerFetch } from "@/helpers/fetch.helper";
+import { googleLogin, registerFetch } from "@/helpers/fetch.helper";
 
 // Hooks
 import { useEffect, useState } from "react";
@@ -23,6 +23,8 @@ import "./style.css";
 // Enrutamiento
 import Link from "next/link";
 import useSesion from "@/helpers/useSesion";
+import { jwtDecode } from "jwt-decode";
+import Swal from "sweetalert2";
 
 const Register = () => {
     const router = useRouter();
@@ -91,8 +93,27 @@ const Register = () => {
         setLock(!lock);
     };
 
-    const handleGoogle = () => {
-        alert("Modal para inicio con terceros");
+    const handleGoogle = async (e: any) => {
+        e.preventDefault();
+        try {
+            const response = await googleLogin();
+            if (response) {
+                const decodeData = jwtDecode(response.token);
+                localStorage.setItem(
+                    "userData",
+                    JSON.stringify({ user: decodeData, token: response.token })
+                );
+                router.push("/dahsboard");
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Error al conectarse",
+                    text: "Intentalo más tarde",
+                });
+            }
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     const { token } = useSesion();

@@ -34,32 +34,12 @@ export class ExpendituresController {
 
   @ApiQuery({ name: 'page', type: Number, required: false })
   @ApiQuery({ name: 'limit', type: Number, required: false })
-  @Get('consortium/:consortiumId')
-  async findAllByConsortium(
+  @Get()
+  async findAll(
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 10,
-    @Param('consortiumId', ParseUUIDPipe) consortiumId: string,
   ): Promise<Expenditure[]> {
-    return await this.expendituresService.findAllByConsortium(
-      consortiumId,
-      +page,
-      +limit,
-    );
-  }
-
-  @ApiQuery({ name: 'page', type: Number, required: false })
-  @ApiQuery({ name: 'limit', type: Number, required: false })
-  @Get('consortium/unpaid/:consortiumId')
-  async findAllUnpaidByConsortium(
-    @Query('page') page: number = 1,
-    @Query('limit') limit: number = 10,
-    @Param('consortiumId', ParseUUIDPipe) consortiumId: string,
-  ): Promise<Expenditure[]> {
-    return await this.expendituresService.findAllUnpaidByConsortium(
-      consortiumId,
-      +page,
-      +limit,
-    );
+    return await this.expendituresService.findAll(+page, +limit);
   }
 
   @Get(':id')

@@ -11,6 +11,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConsortiumsModule } from './modules/consortiums/consortiums.module';
 import { ExpendituresModule } from './modules/expenditures/expenditures.module';
 import { ExpensesModule } from './modules/expenses/expenses.module';
+// import { PicturesModule } from './modules/pictures/pictures.module';
+import { PicturesModule } from './modules/pictures/pictures.module';
 
 @Module({
   imports: [
@@ -33,11 +35,13 @@ import { ExpensesModule } from './modules/expenses/expenses.module';
     AuthModule,
     SuppliersModule,
     CAdminModule,
+    // PicturesModule,
     UsersModule,
     FunctionalUnitsModule,
     ConsortiumsModule,
     ExpensesModule,
     ExpendituresModule,
+    PicturesModule,
   ],
 })
 export class AppModule {}

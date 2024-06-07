@@ -114,6 +114,13 @@ export class Consortium {
   @Column({ type: 'integer' })
   first_due_day: number;
 
+  /**
+   * El link a la imagen del Usuario
+   * @example "http://imagenDeSilueta.com"
+   */
+  @Column({ default: 'http://imagenDeSilueta.com' })
+  picture: string;
+
   @Column({ type: 'boolean', default: true })
   active: boolean;
 

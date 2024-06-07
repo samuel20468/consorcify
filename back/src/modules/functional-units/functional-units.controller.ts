@@ -82,7 +82,7 @@ export class FunctionalUnitsController {
     );
   }
 
-  @Delete(':id')
+  @Patch('toggle-status/:id')
   async toggleStatus(@Param('id', ParseUUIDPipe) id: string) {
     let statusMessage: string;
 

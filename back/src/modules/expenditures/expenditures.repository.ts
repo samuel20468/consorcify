@@ -7,43 +7,52 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Expenditure } from './entities/expenditure.entity';
 import { DataSource, Repository } from 'typeorm';
 import { CreateExpenditureDto } from './dto/create-expenditure.dto';
-import { SupplierConsortium } from '../suppliers/entities/suppliers-consortiums.entity';
 import { UpdateExpenditureDto } from './dto/update-expenditure.dto';
 import { EXPENDITURE_STATUS } from 'src/utils/constants';
+import { Supplier } from '../suppliers/entities/supplier.entity';
 
 @Injectable()
 export class ExpendituresRepository {
   constructor(
     @InjectRepository(Expenditure)
     private expenditureRepository: Repository<Expenditure>,
-    @InjectRepository(SupplierConsortium)
-    private supplierConsortiumRepository: Repository<SupplierConsortium>,
+    @InjectRepository(Supplier)
+    private supplierRepository: Repository<Supplier>,
     private readonly dataSource: DataSource,
   ) {}
 
   async create(
     createExpenditureDto: CreateExpenditureDto,
   ): Promise<Expenditure> {
-    const supplier_consortium =
-      await this.supplierConsortiumRepository.findOneBy({
-        supplier_id: createExpenditureDto.supplier_id,
-        consortium_id: createExpenditureDto.consortium_id,
-      });
+    const supplier = await this.supplierRepository.findOneBy({
+      id: createExpenditureDto.supplier_id,
+    })
 
-    if (!supplier_consortium) {
+    if (!supplier) {
       throw new NotFoundException('El proveedor del consorcio no existe');
+    }
+
+    const foundExpenditure = await this.expenditureRepository.findOne({
+      where: {
+        supplier: { id: createExpenditureDto.supplier_id },
+        invoice_number: createExpenditureDto.invoice_number,
+      },
+    })
+
+    if (foundExpenditure) {
+      throw new ConflictException('La factura ya existe');
     }
 
     const expenditure = this.expenditureRepository.create({
       ...createExpenditureDto,
-      supplier_consortium,
+      supplier,
     });
     try {
       const newExpenditure = await this.expenditureRepository.save(expenditure);
-      const newSupplierConsortiumBalance =
-        supplier_consortium.balance + createExpenditureDto.total_amount;
-      await this.supplierConsortiumRepository.update(supplier_consortium, {
-        balance: newSupplierConsortiumBalance,
+      const newSupplierBalance =
+        supplier.balance + createExpenditureDto.total_amount;
+      await this.supplierRepository.update(supplier, {
+        balance: newSupplierBalance,
       });
       return newExpenditure;
     } catch (error) {
@@ -51,33 +60,11 @@ export class ExpendituresRepository {
     }
   }
 
-  async findAllByConsortium(
-    consortiumId: string,
-    page: number,
-    limit: number,
-  ): Promise<Expenditure[]> {
+  async findAll(page: number = 1, limit: number = 10): Promise<Expenditure[]> {
     return await this.expenditureRepository.find({
-      where: { supplier_consortium: { consortium_id: consortiumId } },
       skip: (page - 1) * limit,
       take: limit,
-      relations: ['supplier_consortium'],
-    });
-  }
-
-  async findAllUnpaidByConsortium(
-    consortiumId: string,
-    page: number,
-    limit: number,
-  ): Promise<Expenditure[]> {
-    return await this.expenditureRepository.find({
-      where: {
-        supplier_consortium: { consortium_id: consortiumId },
-        status: EXPENDITURE_STATUS.UNPAID,
-        active: true,
-      },
-      skip: (page - 1) * limit,
-      take: limit,
-      relations: ['supplier_consortium'],
+      relations: ['supplier'],
     });
   }
 
@@ -94,7 +81,7 @@ export class ExpendituresRepository {
   ): Promise<Expenditure> {
     const expenditure = await this.expenditureRepository.findOne({
       where: { id },
-      relations: ['supplier_consortium'],
+      relations: ['supplier'],
     });
     if (!expenditure) {
       throw new NotFoundException(`Gasto con id ${id} no encontrado`);
@@ -113,13 +100,13 @@ export class ExpendituresRepository {
       if (updateExpenditureDto.total_amount) {
         console.log(expenditure);
 
-        const newSupplierConsortiumBalance =
-          expenditure.supplier_consortium.balance -
+        const newSupplierBalance =
+          expenditure.supplier.balance -
           expenditure.total_amount +
           updateExpenditureDto.total_amount;
 
-        expenditure.supplier_consortium.balance = newSupplierConsortiumBalance;
-        await queryRunner.manager.save(expenditure.supplier_consortium);
+        expenditure.supplier.balance = newSupplierBalance;
+        await queryRunner.manager.save(expenditure.supplier);
       }
 
       Object.assign(expenditure, updateExpenditureDto);
@@ -151,9 +138,9 @@ export class ExpendituresRepository {
         `El gasto con id ${id} ya ha sido pagado, no se puede modificar`,
       );
     }
-    const newSupplierConsortiumBalance = expenditure.supplier_consortium.balance - expenditure.total_amount;
-    expenditure.supplier_consortium.balance = newSupplierConsortiumBalance;
-    await this.supplierConsortiumRepository.save(expenditure.supplier_consortium);
+    const newSupplierBalance = expenditure.supplier.balance - expenditure.total_amount;
+    expenditure.supplier.balance = newSupplierBalance;
+    await this.supplierRepository.save(expenditure.supplier);
     expenditure.active = false;
     return await this.expenditureRepository.save(expenditure);
   }

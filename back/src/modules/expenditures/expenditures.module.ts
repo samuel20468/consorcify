@@ -4,10 +4,10 @@ import { ExpendituresController } from './expenditures.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Expenditure } from './entities/expenditure.entity';
 import { ExpendituresRepository } from './expenditures.repository';
-import { SupplierConsortium } from '../suppliers/entities/suppliers-consortiums.entity';
+import { Supplier } from '../suppliers/entities/supplier.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Expenditure, SupplierConsortium])],
+  imports: [TypeOrmModule.forFeature([Expenditure, Supplier])],
   controllers: [ExpendituresController],
   providers: [ExpendituresService, ExpendituresRepository],
 })

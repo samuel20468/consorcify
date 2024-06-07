@@ -101,12 +101,4 @@ export class CreateExpenditureDto {
   @IsUUID(4, { message: 'El id del proveedor debe ser UUID v4' })
   @IsNotEmpty({ message: 'El proveedor es requerido' })
   supplier_id: string;
-
-  /**
-   * El id del consorcio
-   * @example "5e4d5f8b-2e6d-4f49-9b3e-8d6c6f7e8a5b"
-   */
-  @IsUUID(4, { message: 'El id del consorcio debe ser UUID v4' })
-  @IsNotEmpty({ message: 'El consorcio es requerido' })
-  consortium_id: string;
 }

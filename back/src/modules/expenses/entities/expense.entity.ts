@@ -1,6 +1,7 @@
 import ColumnNumericTransformer from 'src/helpers/numeric-transformer.helper';
 import { Consortium } from 'src/modules/consortiums/entities/consortium.entity';
 import { Expenditure } from 'src/modules/expenditures/entities/expenditure.entity';
+import { FunctionalUnitsExpense } from 'src/modules/functional-units-expenses/entities/functional-units-expense.entity';
 import { EXPENSE_STATUS } from 'src/utils/constants';
 import {
   Column,
@@ -68,4 +69,7 @@ export class Expense {
 
   @OneToMany(() => Expenditure, (expenditure) => expenditure.expense)
   expenditures: Expenditure[];
+
+  @OneToMany(() => FunctionalUnitsExpense, (functionalUnitsExpense) => functionalUnitsExpense.expense)
+  functionalUnitsExpenses: FunctionalUnitsExpense[];
 }

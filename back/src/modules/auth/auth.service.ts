@@ -75,11 +75,9 @@ export class AuthService {
 
   async signUp(user: CreateUserDto): Promise<TObjectToken> {
     const { first_name, last_name, email, password } = user;
-    const foundUser = await this.usersRepository.findOneBy({ email });
 
-    if (foundUser) {
-      throw new ConflictException('El email ya se encuentra registrado.');
-    }
+    await checkForDuplicates(this.usersRepository, email, 'email', 'El Email');
+    await checkForDuplicates(this.cAdminRepository, email, 'email', 'El email');
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User();
@@ -95,32 +93,17 @@ export class AuthService {
 
   async singUpCAdmin(consAdmin: CreateCAdminDto): Promise<CAdmin> {
     const { name, address, email, phone_number, cuit, sat, rpa } = consAdmin;
-    const toCheck: TDuplicateCheck[] = [
-      {
-        value: email,
-        field: 'email',
-        errorMessage: 'El email',
-      },
-      {
-        value: cuit,
-        field: 'cuit',
-        errorMessage: 'El CUIT',
-      },
-      {
-        value: rpa,
-        field: 'rpa',
-        errorMessage: 'El número de mátrícula RPA',
-      },
-    ];
 
-    toCheck.forEach((checking) =>
-      checkForDuplicates(
-        this.cAdminRepository,
-        checking.value,
-        checking.field,
-        checking.errorMessage,
-      ),
+    await checkForDuplicates(this.cAdminRepository, email, 'email', 'El email');
+    await checkForDuplicates(this.cAdminRepository, cuit, 'cuit', 'El CUIT');
+    await checkForDuplicates(
+      this.cAdminRepository,
+      rpa,
+      'rpa',
+      'El número de mátrícula RPA',
     );
+
+    await checkForDuplicates(this.usersRepository, email, 'email', 'El Email');
 
     const hashedPassword = await bcrypt.hash(CADMIN_PASS, 10);
     const satCAdmin: SAT = satSetter(sat);

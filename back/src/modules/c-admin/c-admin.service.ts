@@ -17,10 +17,10 @@ export class CAdminsService {
   async findAll({ page, limit }: TPagination): Promise<CAdmin[]> {
     const cAdmins: CAdmin[] = await this.cAdminsRepository.findAll();
 
-    if (cAdmins.length == 0) throw new NotFoundException('No cAdmins found');
-    cAdmins.forEach((cAdmin) => {
-      delete cAdmin.password;
-    });
+    // if (cAdmins.length == 0) throw new NotFoundException('No cAdmins found');
+    // cAdmins.forEach((cAdmin) => {
+    //   delete cAdmin.password;
+    // });
 
     page = Math.max(1, page);
 

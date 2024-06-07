@@ -9,16 +9,20 @@ import {
   ParseUUIDPipe,
   Query,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ConsortiumsService } from './consortiums.service';
 import { CreateConsortiumDto } from './dto/create-consortium.dto';
 import { UpdateConsortiumDto } from './dto/update-consortium.dto';
 import { AuthGuard } from 'src/guards/auth.guard';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ExcludeActiveInterceptor } from 'src/interceptors/exclude-active.interceptor';
 
-@ApiTags("Consortium")
+@ApiTags('Consortium')
 @Controller('consortiums')
+@ApiBearerAuth()
 @UseGuards(AuthGuard)
+@UseInterceptors(ExcludeActiveInterceptor)
 export class ConsortiumsController {
   constructor(private readonly consortiumsService: ConsortiumsService) {}
 

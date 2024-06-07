@@ -14,10 +14,10 @@ export interface ILogedUser {
 }
 
 export interface IUser {
-    name: string;
-    lastname?: string;
+    first_name: string;
+    last_name?: string;
     email: string;
-    password: string;
+    password?: string;
     role?: string;
 }
 
@@ -31,7 +31,7 @@ export interface IAdmin extends IUser {
     active: boolean;
 }
 
-export interface IRegisterConsortium {
+export interface IRegisterAdmin {
     name: string;
     email: string;
     password?: string;
@@ -40,9 +40,10 @@ export interface IRegisterConsortium {
     address: string;
     sat: string;
     rpa: string;
+    id?: string;
 }
 
-export interface IRegisterConsortiumError {
+export interface IRegisterAdminError {
     name?: string;
     email?: string;
     password?: string;
@@ -67,7 +68,7 @@ export interface IConsortium {
     ufs: number;
     category: number;
     first_due_day: number;
-    c_admin?: string;
+    c_admin?: string | IAdmin;
 }
 export interface IConsortiumError {
     id?: string;
@@ -84,14 +85,14 @@ export interface IConsortiumError {
     ufs?: number;
     category?: number;
     first_due_day?: number;
-    c_admin?: string;
+    c_admin?: string | IAdmin;
 }
 
 export interface IReviews {
     profilePic: string;
     text: string;
     author: string;
-    date: string;
+    type: string;
     rating: number;
 }
 
@@ -121,4 +122,27 @@ export interface IUFs {
     owner_email: string;
     balance: number;
     consortium_id: string;
+}
+
+export interface ISuppliers {
+    id?: string;
+    consortium_id?: string;
+    name: string;
+    cuit: string;
+    email: string;
+    phone_number: string;
+    address: string;
+    balance?: number;
+    active?: boolean;
+}
+export interface ISuppliersError {
+    id?: string;
+    consortium_id?: string;
+    name?: string;
+    cuit?: string;
+    email?: string;
+    phone_number?: string;
+    address?: string;
+    balance?: number;
+    active?: boolean;
 }

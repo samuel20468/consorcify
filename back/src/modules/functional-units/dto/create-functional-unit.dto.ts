@@ -4,7 +4,6 @@ import {
   Length,
   Matches,
   IsEmail,
-  IsDecimal,
   IsUUID,
   IsNotEmpty,
   IsNumber,
@@ -54,7 +53,7 @@ export class CreateFunctionalUnitDto {
 
   /**
    * El número de teléfono del propietario de la Unidad Funcional
-   * @example "1145678901"
+   * @example "+5491145678901"
    */
   @IsString({ message: 'El número de teléfono debe ser una cadena de texto' })
   @Length(1, 20, {
@@ -87,7 +86,13 @@ export class CreateFunctionalUnitDto {
    * @example "1500.50"
    */
   @IsNotEmpty()
-  @IsNumber({ maxDecimalPlaces: 2 })
+  @IsNumber(
+    { maxDecimalPlaces: 2 },
+    {
+      message:
+        'El saldo debe ser un número con hasta 2 decimales',
+    },
+  )
   balance: number;
 
   /**

@@ -5,9 +5,9 @@ import {
   Matches,
   IsEmail,
   IsPhoneNumber,
-  IsDecimal,
-  IsBoolean,
   MaxLength,
+  IsUUID,
+  IsNumber,
 } from 'class-validator';
 
 export class CreateSupplierDto {
@@ -73,9 +73,11 @@ export class CreateSupplierDto {
    * @example "2000.00"
    */
   @IsNotEmpty({ message: 'El saldo es requerido' })
-  @IsDecimal(
-    { decimal_digits: '2', force_decimal: true },
-    { message: 'El saldo debe ser un número decimal con hasta 2 decimales' },
+  @IsNumber(
+    { maxDecimalPlaces: 2 },
+    {
+      message: 'El saldo debe ser un número con hasta 2 decimales',
+    },
   )
   balance: number;
 }

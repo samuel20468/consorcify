@@ -26,6 +26,7 @@ import { Request } from 'express';
 import { VerifyEntity } from 'src/guards/verifyEntity.guard';
 import { TObjectToken } from 'src/utils/types';
 
+
 @ApiTags('Auth')
 @Controller('auth')
 @UseInterceptors(ExcludePasswordInterceptor, ExcludeActiveInterceptor)
@@ -56,6 +57,7 @@ export class AuthController {
   @Post('register-c-admin')
   @Roles(ROLE.SUPERADMIN)
   @UseGuards(AuthGuard, RolesGuard)
+  @ApiBearerAuth()
   async signUpCAdmin(@Body() consAdmin: CreateCAdminDto): Promise<CAdmin> {
     return await this.authService.singUpCAdmin(consAdmin);
   }

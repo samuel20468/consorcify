@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { Supplier } from './entities/supplier.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateSupplierDto } from './dto/create-supplier.dto';
 import { UpdateSupplierDto } from './dto/update-supplier.dto';
+import { checkForDuplicates } from 'src/helpers/check-for-duplicates.helper';
 
 @Injectable()
 export class SuppliersRepository {
@@ -12,9 +12,29 @@ export class SuppliersRepository {
     private readonly supplierRepository: Repository<Supplier>,
   ) {}
 
-  async createSupplier(newSupplier: CreateSupplierDto): Promise<Supplier> {
-    const supplier = this.supplierRepository.create(newSupplier);
-    return this.supplierRepository.save(supplier);
+  async createSupplier(newSupplier: Supplier): Promise<Supplier> {
+    await checkForDuplicates(
+      this.supplierRepository,
+      newSupplier.email,
+      'email',
+      'El Email',
+    );
+
+    await checkForDuplicates(
+      this.supplierRepository,
+      newSupplier.name,
+      'name',
+      'El nombre',
+    );
+
+    await checkForDuplicates(
+      this.supplierRepository,
+      newSupplier.cuit,
+      'cuit',
+      'El CUIT',
+    );
+
+    return this.supplierRepository.save(newSupplier);
   }
 
   async findAll(): Promise<Supplier[]> {
@@ -31,6 +51,17 @@ export class SuppliersRepository {
     existingSupplier: Supplier,
     supplierToUpdate: UpdateSupplierDto,
   ): Promise<Supplier> {
+    const { name } = existingSupplier;
+    const supplierToUpdateName = supplierToUpdate.name;
+
+    name !== supplierToUpdateName &&
+      (await checkForDuplicates(
+        this.supplierRepository,
+        supplierToUpdateName,
+        'name',
+        'El nombre',
+      ));
+
     const mergedSupplier: Supplier = this.supplierRepository.merge(
       existingSupplier,
       supplierToUpdate,

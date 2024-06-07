@@ -8,9 +8,9 @@ import {
     IConsortiumError,
     IUserData,
 } from "@/Interfaces/Interfaces";
-import { consortiumFetch } from "@/helpers/consortium.helper";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import {
+    consortiumFetch,
     getAdmins,
     getConsortiumById,
     updateConsortium,
@@ -33,12 +33,13 @@ const FormRegisterConsortium = ({ update = false }) => {
         ufs: 0,
         category: 0,
         first_due_day: 0,
-        c_admin: "",
+        c_admin: "" || ({ id: "" } as IAdmin),
     };
     const params: { id: string } = useParams();
     const [userData, setUserData] = useState<IUserData>();
     const [admins, setAdmins] = useState<IAdmin[]>();
     const [token, setToken] = useState<string>("");
+    const [admin, setAdmin] = useState("");
     const path = usePathname();
     const [consortiumRegister, setConsortiumRegister] =
         useState<IConsortium>(initialData);
@@ -59,6 +60,12 @@ const FormRegisterConsortium = ({ update = false }) => {
             if (update) {
                 try {
                     const response = await getConsortiumById(params.id, token);
+                    if (response.c_admin !== null) {
+                        setConsortiumRegister((prevState) => ({
+                            ...prevState,
+                            c_admin: response.c_admin.id,
+                        }));
+                    }
                     setConsortiumRegister(response);
                 } catch (error) {
                     console.error(error);
@@ -101,7 +108,6 @@ const FormRegisterConsortium = ({ update = false }) => {
 
     const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = e.target;
-        console.log(name, value);
 
         setConsortiumRegister({
             ...consortiumRegister,
@@ -138,10 +144,14 @@ const FormRegisterConsortium = ({ update = false }) => {
                     token,
                     consortiumRegister
                 );
+                console.log(response);
+
                 if (response?.ok) {
                     alert("Consorcio moficado correctamente");
                     if (userData?.roles?.[0] == "superadmin") {
-                        router.push(`/dashboard/consorcios/All/${params.id}`);
+                        router.push(
+                            `/dashboard/superadmin/consorcios/All/${params.id}`
+                        );
                     }
                 }
             } catch (error) {
@@ -241,6 +251,7 @@ const FormRegisterConsortium = ({ update = false }) => {
                             placeholder="30030345670"
                             value={consortiumRegister.cuit}
                             onChange={handleChange}
+                            disabled={update}
                         />
                         {consortiumRegisterError.cuit &&
                             consortiumRegister.cuit && (
@@ -421,17 +432,30 @@ const FormRegisterConsortium = ({ update = false }) => {
                             <select
                                 className="h-10 px-2 text-white rounded-lg bg-input"
                                 name="c_admin"
-                                id="c-admin"
-                                value={consortiumRegister.c_admin}
+                                id="c_admin"
+                                value={
+                                    consortiumRegister.c_admin &&
+                                    typeof consortiumRegister.c_admin ===
+                                        "object"
+                                        ? consortiumRegister.c_admin.name
+                                        : consortiumRegister.c_admin
+                                }
                                 onChange={handleSelect}
                             >
-                                {admins?.map((admin) => {
-                                    return (
-                                        <option key={admin.id} value={admin.id}>
-                                            {admin.name} {admin.lastname}
-                                        </option>
-                                    );
-                                })}
+                                <option value="" disabled>
+                                    Selecciona un Administrador
+                                </option>
+                                {admins &&
+                                    admins?.map((admin) => {
+                                        return (
+                                            <option
+                                                key={admin.id}
+                                                value={admin.id}
+                                            >
+                                                {admin.name} {admin.lastname}
+                                            </option>
+                                        );
+                                    })}
                             </select>
                         </div>
                     </div>

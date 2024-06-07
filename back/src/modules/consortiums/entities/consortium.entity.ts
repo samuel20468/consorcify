@@ -1,6 +1,8 @@
 import { CAdmin } from 'src/modules/c-admin/entities/c-admin.entity';
+import { Expense } from 'src/modules/expenses/entities/expense.entity';
 import { FunctionalUnit } from 'src/modules/functional-units/entities/functional-unit.entity';
 import { Supplier } from 'src/modules/suppliers/entities/supplier.entity';
+import { SupplierConsortium } from 'src/modules/suppliers/entities/suppliers-consortiums.entity';
 import {
   Column,
   Entity,
@@ -125,6 +127,12 @@ export class Consortium {
   )
   functional_units: FunctionalUnit[];
 
-  // @OneToMany(() => Supplier, (supplier) => supplier.consortium)
-  // suppliers: Supplier[];
+  @OneToMany(() => Expense, (expense) => expense.consortium)
+  expenses: Expense[];
+
+  @OneToMany(
+    () => SupplierConsortium,
+    (supplierConsortium) => supplierConsortium.consortium,
+  )
+  suppliers_consortiums: SupplierConsortium[];
 }

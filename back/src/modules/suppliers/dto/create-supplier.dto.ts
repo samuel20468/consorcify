@@ -70,7 +70,7 @@ export class CreateSupplierDto {
 
   /**
    * El saldo del Proveedor
-   * @example "2000.00"
+   * @example "-2000.00"
    */
   @IsNotEmpty({ message: 'El saldo es requerido' })
   @IsNumber(
@@ -80,4 +80,12 @@ export class CreateSupplierDto {
     },
   )
   balance: number;
+
+  /**
+   * El id del Consorcio
+   * @example "b2d3f5a6-7e4a-4b8e-bf2a-2e5b3c9f8d1b"
+   */
+  @IsNotEmpty({ message: 'El id del Consorcio es requerido' })
+  @IsUUID(4, { message: 'El id del Consorcio debe ser un UUID v4' })
+  consortium_id: string;
 }

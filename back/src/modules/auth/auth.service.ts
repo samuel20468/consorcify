@@ -14,7 +14,7 @@ import { CAdmin } from '../c-admin/entities/c-admin.entity';
 import { CADMIN_PASS, SAT } from 'src/utils/constants';
 import { JwtService } from '@nestjs/jwt';
 import { generateToken, signInHelper } from 'src/helpers/sign-in.helper';
-import { IAuth0User, TDuplicateCheck, TObjectToken } from 'src/utils/types';
+import { IAuth0User, TObjectToken } from 'src/utils/types';
 import satSetter from 'src/helpers/sat-setter.helper';
 import { checkForDuplicates } from 'src/helpers/check-for-duplicates.helper';
 

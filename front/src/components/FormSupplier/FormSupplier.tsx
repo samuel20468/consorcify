@@ -190,11 +190,7 @@ const FormSupplier = () => {
                         <Input
                             id="balance"
                             name="balance"
-                            value={
-                                registerSupplier.balance == 0
-                                    ? ""
-                                    : registerSupplier.balance
-                            }
+                            value={registerSupplier.balance}
                             type="number"
                             onChange={handleChange}
                             placeholder="$2.000"

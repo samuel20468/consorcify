@@ -8,9 +8,9 @@ const AddConsortium = () => {
     useAuth();
 
     return (
-        <div className="flex flex-col h-auto">
+        <div className="flex flex-col h-screen bg-gray-100">
             <ContainerDashboard>
-                <div className="flex items-center justify-center my-10 rounded-lg h-content bg-slate-200">
+                <div className="flex items-center justify-center my-10 bg-gray-200 rounded-lg h-content">
                     <FormRegisterConsortium />
                 </div>
             </ContainerDashboard>

@@ -45,6 +45,7 @@ const FormRegisterConsortium = ({ update = false }) => {
         ufs: 0,
         category: 0,
         first_due_day: 0,
+        interest_rate: 10.05,
         c_admin: "" || ({ id: "" } as IAdmin),
     };
     const params: { id: string } = useParams();

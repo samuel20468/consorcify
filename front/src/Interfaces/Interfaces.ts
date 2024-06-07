@@ -69,6 +69,7 @@ export interface IConsortium {
     ufs: number;
     category: number;
     first_due_day: number;
+    interest_rate: number | string;
     c_admin?: string | IRegisterAdmin;
 }
 export interface IConsortiumError {
@@ -86,7 +87,8 @@ export interface IConsortiumError {
     ufs?: number;
     category?: number;
     first_due_day?: number;
-    c_admin?: string | IAdmin;
+    interest_rate?: string | number;
+    c_admin?: string | IRegisterAdmin;
 }
 
 export interface IReviews {

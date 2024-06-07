@@ -11,9 +11,9 @@ import { CreateCAdminDto } from '../c-admin/dto/create-c-admin.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CAdmin } from '../c-admin/entities/c-admin.entity';
-import { CADMIN_PASS, ROLE, SAT } from 'src/utils/constants';
+import { CADMIN_PASS, SAT } from 'src/utils/constants';
 import { JwtService } from '@nestjs/jwt';
-import { signInHelper } from 'src/helpers/sign-in.helper';
+import { generateToken, signInHelper } from 'src/helpers/sign-in.helper';
 import { IAuth0User, TDuplicateCheck, TObjectToken } from 'src/utils/types';
 import satSetter from 'src/helpers/sat-setter.helper';
 import { checkForDuplicates } from 'src/helpers/check-for-duplicates.helper';
@@ -31,21 +31,8 @@ export class AuthService {
     const { given_name, family_name, email, picture } = user;
     const foundUser = await this.usersRepository.findOneBy({ email });
     if (foundUser) {
-      const role: ROLE[] = [];
-      if (foundUser.is_super_admin) {
-        role.push(ROLE.SUPERADMIN);
-      } else {
-        role.push(ROLE.USER);
-      }
-
-      const userPayload = {
-        id: foundUser.id,
-        email: foundUser.email,
-        roles: [...role],
-      };
-      const token = this.jwtService.sign(userPayload);
-
-      return token;
+      const tokenUser = generateToken(foundUser, this.jwtService);
+      return tokenUser;
     } else {
       const newUser = new User();
       newUser.first_name = given_name;
@@ -56,14 +43,9 @@ export class AuthService {
       newUser.auth0 = true;
 
       const createdUser = await this.usersRepository.save(newUser);
-      const userPayload = {
-        id: createdUser.id,
-        email: createdUser.email,
-        roles: ['user'],
-      };
-      const token = this.jwtService.sign(userPayload);
+      const tokenUser = generateToken(createdUser, this.jwtService);
 
-      return token;
+      return tokenUser;
     }
   }
 
@@ -91,32 +73,7 @@ export class AuthService {
     }
   }
 
-  async signInAuth0(user: Partial<IAuth0User>) {
-    const { email } = user;
-    const foundCAdmin = await this.cAdminRepository.findOneBy({ email });
-    const foundUser = await this.usersRepository.findOneBy({ email });
-    if (foundCAdmin || !foundUser || foundUser.auth0 === false) {
-      throw new UnauthorizedException('Credenciales inválidas');
-    }
-
-    const role: ROLE[] = [];
-    if (foundUser.is_super_admin) {
-      role.push(ROLE.SUPERADMIN);
-    } else {
-      role.push(ROLE.USER);
-    }
-
-    const userPayload = {
-      id: foundUser.id,
-      email: foundUser.email,
-      roles: [...role],
-    };
-    const token = this.jwtService.sign(userPayload);
-
-    return token;
-  }
-
-  async signUp(user: CreateUserDto): Promise<User> {
+  async signUp(user: CreateUserDto): Promise<TObjectToken> {
     const { first_name, last_name, email, password } = user;
     const foundUser = await this.usersRepository.findOneBy({ email });
 
@@ -132,27 +89,8 @@ export class AuthService {
     newUser.password = hashedPassword;
 
     const createdUser = await this.usersRepository.save(newUser);
-    return createdUser;
-  }
-
-  async signUpAuth0(user: Partial<IAuth0User>) {
-    const { given_name, family_name, email, picture } = user;
-    const foundUser = await this.usersRepository.findOneBy({ email });
-
-    if (foundUser) {
-      throw new ConflictException('El email ya se encuentra registrado.');
-    }
-
-    const newUser = new User();
-    newUser.first_name = given_name;
-    newUser.last_name = family_name;
-    newUser.email = email;
-    newUser.picture = picture;
-    newUser.password = 'Auth0';
-    newUser.auth0 = true;
-
-    const createdUser = await this.usersRepository.save(newUser);
-    return createdUser;
+    const tokenUser = generateToken(createdUser, this.jwtService);
+    return tokenUser;
   }
 
   async singUpCAdmin(consAdmin: CreateCAdminDto): Promise<CAdmin> {

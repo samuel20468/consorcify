@@ -11,11 +11,12 @@ import { User } from '../users/entities/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { requiresAuth } from 'express-openid-connect';
 import { CAdminsRepository } from '../c-admin/c-admin.repository';
+import { UsersRepository } from '../users/users.repository';
 
 @Module({
   imports: [TypeOrmModule.forFeature([CAdmin, User])],
   controllers: [AuthController],
-  providers: [AuthService, CAdminsRepository],
+  providers: [AuthService, CAdminsRepository, UsersRepository],
 })
 export class AuthModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

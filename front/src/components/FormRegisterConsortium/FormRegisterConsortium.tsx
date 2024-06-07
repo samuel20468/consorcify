@@ -6,6 +6,7 @@ import {
     IAdmin,
     IConsortium,
     IConsortiumError,
+    IRegisterAdmin,
     IUserData,
 } from "@/Interfaces/Interfaces";
 import { useParams, usePathname, useRouter } from "next/navigation";
@@ -37,7 +38,7 @@ const FormRegisterConsortium = ({ update = false }) => {
     };
     const params: { id: string } = useParams();
     const [userData, setUserData] = useState<IUserData>();
-    const [admins, setAdmins] = useState<IAdmin[]>();
+    const [admins, setAdmins] = useState<IRegisterAdmin[]>();
     const [token, setToken] = useState<string>("");
     const [admin, setAdmin] = useState("");
     const path = usePathname();
@@ -437,7 +438,7 @@ const FormRegisterConsortium = ({ update = false }) => {
                                     consortiumRegister.c_admin &&
                                     typeof consortiumRegister.c_admin ===
                                         "object"
-                                        ? consortiumRegister.c_admin.name
+                                        ? consortiumRegister.c_admin.first_name
                                         : consortiumRegister.c_admin
                                 }
                                 onChange={handleSelect}
@@ -452,7 +453,7 @@ const FormRegisterConsortium = ({ update = false }) => {
                                                 key={admin.id}
                                                 value={admin.id}
                                             >
-                                                {admin.name} {admin.lastname}
+                                                {admin.name}
                                             </option>
                                         );
                                     })}

@@ -1,7 +1,7 @@
 "use client";
 
 import { IConsortium } from "@/Interfaces/Interfaces";
-import { ContainerDashboard } from "@/components/ui";
+import { Button, ContainerDashboard } from "@/components/ui";
 import {
     deleteConsortiumById,
     getConsortiumById,
@@ -57,6 +57,16 @@ const page = () => {
     return (
         <ContainerDashboard className="flex items-center justify-center w-full h-[93vh] bg-[#e5e7eb]">
             <div className="flex flex-col items-center w-1/2 h-full p-8 m-5  rounded-[50px] justify-evenly border border-slate-100 bg-[#dadada] drop-shadow-2xl shadow-black">
+                <div className="w-full flex justify-end">
+                    <Link
+                        href="/dashboard/superadmin/consorcios/All"
+                        className=""
+                    >
+                        <Button className="w-32 py-2 rounded-[40px]">
+                            Volver
+                        </Button>
+                    </Link>
+                </div>
                 <div className="w-40 p-2 border rounded-md">
                     <img
                         src="https://i.pinimg.com/564x/47/f2/10/47f2109057d426d054e473fccff5faea.jpg"

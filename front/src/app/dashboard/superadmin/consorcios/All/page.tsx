@@ -2,7 +2,7 @@
 import { IConsortium } from "@/Interfaces/Interfaces";
 import ConsortiumCard from "@/components/ConsortiumCard/ConsortiumCard";
 import SearchBar from "@/components/SearchBar/SearchBar";
-import { ContainerDashboard } from "@/components/ui";
+import { Button, ContainerDashboard } from "@/components/ui";
 import { getConsortiums } from "@/helpers/fetch.helper";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
@@ -78,14 +78,20 @@ const Page = () => {
     };
 
     return (
-        <ContainerDashboard className="flex flex-col w-[90%] items-center py-5 justify-center grid-flow-col gap-3 justify-items-stretch place-content-center bg-[#e5e7eb]">
-            <div className="w-[80%] h-full flex gap-3 px-10 border">
+        <ContainerDashboard className="flex flex-col w-[90%] items-center py-5 justify-center bg-[#e5e7eb] ">
+            <div className="flex justify-end w-full px-3">
+                <Link href="/dashboard/superadmin/consorcios">
+                    <Button className="w-20 py-2 rounded-[40px]">Volver</Button>
+                </Link>
+            </div>
+            <div className="w-[80%] h-full flex gap-3 px-10 border border-black p-3">
                 <div className="w-full">
                     <SearchBar onSearch={handleSearch} />
                 </div>
-                <div className="flex items-center justify-center w-full mt-4">
+                <div className="flex items-center justify-center w-full gap-3 ">
+                    <p className="text-lg text-black">Filtrar por:</p>
                     <select
-                        className="text-black"
+                        className="h-10 p-2 my-1 text-gray-200 rounded-md shadow-xl bg-input placeholder:font-extralight placeholder:text-gray-500 focus:outline-none no-spinners"
                         onChange={(e) =>
                             handleSort(
                                 e.target.value as keyof IConsortium,
@@ -113,7 +119,7 @@ const Page = () => {
                 </div>
 
                 <select
-                    className="text-black"
+                    className="h-10 p-2 my-1 text-gray-200 rounded-md shadow-xl bg-input placeholder:font-extralight placeholder:text-gray-500 focus:outline-none no-spinners"
                     onChange={(e) =>
                         handleSort("name", e.target.value as "asc" | "desc")
                     }

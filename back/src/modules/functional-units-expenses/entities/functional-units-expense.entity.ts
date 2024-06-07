@@ -12,7 +12,7 @@ import {
 @Entity({
   name: 'functional_units_expenses',
 })
-export class FunctionalUnitsExpense {
+export class FunctionalUnitExpense {
 
   /**
    * El ID de la expensa (UUID v4)
@@ -65,11 +65,11 @@ export class FunctionalUnitsExpense {
   })
   total_amount: number;
 
-  @ManyToOne(() => FunctionalUnit, (functionalUnit) => functionalUnit.expenses)
+  @ManyToOne(() => FunctionalUnit, (functionalUnit) => functionalUnit.functional_units_expenses)
   @JoinColumn({ name: 'functional_unit_id' })
   functional_unit: FunctionalUnit;
 
-  @ManyToOne(() => Expense, (expense) => expense.functionalUnitsExpenses)
+  @ManyToOne(() => Expense, (expense) => expense.functional_units_expenses)
   @JoinColumn({ name: 'expense_id' })
   expense: Expense;
 }

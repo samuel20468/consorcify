@@ -1,26 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { FunctionalUnitsExpense } from './entities/functional-units-expense.entity';
-import { Expense } from '../expenses/entities/expense.entity';
-import checkEntityExistence from 'src/helpers/check-entity-existence.helper';
-import { CreateFunctionalUnitsExpenseDto } from './dto/create-functional-units-expense.dto';
-import { FunctionalUnit } from '../functional-units/entities/functional-unit.entity';
-
+import { FunctionalUnitExpense } from './entities/functional-units-expense.entity';
 @Injectable()
 export class FunctionalUnitsExpensesRepository {
   constructor(
-    @InjectRepository(FunctionalUnitsExpense)
-    private functionalUnitsExpensesRepository: Repository<FunctionalUnitsExpense>,
-    @InjectRepository(Expense) private expensesRepository: Repository<Expense>,
-    @InjectRepository(FunctionalUnit)
-    private functionalUnitsRepository: Repository<FunctionalUnit>,
+    @InjectRepository(FunctionalUnitExpense)
+    private functionalUnitsExpensesRepository: Repository<FunctionalUnitExpense>,
   ) {}
 
   async findAll(
-    page: number,
-    limit: number,
-  ): Promise<FunctionalUnitsExpense[]> {
+    page: number = 1,
+    limit: number = 5,
+  ): Promise<FunctionalUnitExpense[]> {
     return await this.functionalUnitsExpensesRepository.find({
       skip: (page - 1) * limit,
       take: limit,
@@ -28,7 +20,7 @@ export class FunctionalUnitsExpensesRepository {
     });
   }
 
-  async findOne(id: string): Promise<FunctionalUnitsExpense> {
+  async findOne(id: string): Promise<FunctionalUnitExpense> {
     return await this.functionalUnitsExpensesRepository.findOne({
       where: { id },
       relations: ['expense', 'functional_unit'],
@@ -36,32 +28,25 @@ export class FunctionalUnitsExpensesRepository {
   }
 
   async create(
-    createFunctionalUnitsExpenseDto: CreateFunctionalUnitsExpenseDto,
-  ): Promise<FunctionalUnitsExpense> {
-    const foundExpense: Expense = await checkEntityExistence(
-      this.expensesRepository,
-      createFunctionalUnitsExpenseDto.expense_id,
-      'la expensa',
-    );
+    newFunctionalUnitExpense: Omit<FunctionalUnitExpense, 'id'>,
+  ): Promise<FunctionalUnitExpense> {
+    const {
+      monthly_expenditure,
+      previous_balance,
+      interests,
+      total_amount,
+      expense,
+      functional_unit,
+    } = newFunctionalUnitExpense;
 
-    const foundFunctionalUnit: FunctionalUnit = await checkEntityExistence(
-      this.functionalUnitsRepository,
-      createFunctionalUnitsExpenseDto.functional_unit_id,
-      'la unidad funcional',
-    );
-
-    const functionalUnitsExpense: FunctionalUnitsExpense =
-      new FunctionalUnitsExpense();
-    functionalUnitsExpense.expense = foundExpense;
-    functionalUnitsExpense.functional_unit = foundFunctionalUnit;
-    functionalUnitsExpense.monthly_expenditure =
-      createFunctionalUnitsExpenseDto.monthly_expenditure;
-    functionalUnitsExpense.interests =
-      createFunctionalUnitsExpenseDto.interests;
-    functionalUnitsExpense.previous_balance =
-      createFunctionalUnitsExpenseDto.previous_balance;
-    functionalUnitsExpense.total_amount =
-      createFunctionalUnitsExpenseDto.total_amount;
+    const functionalUnitsExpense: FunctionalUnitExpense =
+      new FunctionalUnitExpense();
+    functionalUnitsExpense.expense = expense;
+    functionalUnitsExpense.functional_unit = functional_unit;
+    functionalUnitsExpense.monthly_expenditure = monthly_expenditure;
+    functionalUnitsExpense.interests = interests;
+    functionalUnitsExpense.previous_balance = previous_balance;
+    functionalUnitsExpense.total_amount = total_amount;
 
     return await this.functionalUnitsExpensesRepository.save(
       functionalUnitsExpense,

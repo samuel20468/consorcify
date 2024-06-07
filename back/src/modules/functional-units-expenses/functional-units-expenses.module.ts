@@ -3,13 +3,13 @@ import { FunctionalUnitsExpensesService } from './functional-units-expenses.serv
 import { FunctionalUnitsExpensesController } from './functional-units-expenses.controller';
 import { FunctionalUnitsExpensesRepository } from './functional-units-expenses.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { FunctionalUnitsExpense } from './entities/functional-units-expense.entity';
+import { FunctionalUnitExpense } from './entities/functional-units-expense.entity';
 import { FunctionalUnit } from '../functional-units/entities/functional-unit.entity';
 import { Expense } from '../expenses/entities/expense.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([FunctionalUnitsExpense, FunctionalUnit, Expense]),
+    TypeOrmModule.forFeature([FunctionalUnitExpense, FunctionalUnit, Expense]),
   ],
   controllers: [FunctionalUnitsExpensesController],
   providers: [

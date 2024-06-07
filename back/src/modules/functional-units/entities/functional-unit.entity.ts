@@ -1,6 +1,6 @@
 import ColumnNumericTransformer from 'src/helpers/numeric-transformer.helper';
 import { Consortium } from 'src/modules/consortiums/entities/consortium.entity';
-import { FunctionalUnitsExpense } from 'src/modules/functional-units-expenses/entities/functional-units-expense.entity';
+import { FunctionalUnitExpense } from 'src/modules/functional-units-expenses/entities/functional-units-expense.entity';
 import { User } from 'src/modules/users/entities/user.entity';
 import { FUNCTIONAL_UNIT_TYPE } from 'src/utils/constants';
 import {
@@ -101,8 +101,8 @@ export class FunctionalUnit {
   user: User;
 
   @OneToMany(
-    () => FunctionalUnitsExpense,
-    (functionalUnitsExpense) => functionalUnitsExpense.functional_unit
+    () => FunctionalUnitExpense,
+    (functionalUnitsExpense) => functionalUnitsExpense.functional_unit,
   )
-  expenses: FunctionalUnitsExpense[];
+  functional_units_expenses: FunctionalUnitExpense[];
 }

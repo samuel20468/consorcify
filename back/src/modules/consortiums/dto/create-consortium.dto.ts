@@ -1,10 +1,12 @@
 import {
   IsInt,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
   IsUUID,
   Length,
+  Matches,
   Max,
   MaxLength,
   Min,
@@ -141,6 +143,15 @@ export class CreateConsortiumDto {
   @Min(1, { message: 'El primer día de vencimiento debe ser al menos 1' })
   @Max(31, { message: 'El primer día de vencimiento debe ser como máximo 31' })
   first_due_day: number;
+
+  @IsNumber({}, { message: 'La tasa de interés debe ser un número válido' })
+  @Min(0, { message: 'La tasa de interés no puede ser menor que 0' })
+  @Max(99.99, { message: 'La tasa de interés no puede ser mayor que 99.99' })
+  @Matches(/^\d{1,2}(\.\d{1,2})?$/, {
+    message:
+      'La tasa de interés debe ser un número con hasta dos dígitos antes del punto decimal y hasta dos dígitos después del punto decimal',
+  })
+  interest_rate: number;
 
   /**
    * El administrador del Consorcio

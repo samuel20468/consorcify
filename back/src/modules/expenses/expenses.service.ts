@@ -69,6 +69,11 @@ export class ExpensesService {
   async closeExpense(id: string): Promise<Expense> {
     const foundExpense: Expense = await this.findOne(id);
 
+    if (foundExpense.status === EXPENSE_STATUS.CLOSED)
+      throw new ConflictException(
+        'No se puede cerrar una expensa que ya se encuentra cerrada',
+      );
+
     await this.expensesRepository.closeExpense(id);
 
     foundExpense.status = EXPENSE_STATUS.CLOSED;
@@ -79,10 +84,10 @@ export class ExpensesService {
   async settleExpense(id: string) {
     const foundExpense: Expense = await this.findOne(id);
 
-    // if (foundExpense.status === EXPENSE_STATUS.OPEN)
-    //   throw new ConflictException(
-    //     'No se puede liquidar una expensa que aún no se ha cerrado',
-    //   );
+    if (foundExpense.status === EXPENSE_STATUS.CLOSED)
+      throw new ConflictException(
+        'No se puede liquidar una expensa que esta cerrada',
+      );
 
     return await this.expensesRepository.settleExpense(foundExpense);
   }

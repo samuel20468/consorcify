@@ -1,5 +1,4 @@
 "use client";
-
 import { IConsortium } from "@/Interfaces/Interfaces";
 import ConsortiumCard from "@/components/ConsortiumCard/ConsortiumCard";
 import SearchBar from "@/components/SearchBar/SearchBar";
@@ -11,7 +10,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
-const page = () => {
+const Page = () => {
     useAuth();
     const { token } = useSesion();
     const [consortiums, setConsortiums] = useState<IConsortium[]>([]);
@@ -20,7 +19,7 @@ const page = () => {
     const path = usePathname();
 
     useEffect(() => {
-        const fechtData = async (token: string) => {
+        const fetchData = async (token: string) => {
             const response = await getConsortiums(token);
 
             if (response) {
@@ -30,49 +29,110 @@ const page = () => {
             }
         };
         if (token) {
-            fechtData(token);
+            fetchData(token);
         }
     }, [token, path]);
 
     const handleSearch = (query: string) => {
-        if (!query.trim()) {
+        const trimmedQuery = query.trim().toLocaleLowerCase();
+
+        if (!trimmedQuery) {
             setResult(consortiums || []);
             return;
         }
 
         const filteredData = (consortiums || []).filter(
             (consortium: IConsortium) => {
-                return Object.values(consortium).some(
-                    (value) =>
+                return Object.values(consortium).some((value) => {
+                    return (
                         typeof value === "string" &&
-                        value
-                            .toLocaleLowerCase()
-                            .includes(query.toLocaleLowerCase())
-                );
+                        value.toLocaleLowerCase().includes(trimmedQuery)
+                    );
+                });
             }
         );
 
         setResult(filteredData);
     };
 
+    const handleSort = (field: keyof IConsortium, order: "asc" | "desc") => {
+        const sortedData = [...result].sort((a, b) => {
+            const valueA = a[field];
+            const valueB = b[field];
+
+            if (typeof valueA === "string" && typeof valueB === "string") {
+                return order === "asc"
+                    ? valueA.localeCompare(valueB)
+                    : valueB.localeCompare(valueA);
+            } else if (
+                typeof valueA === "number" &&
+                typeof valueB === "number"
+            ) {
+                return order === "asc" ? valueA - valueB : valueB - valueA;
+            } else {
+                return 0; // En caso de que los valores no sean comparables directamente
+            }
+        });
+
+        setResult(sortedData);
+    };
+
     return (
-        <ContainerDashboard className="flex flex-col items-center py-5 justify-center  grid-flow-col gap-3 justify-items-stretch place-content-center bg-[#e5e7eb]">
-            <div className="w-full">
-                <SearchBar onSearch={handleSearch} />
-            </div>
-            {result?.map((consortium: IConsortium) => {
-                return (
-                    <Link
-                        key={consortium.id}
-                        href={`/dashboard/superadmin/consorcios/All/${consortium.id}`}
-                        className="flex items-center justify-center w-full my-1"
+        <ContainerDashboard className="flex flex-col w-[90%] items-center py-5 justify-center grid-flow-col gap-3 justify-items-stretch place-content-center bg-[#e5e7eb]">
+            <div className="w-[80%] h-full flex gap-3 px-10 border">
+                <div className="w-full">
+                    <SearchBar onSearch={handleSearch} />
+                </div>
+                <div className="flex items-center justify-center w-full mt-4">
+                    <select
+                        className="text-black"
+                        onChange={(e) =>
+                            handleSort(
+                                e.target.value as keyof IConsortium,
+                                "asc"
+                            )
+                        }
                     >
-                        <ConsortiumCard consortium={consortium} />
-                    </Link>
-                );
-            })}
+                        <option value="name">Nombre</option>
+                        <option value="cuit">CUIT</option>
+                        <option value="street_name">Calle</option>
+                        <option value="building_number">
+                            Número de Edificio
+                        </option>
+                        <option value="zip_code">Código Postal</option>
+                        <option value="country">País</option>
+                        <option value="province">Provincia</option>
+                        <option value="city">Ciudad</option>
+                        <option value="floors">Pisos</option>
+                        <option value="ufs">Unidades Funcionales</option>
+                        <option value="category">Categoría</option>
+                        <option value="first_due_day">
+                            Primer Día de Vencimiento
+                        </option>
+                    </select>
+                </div>
+
+                <select
+                    className="text-black"
+                    onChange={(e) =>
+                        handleSort("name", e.target.value as "asc" | "desc")
+                    }
+                >
+                    <option value="asc">Ascendente</option>
+                    <option value="desc">Descendente</option>
+                </select>
+            </div>
+            {result?.map((consortium: IConsortium) => (
+                <Link
+                    key={consortium.id}
+                    href={`/dashboard/superadmin/consorcios/All/${consortium.id}`}
+                    className="flex items-center justify-center w-full my-1"
+                >
+                    <ConsortiumCard consortium={consortium} />
+                </Link>
+            ))}
         </ContainerDashboard>
     );
 };
 
-export default page;
+export default Page;

@@ -70,7 +70,7 @@ const Page = () => {
             ) {
                 return order === "asc" ? valueA - valueB : valueB - valueA;
             } else {
-                return 0; // En caso de que los valores no sean comparables directamente
+                return 0;
             }
         });
 

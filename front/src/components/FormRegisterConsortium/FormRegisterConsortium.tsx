@@ -20,6 +20,7 @@ import {
     IAdmin,
     IConsortium,
     IConsortiumError,
+    IRegisterAdmin,
     IUserData,
 } from "@/Interfaces/Interfaces";
 
@@ -48,7 +49,7 @@ const FormRegisterConsortium = ({ update = false }) => {
     };
     const params: { id: string } = useParams();
     const [userData, setUserData] = useState<IUserData>();
-    const [admins, setAdmins] = useState<IAdmin[]>();
+    const [admins, setAdmins] = useState<IRegisterAdmin[]>();
     const [token, setToken] = useState<string>("");
     const path = usePathname();
     const [consortiumRegister, setConsortiumRegister] =

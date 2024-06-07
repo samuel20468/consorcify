@@ -14,12 +14,6 @@ export type TObjectToken = {
   token: string;
 };
 
-export type TDuplicateCheck = {
-  value: string;
-  field: string;
-  errorMessage: string;
-};
-
 // INTERFACES
 export interface IUser {
   id: string;
@@ -52,4 +46,11 @@ export interface ISupplier {
   phone_number: string;
   address: string;
   balance?: number;
+}
+
+export interface IAuth0User {
+  given_name: string;
+  family_name: string;
+  email: string;
+  picture: string;
 }

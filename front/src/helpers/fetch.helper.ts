@@ -5,11 +5,12 @@ import {
     ISuppliers,
     IUser,
 } from "@/Interfaces/Interfaces";
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 // Inicio de sesión
 export const loginFetch = async (UserData: ILoginData) => {
     try {
-        const response = await fetch("http://localhost:3001/auth/signin", {
+        const response = await fetch(`${apiUrl}/auth/signin`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -29,7 +30,7 @@ export const loginFetch = async (UserData: ILoginData) => {
 // Creación de usuario
 export const registerFetch = async (registerData: IUser) => {
     try {
-        const response = await fetch("http://localhost:3001/auth/signup", {
+        const response = await fetch(`${apiUrl}/auth/signup`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -48,7 +49,7 @@ export const registerFetch = async (registerData: IUser) => {
 // Obtener usuario por ID
 export const getUserById = async (id: string, token: string) => {
     try {
-        const response = await fetch(`http://localhost:3001/users/${id}`, {
+        const response = await fetch(`${apiUrl}/users/${id}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -62,17 +63,14 @@ export const getUserById = async (id: string, token: string) => {
 // Creación del administrador
 export async function adminFetch(registerAdmin: IRegisterAdmin, token: string) {
     try {
-        const response = await fetch(
-            `http://localhost:3001/auth/register-c-admin`,
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify(registerAdmin),
-            }
-        );
+        const response = await fetch(`${apiUrl}/auth/register-c-admin`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(registerAdmin),
+        });
         if (!response.ok) {
             return response.json().then((errorInfo) => {
                 throw new Error(
@@ -92,7 +90,7 @@ export async function adminFetch(registerAdmin: IRegisterAdmin, token: string) {
 // Obtener administrador
 export const getAdmins = async (token: string) => {
     try {
-        const response = await fetch("http://localhost:3001/c-admins", {
+        const response = await fetch(`${apiUrl}/c-admins`, {
             method: "GET",
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -108,7 +106,7 @@ export const getAdmins = async (token: string) => {
 // Obtener administrador por ID
 export const getAdminById = async (id: string, token: string) => {
     try {
-        const response = await fetch(`http://localhost:3001/c-admins/${id}`, {
+        const response = await fetch(`${apiUrl}/c-admins/${id}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -124,15 +122,12 @@ export const getAdminById = async (id: string, token: string) => {
 // Borrar administrador
 export const deleteAdmin = async (id: string, token: string) => {
     try {
-        const response = await fetch(
-            `http://localhost:3001/c-admins/disable/${id}`,
-            {
-                method: "PATCH",
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            }
-        );
+        const response = await fetch(`${apiUrl}/c-admins/disable/${id}`, {
+            method: "PATCH",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
         if (response.ok) {
             const data = await response.json();
             return data;
@@ -147,7 +142,7 @@ export const updateAdmin = async (
     token: string
 ) => {
     try {
-        const response = await fetch(`http://localhost:3001/c-admins/${id}`, {
+        const response = await fetch(`${apiUrl}/c-admins/${id}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
@@ -179,7 +174,7 @@ export async function consortiumFetch(
     token: string
 ) {
     try {
-        const response = await fetch(`http://localhost:3001/consortiums`, {
+        const response = await fetch(`${apiUrl}/consortiums`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -206,7 +201,7 @@ export async function consortiumFetch(
 // Obtener consorcios
 export const getConsortiums = async (token: string) => {
     try {
-        const response = await fetch("http://localhost:3001/consortiums", {
+        const response = await fetch(`${apiUrl}/consortiums`, {
             method: "GET",
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -221,16 +216,13 @@ export const getConsortiums = async (token: string) => {
 // Obtener consorcio por ID
 export const getConsortiumById = async (id: string, token: string) => {
     try {
-        const response = await fetch(
-            `http://localhost:3001/consortiums/${id}`,
-            {
-                method: "GET",
-                cache: "no-cache",
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            }
-        );
+        const response = await fetch(`${apiUrl}/consortiums/${id}`, {
+            method: "GET",
+            cache: "no-cache",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
 
         const data = await response.json();
         return data;
@@ -244,17 +236,14 @@ export const updateConsortium = async (
     data: IConsortium
 ) => {
     try {
-        const response = await fetch(
-            `http://localhost:3001/consortiums/${id}`,
-            {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify(data),
-            }
-        );
+        const response = await fetch(`${apiUrl}/consortiums/${id}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(data),
+        });
         console.log(response);
         if (!response.ok) {
             return response.json().then((errorInfo) => {
@@ -274,15 +263,12 @@ export const updateConsortium = async (
 // Borrar consorcio
 export const deleteConsortiumById = async (id: string, token: string) => {
     try {
-        const response = await fetch(
-            `http://localhost:3001/consortiums/${id}`,
-            {
-                method: "DELETE",
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            }
-        );
+        const response = await fetch(`${apiUrl}/consortiums/${id}`, {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
         console.log(response);
         return response;
     } catch (error) {}
@@ -294,7 +280,7 @@ export const supplierFetch = async (
     token: string
 ) => {
     try {
-        const response = await fetch(`http://localhost:3001/suppliers`, {
+        const response = await fetch(`${apiUrl}/suppliers`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

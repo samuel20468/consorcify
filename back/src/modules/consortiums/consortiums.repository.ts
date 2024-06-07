@@ -7,6 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Consortium } from './entities/consortium.entity';
 import { Repository } from 'typeorm';
 import { CAdmin } from '../c-admin/entities/c-admin.entity';
+import { ExcludeActiveInterceptor } from 'src/interceptors/exclude-active.interceptor';
 
 @Injectable()
 export class ConsortiumsRepository {
@@ -17,16 +18,7 @@ export class ConsortiumsRepository {
     private readonly cAdminRepository: Repository<CAdmin>,
   ) {}
 
-  private removeActiveField(consortium: Partial<Consortium>): Partial<Consortium> {
-    const { active, ...rest } = consortium;
-    return rest;
-  }
-
-  private removeActiveFieldFromArray(consortiums: Partial<Consortium>[]): Partial<Consortium>[] {
-    return consortiums.map(consortium => this.removeActiveField(consortium));
-  }
-
-  async create(consortium: Partial<Consortium>) {
+  async create(consortium: Partial<Consortium>): Promise<Consortium> {
     const foundConsortium = await this.consortiumsRepository.findOne({
       where: { cuit: consortium.cuit },
     });
@@ -43,44 +35,51 @@ export class ConsortiumsRepository {
         `CAdmin ID: ${consortium.c_admin} no encontrado.`,
       );
     }
-    const newConsortium = await this.consortiumsRepository.save(consortium);
-    return this.removeActiveField(newConsortium);
+    const newConsortium: Consortium =
+      await this.consortiumsRepository.save(consortium);
+    return newConsortium;
   }
 
-  async findAll(page: number, limit: number) {
+  async findAll(page: number, limit: number): Promise<Consortium[]> {
     const skip = (page - 1) * limit;
-    const consortiums = await this.consortiumsRepository.find({
-      relations: { c_admin: true },
-      where: { active: true }, skip, take: limit });
-    return this.removeActiveFieldFromArray(consortiums);
+    const consortiums: Consortium[] = await this.consortiumsRepository.find({
+      relations: { c_admin: true, functional_units: true },
+      where: { active: true },
+      skip,
+      take: limit,
+    });
+    return consortiums;
   }
 
-  async findAllByCAdmin(id: string) {
+  async findAllByCAdmin(id: string): Promise<Consortium[]> {
     const foundCAdmin = await this.cAdminRepository.findOne({
       where: { id: id, active: true },
     });
     if (!foundCAdmin) {
       throw new NotFoundException(`CAdmin ID: ${id} no encontrado.`);
     }
-    const consortiums = await this.consortiumsRepository.find({
+    const consortiums: Consortium[] = await this.consortiumsRepository.find({
       relations: { c_admin: true },
       where: { c_admin: foundCAdmin, active: true },
     });
-    return this.removeActiveFieldFromArray(consortiums);
+    return consortiums;
   }
 
-  async findOne(id: string) {
-    const consortium = await this.consortiumsRepository.findOne({
+  async findOne(id: string): Promise<Consortium> {
+    const consortium: Consortium = await this.consortiumsRepository.findOne({
       relations: { c_admin: true },
       where: { id: id, active: true },
     });
     if (!consortium) {
       throw new NotFoundException(`Consorcio ID: ${id} no encontrado.`);
     }
-    return this.removeActiveField(consortium);
+    return consortium;
   }
 
-  async update(id: string, consortium: Partial<Consortium>) {
+  async update(
+    id: string,
+    consortium: Partial<Consortium>,
+  ): Promise<Consortium> {
     const consortiumToUpdate = await this.consortiumsRepository.findOne({
       where: { id: id, active: true },
     });
@@ -94,23 +93,25 @@ export class ConsortiumsRepository {
       );
     }
     await this.consortiumsRepository.update(id, consortium);
-    const updatedConsortium = await this.consortiumsRepository.findOne({
-      relations: { c_admin: true },
-      where: { id: id, active: true },
-    });
-    return this.removeActiveField(updatedConsortium);
+    const updatedConsortium: Consortium =
+      await this.consortiumsRepository.findOne({
+        relations: { c_admin: true },
+        where: { id: id, active: true },
+      });
+    return updatedConsortium;
   }
 
-  async remove(id: string) {
-    const consortiumToDelete = await this.consortiumsRepository.findOne({
-      relations: { c_admin: true },
-      where: { id: id, active: true },
-    });
+  async remove(id: string): Promise<Consortium> {
+    const consortiumToDelete: Consortium =
+      await this.consortiumsRepository.findOne({
+        relations: { c_admin: true },
+        where: { id: id, active: true },
+      });
     if (!consortiumToDelete) {
       throw new NotFoundException(`Consorcio ID: ${id} no encontrado.`);
     }
     consortiumToDelete.active = false;
     await this.consortiumsRepository.save(consortiumToDelete);
-    return this.removeActiveField(consortiumToDelete);
+    return consortiumToDelete;
   }
 }

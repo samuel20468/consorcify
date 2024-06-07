@@ -3,12 +3,10 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { CreateCAdminDto } from './dto/create-c-admin.dto';
 import { UpdateCAdminDto } from './dto/update-c-admin.dto';
 import { CAdminsRepository } from './c-admin.repository';
 import { TPagination } from 'src/utils/types';
 import { CAdmin } from './entities/c-admin.entity';
-import { checkForDuplicates } from 'src/helpers/check-for-duplicates.helper';
 
 @Injectable()
 export class CAdminsService {
@@ -16,11 +14,6 @@ export class CAdminsService {
 
   async findAll({ page, limit }: TPagination): Promise<CAdmin[]> {
     const cAdmins: CAdmin[] = await this.cAdminsRepository.findAll();
-
-    // if (cAdmins.length == 0) throw new NotFoundException('No cAdmins found');
-    // cAdmins.forEach((cAdmin) => {
-    //   delete cAdmin.password;
-    // });
 
     page = Math.max(1, page);
 

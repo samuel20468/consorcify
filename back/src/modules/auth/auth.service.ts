@@ -13,8 +13,8 @@ import { Repository } from 'typeorm';
 import { CAdmin } from '../c-admin/entities/c-admin.entity';
 import { CADMIN_PASS, SAT } from 'src/utils/constants';
 import { JwtService } from '@nestjs/jwt';
-import { signInHelper } from 'src/helpers/sign-in.helper';
-import { TDuplicateCheck, TObjectToken } from 'src/utils/types';
+import { generateToken, signInHelper } from 'src/helpers/sign-in.helper';
+import { IAuth0User, TDuplicateCheck, TObjectToken } from 'src/utils/types';
 import satSetter from 'src/helpers/sat-setter.helper';
 import { checkForDuplicates } from 'src/helpers/check-for-duplicates.helper';
 
@@ -26,6 +26,28 @@ export class AuthService {
     private readonly cAdminRepository: Repository<CAdmin>,
     private readonly jwtService: JwtService,
   ) {}
+
+  async auth0(user: Partial<IAuth0User>) {
+    const { given_name, family_name, email, picture } = user;
+    const foundUser = await this.usersRepository.findOneBy({ email });
+    if (foundUser) {
+      const tokenUser = generateToken(foundUser, this.jwtService);
+      return tokenUser;
+    } else {
+      const newUser = new User();
+      newUser.first_name = given_name;
+      newUser.last_name = family_name;
+      newUser.email = email;
+      newUser.picture = picture;
+      newUser.password = 'Auth0';
+      newUser.auth0 = true;
+
+      const createdUser = await this.usersRepository.save(newUser);
+      const tokenUser = generateToken(createdUser, this.jwtService);
+
+      return tokenUser;
+    }
+  }
 
   async signIn(credentials: CredentialsDto): Promise<TObjectToken> {
     const { email, password } = credentials;
@@ -51,9 +73,9 @@ export class AuthService {
     }
   }
 
-  async signUp(user: CreateUserDto): Promise<User> {
+  async signUp(user: CreateUserDto): Promise<TObjectToken> {
     const { first_name, last_name, email, password } = user;
-    
+
     await checkForDuplicates(this.usersRepository, email, 'email', 'El Email');
     await checkForDuplicates(this.cAdminRepository, email, 'email', 'El email');
 
@@ -65,7 +87,8 @@ export class AuthService {
     newUser.password = hashedPassword;
 
     const createdUser = await this.usersRepository.save(newUser);
-    return createdUser;
+    const tokenUser = generateToken(createdUser, this.jwtService);
+    return tokenUser;
   }
 
   async singUpCAdmin(consAdmin: CreateCAdminDto): Promise<CAdmin> {

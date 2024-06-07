@@ -1,5 +1,6 @@
 import ColumnNumericTransformer from 'src/helpers/numeric-transformer.helper';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { SupplierConsortium } from './suppliers-consortiums.entity';
 
 @Entity({
   name: 'suppliers',
@@ -52,7 +53,7 @@ export class Supplier {
    * @example "2000.00"
    */
   @Column({
-    type: 'decimal',
+    type: 'numeric',
     precision: 15,
     scale: 2,
     transformer: new ColumnNumericTransformer(),
@@ -65,4 +66,10 @@ export class Supplier {
    */
   @Column({ type: 'boolean', default: true })
   active: boolean;
+
+  @OneToMany(
+    () => SupplierConsortium,
+    (supplierConsortium) => supplierConsortium.supplier,
+  )
+  suppliers_consortiums: SupplierConsortium[];
 }

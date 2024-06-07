@@ -9,6 +9,9 @@ import { UsersModule } from './modules/users/users.module';
 import { FunctionalUnitsModule } from './modules/functional-units/functional-units.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConsortiumsModule } from './modules/consortiums/consortiums.module';
+import { ExpendituresModule } from './modules/expenditures/expenditures.module';
+import { ExpensesModule } from './modules/expenses/expenses.module';
+import { FunctionalUnitsExpensesModule } from './modules/functional-units-expenses/functional-units-expenses.module';
 
 @Module({
   imports: [
@@ -34,6 +37,9 @@ import { ConsortiumsModule } from './modules/consortiums/consortiums.module';
     UsersModule,
     FunctionalUnitsModule,
     ConsortiumsModule,
+    ExpensesModule,
+    ExpendituresModule,
+    FunctionalUnitsExpensesModule,
   ],
 })
 export class AppModule {}

@@ -14,12 +14,13 @@ import {
 import { SuppliersService } from './suppliers.service';
 import { CreateSupplierDto } from './dto/create-supplier.dto';
 import { Supplier } from './entities/supplier.entity';
-import { STATUS } from 'src/utils/constants';
+import { STATUS_MESSAGE } from 'src/utils/constants';
 import { ExcludeActiveInterceptor } from 'src/interceptors/exclude-active.interceptor';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { Roles } from 'src/decorators/role.decorator';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { UpdateSupplierDto } from './dto/update-supplier.dto';
+import { CreateSupplierConsortiumDto } from './dto/create-supplier-consortium.dto';
 
 @ApiTags('Supplier')
 @Controller('suppliers')
@@ -34,6 +35,16 @@ export class SuppliersController {
     return await this.suppliersService.createSupplier(newSupplier);
   }
 
+  @Post(':id/add-consortium')
+  async addConsortiumToSupplier(
+    @Param('id', ParseUUIDPipe) supplierId: string,
+    @Body() createSupplierConsortium: CreateSupplierConsortiumDto,
+  ) {
+    return await this.suppliersService.addConsortiumToSupplier(
+      supplierId,
+      createSupplierConsortium,
+    );
+  }
   @Get()
   async findAll(
     @Query('page') page: number = 1,
@@ -63,8 +74,8 @@ export class SuppliersController {
       await this.suppliersService.toggleStatus(id);
 
     !supplierToggled.active //Se niega porque el service devuelve el objeto antes de ser modificado - Ln 55 en el service
-      ? (statusMessage = STATUS.ACTIVATED)
-      : (statusMessage = STATUS.DISABLED);
+      ? (statusMessage = STATUS_MESSAGE.ACTIVATED)
+      : (statusMessage = STATUS_MESSAGE.DISABLED);
 
     return {
       message: `Supplier with id ${supplierToggled.id} has been ${statusMessage}`,

@@ -337,3 +337,17 @@ export const getSuppliersById = async (id: string, token: string) => {
         console.error(error);
     }
 };
+
+export const googleLogin = async () => {
+    try {
+        const response = await fetch(`${apiUrl}/auth/auth0`, {
+            method: "GET",
+        });
+        if (response.ok) {
+            const data = await response.json();
+            return data;
+        }
+    } catch (error) {
+        console.error(error);
+    }
+};

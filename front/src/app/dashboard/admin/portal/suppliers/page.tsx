@@ -12,10 +12,10 @@ import { ISuppliers } from "@/Interfaces/Interfaces";
 
 // Hooks
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
 // ------------------
 
@@ -32,7 +32,6 @@ const Supplies = () => {
                 if (response) {
                     setSuppliers(response);
                 }
-                console.log(response);
             } catch (error) {
                 console.error(error);
             }
@@ -46,7 +45,16 @@ const Supplies = () => {
         <div className="h-screen text-black bg-gray-100">
             <ContainerDashboard>
                 <Title>Proveedores</Title>
-                <SuppliersCards suppliers={suppliers} />
+
+                {suppliers.length > 0 ? (
+                    <SuppliersCards suppliers={suppliers} />
+                ) : (
+                    <div className="p-8">
+                        <h1 className="text-2xl">
+                            Aún no hay proveedores registrados
+                        </h1>
+                    </div>
+                )}
                 <Link
                     className="flex justify-center w-1/6"
                     href={"/addSupplier"}

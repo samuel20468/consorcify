@@ -8,6 +8,7 @@ import {
   MaxLength,
   IsUUID,
   IsNumber,
+  IsDecimal,
 } from 'class-validator';
 
 export class CreateSupplierDto {

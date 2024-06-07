@@ -22,7 +22,7 @@ const Dashboards = () => {
     }, [pathname]);
 
     return (
-        <div className="text-white">
+        <div className="text-black">
             {(userData?.roles?.[0] == "cadmin" && <DashboardA />) ||
                 (userData?.roles?.[0] == "user" && <DashboardU />) ||
                 (userData?.roles?.[0] == "superadmin" && <DashboardSA />)}

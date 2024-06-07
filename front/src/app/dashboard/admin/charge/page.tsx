@@ -1,21 +1,20 @@
 "use client";
 
-import Footer from "@/components/Footer/Footer";
-import Renter from "@/components/Renter/Renter";
+// Estilos y componentes
 import { ContainerDashboard, Title } from "@/components/ui";
+import Renter from "@/components/Renter/Renter";
+
+// Hooks
 import useAuth from "@/helpers/useAuth";
 
 const Charge = () => {
     useAuth();
 
     return (
-        <div>
+        <div className="h-screen text-black bg-gray-100">
             <ContainerDashboard>
                 <Title>Cobranzas</Title>
                 <Renter />
-                <div className="w-full mt-12">
-                    <Footer />
-                </div>
             </ContainerDashboard>
         </div>
     );

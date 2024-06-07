@@ -52,13 +52,13 @@ export class CreateFunctionalUnitDto {
   owner: string;
 
   /**
-   * El número de teléfono del propietario de la Unidad Funcional
+   * El número de teléfono del propietario de la unidad funcional
    * @example "+5491145678901"
    */
+  @IsNotEmpty({ message: 'El número de teléfono es requerido' })
   @IsPhoneNumber(null, {
     message: 'El número de teléfono debe ser un número de teléfono válido',
   })
-  @IsNotEmpty({ message: 'El número de teléfono es requerido' })
   owner_phone_number: string;
 
   /**
@@ -85,8 +85,7 @@ export class CreateFunctionalUnitDto {
   @IsNumber(
     { maxDecimalPlaces: 2 },
     {
-      message:
-        'El saldo debe ser un número con hasta 2 decimales',
+      message: 'El saldo debe ser un número con hasta 2 decimales',
     },
   )
   balance: number;

@@ -8,8 +8,11 @@ import { Expenditure } from './entities/expenditure.entity';
 import { DataSource, Repository } from 'typeorm';
 import { CreateExpenditureDto } from './dto/create-expenditure.dto';
 import { UpdateExpenditureDto } from './dto/update-expenditure.dto';
-import { EXPENDITURE_STATUS } from 'src/utils/constants';
 import { Supplier } from '../suppliers/entities/supplier.entity';
+import { EXPENDITURE_STATUS, EXPENSE_STATUS } from 'src/utils/constants';
+import { ExpensesRepository } from '../expenses/expenses.repository';
+import { Expense } from '../expenses/entities/expense.entity';
+import checkEntityExistence from 'src/helpers/check-entity-existence.helper';
 
 @Injectable()
 export class ExpendituresRepository {
@@ -18,12 +21,14 @@ export class ExpendituresRepository {
     private expenditureRepository: Repository<Expenditure>,
     @InjectRepository(Supplier)
     private supplierRepository: Repository<Supplier>,
+    private expensesRepository: ExpensesRepository,
     private readonly dataSource: DataSource,
   ) {}
 
   async create(
     createExpenditureDto: CreateExpenditureDto,
   ): Promise<Expenditure> {
+    const { expense_id, supplier_id, consortium_id } = createExpenditureDto;
     const supplier = await this.supplierRepository.findOneBy({
       id: createExpenditureDto.supplier_id,
     })
@@ -42,10 +47,22 @@ export class ExpendituresRepository {
     if (foundExpenditure) {
       throw new ConflictException('La factura ya existe');
     }
+      
+    const expense: Expense = await checkEntityExistence(
+      this.expensesRepository,
+      expense_id,
+      'la expensa',
+    );
+
+    if (expense.status === EXPENSE_STATUS.CLOSED)
+      throw new ConflictException(
+        'No se puede añadir un gasto a una expensa cerrada',
+      );
 
     const expenditure = this.expenditureRepository.create({
       ...createExpenditureDto,
       supplier,
+      expense,
     });
     try {
       const newExpenditure = await this.expenditureRepository.save(expenditure);
@@ -71,7 +88,7 @@ export class ExpendituresRepository {
   async findOne(id: string): Promise<Expenditure> {
     return await this.expenditureRepository.findOne({
       where: { id },
-      relations: ['supplier_consortium'],
+      relations: ['supplier_consortium', 'expense'],
     });
   }
 

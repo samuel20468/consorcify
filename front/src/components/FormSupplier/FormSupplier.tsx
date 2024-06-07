@@ -4,14 +4,22 @@ import { Button, Input, Label, Select } from "../ui";
 // Interfaces
 import { ISuppliers, ISuppliersError } from "@/Interfaces/Interfaces";
 
+// Endpoints
+import { supplierFetch } from "@/helpers/fetch.helper";
+
 // Hooks
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
+import { useParams, useRouter } from "next/navigation";
+
+// ---------------
 
 const FormSupplier = () => {
     useAuth();
     const { token } = useSesion();
+    const router = useRouter();
+    const params: { id: string } = useParams();
     const initialData = {
         name: "",
         cuit: "",
@@ -20,29 +28,55 @@ const FormSupplier = () => {
         address: "",
         balance: 0,
     };
-    const [supplier, setSupplier] = useState<ISuppliers>(initialData);
+    const [registerSupplier, setRegisterSupplier] =
+        useState<ISuppliers>(initialData);
     const [errorSupplier, setErrorSupplier] =
         useState<ISuppliersError>(initialData);
 
-    // useEffect(() => {
-    //     const fetchData = () => {
-    //         if ()
-    //     };
-    // }, []);
-
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setSupplier({
-            ...supplier,
+        setRegisterSupplier({
+            ...registerSupplier,
             [e.target.name]: e.target.value,
         });
     };
 
     const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = e.target;
-        setSupplier({
-            ...supplier,
+        setRegisterSupplier({
+            ...registerSupplier,
             [name]: value,
         });
+    };
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e?.preventDefault();
+
+        if (
+            !registerSupplier.name ||
+            !registerSupplier.cuit ||
+            !registerSupplier.email ||
+            !registerSupplier.phone_number ||
+            !registerSupplier.address ||
+            !registerSupplier.balance
+        ) {
+            alert("Faltan datos en el formulario");
+            return;
+        }
+        try {
+            const response = await supplierFetch(registerSupplier, token);
+            console.log(registerSupplier);
+
+            if (response?.ok) {
+                const data = await response.json();
+                alert("Registro exitoso");
+                setRegisterSupplier(data);
+                router.push(`dashboard/admin/portal/suppliers/${data.id}`);
+            } else {
+                console.error("Error en la solicitud:", response?.statusText);
+            }
+        } catch (error) {
+            console.log("Error en la solicitud:", error);
+        }
     };
 
     return (
@@ -50,10 +84,7 @@ const FormSupplier = () => {
             <h1 className="mb-4 text-3xl text-center">
                 Este es el formulario para agregar un nuevo proveedor
             </h1>
-            <form
-                autoComplete="off"
-                // onSubmit={handleSubmit}
-            >
+            <form autoComplete="off" onSubmit={handleSubmit}>
                 <div className="flex gap-2">
                     <div className="flex flex-col w-2/4">
                         <Label htmlFor="consortium_id">
@@ -62,7 +93,7 @@ const FormSupplier = () => {
                         <Select
                             id="consortium_id"
                             name="consortium_id"
-                            value={supplier.consortium_id}
+                            value={registerSupplier.consortium_id}
                             onChange={handleSelect}
                             defaultValue=""
                         >
@@ -85,7 +116,7 @@ const FormSupplier = () => {
                         <Input
                             id="name"
                             name="name"
-                            value={supplier.name}
+                            value={registerSupplier.name}
                             type="text"
                             onChange={handleChange}
                             placeholder="Proveedor Ejemplo SRL"
@@ -101,7 +132,7 @@ const FormSupplier = () => {
                         <Input
                             id="cuit"
                             name="cuit"
-                            value={supplier.cuit}
+                            value={registerSupplier.cuit}
                             type="text"
                             onChange={handleChange}
                             placeholder="11-11111111-1"
@@ -115,7 +146,7 @@ const FormSupplier = () => {
                         <Input
                             id="email"
                             name="email"
-                            value={supplier.email}
+                            value={registerSupplier.email}
                             type="email"
                             onChange={handleChange}
                             placeholder="provedor@mail.com"
@@ -131,7 +162,7 @@ const FormSupplier = () => {
                         <Input
                             id="address"
                             name="address"
-                            value={supplier.address}
+                            value={registerSupplier.address}
                             type="text"
                             onChange={handleChange}
                             placeholder="Calle Falsa 123"
@@ -145,7 +176,7 @@ const FormSupplier = () => {
                         <Input
                             id="phone_number"
                             name="phone_number"
-                            value={supplier.phone_number}
+                            value={registerSupplier.phone_number}
                             type="text"
                             onChange={handleChange}
                             placeholder="+541144332211"
@@ -153,13 +184,17 @@ const FormSupplier = () => {
                     </div>
                     <div className="flex flex-col w-1/4">
                         <Label htmlFor="balance">
-                            Balance:
+                            Saldo:
                             <span className="text-red-600">*</span>
                         </Label>
                         <Input
                             id="balance"
                             name="balance"
-                            value={supplier.balance}
+                            value={
+                                registerSupplier.balance == 0
+                                    ? ""
+                                    : registerSupplier.balance
+                            }
                             type="number"
                             onChange={handleChange}
                             placeholder="$2.000"
@@ -169,7 +204,7 @@ const FormSupplier = () => {
 
                 <div className="flex justify-center w-full mt-4">
                     <Button className="w-1/4 rounded-[50px] py-2" type="submit">
-                        Guardar gasto
+                        Guardar proveedor
                     </Button>
                 </div>
             </form>

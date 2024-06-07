@@ -7,7 +7,7 @@ export const ContainerHeaderDashboard = (props: Props) => {
 
     return (
         <nav
-            className={`ml-[20%] lg:ml-[10%] h-20 flex items-center border-b-2 ${className}`}
+            className={`ml-[20%] lg:ml-[10%] h-20 flex items-center ${className}`}
         >
             {children}
         </nav>

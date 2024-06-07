@@ -24,7 +24,7 @@ import { UpdateSupplierDto } from './dto/update-supplier.dto';
 @ApiTags('Supplier')
 @Controller('suppliers')
 @ApiBearerAuth()
-@UseGuards(AuthGuard)
+// @UseGuards(AuthGuard)
 @UseInterceptors(ExcludeActiveInterceptor)
 export class SuppliersController {
   constructor(private readonly suppliersService: SuppliersService) {}
@@ -37,7 +37,7 @@ export class SuppliersController {
   @Get()
   async findAll(
     @Query('page') page: number = 1,
-    @Query('limit') limit: number = 5,
+    @Query('limit') limit: number = 20,
   ) {
     return await this.suppliersService.findAll({ page, limit });
   }

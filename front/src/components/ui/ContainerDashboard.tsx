@@ -5,7 +5,7 @@ export const ContainerDashboard = (props: Props) => {
 
     return (
         <div
-            className={`ml-[20%] lg:ml-[10%] flex flex-col items-center ${className}`}
+            className={`ml-[20%] lg:ml-[10%] flex flex-col items-center bg-slate-100 ${className}`}
         >
             {children}
         </div>

@@ -1,22 +1,33 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+// Estilos y componentes
 import { Button, Input, Label } from "../ui";
-import {
-    IAdmin,
-    IConsortium,
-    IConsortiumError,
-    IUserData,
-} from "@/Interfaces/Interfaces";
-import { useParams, usePathname, useRouter } from "next/navigation";
+
+// Validaciones
+import { validateSuterh } from "@/helpers/Validations/validate.suterh";
+import { validateCuit } from "@/helpers/Validations/validate.cuit";
+
+// Endpoints
 import {
     consortiumFetch,
     getAdmins,
     getConsortiumById,
     updateConsortium,
 } from "@/helpers/fetch.helper";
-import { validateSuterh } from "@/helpers/Validations/validate.suterh";
-import { validateCuit } from "@/helpers/Validations/validate.cuit";
+
+// Iterfaces
+import {
+    IAdmin,
+    IConsortium,
+    IConsortiumError,
+    IUserData,
+} from "@/Interfaces/Interfaces";
+
+// Hooks
+import { useEffect, useState } from "react";
+import { useParams, usePathname, useRouter } from "next/navigation";
+
+// -----------------
 
 const FormRegisterConsortium = ({ update = false }) => {
     const initialData = {
@@ -39,7 +50,6 @@ const FormRegisterConsortium = ({ update = false }) => {
     const [userData, setUserData] = useState<IUserData>();
     const [admins, setAdmins] = useState<IAdmin[]>();
     const [token, setToken] = useState<string>("");
-    const [admin, setAdmin] = useState("");
     const path = usePathname();
     const [consortiumRegister, setConsortiumRegister] =
         useState<IConsortium>(initialData);
@@ -136,16 +146,22 @@ const FormRegisterConsortium = ({ update = false }) => {
             alert("faltan datos en el formulario");
             return;
         }
-        console.log(consortiumRegister);
+
+        const consortiumData = {
+            ...consortiumRegister,
+            c_admin:
+                typeof consortiumRegister.c_admin === "object"
+                    ? consortiumRegister.c_admin.id
+                    : consortiumRegister.c_admin,
+        };
+
         if (update) {
             try {
                 const response = await updateConsortium(
                     params.id,
                     token,
-                    consortiumRegister
+                    consortiumData
                 );
-                console.log(response);
-
                 if (response?.ok) {
                     alert("Consorcio moficado correctamente");
                     if (userData?.roles?.[0] == "superadmin") {
@@ -159,17 +175,15 @@ const FormRegisterConsortium = ({ update = false }) => {
             }
         } else {
             try {
-                const response = await consortiumFetch(
-                    consortiumRegister,
-                    token
-                );
+                const response = await consortiumFetch(consortiumData, token);
                 if (response?.ok) {
                     alert("Consorcio Creado correctamente");
 
                     const data = await response.json();
-                    console.log(data);
                     if (userData?.roles?.[0] == "superadmin") {
-                        router.push(`/dashboard/consorcios/All/${data.id}`);
+                        router.push(
+                            `/dashboard/superadmin/consorcios/All/${data.id}`
+                        );
                     }
                 }
             } catch (error) {
@@ -437,7 +451,7 @@ const FormRegisterConsortium = ({ update = false }) => {
                                     consortiumRegister.c_admin &&
                                     typeof consortiumRegister.c_admin ===
                                         "object"
-                                        ? consortiumRegister.c_admin.name
+                                        ? consortiumRegister.c_admin.id
                                         : consortiumRegister.c_admin
                                 }
                                 onChange={handleSelect}
@@ -452,7 +466,7 @@ const FormRegisterConsortium = ({ update = false }) => {
                                                 key={admin.id}
                                                 value={admin.id}
                                             >
-                                                {admin.name} {admin.lastname}
+                                                {admin.name}
                                             </option>
                                         );
                                     })}

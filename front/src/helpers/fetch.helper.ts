@@ -311,6 +311,42 @@ export const supplierFetch = async (
                 );
             });
         }
+        return response;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+// Obtener proveedores
+export const getSuppliers = async (token: string) => {
+    try {
+        const response = await fetch("http://localhost:3001/suppliers", {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+// Obtener proveedor por ID
+export const getSuppliersById = async (id: string, token: string) => {
+    try {
+        const response = await fetch(`http://localhost:3001/suppliers/${id}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        if (response.ok) {
+            const data = await response.json();
+            return data;
+        }
     } catch (error) {
         console.error(error);
     }

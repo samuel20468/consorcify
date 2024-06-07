@@ -39,8 +39,8 @@ export class AuthController {
 
   @Post('register-c-admin')
   @ApiBearerAuth()
-  // @Roles(ROLE.SUPERADMIN)
-  // @UseGuards(AuthGuard, RolesGuard)
+  @Roles(ROLE.SUPERADMIN)
+  @UseGuards(AuthGuard, RolesGuard)
   async signUpCAdmin(@Body() consAdmin: CreateCAdminDto): Promise<CAdmin> {
     return await this.authService.singUpCAdmin(consAdmin);
   }

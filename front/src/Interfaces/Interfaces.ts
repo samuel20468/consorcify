@@ -29,6 +29,7 @@ export interface IAdmin extends IUser {
     rpa: string;
     sat: string;
     active: boolean;
+    name?: string;
 }
 
 export interface IRegisterAdmin {

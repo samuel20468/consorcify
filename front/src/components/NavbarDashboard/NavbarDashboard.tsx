@@ -46,7 +46,7 @@ const NavbarDashboard = () => {
                         href="/dashboard/profile"
                     >
                         <Button className="flex items-center justify-evenly p-1 w-full py-2 rounded-[40px]">
-                            <p>Nombre Uusuario</p>
+                            <p>Nombre Usuario</p>
                             <Avatar />
                         </Button>
                     </Link>

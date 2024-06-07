@@ -1,7 +1,7 @@
 "use client";
 
 // Estilos y componentes
-import { Button, Input, Label } from "../ui";
+import { Button, Input, Label, Select } from "../ui";
 import Swal from "sweetalert2";
 
 // Iterfaces
@@ -105,14 +105,14 @@ const FormRegisterAdmin = ({ update = false }) => {
                 }
             } else {
                 const response = await adminFetch(adminRegister, token);
-                if (response) {
-                    alert("Registro del consorcio exitoso.");
+                if (response.ok) {
+                    alert("Registro de la administración exitosa.");
+                    const data = await response.json();
                     router.push(
-                        `/dashboard/superadmin/administracion/All/${params.id}`
+                        `/dashboard/superadmin/administracion/All/${data.id}`
                     );
                 }
             }
-            setAdminRegister(initialData);
         } catch (error: any) {
             console.error(error);
         }
@@ -214,14 +214,13 @@ const FormRegisterAdmin = ({ update = false }) => {
                 <Label htmlFor="sat">
                     Situación Fiscal:<span className="text-red-600">*</span>
                 </Label>
-                <select
-                    className="h-10 px-2 my-1 text-gray-200 border rounded-md shadow-xl cursor-pointer bg-input focus:outline-none no-spinners"
+                <Select
                     name="sat"
                     id="sat"
                     value={adminRegister.sat}
                     onChange={handleSelect}
                 >
-                    <option value="" disabled selected>
+                    <option value="" disabled>
                         Seleccionar la situación tributaria
                     </option>
                     <option value="Monotributo">Monotributo</option>
@@ -232,7 +231,7 @@ const FormRegisterAdmin = ({ update = false }) => {
                         Responsable No Inscripto
                     </option>
                     <option value="Exento">Exento</option>
-                </select>
+                </Select>
                 <Label htmlFor="rpa">
                     Inscripción RPA:
                     <span className="text-red-600">*</span>

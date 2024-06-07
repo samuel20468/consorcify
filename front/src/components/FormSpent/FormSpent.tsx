@@ -11,7 +11,7 @@ const FormSpent = () => {
 
     return (
         <div className="w-[80%] flex flex-col justify-center">
-            <h1 className="text-center text-3xl mb-4">
+            <h1 className="mb-4 text-3xl text-center">
                 Este es el formulario de gastos
             </h1>
 
@@ -136,9 +136,9 @@ const FormSpent = () => {
                         />
                     </div>
                 </div>
-                <div className="w-full flex justify-center mt-4">
+                <div className="flex justify-center w-full mt-4">
                     <Button className="w-1/4 rounded-[50px] py-2">
-                        Guardar proveedor
+                        Guardar gastos
                     </Button>
                 </div>
             </form>

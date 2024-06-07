@@ -9,7 +9,10 @@ import { DataSource, Repository } from 'typeorm';
 import { CreateExpenditureDto } from './dto/create-expenditure.dto';
 import { SupplierConsortium } from '../suppliers/entities/suppliers-consortiums.entity';
 import { UpdateExpenditureDto } from './dto/update-expenditure.dto';
-import { EXPENDITURE_STATUS } from 'src/utils/constants';
+import { EXPENDITURE_STATUS, EXPENSE_STATUS } from 'src/utils/constants';
+import { ExpensesRepository } from '../expenses/expenses.repository';
+import { Expense } from '../expenses/entities/expense.entity';
+import checkEntityExistence from 'src/helpers/check-entity-existence.helper';
 
 @Injectable()
 export class ExpendituresRepository {
@@ -18,25 +21,39 @@ export class ExpendituresRepository {
     private expenditureRepository: Repository<Expenditure>,
     @InjectRepository(SupplierConsortium)
     private supplierConsortiumRepository: Repository<SupplierConsortium>,
+    private expensesRepository: ExpensesRepository,
     private readonly dataSource: DataSource,
   ) {}
 
   async create(
     createExpenditureDto: CreateExpenditureDto,
   ): Promise<Expenditure> {
+    const { expense_id, supplier_id, consortium_id } = createExpenditureDto;
     const supplier_consortium =
       await this.supplierConsortiumRepository.findOneBy({
-        supplier_id: createExpenditureDto.supplier_id,
-        consortium_id: createExpenditureDto.consortium_id,
+        supplier_id,
+        consortium_id,
       });
 
     if (!supplier_consortium) {
       throw new NotFoundException('El proveedor del consorcio no existe');
     }
 
+    const expense: Expense = await checkEntityExistence(
+      this.expensesRepository,
+      expense_id,
+      'la expensa',
+    );
+
+    if (expense.status === EXPENSE_STATUS.CLOSED)
+      throw new ConflictException(
+        'No se puede añadir un gasto a una expensa cerrada',
+      );
+
     const expenditure = this.expenditureRepository.create({
       ...createExpenditureDto,
       supplier_consortium,
+      expense,
     });
     try {
       const newExpenditure = await this.expenditureRepository.save(expenditure);
@@ -84,7 +101,7 @@ export class ExpendituresRepository {
   async findOne(id: string): Promise<Expenditure> {
     return await this.expenditureRepository.findOne({
       where: { id },
-      relations: ['supplier_consortium'],
+      relations: ['supplier_consortium', 'expense'],
     });
   }
 
@@ -151,9 +168,12 @@ export class ExpendituresRepository {
         `El gasto con id ${id} ya ha sido pagado, no se puede modificar`,
       );
     }
-    const newSupplierConsortiumBalance = expenditure.supplier_consortium.balance - expenditure.total_amount;
+    const newSupplierConsortiumBalance =
+      expenditure.supplier_consortium.balance - expenditure.total_amount;
     expenditure.supplier_consortium.balance = newSupplierConsortiumBalance;
-    await this.supplierConsortiumRepository.save(expenditure.supplier_consortium);
+    await this.supplierConsortiumRepository.save(
+      expenditure.supplier_consortium,
+    );
     expenditure.active = false;
     return await this.expenditureRepository.save(expenditure);
   }

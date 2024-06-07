@@ -1,3 +1,4 @@
+import ColumnNumericTransformer from 'src/helpers/numeric-transformer.helper';
 import { CAdmin } from 'src/modules/c-admin/entities/c-admin.entity';
 import { Expense } from 'src/modules/expenses/entities/expense.entity';
 import { FunctionalUnit } from 'src/modules/functional-units/entities/functional-unit.entity';
@@ -113,6 +114,13 @@ export class Consortium {
    */
   @Column({ type: 'integer' })
   first_due_day: number;
+
+  @Column('numeric', {
+    precision: 10,
+    scale: 2,
+    transformer: new ColumnNumericTransformer(),
+  })
+  interest_rate: number;
 
   @Column({ type: 'boolean', default: true })
   active: boolean;

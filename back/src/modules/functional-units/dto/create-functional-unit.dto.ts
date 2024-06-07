@@ -7,6 +7,7 @@ import {
   IsUUID,
   IsNotEmpty,
   IsNumber,
+  IsPhoneNumber,
 } from 'class-validator';
 import { FUNCTIONAL_UNIT_TYPE } from 'src/utils/constants';
 
@@ -52,17 +53,13 @@ export class CreateFunctionalUnitDto {
   owner: string;
 
   /**
-   * El número de teléfono del propietario de la Unidad Funcional
+   * El número de teléfono del propietario de la unidad funcional
    * @example "+5491145678901"
    */
-  @IsString({ message: 'El número de teléfono debe ser una cadena de texto' })
-  @Length(1, 20, {
-    message: 'El número de teléfono debe tener entre 1 y 20 caracteres',
-  })
-  @Matches(/^[0-9]+$/, {
-    message: 'El número de teléfono debe contener solo números',
-  })
   @IsNotEmpty({ message: 'El número de teléfono es requerido' })
+  @IsPhoneNumber(null, {
+    message: 'El número de teléfono debe ser un número de teléfono válido',
+  })
   owner_phone_number: string;
 
   /**
@@ -89,8 +86,7 @@ export class CreateFunctionalUnitDto {
   @IsNumber(
     { maxDecimalPlaces: 2 },
     {
-      message:
-        'El saldo debe ser un número con hasta 2 decimales',
+      message: 'El saldo debe ser un número con hasta 2 decimales',
     },
   )
   balance: number;

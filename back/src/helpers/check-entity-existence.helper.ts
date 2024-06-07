@@ -8,7 +8,7 @@ async function checkEntityExistence<T>(
   const entity = await repository.findOne(entityId);
   if (!entity) {
     throw new NotFoundException(
-      `No se encontró ${entityName}, el cual se requiere para esta operación`,
+      `No se encontró ${entityName}, el/la cual se requiere para esta operación`,
     );
   }
   return entity;

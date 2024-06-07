@@ -5,6 +5,7 @@ import React, { useState } from "react";
 
 const addAvatar: React.FC = () => {
     const [image, setImage] = useState<string | null>(null);
+    console.log(image);
 
     const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
@@ -39,10 +40,10 @@ const addAvatar: React.FC = () => {
 
     return (
         <ContainerDashboard className="w-[90%] h-[95vh] justify-center">
-            <div className="w-1/2 mb-2 flex ">
+            <div className="flex w-1/2 mb-2 ">
                 <Link
                     href="/dashboard/profile"
-                    className="w-full flex justify-end"
+                    className="flex justify-end w-full"
                 >
                     <Button className="w-32 py-2 rounded-[40px]">Volver</Button>
                 </Link>
@@ -54,7 +55,7 @@ const addAvatar: React.FC = () => {
                 onDrop={handleDrop}
             >
                 {image && (
-                    <img src={image} alt="Preview" className=" max-w-80 mb-5" />
+                    <img src={image} alt="Preview" className="mb-5  max-w-80" />
                 )}
                 <label
                     htmlFor="fileInput"

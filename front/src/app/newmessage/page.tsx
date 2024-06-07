@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import Swal from "sweetalert2";
 
-const News = () => {
+const News: React.FC = () => {
     const [message, setMessage] = useState<string>("");
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {

@@ -1,7 +1,7 @@
 import { Button, ContainerDashboard } from "@/components/ui";
 import Link from "next/link";
 
-const News = () => {
+const News: React.FC = () => {
     return (
         <div>
             <ContainerDashboard className="w-[90%]">

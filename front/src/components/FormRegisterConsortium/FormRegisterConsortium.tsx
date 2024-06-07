@@ -27,11 +27,13 @@ import {
 // Hooks
 import { useEffect, useState } from "react";
 import { useParams, usePathname, useRouter } from "next/navigation";
+import { validateInterestRate } from "@/helpers/functions.helper";
 
 // -----------------
 
 const FormRegisterConsortium = ({ update = false }) => {
     const initialData = {
+        interest_rate: "" || 0,
         suterh_key: "",
         name: "",
         cuit: "",
@@ -45,7 +47,7 @@ const FormRegisterConsortium = ({ update = false }) => {
         ufs: 0,
         category: 0,
         first_due_day: 0,
-        c_admin: "" || ({ id: "" } as IAdmin),
+        c_admin: "" || ({ id: "" } as IRegisterAdmin),
     };
     const params: { id: string } = useParams();
     const [userData, setUserData] = useState<IUserData>();
@@ -101,20 +103,36 @@ const FormRegisterConsortium = ({ update = false }) => {
         }
     }, [token]);
 
+    console.log(consortiumRegister);
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-
-        setConsortiumRegister({
-            ...consortiumRegister,
-            [name]:
-                name === "building_number" ||
-                name === "floors" ||
-                name === "ufs" ||
-                name === "category" ||
-                name === "first_due_day"
-                    ? Number(value)
-                    : value,
-        });
+        console.log(value);
+        if (name === "interest_rate") {
+            if (value === "") {
+                setConsortiumRegister({
+                    ...consortiumRegister,
+                    [name]: 0,
+                });
+            } else {
+                setConsortiumRegister({
+                    ...consortiumRegister,
+                    [name]: parseFloat(value),
+                });
+            }
+        } else {
+            setConsortiumRegister({
+                ...consortiumRegister,
+                [name]:
+                    name === "building_number" ||
+                    name === "floors" ||
+                    name === "ufs" ||
+                    name === "category" ||
+                    name === "first_due_day"
+                        ? parseInt(value, 10)
+                        : value,
+            });
+        }
     };
 
     const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -184,6 +202,10 @@ const FormRegisterConsortium = ({ update = false }) => {
                     if (userData?.roles?.[0] == "superadmin") {
                         router.push(
                             `/dashboard/superadmin/consorcios/All/${data.id}`
+                        );
+                    } else {
+                        router.push(
+                            `/dashboard/admin/consorcios/All/${data.id}`
                         );
                     }
                 }
@@ -430,6 +452,7 @@ const FormRegisterConsortium = ({ update = false }) => {
                             id="first_due_day"
                             name="first_due_day"
                             type="number"
+                            step="00.01"
                             placeholder="10"
                             value={
                                 consortiumRegister.first_due_day == 0
@@ -440,43 +463,65 @@ const FormRegisterConsortium = ({ update = false }) => {
                         />
                     </div>
                 </div>
-                {userData?.roles?.[0] === "superadmin" && (
-                    <div>
+                <div className="flex items-center w-full gap-2">
+                    {userData?.roles?.[0] === "superadmin" && (
+                        <div className="flex w-full">
+                            <div className="flex flex-col lg:w-full">
+                                <Label>Administrador </Label>
+                                <select
+                                    className="h-10 px-2 text-white rounded-lg bg-input"
+                                    name="c_admin"
+                                    id="c_admin"
+                                    value={
+                                        consortiumRegister.c_admin &&
+                                        typeof consortiumRegister.c_admin ===
+                                            "object"
+                                            ? consortiumRegister.c_admin.id
+                                            : consortiumRegister.c_admin
+                                    }
+                                    onChange={handleSelect}
+                                >
+                                    <option value="" disabled>
+                                        Selecciona un Administrador
+                                    </option>
+                                    {admins &&
+                                        admins?.map((admin) => {
+                                            return (
+                                                <option
+                                                    key={admin.id}
+                                                    value={admin.id}
+                                                >
+                                                    {admin.name}
+                                                </option>
+                                            );
+                                        })}
+                                </select>
+                            </div>
+                        </div>
+                    )}
+                    <div className="flex w-full">
                         <div className="flex flex-col lg:w-full">
-                            <Label>Administrador </Label>
-                            <select
-                                className="h-10 px-2 text-white rounded-lg bg-input"
-                                name="c_admin"
-                                id="c_admin"
+                            <Label>Tasa de Interes</Label>
+                            <Input
+                                type="number"
+                                placeholder="00.00"
+                                name="interest_rate"
+                                step="0.01"
                                 value={
-                                    consortiumRegister.c_admin &&
-                                    typeof consortiumRegister.c_admin ===
-                                        "object"
-                                        ? consortiumRegister.c_admin.id
-                                        : consortiumRegister.c_admin
+                                    consortiumRegister.interest_rate == 0
+                                        ? ""
+                                        : consortiumRegister.interest_rate
                                 }
-                                onChange={handleSelect}
-                            >
-                                <option value="" disabled>
-                                    Selecciona un Administrador
-                                </option>
-                                {admins &&
-                                    admins?.map((admin) => {
-                                        return (
-                                            <option
-                                                key={admin.id}
-                                                value={admin.id}
-                                            >
-                                                {admin.name}
-                                            </option>
-                                        );
-                                    })}
-                            </select>
+                                onChange={handleChange}
+                            />
                         </div>
                     </div>
-                )}
+                </div>
                 <div className="mt-4">
-                    <Button type="submit">
+                    <Button
+                        type="submit"
+                        className="w-full py-2 rounded-[40px]"
+                    >
                         {update ? "Modificar Consorcio" : "Crear Consorcio"}
                     </Button>
                 </div>

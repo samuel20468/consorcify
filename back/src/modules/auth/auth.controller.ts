@@ -26,7 +26,6 @@ import { Request } from 'express';
 import { VerifyEntity } from 'src/guards/verifyEntity.guard';
 import { TObjectToken } from 'src/utils/types';
 
-
 @ApiTags('Auth')
 @Controller('auth')
 @UseInterceptors(ExcludePasswordInterceptor, ExcludeActiveInterceptor)

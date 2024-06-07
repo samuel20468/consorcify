@@ -13,38 +13,25 @@ export class SuppliersRepository {
   ) {}
 
   async createSupplier(newSupplier: Supplier): Promise<Supplier> {
-    await checkForDuplicates(
-      this.supplierRepository,
-      newSupplier.email,
-      'email',
-      'El Email',
-    );
-
-    await checkForDuplicates(
-      this.supplierRepository,
-      newSupplier.name,
-      'name',
-      'El nombre',
-    );
-
-    await checkForDuplicates(
-      this.supplierRepository,
-      newSupplier.cuit,
-      'cuit',
-      'El CUIT',
-    );
-
-    return this.supplierRepository.save(newSupplier);
+    return await this.supplierRepository.save(newSupplier);
   }
 
   async findAll(): Promise<Supplier[]> {
     return this.supplierRepository.find({
       where: { active: true },
+      relations: ['consortium'],
     });
   }
 
   async findOne(id: string): Promise<Supplier> {
-    return this.supplierRepository.findOneBy({ id });
+    return this.supplierRepository.findOne({
+      where: { id },
+      relations: ['expenditures'],
+    });
+  }
+
+  async findOneByCuitAndConsortium(cuit: string, consortiumId: string): Promise<Supplier> {
+    return this.supplierRepository.findOneBy({ cuit, consortium: { id: consortiumId } });
   }
 
   async updateSupplier(

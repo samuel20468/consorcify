@@ -20,6 +20,7 @@ export class FunctionalUnitsRepository {
     const functionalUnits = await this.functionalUnitsRepository.find({
       skip: (page - 1) * limit,
       take: limit,
+      relations: { consortium: true },
     });
     return functionalUnits;
   }
@@ -56,10 +57,23 @@ export class FunctionalUnitsRepository {
     const functionalUnit = this.functionalUnitsRepository.create({
       ...createFunctionalUnitDto,
       code,
+      consortium
     });
 
     try {
-      await this.functionalUnitsRepository.save(functionalUnit);
+      const newFunctionalUnit =
+        await this.functionalUnitsRepository.save(functionalUnit);
+      const consortium = await this.consortiumRepository.findOne({
+        where: { id: createFunctionalUnitDto.consortium_id },
+        relations: ['functional_units'],
+      });
+
+      consortium.functional_units.push(newFunctionalUnit);
+
+      if (consortium.ufs < consortium.functional_units.length) {
+        consortium.ufs += 1;
+      }
+      await this.consortiumRepository.save(consortium);
       return functionalUnit;
     } catch (error) {
       throw new Error(`Error creating functional unit: ${error.message}`);
@@ -77,7 +91,7 @@ export class FunctionalUnitsRepository {
     if (!functionalUnit) {
       throw new NotFoundException(`Functional unit with id ${id} not found`);
     }
-    
+
     return await this.functionalUnitsRepository.save({
       ...functionalUnit,
       ...updateFunctionalUnitDto,

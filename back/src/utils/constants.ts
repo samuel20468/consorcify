@@ -19,7 +19,7 @@ export enum ROLE {
 }
 
 export enum FUNCTIONAL_UNIT_TYPE {
-  APARTMENT = 'Apartmento',
+  APARTMENT = 'Departamento',
   GARAGE = 'Garaje',
   COMMERCIAL_SPACE = 'Espacio Comercial',
   OFFICE = 'Oficina',

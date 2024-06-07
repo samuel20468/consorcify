@@ -1,6 +1,7 @@
 import ColumnNumericTransformer from 'src/helpers/numeric-transformer.helper';
 import { Consortium } from 'src/modules/consortiums/entities/consortium.entity';
 import { Expenditure } from 'src/modules/expenditures/entities/expenditure.entity';
+import { FunctionalUnitExpense } from 'src/modules/functional-units-expenses/entities/functional-units-expense.entity';
 import { EXPENSE_STATUS } from 'src/utils/constants';
 import {
   Column,
@@ -55,10 +56,20 @@ export class Expense {
   @Column('enum', { enum: EXPENSE_STATUS, default: EXPENSE_STATUS.OPEN })
   status: EXPENSE_STATUS;
 
+  /**
+   * Indica si la expensa está activa
+   * @example true
+   */
+  @Column({ type: 'boolean', default: true })
+  active: boolean;
+
   @ManyToOne(() => Consortium, (consortium) => consortium.expenses)
   @JoinColumn({ name: 'consortium_id' })
   consortium: Consortium;
 
   @OneToMany(() => Expenditure, (expenditure) => expenditure.expense)
   expenditures: Expenditure[];
+
+  @OneToMany(() => FunctionalUnitExpense, (functionalUnitsExpense) => functionalUnitsExpense.expense)
+  functional_units_expenses: FunctionalUnitExpense[];
 }

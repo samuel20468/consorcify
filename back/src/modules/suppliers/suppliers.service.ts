@@ -11,10 +11,8 @@ import { SuppliersRepository } from './suppliers.repository';
 import { UpdateSupplierDto } from './dto/update-supplier.dto';
 import { ConsortiumsService } from '../consortiums/consortiums.service';
 import { InjectRepository } from '@nestjs/typeorm';
-import { SupplierConsortium } from './entities/suppliers-consortiums.entity';
 import { Repository } from 'typeorm';
 import { Consortium } from '../consortiums/entities/consortium.entity';
-import { CreateSupplierConsortiumDto } from './dto/create-supplier-consortium.dto';
 import checkEntityExistence from 'src/helpers/check-entity-existence.helper';
 
 @Injectable()
@@ -22,53 +20,29 @@ export class SuppliersService {
   constructor(
     private readonly suppliersRepository: SuppliersRepository,
     private readonly consortiumsService: ConsortiumsService,
-    @InjectRepository(SupplierConsortium)
-    private readonly supplierConsortiumRepository: Repository<SupplierConsortium>,
   ) {}
 
-  async addConsortiumToSupplier(
-    supplierId: string,
-    newSupplierConsortium: CreateSupplierConsortiumDto,
-  ) {
-    const { consortium_id, initial_balance } = newSupplierConsortium;
+  async createSupplier(newSupplier: CreateSupplierDto): Promise<Supplier> {
+    const { name, cuit, email, phone_number, address, balance, consortium_id } =
+      newSupplier;
 
-    const foundSupplier: Supplier = await checkEntityExistence(
-      this.suppliersRepository,
-      supplierId,
-      'el proveedor',
-    );
-
-    const foundConsortium: Consortium = await checkEntityExistence(
+    const consortium: Consortium = await checkEntityExistence(
       this.consortiumsService,
       consortium_id,
-      'el consorcio',
+      'el Consorcio',
     );
 
-    const foundSupplierConsortium: SupplierConsortium =
-      await this.supplierConsortiumRepository.findOne({
-        where: {
-          supplier_id: supplierId,
-          consortium_id,
-        },
-      });
-    if (foundSupplierConsortium)
-      throw new ConflictException(
-        `El proveedor ${foundSupplier.name} ya se encuentra asociado a ${foundConsortium.name}`,
+    const foundSupplier: Supplier =
+      await this.suppliersRepository.findOneByCuitAndConsortium(
+        cuit,
+        consortium_id,
       );
 
-    const newSuppliersConsortiums = new SupplierConsortium();
-    newSuppliersConsortiums.consortium = foundConsortium;
-    newSuppliersConsortiums.supplier = foundSupplier;
-    newSuppliersConsortiums.balance = initial_balance;
-
-    const suppliersConsortiums: SupplierConsortium =
-      await this.supplierConsortiumRepository.save(newSuppliersConsortiums);
-
-    return suppliersConsortiums;
-  }
-  async createSupplier(newSupplier: CreateSupplierDto): Promise<Supplier> {
-    const { name, cuit, email, phone_number, address, balance } = newSupplier;
-
+    if (foundSupplier) {
+      throw new ConflictException(
+        `El proveedor con el CUIT ${cuit} ya existe`,
+      )
+    }
     const supplierToCreate = new Supplier();
     supplierToCreate.name = name;
     supplierToCreate.cuit = cuit;
@@ -76,6 +50,7 @@ export class SuppliersService {
     supplierToCreate.phone_number = phone_number;
     supplierToCreate.address = address;
     supplierToCreate.balance = balance;
+    supplierToCreate.consortium = consortium;
 
     const supplierCreated: Supplier =
       await this.suppliersRepository.createSupplier(supplierToCreate);

@@ -1,5 +1,6 @@
 import ColumnNumericTransformer from 'src/helpers/numeric-transformer.helper';
 import { Consortium } from 'src/modules/consortiums/entities/consortium.entity';
+import { FunctionalUnitExpense } from 'src/modules/functional-units-expenses/entities/functional-units-expense.entity';
 import { User } from 'src/modules/users/entities/user.entity';
 import { FUNCTIONAL_UNIT_TYPE } from 'src/utils/constants';
 import {
@@ -7,6 +8,7 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -23,7 +25,7 @@ export class FunctionalUnit {
 
   /**
    * El tipo de la Unidad Funcional
-   * @example "Apartmento"
+   * @example "Departamento"
    */
   @Column({ type: 'enum', enum: FUNCTIONAL_UNIT_TYPE })
   type: FUNCTIONAL_UNIT_TYPE;
@@ -97,4 +99,10 @@ export class FunctionalUnit {
   @ManyToOne(() => User, (user) => user.functional_units)
   @JoinColumn({ name: 'user_id' })
   user: User;
+
+  @OneToMany(
+    () => FunctionalUnitExpense,
+    (functionalUnitsExpense) => functionalUnitsExpense.functional_unit,
+  )
+  functional_units_expenses: FunctionalUnitExpense[];
 }

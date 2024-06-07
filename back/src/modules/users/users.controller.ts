@@ -81,9 +81,4 @@ export class UsersController {
       message: `El usuario con el id ${userToggled.id} ha sido ${statusMessage}`,
     };
   }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
-  }
 }

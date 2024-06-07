@@ -57,7 +57,7 @@ export class ConsortiumsController {
     return this.consortiumsService.update(id, consortium);
   }
 
-  @Delete(':id')
+  @Patch('disable/:id')
   remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.consortiumsService.remove(id);
   }

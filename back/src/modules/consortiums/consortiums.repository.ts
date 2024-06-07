@@ -43,7 +43,7 @@ export class ConsortiumsRepository {
   async findAll(page: number, limit: number): Promise<Consortium[]> {
     const skip = (page - 1) * limit;
     const consortiums: Consortium[] = await this.consortiumsRepository.find({
-      relations: { c_admin: true },
+      relations: { c_admin: true, functional_units: true },
       where: { active: true },
       skip,
       take: limit,
@@ -67,7 +67,7 @@ export class ConsortiumsRepository {
 
   async findOne(id: string): Promise<Consortium> {
     const consortium: Consortium = await this.consortiumsRepository.findOne({
-      relations: { c_admin: true },
+      relations: { c_admin: true, functional_units: true },
       where: { id: id, active: true },
     });
     if (!consortium) {

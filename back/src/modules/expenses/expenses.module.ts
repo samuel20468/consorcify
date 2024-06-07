@@ -8,15 +8,27 @@ import { Expense } from './entities/expense.entity';
 import { Consortium } from '../consortiums/entities/consortium.entity';
 import { CAdmin } from '../c-admin/entities/c-admin.entity';
 import { ConsortiumsRepository } from '../consortiums/consortiums.repository';
+import { FunctionalUnitsExpensesRepository } from '../functional-units-expenses/functional-units-expenses.repository';
+import { FunctionalUnitExpense } from '../functional-units-expenses/entities/functional-units-expense.entity';
+import { FunctionalUnit } from '../functional-units/entities/functional-unit.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Expense, Consortium, CAdmin])],
+  imports: [
+    TypeOrmModule.forFeature([
+      Expense,
+      Consortium,
+      CAdmin,
+      FunctionalUnitExpense,
+      FunctionalUnit,
+    ]),
+  ],
   controllers: [ExpensesController],
   providers: [
     ExpensesService,
     ExpensesRepository,
     ConsortiumsService,
     ConsortiumsRepository,
+    FunctionalUnitsExpensesRepository,
   ],
 })
 export class ExpensesModule {}

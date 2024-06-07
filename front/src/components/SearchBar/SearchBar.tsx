@@ -39,7 +39,12 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
                 />
             </div>
             <div className="w-1/12 px-2">
-                <Button onClick={handleSearch}>Buscar</Button>
+                <Button
+                    className="w-20 py-2  rounded-[40px]"
+                    onClick={handleSearch}
+                >
+                    Buscar
+                </Button>
             </div>
         </div>
     );

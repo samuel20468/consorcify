@@ -20,6 +20,7 @@ export class FunctionalUnitsRepository {
     const functionalUnits = await this.functionalUnitsRepository.find({
       skip: (page - 1) * limit,
       take: limit,
+      relations: { consortium: true },
     });
     return functionalUnits;
   }
@@ -56,6 +57,7 @@ export class FunctionalUnitsRepository {
     const functionalUnit = this.functionalUnitsRepository.create({
       ...createFunctionalUnitDto,
       code,
+      consortium
     });
 
     try {
@@ -77,7 +79,7 @@ export class FunctionalUnitsRepository {
     if (!functionalUnit) {
       throw new NotFoundException(`Functional unit with id ${id} not found`);
     }
-    
+
     return await this.functionalUnitsRepository.save({
       ...functionalUnit,
       ...updateFunctionalUnitDto,

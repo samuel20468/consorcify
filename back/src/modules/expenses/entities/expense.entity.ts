@@ -55,6 +55,13 @@ export class Expense {
   @Column('enum', { enum: EXPENSE_STATUS, default: EXPENSE_STATUS.OPEN })
   status: EXPENSE_STATUS;
 
+  /**
+   * Indica si la expensa está activa
+   * @example true
+   */
+  @Column({ type: 'boolean', default: true })
+  active: boolean;
+
   @ManyToOne(() => Consortium, (consortium) => consortium.expenses)
   @JoinColumn({ name: 'consortium_id' })
   consortium: Consortium;

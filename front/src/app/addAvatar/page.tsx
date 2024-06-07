@@ -1,5 +1,6 @@
 "use client";
-import { ContainerDashboard } from "@/components/ui";
+import { Button, ContainerDashboard } from "@/components/ui";
+import Link from "next/link";
 import React, { useState } from "react";
 
 const addAvatar: React.FC = () => {
@@ -38,8 +39,16 @@ const addAvatar: React.FC = () => {
 
     return (
         <ContainerDashboard className="w-[90%] h-[95vh] justify-center">
+            <div className="w-1/2 mb-2 flex ">
+                <Link
+                    href="/dashboard/profile"
+                    className="w-full flex justify-end"
+                >
+                    <Button className="w-32 py-2 rounded-[40px]">Volver</Button>
+                </Link>
+            </div>
             <div
-                className="flex flex-col border rounded-[40px] p-10 cursor-pointer items-center justify-center gap-3"
+                className="flex flex-col border border-dashed rounded-[40px] p-10 cursor-pointer items-center justify-center gap-3 w-1/2 h-3/4"
                 onDragOver={preventDefaults}
                 onDragEnter={preventDefaults}
                 onDrop={handleDrop}

@@ -1,11 +1,13 @@
 import ColumnNumericTransformer from 'src/helpers/numeric-transformer.helper';
 import { Expense } from 'src/modules/expenses/entities/expense.entity';
 import { FunctionalUnit } from 'src/modules/functional-units/entities/functional-unit.entity';
+import { Payment } from 'src/modules/payments/entities/payment.entity';
 import {
   Column,
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -13,7 +15,6 @@ import {
   name: 'functional_units_expenses',
 })
 export class FunctionalUnitExpense {
-
   /**
    * El ID de la expensa (UUID v4)
    * @example "75b4566f-ddc3-4b7c-93de-4f4d5840cc34"
@@ -65,11 +66,17 @@ export class FunctionalUnitExpense {
   })
   total_amount: number;
 
-  @ManyToOne(() => FunctionalUnit, (functionalUnit) => functionalUnit.functional_units_expenses)
+  @ManyToOne(
+    () => FunctionalUnit,
+    (functionalUnit) => functionalUnit.functional_units_expenses,
+  )
   @JoinColumn({ name: 'functional_unit_id' })
   functional_unit: FunctionalUnit;
 
   @ManyToOne(() => Expense, (expense) => expense.functional_units_expenses)
   @JoinColumn({ name: 'expense_id' })
   expense: Expense;
+
+  @OneToMany(() => Payment, (payment) => payment.functional_unit_expense)
+  payments: Payment[];
 }

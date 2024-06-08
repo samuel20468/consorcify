@@ -67,7 +67,12 @@ export class ConsortiumsRepository {
 
   async findOne(id: string): Promise<Consortium> {
     const consortium: Consortium = await this.consortiumsRepository.findOne({
-      relations: { c_admin: true, functional_units: true },
+      relations: {
+        c_admin: true,
+        functional_units: {
+          user: true
+        }
+      },
       where: { id: id, active: true },
     });
     if (!consortium) {

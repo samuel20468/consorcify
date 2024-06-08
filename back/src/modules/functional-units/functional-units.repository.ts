@@ -6,7 +6,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Consortium } from '../consortiums/entities/consortium.entity';
 import { generateFunctionalUnitCode } from 'src/helpers/generate-functional-unit-code.helper';
-import checkEntityExistence from 'src/helpers/check-entity-existence.helper';
 import { User } from '../users/entities/user.entity';
 import { FunctionalUnitWhitUserIdDto } from './dto/functional-unit-whit-user-id.dto';
 
@@ -64,7 +63,7 @@ export class FunctionalUnitsRepository {
     const functionalUnit = this.functionalUnitsRepository.create({
       ...createFunctionalUnitDto,
       code,
-      consortium
+      consortium,
     });
 
     try {
@@ -135,7 +134,6 @@ export class FunctionalUnitsRepository {
     try {
       const updatedFunctionalUnit: FunctionalUnit =
         await this.functionalUnitsRepository.save(functionalUnit);
-      // console.log(user);
 
       user.functional_units = [...user.functional_units, updatedFunctionalUnit];
       await this.usersRepository.save(user);

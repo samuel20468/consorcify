@@ -135,7 +135,7 @@ export interface ISuppliers {
     email: string;
     phone_number: string;
     address: string;
-    balance?: number;
+    balance: number;
     active?: boolean;
 }
 export interface ISuppliersError {

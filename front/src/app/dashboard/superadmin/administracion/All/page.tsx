@@ -53,7 +53,7 @@ const page = () => {
                                 >
                                     <div className="flex justify-between w-full text-center">
                                         <p className="w-[33.33%]">
-                                            {elemento.first_name}
+                                            {elemento.name}
                                         </p>
                                         <p className="w-[33.33%]">
                                             {elemento.cuit}

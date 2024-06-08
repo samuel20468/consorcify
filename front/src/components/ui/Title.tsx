@@ -6,7 +6,7 @@ export const Title = (props: Props) => {
     return (
         <div className="w-full h-auto p-4">
             <h1 className="mb-2 text-3xl font-bold">{children}</h1>
-            <div className="flex justify-center border-b border-black "></div>
+            <div className="flex justify-center border-b border-white "></div>
         </div>
     );
 };

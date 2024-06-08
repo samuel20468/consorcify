@@ -18,7 +18,7 @@ const Spent = () => {
     };
 
     return (
-        <div className="h-screen text-black bg-gray-100">
+        <div className="h-screen text-white">
             <ContainerDashboard>
                 <Title>Gastos</Title>
                 <div className="flex justify-between w-[95%]">

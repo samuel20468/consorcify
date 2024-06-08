@@ -14,7 +14,7 @@ const ConsorCards = ({ consortiums }: { consortiums: IConsortium[] }) => {
         <div className="flex flex-col justify-center gap-5 py-5 w-[90%]">
             {consortiums?.map((consortium) => (
                 <Link
-                    href={`/dashboard/admin/portal/suppliers/${consortium.id}`}
+                    href={`/dashboard/admin/consortiums/${consortium.id}`}
                     key={consortium.id}
                 >
                     <ConsorCard key={consortium.cuit} {...consortium} />

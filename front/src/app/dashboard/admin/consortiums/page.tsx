@@ -43,7 +43,7 @@ const Consortium = () => {
     }, [token, pathname]);
 
     return (
-        <div className="h-screen text-black bg-gray-100">
+        <div className="h-screen text-white">
             <ContainerDashboard>
                 <Title>Consorcios</Title>
                 {consortiums.length > 0 ? (

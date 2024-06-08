@@ -1,16 +1,23 @@
+import { IUserData } from "@/Interfaces/Interfaces";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const useSesion = () => {
+const useSesion = (): { token: string; data: IUserData } => {
     const [token, setToken] = useState<string>("");
-    const [data, setData] = useState<string>("");
+    const [data, setData] = useState<IUserData>({
+        email: "",
+        exp: 0,
+        iat: 0,
+        id: "",
+        roles: [],
+    });
     const path = usePathname();
 
     useEffect(() => {
         const data = JSON.parse(localStorage.getItem("userData")!);
         if (data) {
             setToken(data.token);
-            setData(data.user.id);
+            setData(data.user);
         }
     }, [path, token]);
 

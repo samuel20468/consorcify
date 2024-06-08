@@ -26,7 +26,7 @@ const DashboardA = () => {
     useEffect(() => {
         const fecthData = async () => {
             try {
-                const response = await getAdminById(data, token);
+                const response = await getAdminById(data.id, token);
                 console.log(response);
 
                 if (response) {
@@ -43,7 +43,7 @@ const DashboardA = () => {
     }, [token]);
 
     return (
-        <div className="h-screen text-black bg-gray-100">
+        <div className="h-screen text-white">
             <ContainerDashboard>
                 <Title>Mi Administración</Title>
                 <div className="grid w-full h-auto grid-cols-1 gap-10 p-4 text-black">

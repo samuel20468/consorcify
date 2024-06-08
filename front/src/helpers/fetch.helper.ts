@@ -312,8 +312,10 @@ export const getSuppliers = async (token: string) => {
                 Authorization: `Bearer ${token}`,
             },
         });
-        const data = await response.json();
-        return data;
+        if (response.ok) {
+            const data = await response.json();
+            return data;
+        }
     } catch (error) {
         console.error(error);
     }

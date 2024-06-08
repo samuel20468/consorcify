@@ -9,6 +9,8 @@ import {
   Query,
   UseInterceptors,
   UseGuards,
+  Post,
+  UploadedFile,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -21,8 +23,9 @@ import { Roles } from 'src/decorators/role.decorator';
 import { ROLE } from 'src/utils/constants';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
 
-@ApiTags("User")
+@ApiTags('User')
 @Controller('users')
 @ApiBearerAuth()
 @UseGuards(AuthGuard)
@@ -40,6 +43,12 @@ export class UsersController {
   ): Promise<User[]> {
     return await this.usersService.findAll(+page, +limit);
   }
+
+  // @Post('uploadPicture')
+  // @UseInterceptors(FileInterceptor('file'))
+  // async uploadPicture(@UploadedFile() file: Express.Multer.File) {
+  //   return file;
+  // }
 
   @Get(':id')
   @UseInterceptors(ExcludeActiveInterceptor, ExcludeSuperAdminInterceptor)
@@ -67,9 +76,9 @@ export class UsersController {
     userToggled.active
       ? (statusMessage = 'Activado')
       : (statusMessage = 'Desactivado');
-  
+
     return {
       message: `El usuario con el id ${userToggled.id} ha sido ${statusMessage}`,
-    }
+    };
   }
 }

@@ -1,16 +1,27 @@
 "use client";
 
+// Estilos y componentes
+import { ContainerDashboard, Title } from "@/components/ui";
 import FormRegisterConsortium from "@/components/FormRegisterConsortium/FormRegisterConsortium";
-import { ContainerDashboard } from "@/components/ui";
+
+// Hooks
 import useAuth from "@/helpers/useAuth";
+
+// -----------------------
 
 const AddConsortium = () => {
     useAuth();
 
     return (
-        <div className="flex flex-col h-screen bg-gray-100">
+        <div className="flex flex-col h-screen">
             <ContainerDashboard>
-                <div className="flex items-center justify-center my-10 bg-gray-200 rounded-lg h-content">
+                <Title>
+                    Consorcios{" "}
+                    <span className="text-2xl font-thin">
+                        | Crear consorcio
+                    </span>
+                </Title>
+                <div className="flex items-center justify-center my-10 bg-[#d3d3d3] rounded-lg h-content">
                     <FormRegisterConsortium />
                 </div>
             </ContainerDashboard>

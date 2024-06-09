@@ -1,16 +1,37 @@
 // Estilos y componentes
 import { Button, Input, Label, Select } from "../ui";
 
+// Interfaces
+import { IExpenditures } from "@/Interfaces/Interfaces";
+
 // Hooks
+import { useState } from "react";
 import useAuth from "@/helpers/useAuth";
 
 // -------------------
 
 const FormSpent = () => {
     useAuth();
+    const initialData = {
+        date: "",
+        total_amount: 0,
+        category: "",
+        invoice_number: "",
+        description: "",
+    };
+    const [registerExpenditure, setRegisterExpenditure] =
+        useState<IExpenditures>();
+
+    // const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //     const { name, value } = e.target;
+    //     setExpenditure({
+    //         ...expenditure,
+    //         [name]:
+    //     })
+    // };
 
     return (
-        <div className="w-[80%] flex flex-col justify-center">
+        <div className="w-[80%] flex flex-col justify-center bg-[#d3d3d3] p-5 rounded-[50px] text-black">
             <h1 className="mb-4 text-3xl text-center">
                 Este es el formulario de gastos
             </h1>
@@ -39,18 +60,13 @@ const FormSpent = () => {
                         <Select
                             id="consortium_id"
                             name="consortium_id"
+                            defaultValue="S"
                             // value={spent.consortium_id}
                             // onChange={handleSelect}
                         >
-                            <option value="" disabled selected>
+                            <option value="S" disabled>
                                 Seleccionar el consorcio
                             </option>
-                            <option value="">Consorcio 1</option>
-                            <option value="">Consorcio 2</option>
-                            <option value="">Consorcio 3</option>
-                            <option value="">Consorcio 4</option>
-                            <option value="">Consorcio 5</option>
-                            <option value="">Consorcio 6</option>
                         </Select>
                     </div>
                     <div className="flex flex-col w-1/4">
@@ -75,16 +91,34 @@ const FormSpent = () => {
                         <Select
                             id="category"
                             name="category"
+                            defaultValue="S"
                             // value={spent.category}
                             // onChange={handleSelect}
                         >
-                            <option value="" disabled selected>
+                            <option value="S" disabled>
                                 Seleccionar la categoría
                             </option>
-                            <option value="">Categoria 1</option>
-                            <option value="">Categoria 2</option>
-                            <option value="">Categoria 3</option>
-                            <option value="">Categoria 4</option>
+                            <option value="Servicios Públicos">
+                                Servicios Públicos
+                            </option>
+                            <option value="Abono de Servicios">
+                                Abono de Servicios
+                            </option>
+                            <option value="Mantenimiento de partes comunes">
+                                Mantenimiento de partes comunes
+                            </option>
+                            <option value="Gastos Bancarios">
+                                Gastos Bancarios
+                            </option>
+                            <option value="Gastos de limpieza">
+                                Gastos de limpieza
+                            </option>
+                            <option value="Gastos administrativos">
+                                Gastos administrativos
+                            </option>
+                            <option value="Seguro">Seguro</option>
+                            <option value="Sueldos">Sueldos</option>
+                            <option value="Otros">Otros</option>
                         </Select>
                     </div>
                     <div className="flex flex-col w-1/4">
@@ -110,16 +144,13 @@ const FormSpent = () => {
                         <Select
                             id="supplier_id"
                             name="supplier_id"
+                            defaultValue="S"
                             // value={spent.supplier_id}
                             // onChange={handleSelect}
                         >
-                            <option value="" disabled selected>
+                            <option value="S" disabled>
                                 Seleccionar el proveedor
                             </option>
-                            <option value="">Proveedor 1</option>
-                            <option value="">Proveedor 2</option>
-                            <option value="">Proveedor 3</option>
-                            <option value="">Proveedor 4</option>
                         </Select>
                     </div>
                     <div className="flex flex-col w-2/4">

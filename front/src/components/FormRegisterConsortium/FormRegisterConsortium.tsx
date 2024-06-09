@@ -311,16 +311,10 @@ const FormRegisterConsortium = ({ update = false }) => {
     // ---------------------------------------------------------------------------
 
     return (
-        <div className="w-full h-auto p-4 text-black">
+        <div className="w-full h-auto p-4 text-black bg-slate-200">
             <div className="flex items-center justify-between px-5">
                 <h1 className="mb-2 text-lg font-bold">
-                    Consorcios{" "}
-                    <span className="text-sm font-normal">
-                        |
-                        {update
-                            ? " Modificar consorcio"
-                            : " Crear nuevo Consorcio"}
-                    </span>
+                    {update ? " Modificar consorcio" : " Crear nuevo Consorcio"}
                 </h1>
             </div>
             <form
@@ -384,7 +378,7 @@ const FormRegisterConsortium = ({ update = false }) => {
                 </div>
 
                 <div className="flex flex-row gap-4 ">
-                    <div className="flex flex-col lg:w-3/4">
+                    <div className="flex flex-col lg:w-2/4">
                         <Label htmlFor="street_name">
                             Dirección:<span className="text-red-600">*</span>
                         </Label>
@@ -410,6 +404,24 @@ const FormRegisterConsortium = ({ update = false }) => {
                                 consortiumRegister.building_number == 0
                                     ? ""
                                     : consortiumRegister.building_number
+                            }
+                            onChange={handleChange}
+                        />
+                    </div>
+                    <div className="flex flex-col lg:w-1/4">
+                        <Label htmlFor="category">
+                            Categoría edificio:
+                            <span className="text-red-600">*</span>
+                        </Label>
+                        <Input
+                            id="category"
+                            name="category"
+                            type="number"
+                            placeholder="1"
+                            value={
+                                consortiumRegister.category == 0
+                                    ? ""
+                                    : consortiumRegister.category
                             }
                             onChange={handleChange}
                         />
@@ -510,19 +522,17 @@ const FormRegisterConsortium = ({ update = false }) => {
                         />
                     </div>
                     <div className="flex flex-col lg:w-1/4">
-                        <Label htmlFor="category">
-                            Categoría edificio:
-                            <span className="text-red-600">*</span>
-                        </Label>
+                        <Label htmlFor="interest_rate">Tasa de Interes</Label>
                         <Input
-                            id="category"
-                            name="category"
+                            id="interest_rate"
+                            name="interest_rate"
                             type="number"
-                            placeholder="1"
+                            placeholder="00.00"
+                            step="0.01"
                             value={
-                                consortiumRegister.category == 0
+                                consortiumRegister.interest_rate == 0
                                     ? ""
-                                    : consortiumRegister.category
+                                    : consortiumRegister.interest_rate
                             }
                             onChange={handleChange}
                         />
@@ -582,27 +592,6 @@ const FormRegisterConsortium = ({ update = false }) => {
                                         })}
                                 </Select>
                             )}
-                        </div>
-                    </div>
-
-                    <div className="flex w-full">
-                        <div className="flex flex-col lg:w-full">
-                            <Label htmlFor="interest_rate">
-                                Tasa de Interes
-                            </Label>
-                            <Input
-                                id="interest_rate"
-                                name="interest_rate"
-                                type="number"
-                                placeholder="00.00"
-                                step="0.01"
-                                value={
-                                    consortiumRegister.interest_rate == 0
-                                        ? ""
-                                        : consortiumRegister.interest_rate
-                                }
-                                onChange={handleChange}
-                            />
                         </div>
                     </div>
                 </div>

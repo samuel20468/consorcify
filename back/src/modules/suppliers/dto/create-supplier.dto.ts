@@ -8,6 +8,7 @@ import {
   MaxLength,
   IsUUID,
   IsNumber,
+  IsDecimal,
 } from 'class-validator';
 
 export class CreateSupplierDto {
@@ -18,7 +19,7 @@ export class CreateSupplierDto {
   @IsNotEmpty({ message: 'El nombre es requerido' })
   @IsString({ message: 'El nombre debe ser una cadena de texto' })
   @Length(3, 50, { message: 'El nombre debe tener entre 3 y 50 caracteres' })
-  @Matches(/^[a-zA-Z\s]+$/, { message: 'El nombre no puede contener números' })
+  // @Matches(/^[a-zA-Z\s]+$/, { message: 'El nombre no puede contener números' })
   name: string;
 
   /**
@@ -70,14 +71,17 @@ export class CreateSupplierDto {
 
   /**
    * El saldo del Proveedor
-   * @example "2000.00"
+   * @example "-2000.00"
    */
   @IsNotEmpty({ message: 'El saldo es requerido' })
-  @IsNumber(
-    { maxDecimalPlaces: 2 },
-    {
-      message: 'El saldo debe ser un número con hasta 2 decimales',
-    },
-  )
+  @IsNumber()
   balance: number;
+
+  /**
+   * El id del Consorcio
+   * @example "b2d3f5a6-7e4a-4b8e-bf2a-2e5b3c9f8d1b"
+   */
+  @IsNotEmpty({ message: 'El id del Consorcio es requerido' })
+  @IsUUID(4, { message: 'El id del Consorcio debe ser un UUID v4' })
+  consortium_id: string;
 }

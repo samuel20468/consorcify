@@ -1,5 +1,8 @@
 // Estilos y componentes
 import { ContainerDashboard, Title } from "../ui";
+import { BsBuildingFillAdd } from "react-icons/bs";
+import { GrUserWorker } from "react-icons/gr";
+import { FaMoneyBillTransfer } from "react-icons/fa6";
 
 // Interfaces
 import { IAdmin } from "@/Interfaces/Interfaces";
@@ -23,7 +26,7 @@ const DashboardA = () => {
     useEffect(() => {
         const fecthData = async () => {
             try {
-                const response = await getAdminById(data, token);
+                const response = await getAdminById(data.id, token);
                 console.log(response);
 
                 if (response) {
@@ -40,7 +43,7 @@ const DashboardA = () => {
     }, [token]);
 
     return (
-        <div className="h-screen text-black bg-gray-100">
+        <div className="h-screen text-white">
             <ContainerDashboard>
                 <Title>Mi Administración</Title>
                 <div className="grid w-full h-auto grid-cols-1 gap-10 p-4 text-black">
@@ -51,21 +54,25 @@ const DashboardA = () => {
                 <div className="grid w-full h-auto grid-cols-1 gap-10 p-4 my-10 text-black md:grid-cols-2 lg:grid-cols-3">
                     <Link
                         href="/addConsortium"
-                        className="flex justify-center items-end text-2xl bg-white hover:bg-gray-200 h-72 rounded-[50px] pb-2"
+                        className="flex flex-col items-center justify-center text-2xl bg-white hover:bg-gray-200 h-72 rounded-[50px] pb-2"
                     >
-                        Agregar consorcio
+                        <BsBuildingFillAdd size={120} />
+                        <h1 className="mt-3">Agregar consorcio</h1>
                     </Link>
                     <Link
                         href="/addSupplier"
-                        className="flex justify-center items-end text-2xl bg-white hover:bg-gray-200 h-72 rounded-[50px] pb-2"
+                        className="flex flex-col items-center justify-center text-2xl bg-white hover:bg-gray-200 h-72 rounded-[50px] pb-2"
                     >
-                        Agregar Proveedor
+                        <GrUserWorker size={120} />
+                        <h1 className="mt-3">Agregar proveedor</h1>
                     </Link>
                     <Link
                         href="/addSpent"
-                        className="flex justify-center items-end text-2xl bg-white hover:bg-gray-200 h-72 rounded-[50px] pb-2"
+                        className="flex flex-col items-center justify-center text-2xl bg-white hover:bg-gray-200 h-72 rounded-[50px] pb-2"
                     >
-                        Agregar gasto
+                        <FaMoneyBillTransfer size={120} />
+
+                        <h1 className="mt-3">Agregar gasto</h1>
                     </Link>
                 </div>
                 <div className="grid w-full h-auto grid-cols-1 gap-10 p-4 mb-4 text-black md:grid-cols-2">

@@ -2,24 +2,28 @@
 import { Button, Input, Label, Select } from "../ui";
 
 // Interfaces
-import { ISuppliers, ISuppliersError } from "@/Interfaces/Interfaces";
+import {
+    IConsortium,
+    ISuppliers,
+    ISuppliersError,
+} from "@/Interfaces/Interfaces";
 
 // Endpoints
-import { supplierFetch } from "@/helpers/fetch.helper";
+import { getConsortiums, supplierFetch } from "@/helpers/fetch.helper";
 
 // Hooks
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
-import { useParams, useRouter } from "next/navigation";
 
 // ---------------
 
 const FormSupplier = () => {
     useAuth();
     const { token } = useSesion();
+    const pathname = useParams();
     const router = useRouter();
-    const params: { id: string } = useParams();
     const initialData = {
         name: "",
         cuit: "",
@@ -32,12 +36,20 @@ const FormSupplier = () => {
         useState<ISuppliers>(initialData);
     const [errorSupplier, setErrorSupplier] =
         useState<ISuppliersError>(initialData);
+    const [consortiums, setConsortiums] = useState<IConsortium[]>();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
         setRegisterSupplier({
             ...registerSupplier,
-            [e.target.name]: e.target.value,
+            [name]:
+                name === "balance"
+                    ? value === ""
+                        ? ""
+                        : Number(value)
+                    : value,
         });
+        console.log(value);
     };
 
     const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -57,18 +69,19 @@ const FormSupplier = () => {
             !registerSupplier.email ||
             !registerSupplier.phone_number ||
             !registerSupplier.address ||
-            !registerSupplier.balance
+            !registerSupplier.balance === undefined
         ) {
             alert("Faltan datos en el formulario");
             return;
         }
+
         try {
             const response = await supplierFetch(registerSupplier, token);
-            console.log(registerSupplier);
+            console.log(response);
 
             if (response?.ok) {
-                const data = await response.json();
                 alert("Registro exitoso");
+                const data = await response.json();
                 setRegisterSupplier(data);
                 router.push(`dashboard/admin/portal/suppliers/${data.id}`);
             } else {
@@ -79,8 +92,25 @@ const FormSupplier = () => {
         }
     };
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await getConsortiums(token);
+                if (response) {
+                    const data = await response.json();
+                    setConsortiums(data);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        if (token) {
+            fetchData();
+        }
+    }, [token, pathname]);
+
     return (
-        <div className="w-[80%] flex flex-col justify-center">
+        <div className="w-[80%] flex flex-col justify-center bg-gray-50 p-5 rounded-[50px] text-black">
             <h1 className="mb-4 text-3xl text-center">
                 Este es el formulario para agregar un nuevo proveedor
             </h1>
@@ -100,12 +130,17 @@ const FormSupplier = () => {
                             <option value="" disabled>
                                 Seleccione un consorcio
                             </option>
-                            <option value="Consorcio 1">Consorcio 1</option>
-                            <option value="Consorcio 2">Consorcio 2</option>
-                            <option value="Consorcio 3">Consorcio 3</option>
-                            <option value="Consorcio 4">Consorcio 4</option>
-                            <option value="Consorcio 5">Consorcio 5</option>
-                            <option value="Consorcio 6">Consorcio 6</option>
+                            {consortiums &&
+                                consortiums.map((consortium) => {
+                                    return (
+                                        <option
+                                            key={consortium.id}
+                                            value={consortium.id}
+                                        >
+                                            {consortium.name}
+                                        </option>
+                                    );
+                                })}
                         </Select>
                     </div>
                     <div className="flex flex-col w-2/4">
@@ -190,11 +225,7 @@ const FormSupplier = () => {
                         <Input
                             id="balance"
                             name="balance"
-                            value={
-                                registerSupplier.balance == 0
-                                    ? ""
-                                    : registerSupplier.balance
-                            }
+                            value={registerSupplier.balance}
                             type="number"
                             onChange={handleChange}
                             placeholder="$2.000"

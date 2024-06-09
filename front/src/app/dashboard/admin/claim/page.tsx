@@ -2,22 +2,22 @@
 
 // Estilos y componentes
 import { ContainerDashboard, Title } from "@/components/ui";
-import Renter from "@/components/Renter/Renter";
 
 // Hooks
 import useAuth from "@/helpers/useAuth";
 
-const Charge = () => {
+// --------------------
+
+const Claim = () => {
     useAuth();
 
     return (
         <div className="h-screen text-white">
             <ContainerDashboard>
-                <Title>Cobranzas</Title>
-                <Renter />
+                <Title>Raclamos </Title>
             </ContainerDashboard>
         </div>
     );
 };
 
-export default Charge;
+export default Claim;

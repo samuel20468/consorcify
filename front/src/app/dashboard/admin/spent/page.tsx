@@ -18,7 +18,7 @@ const Spent = () => {
     };
 
     return (
-        <div className="h-screen text-black bg-gray-100">
+        <div className="h-screen text-white">
             <ContainerDashboard>
                 <Title>Gastos</Title>
                 <div className="flex justify-between w-[95%]">
@@ -30,12 +30,12 @@ const Spent = () => {
                             // onChange={handleSelect}
                         >
                             <option value="" disabled selected>
-                                Seleccionar administración
+                                Seleccionar consorcio
                             </option>
-                            <option value="">Administración 1</option>
-                            <option value="">Administración 2</option>
-                            <option value="">Administración 3</option>
-                            <option value="">Administración 4</option>
+                            <option value="">Consorcio 1</option>
+                            <option value="">Consorcio 2</option>
+                            <option value="">Consorcio 3</option>
+                            <option value="">Consorcio 4</option>
                         </Select>
 
                         <Select
@@ -82,7 +82,7 @@ const Spent = () => {
                         </Button>
                     </div>
                 </div>
-                <div className="w-[90%] border-t border-black flex justify-between pt-2 mb-3">
+                <div className="w-[90%] border-t border-black flex justify-between pt-2 my-3">
                     <h1>Período</h1>
                     <h1>Consorcio</h1>
                     <h1>Proveedor</h1>

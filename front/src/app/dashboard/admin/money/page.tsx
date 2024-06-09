@@ -12,7 +12,7 @@ const Money = () => {
     useAuth();
 
     return (
-        <div className="h-screen text-black bg-gray-100">
+        <div className="h-screen text-white">
             <ContainerDashboard>
                 <Title>Caja</Title>
             </ContainerDashboard>

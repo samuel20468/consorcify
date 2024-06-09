@@ -4,7 +4,7 @@ import { ExpendituresController } from './expenditures.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Expenditure } from './entities/expenditure.entity';
 import { ExpendituresRepository } from './expenditures.repository';
-import { SupplierConsortium } from '../suppliers/entities/suppliers-consortiums.entity';
+import { Supplier } from '../suppliers/entities/supplier.entity';
 import { ExpensesRepository } from '../expenses/expenses.repository';
 import { Expense } from '../expenses/entities/expense.entity';
 import { ConsortiumsRepository } from '../consortiums/consortiums.repository';
@@ -19,7 +19,7 @@ import { FunctionalUnit } from '../functional-units/entities/functional-unit.ent
   imports: [
     TypeOrmModule.forFeature([
       Expenditure,
-      SupplierConsortium,
+      Supplier,
       Expense,
       Consortium,
       CAdmin,

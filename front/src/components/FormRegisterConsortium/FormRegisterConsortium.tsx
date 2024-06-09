@@ -1,7 +1,7 @@
 "use client";
 
 // Estilos y componentes
-import { Button, Input, Label } from "../ui";
+import { Button, Input, Label, Select } from "../ui";
 
 // Validaciones
 import { validateSuterh } from "@/helpers/Validations/validate.suterh";
@@ -26,8 +26,10 @@ import {
 
 // Hooks
 import { useEffect, useState } from "react";
-import { useParams, usePathname, useRouter } from "next/navigation";
-import { validateInterestRate } from "@/helpers/functions.helper";
+import { useParams, useRouter } from "next/navigation";
+import useAuth from "@/helpers/useAuth";
+import useSesion from "@/helpers/useSesion";
+import path from "path";
 
 // -----------------
 
@@ -49,31 +51,28 @@ const FormRegisterConsortium = ({ update = false }) => {
         first_due_day: 0,
         c_admin: "" || ({ id: "" } as IRegisterAdmin),
     };
+    useAuth();
+    const { token, data }: { token: string; data: IUserData } = useSesion();
+    const router = useRouter();
     const params: { id: string } = useParams();
-    const [userData, setUserData] = useState<IUserData>();
+
     const [admins, setAdmins] = useState<IRegisterAdmin[]>();
-    const [token, setToken] = useState<string>("");
-    const path = usePathname();
     const [consortiumRegister, setConsortiumRegister] =
         useState<IConsortium>(initialData);
     const [consortiumRegisterError, setConsortiumRegisterError] =
         useState<IConsortiumError>(initialData);
-    const router = useRouter();
 
-    useEffect(() => {
-        const data = JSON.parse(localStorage.getItem("userData")!);
-        if (data) {
-            setToken(data.token);
-            setUserData(data.user);
-        }
-    }, [path]);
+    // ---------------------------------------------------------------------------
 
     useEffect(() => {
         const fetchConsortium = async () => {
             if (update) {
                 try {
                     const response = await getConsortiumById(params.id, token);
-                    if (response.c_admin !== null) {
+                    if (
+                        response.c_admin !== null &&
+                        typeof response.c_admin === "object"
+                    ) {
                         setConsortiumRegister((prevState) => ({
                             ...prevState,
                             c_admin: response.c_admin.id,
@@ -95,6 +94,7 @@ const FormRegisterConsortium = ({ update = false }) => {
                 console.error(error);
             }
         };
+
         if (token) {
             fetchData();
             if (update) {
@@ -103,11 +103,31 @@ const FormRegisterConsortium = ({ update = false }) => {
         }
     }, [token]);
 
-    console.log(consortiumRegister);
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         if (token) {
+    //             try {
+    //                 const response = await getAdmins(token);
+    //                 setAdmins(response);
+    //                 if (update) {
+    //                     const consortiumResponse = await getConsortiumById(params.id, token);
+    //                     if (consortiumResponse.c_admin !== null && typeof consortiumResponse.c_admin === "object") {
+    //                         consortiumResponse.c_admin = consortiumResponse.c_admin.id;
+    //                     }
+    //                     setConsortiumRegister(consortiumResponse);
+    //                 }
+    //             } catch (error) {
+    //                 console.error(error);
+    //             }
+    //         }
+    //     };
+    //     fetchData();
+    // }, [token]);
+
+    // ---------------------------------------------------------------------------
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        console.log(value);
         if (name === "interest_rate") {
             if (value === "") {
                 setConsortiumRegister({
@@ -143,6 +163,16 @@ const FormRegisterConsortium = ({ update = false }) => {
             [name]: value,
         });
     };
+
+    // const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    //     const { name, value } = e.target;
+    //     setConsortiumRegister((prev) => ({
+    //         ...prev,
+    //         [name]: name === "interest_rate" ? parseFloat(value) || 0 : value,
+    //     }));
+    // };
+
+    // ---------------------------------------------------------------------------
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -183,7 +213,7 @@ const FormRegisterConsortium = ({ update = false }) => {
                 );
                 if (response?.ok) {
                     alert("Consorcio moficado correctamente");
-                    if (userData?.roles?.[0] == "superadmin") {
+                    if (data?.roles?.[0] == "superadmin") {
                         router.push(
                             `/dashboard/superadmin/consorcios/All/${params.id}`
                         );
@@ -198,14 +228,14 @@ const FormRegisterConsortium = ({ update = false }) => {
                 if (response?.ok) {
                     alert("Consorcio Creado correctamente");
 
-                    const data = await response.json();
-                    if (userData?.roles?.[0] == "superadmin") {
+                    const dato = await response.json();
+                    if (data?.roles?.[0] == "superadmin") {
                         router.push(
-                            `/dashboard/superadmin/consorcios/All/${data.id}`
+                            `/dashboard/superadmin/consorcios/All/${dato.id}`
                         );
                     } else {
                         router.push(
-                            `/dashboard/admin/consorcios/All/${data.id}`
+                            `/dashboard/admin/consortiums/All/${dato.id}`
                         );
                     }
                 }
@@ -214,6 +244,48 @@ const FormRegisterConsortium = ({ update = false }) => {
             }
         }
     };
+
+    useEffect(() => {
+        if (data?.roles?.[0] == "cadmin") {
+            setConsortiumRegister({
+                ...consortiumRegister,
+                c_admin: data.id,
+            });
+        }
+    }, [token, path]);
+
+    // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    //     e.preventDefault();
+
+    //     const requiredFields = ["building_number", "category", "city", "country", "cuit", "first_due_day", "floors", "name", "province", "street_name", "suterh_key", "ufs", "zip_code"];
+    //     const isFormValid = requiredFields.every(field => consortiumRegister[field] !== undefined && consortiumRegister[field] !== "");
+
+    //     if (!isFormValid) {
+    //         alert("Faltan datos en el formulario");
+    //         return;
+    //     }
+
+    //     const consortiumData = {
+    //         ...consortiumRegister,
+    //         c_admin: typeof consortiumRegister.c_admin === "object" ? consortiumRegister.c_admin.id : consortiumRegister.c_admin,
+    //     };
+
+    //     try {
+    //         const response = update ? await updateConsortium(params.id, token, consortiumData) : await consortiumFetch(consortiumData, token);
+    //         if (response?.ok) {
+    //             alert(update ? "Consorcio modificado correctamente" : "Consorcio creado correctamente");
+    //             const data = await response.json();
+    //             const redirectPath = userData?.roles?.[0] == "superadmin"
+    //                 ? `/dashboard/superadmin/consorcios/All/${data.id || params.id}`
+    //                 : `/dashboard/admin/consorcios/All/${data.id || params.id}`;
+    //             router.push(redirectPath);
+    //         }
+    //     } catch (error) {
+    //         console.error(error);
+    //     }
+    // };
+
+    // ---------------------------------------------------------------------------
 
     useEffect(() => {
         const suterhErrors = validateSuterh(consortiumRegister.suterh_key);
@@ -225,6 +297,18 @@ const FormRegisterConsortium = ({ update = false }) => {
             ...cuitErrors,
         }));
     }, [consortiumRegister]);
+
+    // useEffect(() => {
+    //     const suterhErrors = validateSuterh(consortiumRegister.suterh_key);
+    //     const cuitErrors = validateCuit(consortiumRegister.cuit!);
+    //     setConsortiumRegisterError((prevErrors) => ({
+    //         ...prevErrors,
+    //         ...suterhErrors,
+    //         ...cuitErrors,
+    //     }));
+    // }, [consortiumRegister]);
+
+    // ---------------------------------------------------------------------------
 
     return (
         <div className="w-full h-auto p-4 text-black">
@@ -464,14 +548,15 @@ const FormRegisterConsortium = ({ update = false }) => {
                     </div>
                 </div>
                 <div className="flex items-center w-full gap-2">
-                    {userData?.roles?.[0] === "superadmin" && (
-                        <div className="flex w-full">
-                            <div className="flex flex-col lg:w-full">
-                                <Label>Administrador </Label>
-                                <select
-                                    className="h-10 px-2 text-white rounded-lg bg-input"
-                                    name="c_admin"
+                    <div className="flex w-full">
+                        <div className="flex flex-col lg:w-full">
+                            {data?.roles?.[0] === "superadmin" && (
+                                <Label htmlFor="c_admin">Administrador </Label>
+                            )}{" "}
+                            {data?.roles?.[0] === "superadmin" && (
+                                <Select
                                     id="c_admin"
+                                    name="c_admin"
                                     value={
                                         consortiumRegister.c_admin &&
                                         typeof consortiumRegister.c_admin ===
@@ -495,17 +580,21 @@ const FormRegisterConsortium = ({ update = false }) => {
                                                 </option>
                                             );
                                         })}
-                                </select>
-                            </div>
+                                </Select>
+                            )}
                         </div>
-                    )}
+                    </div>
+
                     <div className="flex w-full">
                         <div className="flex flex-col lg:w-full">
-                            <Label>Tasa de Interes</Label>
+                            <Label htmlFor="interest_rate">
+                                Tasa de Interes
+                            </Label>
                             <Input
+                                id="interest_rate"
+                                name="interest_rate"
                                 type="number"
                                 placeholder="00.00"
-                                name="interest_rate"
                                 step="0.01"
                                 value={
                                     consortiumRegister.interest_rate == 0

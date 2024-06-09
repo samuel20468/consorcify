@@ -25,7 +25,7 @@ export class FunctionalUnit {
 
   /**
    * El tipo de la Unidad Funcional
-   * @example "Apartmento"
+   * @example "Departamento"
    */
   @Column({ type: 'enum', enum: FUNCTIONAL_UNIT_TYPE })
   type: FUNCTIONAL_UNIT_TYPE;

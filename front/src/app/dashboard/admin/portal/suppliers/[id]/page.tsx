@@ -41,9 +41,24 @@ const Supplier = () => {
     }, [path, token]);
 
     return (
-        <ContainerDashboard className="bg-gray-100 h-screen">
-            <Title>{suppliers?.name}</Title>
-        </ContainerDashboard>
+        <div className="h-screen text-white">
+            <ContainerDashboard>
+                <Title>
+                    Portal{" "}
+                    <span className="text-2xl font-thin">
+                        | Proveedores |{" "}
+                        <span className="text-xl font-thin">
+                            {suppliers?.name}
+                        </span>
+                    </span>
+                </Title>
+                <div className="bg-red-200 flex flex-col justify-center h-[50%] w-[30%] text-center rounded-2xl gap-4">
+                    <h1 className="text-xl">Proveedor: {suppliers?.name}</h1>
+                    <p>Dirección: {suppliers?.address}</p>
+                    <p>Saldo: ${suppliers?.balance}</p>
+                </div>
+            </ContainerDashboard>
+        </div>
     );
 };
 

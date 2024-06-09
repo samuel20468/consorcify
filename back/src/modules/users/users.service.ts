@@ -33,8 +33,4 @@ export class UsersService {
     await this.usersRepository.toggleStatus(id, status);
     return await this.usersRepository.findOne(id);
   }
-
-  remove(id: number) {
-    return `This action removes a #${id} user`;
-  }
 }

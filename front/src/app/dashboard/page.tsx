@@ -12,7 +12,7 @@ const Dashboard = () => {
     useAuth();
 
     return (
-        <div className="h-full">
+        <div className="h-full text-white">
             <Dashboards />
         </div>
     );

@@ -1,6 +1,7 @@
 import ColumnNumericTransformer from 'src/helpers/numeric-transformer.helper';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { SupplierConsortium } from './suppliers-consortiums.entity';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Consortium } from 'src/modules/consortiums/entities/consortium.entity';
+import { Expenditure } from 'src/modules/expenditures/entities/expenditure.entity';
 
 @Entity({
   name: 'suppliers',
@@ -14,17 +15,17 @@ export class Supplier {
   id: string;
 
   /**
-   * El nombre del Proveedor (único)
+   * El nombre del Proveedor
    * @example "Limpiezas SRL"
    */
-  @Column({ length: 50, unique: true })
+  @Column({ length: 50})
   name: string;
 
   /**
-   * El CUIT del Proveedor (único)
+   * El CUIT del Proveedor
    * @example "30567891234"
    */
-  @Column({ type: 'char', length: 11, unique: true })
+  @Column({ type: 'char', length: 11})
   cuit: string;
 
   /**
@@ -49,8 +50,8 @@ export class Supplier {
   address: string;
 
   /**
-   * El saldo del Proveedor
-   * @example "2000.00"
+   * El saldo del Consorcio con el Proveedor
+   * @example "-2000.00"
    */
   @Column({
     type: 'numeric',
@@ -67,9 +68,14 @@ export class Supplier {
   @Column({ type: 'boolean', default: true })
   active: boolean;
 
-  @OneToMany(
-    () => SupplierConsortium,
-    (supplierConsortium) => supplierConsortium.supplier,
-  )
-  suppliers_consortiums: SupplierConsortium[];
+  @ManyToOne(() => Consortium, (consortium) => consortium.suppliers)
+  @JoinColumn({ name: 'consortium_id' })
+  consortium: Consortium;
+
+   /**
+   * Los gastos del consorcio
+   * @example "1000.50"
+   */
+   @OneToMany(() => Expenditure, (expenditure) => expenditure.supplier)
+   expenditures: Expenditure[];
 }

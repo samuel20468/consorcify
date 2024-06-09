@@ -1,5 +1,6 @@
 "use client";
 
+import AddExpenses from "@/components/addExpenses/addExpenses";
 // Estilos y componentes
 import { ContainerDashboard, Title } from "@/components/ui";
 
@@ -12,11 +13,9 @@ const Claim = () => {
     useAuth();
 
     return (
-        <div className="h-screen text-black bg-gray-100">
-            <ContainerDashboard>
-                <Title>Raclamos </Title>
-            </ContainerDashboard>
-        </div>
+        <ContainerDashboard className="h-[90vh] text-black bg-gray-100 w-[90%]">
+            <Title>Expensas</Title>
+        </ContainerDashboard>
     );
 };
 

@@ -70,15 +70,8 @@ export class ExpensesRepository {
         'No se puede liquidar una expensa sin gastos',
       );
 
-    const totalExpendituresInExpense: number = expenseExpenditures.reduce(
-      (acum, exp) => acum + exp.total_amount,
-      0,
-    );
-
-    expenseToSettle.total_amount = totalExpendituresInExpense;
-
     const monthly_expenditure: number =
-      totalExpendituresInExpense / foundConsortium.ufs;
+      expenseToSettle.total_amount / foundConsortium.ufs;
 
     const consortiumInterestRate: number = foundConsortium.interest_rate;
 

@@ -1,6 +1,8 @@
 import {
     IConsortium,
+    IExpense,
     ILoginData,
+    INewExpense,
     IRegisterAdmin,
     ISuppliers,
     IUser,
@@ -207,7 +209,10 @@ export const getConsortiums = async (token: string) => {
                 Authorization: `Bearer ${token}`,
             },
         });
-        return response;
+        if (response.ok) {
+            const data = response.json();
+            return data;
+        }
     } catch (error) {
         console.error(error);
     }
@@ -349,6 +354,29 @@ export const googleLogin = async () => {
             const data = await response.json();
             return data;
         }
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+export const newExpense = async (
+    token: string,
+    expense: INewExpense
+): Promise<IExpense | undefined> => {
+    try {
+        const response = await fetch(`${apiUrl}/expenses`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(expense),
+        });
+        if (response.ok) {
+            const data = response.json();
+            return data;
+        }
+        return undefined;
     } catch (error) {
         console.error(error);
     }

@@ -471,9 +471,9 @@ export const itemsNavbarAdmin = [
     },
     {
         id: 5,
-        title: "Reclamos",
+        title: "Expensas",
         icon: Box,
-        link: "/dashboard/admin/claim",
+        link: "/dashboard/admin/expenses",
     },
     {
         id: 6,

@@ -7,13 +7,14 @@ import { GrUserWorker } from "react-icons/gr";
 import { IoDocumentAttachOutline } from "react-icons/io5";
 import { FaRegNewspaper } from "react-icons/fa";
 import { GiVote } from "react-icons/gi";
+import { HiOutlineInboxArrowDown } from "react-icons/hi2";
 
 // Hooks
 import Link from "next/link";
 
 const SectionPortal = () => {
     return (
-        <div className="flex flex-col items-center w-[90%] gap-4">
+        <div className="flex flex-col items-center w-[90%] gap-4 my-10">
             <Button className="flex justify-center items-center rounded-[40px] w-2/3 py-10 gap-2">
                 <BsFillHousesFill size={35} />
                 Amenities
@@ -35,6 +36,10 @@ const SectionPortal = () => {
             <Button className="flex justify-center items-center rounded-[40px] w-2/3 py-10 gap-2">
                 <GiVote size={35} />
                 Votaciones
+            </Button>
+            <Button className="flex justify-center items-center rounded-[40px] w-2/3 py-10 gap-2">
+                <HiOutlineInboxArrowDown size={35} />
+                Reclamos
             </Button>
         </div>
     );

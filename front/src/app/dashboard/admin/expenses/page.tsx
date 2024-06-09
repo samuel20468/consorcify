@@ -8,16 +8,16 @@ import useAuth from "@/helpers/useAuth";
 
 // --------------------
 
-const Claim = () => {
+const Expenses = () => {
     useAuth();
 
     return (
         <div className="h-screen text-white">
             <ContainerDashboard>
-                <Title>Raclamos </Title>
+                <Title>Expensas</Title>
             </ContainerDashboard>
         </div>
     );
 };
 
-export default Claim;
+export default Expenses;

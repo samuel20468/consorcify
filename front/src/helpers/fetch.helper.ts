@@ -304,14 +304,21 @@ export const supplierFetch = async (
 };
 
 // Obtener proveedores
-export const getSuppliers = async (token: string) => {
+export const getSuppliers = async (
+    token: string,
+    page: number = 1,
+    limit: number = 20
+) => {
     try {
-        const response = await fetch("http://localhost:3001/suppliers", {
-            method: "GET",
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
+        const response = await fetch(
+            `${apiUrl}/suppliers?page=${page}&limit=${limit}`,
+            {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
         if (response.ok) {
             const data = await response.json();
             return data;

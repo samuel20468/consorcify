@@ -49,7 +49,6 @@ const FormSupplier = () => {
                         : Number(value)
                     : value,
         });
-        console.log(value);
     };
 
     const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -110,7 +109,7 @@ const FormSupplier = () => {
     }, [token, pathname]);
 
     return (
-        <div className="w-[80%] flex flex-col justify-center bg-gray-50 p-5 rounded-[50px] text-black">
+        <div className="w-[80%] flex flex-col justify-center bg-[#d3d3d3] p-5 rounded-[50px] text-black">
             <h1 className="mb-4 text-3xl text-center">
                 Este es el formulario para agregar un nuevo proveedor
             </h1>

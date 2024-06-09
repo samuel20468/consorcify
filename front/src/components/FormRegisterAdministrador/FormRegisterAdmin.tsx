@@ -269,7 +269,10 @@ const FormRegisterAdmin = ({ update = false }) => {
                 )}
 
                 <div className="mt-4">
-                    <Button type="submit">
+                    <Button
+                        type="submit"
+                        className="w-full py-2 rounded-[40px]"
+                    >
                         {update
                             ? "Modificar Administrador"
                             : "Registrar Administrador"}

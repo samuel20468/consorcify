@@ -220,13 +220,17 @@ export const getConsortiumById = async (id: string, token: string) => {
             method: "GET",
             cache: "no-cache",
             headers: {
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
         });
-
-        const data = await response.json();
-        return data;
-    } catch (error) {}
+        if (response.ok) {
+            const data = await response.json();
+            return data;
+        }
+    } catch (error) {
+        console.error(error);
+    }
 };
 
 // Modificar consorcio
@@ -331,7 +335,7 @@ export const getSuppliers = async (
 // Obtener proveedor por ID
 export const getSuppliersById = async (id: string, token: string) => {
     try {
-        const response = await fetch(`http://localhost:3001/suppliers/${id}`, {
+        const response = await fetch(`${apiUrl}/suppliers/${id}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",

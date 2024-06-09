@@ -13,10 +13,15 @@ const AddConsortium = () => {
     useAuth();
 
     return (
-        <div className="flex flex-col h-auto text-black bg-[#e5e7eb]">
+        <div className="flex flex-col h-screen text-white">
             <ContainerDashboard>
-                <Title>Crear administración</Title>
-                <div className="flex items-center justify-center w-1/2 my-10 rounded-lg h-content bg-slate-200">
+                <Title>
+                    Administración{" "}
+                    <span className="text-2xl font-thin">
+                        | Crear administración
+                    </span>
+                </Title>
+                <div className="flex items-center justify-center w-1/2 my-10 rounded-lg h-content bg-[#d3d3d3]">
                     <FormRegisterAdmin />
                 </div>
             </ContainerDashboard>

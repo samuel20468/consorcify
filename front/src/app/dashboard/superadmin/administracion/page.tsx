@@ -2,7 +2,8 @@
 
 // Estilos y componentes
 import { Button, ContainerDashboard, Title } from "@/components/ui";
-import { AddCross, AllAdmins } from "@/helpers/icons.helper";
+import { FaUsers } from "react-icons/fa6";
+import { IoMdPersonAdd } from "react-icons/io";
 
 // Hooks
 import useAuth from "@/helpers/useAuth";
@@ -14,27 +15,29 @@ const ConsorciosCrud = () => {
     useAuth();
 
     return (
-        <div className="flex w-full h-screen gap-3 bg-[#e5e7eb] text-black">
-            <ContainerDashboard className="w-full h-full bg-[#e5e7eb]">
+        <div className="flex items-center justify-center w-full h-screen gap-3 text-white">
+            <ContainerDashboard className="w-full h-full">
                 <Title>Administración</Title>
                 <div className="flex items-center justify-between w-1/2 gap-4 h-3/4">
-                    <div className="flex flex-col items-center  w-1/2 py-2 border rounded-[50px] h-3/4 bg-[#dadada] shadow-2xl">
-                        <AddCross className="flex items-center justify-center w-full h-full" />
-                        <Link
-                            href="/addAdministrator"
-                            className="w-[80%] px-2 "
-                        >
-                            <Button>Nuevo Administrador</Button>
-                        </Link>
+                    <div className="w-full max-w-sm overflow-hidden bg-[#d3d3d3] rounded-[40px] shadow-[0_3px_10px_rgb(0,0,0,0.2)] py-6">
+                        <div className="flex flex-col items-center p-4 space-y-2">
+                            <IoMdPersonAdd size={200} color="black" />
+                            <Link href="/addAdministrator">
+                                <Button className="py-2 mt-10 font-medium duration-500 rounded-[40px] p-4">
+                                    Crear administrador
+                                </Button>
+                            </Link>
+                        </div>
                     </div>
-                    <div className="flex flex-col items-center w-1/2 py-2 border rounded-[50px] h-3/4 bg-[#dadada] shadow-2xl">
-                        <AllAdmins className="flex items-center justify-center w-full h-full" />
-                        <Link
-                            href="/dashboard/superadmin/administracion/All"
-                            className="w-[80%] px-2"
-                        >
-                            <Button>Ver Administradores</Button>
-                        </Link>
+                    <div className="w-full max-w-sm overflow-hidden bg-[#d3d3d3] rounded-[40px] shadow-[0_3px_10px_rgb(0,0,0,0.2)] py-6">
+                        <div className="flex flex-col items-center p-4 space-y-2">
+                            <FaUsers size={200} color="black" />
+                            <Link href="/dashboard/superadmin/administracion/All">
+                                <Button className="py-2 mt-10 font-medium duration-500 rounded-[40px] p-4">
+                                    Ver Administradores
+                                </Button>
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </ContainerDashboard>

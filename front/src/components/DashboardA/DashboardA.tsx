@@ -27,8 +27,6 @@ const DashboardA = () => {
         const fecthData = async () => {
             try {
                 const response = await getAdminById(data.id, token);
-                console.log(response);
-
                 if (response) {
                     const data = await response.json();
                     setAdmin(data);

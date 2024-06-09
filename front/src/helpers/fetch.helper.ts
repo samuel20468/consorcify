@@ -1,6 +1,8 @@
 import {
     IConsortium,
+    IExpense,
     ILoginData,
+    INewExpense,
     IRegisterAdmin,
     ISuppliers,
     IUser,
@@ -207,7 +209,10 @@ export const getConsortiums = async (token: string) => {
                 Authorization: `Bearer ${token}`,
             },
         });
-        return response;
+        if (response.ok) {
+            const data = response.json();
+            return data;
+        }
     } catch (error) {
         console.error(error);
     }
@@ -220,13 +225,17 @@ export const getConsortiumById = async (id: string, token: string) => {
             method: 'GET',
             cache: 'no-cache',
             headers: {
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
         });
-
-        const data = await response.json();
-        return data;
-    } catch (error) {}
+        if (response.ok) {
+            const data = await response.json();
+            return data;
+        }
+    } catch (error) {
+        console.error(error);
+    }
 };
 
 // Modificar consorcio
@@ -304,14 +313,21 @@ export const supplierFetch = async (
 };
 
 // Obtener proveedores
-export const getSuppliers = async (token: string) => {
+export const getSuppliers = async (
+    token: string,
+    page: number = 1,
+    limit: number = 20
+) => {
     try {
-        const response = await fetch('http://localhost:3001/suppliers', {
-            method: 'GET',
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
+        const response = await fetch(
+            `${apiUrl}/suppliers?page=${page}&limit=${limit}`,
+            {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
         if (response.ok) {
             const data = await response.json();
             return data;
@@ -324,8 +340,8 @@ export const getSuppliers = async (token: string) => {
 // Obtener proveedor por ID
 export const getSuppliersById = async (id: string, token: string) => {
     try {
-        const response = await fetch(`http://localhost:3001/suppliers/${id}`, {
-            method: 'GET',
+        const response = await fetch(`${apiUrl}/suppliers/${id}`, {
+            method: "GET",
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
@@ -335,6 +351,29 @@ export const getSuppliersById = async (id: string, token: string) => {
             const data = await response.json();
             return data;
         }
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+export const newExpense = async (
+    token: string,
+    expense: INewExpense
+): Promise<IExpense | undefined> => {
+    try {
+        const response = await fetch(`${apiUrl}/expenses`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(expense),
+        });
+        if (response.ok) {
+            const data = response.json();
+            return data;
+        }
+        return undefined;
     } catch (error) {
         console.error(error);
     }

@@ -23,3 +23,20 @@ export const validateInterestRate = (value: string): string | null => {
             "El valor debe ser un número con hasta dos decimales"); // El valor no es válido
     }
 };
+
+export const getCurrentDate = () => {
+    const now = new Date();
+    const year = now.getFullYear();
+    let month: number | string = now.getMonth() + 1;
+    let day: number | string = now.getDate();
+
+    // Ajuste para asegurar dos dígitos en el mes y el día
+    if (month < 10) {
+        month = "0" + month;
+    }
+    if (day < 10) {
+        day = "0" + day;
+    }
+
+    return `${year}-${month}-${day}`;
+};

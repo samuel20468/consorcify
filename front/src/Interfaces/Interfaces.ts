@@ -149,3 +149,45 @@ export interface ISuppliersError {
     balance?: number;
     active?: boolean;
 }
+
+
+export interface IExpenditures {
+    id?: string;
+    expense_id?: string;
+    supplier_id?: string;
+    date: Date;
+    total_amount: number;
+    status?: string;
+    category: string;
+    invoice_number: string;
+    description: string;
+    active?: boolean;
+}
+
+export interface IExpendituresErrors {
+    id?: string;
+    expense_id?: string;
+    supplier_id?: string;
+    date?: Date;
+    total_amount?: number;
+    status?: string;
+    category?: string;
+    invoice_number?: string;
+    description?: string;
+    active?: boolean;
+
+export interface INewExpense {
+    issue_date: string;
+    expiration_date: string;
+    consortium_id: string;
+}
+
+export interface IExpense {
+    id: string;
+    issue_date: string;
+    expiration_date: string;
+    total_amount: number;
+    status: string;
+    active: boolean;
+    consortium: IConsortium;
+

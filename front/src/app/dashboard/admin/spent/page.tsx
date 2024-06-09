@@ -26,63 +26,55 @@ const Spent = () => {
                         <Select
                             name=""
                             id=""
+                            defaultValue=""
                             // value={adminRegister.sat}
                             // onChange={handleSelect}
                         >
-                            <option value="" disabled selected>
-                                Seleccionar consorcio
+                            <option value="" disabled>
+                                Selecciona el consorcio
                             </option>
-                            <option value="">Consorcio 1</option>
-                            <option value="">Consorcio 2</option>
-                            <option value="">Consorcio 3</option>
-                            <option value="">Consorcio 4</option>
                         </Select>
 
                         <Select
                             name=""
                             id=""
+                            defaultValue=""
                             // value={adminRegister.sat}
                             // onChange={handleSelect}
                         >
-                            <option value="" disabled selected>
+                            <option value="" disabled>
                                 Seleccionar proveedor
                             </option>
-                            <option value="">Proveedor 1</option>
-                            <option value="">Proveedor 2</option>
-                            <option value="">Proveedor 3</option>
-                            <option value="">Proveedor 4</option>
-                            <option value="">Proveedor 5</option>
-                            <option value="">Proveedor 6</option>
-                            <option value="">Proveedor 7</option>
                         </Select>
 
                         <Select
                             name=""
                             id=""
+                            defaultValue="S"
                             // value={adminRegister.sat}
                             // onChange={handleSelect}
                         >
-                            <option value="" disabled selected>
+                            <option value="S" disabled>
                                 Seleccionar el mes
                             </option>
-                            <option value="">Enero 2024</option>
-                            <option value="">Febrero 2024</option>
-                            <option value="">Marzo 2024</option>
-                            <option value="">Abril 2024</option>
-                            <option value="">Mayo 2024</option>
-                            <option value="">Junio 2024</option>
+                            <option value="Enero 2024">Enero 2024</option>
+                            <option value="Febrero 2024">Febrero 2024</option>
+                            <option value="Marzo 2024">Marzo 2024</option>
+                            <option value="Abril 2024">Abril 2024</option>
+                            <option value="Mayo 2024">Mayo 2024</option>
+                            <option value="Junio 2024">Junio 2024</option>
                         </Select>
                     </div>
-                    <div className="flex items-center ">
+                    <div className="flex items-end">
                         <Button
                             onClick={handleOnClick}
-                            className="text-white bg-gray-900 w-[40px] h-[40px] rounded-full text-4xl"
+                            className="py-2 px-4 rounded-[40px]"
                         >
-                            +
+                            Agregar gasto
                         </Button>
                     </div>
                 </div>
-                <div className="w-[90%] border-t border-black flex justify-between pt-2 my-3">
+                <div className="w-[90%] border-t border-b border-white flex justify-between p-2 my-5">
                     <h1>Período</h1>
                     <h1>Consorcio</h1>
                     <h1>Proveedor</h1>
@@ -90,23 +82,6 @@ const Spent = () => {
                     <h1>Comprobante</h1>
                     <h1>Estado</h1>
                     <h1>Eliminar</h1>
-                </div>
-                <div className="flex items-center w-[95%] flex-col gap-2">
-                    <div className="flex items-center justify-center w-full h-12 bg-gray-400 rounded-3xl">
-                        Gasto 1
-                    </div>
-                    <div className="flex items-center justify-center w-full h-12 bg-gray-400 rounded-3xl">
-                        Gasto 2
-                    </div>
-                    <div className="flex items-center justify-center w-full h-12 bg-gray-400 rounded-3xl">
-                        Gasto 3
-                    </div>
-                    <div className="flex items-center justify-center w-full h-12 bg-gray-400 rounded-3xl">
-                        Gasto 4
-                    </div>
-                    <div className="flex items-center justify-center w-full h-12 bg-gray-400 rounded-3xl">
-                        Gasto 5
-                    </div>
                 </div>
             </ContainerDashboard>
         </div>

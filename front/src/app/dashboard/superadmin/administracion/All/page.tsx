@@ -37,13 +37,16 @@ const page = () => {
     }, [token]);
 
     return (
-        <div className="flex w-full h-screen gap-3 bg-[#e5e7eb] text-black">
-            <ContainerDashboard className="w-full flex flex-col bg-[#e5e7eb] p-5">
-                <div className="flex items-start w-full">
-                    <Title>Ver todas las administraciones</Title>
-                </div>
+        <div className="h-screen text-white">
+            <ContainerDashboard>
+                <Title>
+                    Administración{" "}
+                    <span className="text-2xl font-thin">
+                        | Administraciones
+                    </span>
+                </Title>
                 <div className="flex flex-col items-center justify-center w-full gap-4">
-                    {admins?.length != 0 ? (
+                    {admins?.length > 0 ? (
                         admins?.map((elemento) => {
                             return (
                                 <Link

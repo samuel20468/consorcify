@@ -29,7 +29,6 @@ const Supplies = () => {
         const fetchData = async () => {
             try {
                 const response = await getSuppliers(token);
-                console.log(response);
                 if (response) {
                     setSuppliers(response);
                 }

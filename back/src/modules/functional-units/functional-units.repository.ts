@@ -74,13 +74,11 @@ export class FunctionalUnitsRepository {
         relations: ['functional_units'],
       });
 
-      consortium.functional_units.push(newFunctionalUnit);
-
       if (consortium.ufs < consortium.functional_units.length) {
         consortium.ufs += 1;
       }
       await this.consortiumRepository.save(consortium);
-      return functionalUnit;
+      return newFunctionalUnit;
     } catch (error) {
       throw new Error(`Error creating functional unit: ${error.message}`);
     }

@@ -12,11 +12,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { requiresAuth } from 'express-openid-connect';
 import { CAdminsRepository } from '../c-admin/c-admin.repository';
 import { UsersRepository } from '../users/users.repository';
+import { GoogleStrategy } from 'src/strategies/google.strategy';
 
 @Module({
   imports: [TypeOrmModule.forFeature([CAdmin, User])],
   controllers: [AuthController],
-  providers: [AuthService, CAdminsRepository, UsersRepository],
+  providers: [AuthService, CAdminsRepository, UsersRepository, GoogleStrategy],
 })
 export class AuthModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

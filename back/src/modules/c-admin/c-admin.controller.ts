@@ -14,14 +14,14 @@ import { CreateCAdminDto } from './dto/create-c-admin.dto';
 import { CAdmin } from './entities/c-admin.entity';
 import { ExcludePasswordInterceptor } from 'src/interceptors/exclude-password.interceptor';
 import { ExcludeActiveInterceptor } from 'src/interceptors/exclude-active.interceptor';
-import { AuthGuard } from 'src/guards/auth.guard';
+import { AuthCustomGuard } from 'src/guards/auth.guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { UpdateCAdminDto } from './dto/update-c-admin.dto';
 
 @ApiTags('Consortium Admin')
 @Controller('c-admins')
 @ApiBearerAuth()
-@UseGuards(AuthGuard)
+@UseGuards(AuthCustomGuard)
 @UseInterceptors(ExcludePasswordInterceptor)
 export class CAdminsController {
   constructor(private readonly cAdminsService: CAdminsService) {}

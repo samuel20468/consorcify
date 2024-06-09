@@ -114,7 +114,7 @@ export class ExpensesRepository {
 
     const finalExpense: Expense = await this.expenseRepository.findOne({
       where: { id: expenseToSettle.id, active: true },
-      relations: { expenditures: true, functional_units_expenses: true },
+      relations: { expenditures: { supplier: true }, functional_units_expenses: { functional_unit: true } },
     });
 
     return finalExpense;

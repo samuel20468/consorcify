@@ -45,19 +45,34 @@ const page = () => {
 
     const handleDelete = async () => {
         const response = await deleteConsortiumById(params.id, token);
-        console.log(response);
+
         if (response?.ok) {
             Swal.fire({
-                title: "Consorcio eliminado correctamente",
+                icon: "warning",
+                title: "Estás seguro?",
+                text: `Te recuerdo que si borras el consorcio ${consorcio?.name} no podrás volver atrás.`,
+                showCancelButton: true,
+                confirmButtonColor: "#008f39",
+                cancelButtonColor: "#8b0000",
+                confirmButtonText: "Si, borrarlo!",
+                cancelButtonText: "No, cancelar!",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: "Consorcio borrado!",
+                        text: `El consorcio ${consorcio?.name} fue borrado correctamente`,
+                        icon: "success",
+                    });
+                    router.push("/dashboard/superadmin/consorcios/All");
+                }
             });
-            router.push("/dashboard/superadmin/consorcios/All");
         }
     };
 
     return (
         <ContainerDashboard className="flex items-center justify-center w-full h-[93vh] bg-[#e5e7eb]">
             <div className="flex flex-col items-center w-1/2 h-full p-8 m-5  rounded-[50px] justify-evenly border border-slate-100 bg-[#dadada] drop-shadow-2xl shadow-black">
-                <div className="w-full flex justify-end">
+                <div className="flex justify-end w-full">
                     <Link
                         href="/dashboard/superadmin/consorcios/All"
                         className=""

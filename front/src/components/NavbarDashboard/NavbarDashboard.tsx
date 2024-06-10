@@ -1,13 +1,63 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
+// Estilos y componentes
 import { Button, ContainerHeaderDashboard } from "../ui";
-import { Avatar } from "@/helpers/icons.helper";
+import { CiUser } from "react-icons/ci";
+
+// Interfaces
+import { IAdmin, IUser } from "@/Interfaces/Interfaces";
+
+// Endpoints
+import { getAdminById, getUserById } from "@/helpers/fetch.helper";
+
+// Hooks
+import { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
+import useSesion from "@/helpers/useSesion";
+
+// ----------------------------
 
 const NavbarDashboard = () => {
     const router = useRouter();
     const path = usePathname();
+    const { token, data } = useSesion();
+    const [user, setUser] = useState<IUser>();
+    const [admin, setAdmin] = useState<IAdmin>();
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await getUserById(data.id, token);
+                if (response) {
+                    const data = await response.json();
+                    setUser(data);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        if (token) {
+            fetchData();
+        }
+    }, [token]);
+
+    useEffect(() => {
+        const fecthData = async () => {
+            try {
+                const response = await getAdminById(data.id, token);
+                if (response) {
+                    const data = await response.json();
+                    setAdmin(data);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        if (token) {
+            fecthData();
+        }
+    }, [token]);
 
     const handleLogout = () => {
         localStorage.removeItem("userData");
@@ -16,10 +66,6 @@ const NavbarDashboard = () => {
 
     const handleReturn = () => {
         router.push("/dashboard");
-    };
-
-    const handleBack = () => {
-        router.back();
     };
 
     return (
@@ -42,12 +88,20 @@ const NavbarDashboard = () => {
             <div className="flex items-center justify-end w-1/3">
                 <div className="flex gap-2">
                     <Link
-                        className="w-40 h-full rounded-[40px]"
+                        className=" w-48 h-full rounded-[40px]"
                         href="/dashboard/profile"
                     >
                         <Button className="flex items-center justify-evenly p-1 w-full py-2 rounded-[40px]">
-                            <p>Nombre Usuario</p>
-                            <Avatar />
+                            {data.roles?.[0] === "user" ||
+                            data.roles?.[0] === "superadmin" ? (
+                                <p>
+                                    {user?.first_name} {user?.last_name}
+                                </p>
+                            ) : (
+                                <p>{admin?.name}</p>
+                            )}
+
+                            <CiUser size={25} />
                         </Button>
                     </Link>
                     <Button

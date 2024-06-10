@@ -85,8 +85,12 @@ const FormRegisterAdmin = ({ update = false }) => {
             !adminRegister.rpa ||
             !adminRegister.cuit
         ) {
-            alert("faltan datos en el formulario");
-            return;
+            Swal.fire({
+                title: "Error al crear un administrador",
+                text: "Asegúrate de completar todos los campos del formulario.",
+                icon: "error",
+                confirmButtonColor: "#0b0c0d",
+            });
         }
         try {
             if (update == true) {
@@ -97,24 +101,41 @@ const FormRegisterAdmin = ({ update = false }) => {
                 );
                 if (response) {
                     Swal.fire({
-                        title: "Actualizacion exitosa",
+                        title: "Excelente",
+                        text: `La administración ${adminRegister.name} se modificó correctamente`,
+                        icon: "success",
+                        confirmButtonColor: "#0b0c0d",
+                    }).then((res) => {
+                        if (res.isConfirmed) {
+                            router.push(
+                                `/dashboard/superadmin/administracion/All/${params.id}`
+                            );
+                        }
                     });
-                    router.push(
-                        `/dashboard/superadmin/administracion/All/${params.id}`
-                    );
                 }
             } else {
                 const response = await adminFetch(adminRegister, token);
                 if (response.ok) {
-                    alert("Registro de la administración exitosa.");
-                    const data = await response.json();
-                    router.push(
-                        `/dashboard/superadmin/administracion/All/${data.id}`
-                    );
+                    Swal.fire({
+                        title: "Excelente",
+                        text: `La administración ${adminRegister.name} se creó correctamente`,
+                        icon: "success",
+                        confirmButtonColor: "#0b0c0d",
+                    }).then(async (res) => {
+                        const data = await response.json();
+                        router.push(
+                            `/dashboard/superadmin/administracion/All/${data.id}`
+                        );
+                    });
                 }
             }
         } catch (error: any) {
-            console.error(error);
+            Swal.fire({
+                title: "Error de información",
+                text: "Los datos que nos proporcionaste son inválidos.",
+                icon: "error",
+                confirmButtonColor: "#0b0c0d",
+            });
         }
     };
 

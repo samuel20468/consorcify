@@ -1,7 +1,6 @@
 import { AccountBalance, Home } from "@/helpers/icons.helper";
 import { Button, ContainerDashboard } from "../ui";
 import Link from "next/link";
-import Footer from "../Footer/Footer";
 
 const DashboardU = () => {
     return (

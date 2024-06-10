@@ -17,7 +17,6 @@ import {
 
 // Iterfaces
 import {
-    IAdmin,
     IConsortium,
     IConsortiumError,
     IRegisterAdmin,
@@ -30,6 +29,7 @@ import { useParams, useRouter } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
 import path from "path";
+import Swal from "sweetalert2";
 
 // -----------------
 
@@ -193,8 +193,12 @@ const FormRegisterConsortium = ({ update = false }) => {
             !consortiumRegister.ufs ||
             !consortiumRegister.zip_code
         ) {
-            alert("faltan datos en el formulario");
-            return;
+            Swal.fire({
+                title: "Error al crear un consorcio",
+                text: "Asegúrate de completar todos los campos del formulario.",
+                icon: "error",
+                confirmButtonColor: "#0b0c0d",
+            });
         }
 
         const consortiumData = {
@@ -213,35 +217,60 @@ const FormRegisterConsortium = ({ update = false }) => {
                     consortiumData
                 );
                 if (response?.ok) {
-                    alert("Consorcio moficado correctamente");
-                    if (data?.roles?.[0] == "superadmin") {
-                        router.push(
-                            `/dashboard/superadmin/consorcios/All/${params.id}`
-                        );
-                    }
+                    Swal.fire({
+                        title: "Excelente",
+                        text: `El consorcio ${consortiumData.name} se modificó correctamente`,
+                        icon: "success",
+                        confirmButtonColor: "#0b0c0d",
+                    }).then((res) => {
+                        if (res.isConfirmed) {
+                            if (data?.roles?.[0] == "superadmin") {
+                                router.push(
+                                    `/dashboard/superadmin/consorcios/All/${params.id}`
+                                );
+                            }
+                        }
+                    });
                 }
             } catch (error) {
-                console.error(error);
+                Swal.fire({
+                    title: "Error de información",
+                    text: "Los datos que nos proporcionaste son inválidos.",
+                    icon: "error",
+                    confirmButtonColor: "#0b0c0d",
+                });
             }
         } else {
             try {
                 const response = await consortiumFetch(consortiumData, token);
                 if (response?.ok) {
-                    alert("Consorcio Creado correctamente");
-
-                    const dato = await response.json();
-                    if (data?.roles?.[0] == "superadmin") {
-                        router.push(
-                            `/dashboard/superadmin/consorcios/All/${dato.id}`
-                        );
-                    } else {
-                        router.push(
-                            `/dashboard/admin/consortiums/All/${dato.id}`
-                        );
-                    }
+                    Swal.fire({
+                        title: "Excelente",
+                        text: `El consorcio ${consortiumData.name} se creó correctamente`,
+                        icon: "success",
+                        confirmButtonColor: "#0b0c0d",
+                    }).then(async (res) => {
+                        if (res.isConfirmed) {
+                            const dato = await response.json();
+                            if (data?.roles?.[0] == "superadmin") {
+                                router.push(
+                                    `/dashboard/superadmin/consorcios/All/${dato.id}`
+                                );
+                            } else {
+                                router.push(
+                                    `/dashboard/admin/consortiums/All/${dato.id}`
+                                );
+                            }
+                        }
+                    });
                 }
             } catch (error) {
-                console.error(error);
+                Swal.fire({
+                    title: "Error de información",
+                    text: "Los datos que nos proporcionaste son inválidos.",
+                    icon: "error",
+                    confirmButtonColor: "#0b0c0d",
+                });
             }
         }
     };

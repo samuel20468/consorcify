@@ -47,11 +47,26 @@ const page = () => {
     const handleDelete = async () => {
         try {
             const response = await deleteAdmin(params.id, token);
-            if (response) {
+            if (response?.ok) {
                 Swal.fire({
-                    title: "Administrador eliminado correctamente",
+                    icon: "warning",
+                    title: "Estás seguro?",
+                    text: `Te recuerdo que si borras la administración ${admin?.name} no podrás volver atrás.`,
+                    showCancelButton: true,
+                    confirmButtonColor: "#008f39",
+                    cancelButtonColor: "#8b0000",
+                    confirmButtonText: "Si, borrarlo!",
+                    cancelButtonText: "No, cancelar!",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            title: "Administración borrada!",
+                            text: `La asministración ${admin?.name} fue borrado correctamente`,
+                            icon: "success",
+                        });
+                        router.push("/dashboard/superadmin/administracion/All");
+                    }
                 });
-                router.back();
             }
         } catch (error) {
             console.error(error);
@@ -59,8 +74,8 @@ const page = () => {
     };
 
     return (
-        <div className="flex w-full h-screen gap-3 bg-[#e5e7eb] text-black">
-            <ContainerDashboard className="w-full flex flex-col bg-[#e5e7eb] p-5">
+        <div className="flex w-full h-screen gap-3 text-white">
+            <ContainerDashboard className="flex flex-col w-full p-5">
                 <Title>
                     Administración{" "}
                     <span className="text-2xl font-thin">
@@ -71,6 +86,7 @@ const page = () => {
                     </span>
                 </Title>
                 <div className="flex flex-col items-center justify-around w-3/4 p-10 text-black border rounded-[50px] h-3/4 bg-[#dadada]">
+                    <h1 className="text-4xl">{admin?.name}</h1>
                     <div className="flex flex-col w-3/4 gap-2">
                         <p className="px-5 py-4  rounded-[50px] bg-[#e5e7eb] shadow text-fondo border-fondo">
                             CUIT: {admin?.cuit}

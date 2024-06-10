@@ -185,10 +185,13 @@ export interface INewExpense {
 
 export interface IExpense {
     id: string;
+    name: string;
     issue_date: string;
     expiration_date: string;
     total_amount: number;
     status: string;
     active: boolean;
     consortium: IConsortium;
+    expenditures: IExpenditures[];
+    functional_units_expenses: [];
 }

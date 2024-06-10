@@ -431,6 +431,23 @@ export const getExpenses = async (
     }
 };
 
+export const getExpensesById = async (token: string, id: string) => {
+    try {
+        const response = await fetch(`${apiUrl}/expenses/${id}`, {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        if (response.ok) {
+            const data = response.json();
+            return data;
+        }
+    } catch (error) {
+        console.error(error);
+    }
+};
+
 // Crear gasto
 export const expenditureFetch = async (
     token: string,
@@ -446,6 +463,60 @@ export const expenditureFetch = async (
                 Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify(expenditure),
+        });
+        if (response.ok) {
+            const data = response.json();
+            return data;
+        }
+        if (!response.ok) {
+            return response.json().then((errorInfo) => {
+                throw new Error(
+                    `Error ${response.status}: ${
+                        errorInfo.message || response.statusText
+                    }`
+                );
+            });
+        }
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+export const settleExpense = async (token: string, id: string) => {
+    try {
+        const response = await fetch(`${apiUrl}/expenses/${id}/settle`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        if (response.ok) {
+            const data = response.json();
+            return data;
+        }
+        if (!response.ok) {
+            return response.json().then((errorInfo) => {
+                throw new Error(
+                    `Error ${response.status}: ${
+                        errorInfo.message || response.statusText
+                    }`
+                );
+            });
+        }
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+export const closeExpense = async (token: string, id: string) => {
+    try {
+        const response = await fetch(`${apiUrl}/expenses/${id}/close-expense`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
         });
         if (response.ok) {
             const data = response.json();

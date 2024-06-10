@@ -18,7 +18,7 @@ import { User } from './entities/user.entity';
 import { ExcludePasswordInterceptor } from 'src/interceptors/exclude-password.interceptor';
 import { ExcludeActiveInterceptor } from 'src/interceptors/exclude-active.interceptor';
 import { ExcludeSuperAdminInterceptor } from 'src/interceptors/exclude-super-admin.interceptor';
-import { AuthGuard } from 'src/guards/auth.guard';
+import { AuthCustomGuard } from 'src/guards/auth.guard';
 import { Roles } from 'src/decorators/role.decorator';
 import { ROLE } from 'src/utils/constants';
 import { RolesGuard } from 'src/guards/roles.guard';
@@ -28,7 +28,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 @ApiTags('User')
 @Controller('users')
 @ApiBearerAuth()
-@UseGuards(AuthGuard)
+@UseGuards(AuthCustomGuard)
 @UseInterceptors(ExcludePasswordInterceptor)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}

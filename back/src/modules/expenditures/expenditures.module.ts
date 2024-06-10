@@ -14,6 +14,7 @@ import { FunctionalUnitExpense } from '../functional-units-expenses/entities/fun
 import { FunctionalUnitsExpensesRepository } from '../functional-units-expenses/functional-units-expenses.repository';
 import { FunctionalUnitsRepository } from '../functional-units/functional-units.repository';
 import { FunctionalUnit } from '../functional-units/entities/functional-unit.entity';
+import { User } from '../users/entities/user.entity';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { FunctionalUnit } from '../functional-units/entities/functional-unit.ent
       CAdmin,
       FunctionalUnitExpense,
       FunctionalUnit,
+      User
     ]),
   ],
   controllers: [ExpendituresController],

@@ -13,11 +13,12 @@ export class UsersRepository {
     const users = this.usersRepository.find({
       skip: (page - 1) * limit,
       take: limit,
+      relations: { functional_units: true }
     })
     return users;
   }
   async findOne(id: string): Promise<User | undefined> {
-    return await this.usersRepository.findOne({ where: { id } });
+    return await this.usersRepository.findOne({ where: { id } , relations: { functional_units: true } });
   }
 
   async findOneByEmail(email: string): Promise<User | undefined> {

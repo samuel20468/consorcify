@@ -27,7 +27,8 @@ export class Expense {
    * Nombre descriptivo de la expensa
    * @example "Expensa de Junio"
    */
-  @Column({ length: 50, default: 'Expensa de Junio' })
+
+  @Column({ length: 50 })
   name: string;
 
   /**

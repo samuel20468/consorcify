@@ -15,12 +15,12 @@ import { ExpendituresService } from './expenditures.service';
 import { CreateExpenditureDto } from './dto/create-expenditure.dto';
 import { UpdateExpenditureDto } from './dto/update-expenditure.dto';
 import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
-import { AuthGuard } from 'src/guards/auth.guard';
+import { AuthCustomGuard } from 'src/guards/auth.guard';
 import { Expenditure } from './entities/expenditure.entity';
 
 @ApiTags('Expenditures')
 @ApiBearerAuth()
-@UseGuards(AuthGuard)
+@UseGuards(AuthCustomGuard)
 @Controller('expenditures')
 export class ExpendituresController {
   constructor(private readonly expendituresService: ExpendituresService) {}

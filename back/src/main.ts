@@ -3,15 +3,11 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import * as morgan from 'morgan';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { RedirectMiddleware } from './middlewares/redirect.middleware';
-import { auth } from 'express-openid-connect';
-import { config as auth0Config } from './config/auth0';
 
 const PORT = process.env.PORT || 3001;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.use(auth(auth0Config));
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Consorcify Documentation')
@@ -24,7 +20,6 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
-  app.use(new RedirectMiddleware().use);
   app.use(morgan('dev'));
   app.enableCors();
   app.useGlobalPipes(

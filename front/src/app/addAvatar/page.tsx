@@ -1,15 +1,28 @@
-"use client";
-import { Button, ContainerDashboard } from "@/components/ui";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import React, { useState } from "react";
-import Swal from "sweetalert2";
+'use client';
+import { Button, ContainerDashboard } from '@/components/ui';
+import { apiUrl } from '@/helpers/fetch.helper';
+import useSesion from '@/helpers/useSesion';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
 
 const addAvatar: React.FC = () => {
-    const [image, setImage] = useState<string | null>(null);
+    const [image, setImage] = useState<File | null>(null);
+    const [userData, setUserData] = useState<any>(null);
     const router = useRouter();
-    console.log(image);
+    const { token } = useSesion();
+    const id = userData?.user.id;
+    const rol = userData?.user.roles[0];
 
+    useEffect(() => {
+        const storedUserData = localStorage.getItem('userData');
+        if (storedUserData) {
+            setUserData(JSON.parse(storedUserData));
+            console.log(storedUserData);
+        }
+    }, []);
     const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
@@ -29,7 +42,7 @@ const addAvatar: React.FC = () => {
         const reader = new FileReader();
         reader.onload = () => {
             const result = reader.result;
-            if (typeof result === "string") {
+            if (typeof result === File) {
                 setImage(result);
             }
         };
@@ -41,15 +54,83 @@ const addAvatar: React.FC = () => {
         event.stopPropagation();
     };
 
-    const handleSubmit = () => {
-        Swal.fire({
-            icon: "success",
-            title: "Tu imagen se actualizó exitosamente",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                router.push("/dashboard/profile");
+    const handleSubmit = async () => {
+        if (!image) return;
+
+        const formData = new FormData();
+        formData.append('image', image);
+
+        try {
+            if (rol === 'user') {
+                const response = await fetch(
+                    `${apiUrl}/pictures/update-user/${id}`,
+                    {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                            Authorization: `Bearer ${token}`,
+                        },
+                        body: formData,
+                    }
+                );
+
+                if (!response.ok) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Se ha presentado un error al subir la imagen',
+                        icon: 'error',
+                        confirmButtonColor: '#0b0c0d',
+                    });
+                }
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Tu imagen se actualizó exitosamente',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        router.push('/dashboard/profile');
+                    }
+                });
+            } else if (rol === 'cadmin') {
+                const response = await fetch(
+                    `${apiUrl}/pictures/update-cadmin/${id}`,
+                    {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                            Authorization: `Bearer ${token}`,
+                        },
+                        body: formData,
+                    }
+                );
+                console.log(response);
+
+                if (!response.ok) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Se ha presentado un error al subir la imagen',
+                        icon: 'error',
+                        confirmButtonColor: '#0b0c0d',
+                    });
+                }
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Tu imagen se actualizó exitosamente',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        router.push('/dashboard/profile');
+                    }
+                });
             }
-        });
+        } catch (error: any) {
+            console.log(error.message);
+
+            Swal.fire({
+                title: 'Error',
+                text: error.message,
+                icon: 'error',
+                confirmButtonColor: '#0b0c0d',
+            });
+        }
     };
 
     return (
@@ -69,7 +150,7 @@ const addAvatar: React.FC = () => {
                 onDrop={handleDrop}
             >
                 {image && (
-                    <img
+                    <Image
                         src={image}
                         alt="Preview"
                         className="mb-5 max-w-80 max-h-60"

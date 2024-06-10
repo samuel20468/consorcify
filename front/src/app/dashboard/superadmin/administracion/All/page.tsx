@@ -14,27 +14,29 @@ import { useEffect, useState } from "react";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 
 // -------------------
 
 const page = () => {
     useAuth();
-    const [admins, setAdmins] = useState<IAdmin[]>([]);
+    const pathname = useParams();
     const { token } = useSesion();
+    const [admins, setAdmins] = useState<IAdmin[]>([]);
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await getAdmins(token);
-                if (response) {
-                    setAdmins(response);
-                }
-            } catch (error) {}
+        const fetchData = async (token: string) => {
+            const response = await getAdmins(token);
+            if (response) {
+                const data = await response.json();
+                setAdmins(data);
+                console.log(data);
+            }
         };
         if (token) {
-            fetchData();
+            fetchData(token);
         }
-    }, [token]);
+    }, [token, pathname]);
 
     return (
         <div className="h-screen text-white">

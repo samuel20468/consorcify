@@ -11,7 +11,9 @@ import { FaPlus } from "react-icons/fa6";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getExpenses } from "@/helpers/fetch.helper";
+import { usePathname } from "next/navigation";
 
 // --------------------
 
@@ -20,6 +22,7 @@ const Expense = () => {
     const { token, data } = useSesion();
     const [expensas, setExpensas] = useState<IExpense[]>([]);
     const [result, setResult] = useState<IExpense[]>([]);
+    const pathname = usePathname();
 
     const handleSearch = (query: string) => {
         const trimmedQuery = query.trim().toLocaleLowerCase();
@@ -40,6 +43,23 @@ const Expense = () => {
 
         setResult(filteredData);
     };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await getExpenses(token);
+                if (response) {
+                    const data = await response.json();
+                    console.log(data);
+
+                    setExpensas(data);
+                }
+            } catch (error) {}
+        };
+        if (token) {
+            fetchData();
+        }
+    }, [token, pathname]);
 
     return (
         <ContainerDashboard className="h-[90vh] text-black bg-gray-100 w-[90%] gap-3">
@@ -64,13 +84,13 @@ const Expense = () => {
                     <p className="border-b border-black">Consorcio</p>
                 </div>
                 <div className="w-full h-full">
-                    {result.length !== 0 ? (
+                    {result.length > 0 ? (
                         result.map((expensa) => (
                             <div
                                 key={expensa.id}
                                 className="w-full flex justify-around"
                             >
-                                <p className="border-b border-black">
+                                <p className="border-b border-black text-black">
                                     {expensa.issue_date}
                                 </p>
                                 <p className="border-b border-black">

@@ -30,7 +30,8 @@ const Supplies = () => {
             try {
                 const response = await getSuppliers(token);
                 if (response) {
-                    setSuppliers(response);
+                    const data = await response.json();
+                    setSuppliers(data);
                 }
             } catch (error) {
                 console.error(error);

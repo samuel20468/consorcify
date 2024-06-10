@@ -1,5 +1,6 @@
 import {
     IConsortium,
+    IExpenditures,
     IExpense,
     ILoginData,
     INewExpense,
@@ -90,16 +91,24 @@ export async function adminFetch(registerAdmin: IRegisterAdmin, token: string) {
 }
 
 // Obtener administrador
-export const getAdmins = async (token: string) => {
+export const getAdmins = async (
+    token: string,
+    page: number = 1,
+    limit: number = 20
+) => {
     try {
-        const response = await fetch(`${apiUrl}/c-admins`, {
-            method: "GET",
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
-        const data = await response.json();
-        return data;
+        const response = await fetch(
+            `${apiUrl}/c-admins?page=${page}&limit=${limit}`,
+            {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
+        if (response.ok) {
+            return response;
+        }
     } catch (error) {
         console.error(error);
     }
@@ -210,8 +219,7 @@ export const getConsortiums = async (token: string) => {
             },
         });
         if (response.ok) {
-            const data = response.json();
-            return data;
+            return response;
         }
     } catch (error) {
         console.error(error);
@@ -329,8 +337,7 @@ export const getSuppliers = async (
             }
         );
         if (response.ok) {
-            const data = await response.json();
-            return data;
+            return response;
         }
     } catch (error) {
         console.error(error);
@@ -356,6 +363,7 @@ export const getSuppliersById = async (id: string, token: string) => {
     }
 };
 
+// Autenticación Google
 export const googleLogin = async () => {
     try {
         const response = await fetch(`${apiUrl}/auth/auth0`, {
@@ -370,6 +378,7 @@ export const googleLogin = async () => {
     }
 };
 
+// Crear expensa
 export const newExpense = async (
     token: string,
     expense: INewExpense
@@ -388,6 +397,56 @@ export const newExpense = async (
             return data;
         }
         return undefined;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+// Obtener expensas
+export const getExpenses = async (
+    token: string,
+    page: number = 1,
+    limit: number = 20
+) => {
+    try {
+        const response = await fetch(
+            `${apiUrl}/expenses?page=${page}&limit=${limit}`,
+            {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
+        if (response.ok) {
+            return response;
+        }
+        console.log(response);
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+// Crear gasto
+export const expenditureFetch = async (
+    token: string,
+    expenditure: IExpenditures
+) => {
+    console.log(expenditure);
+
+    try {
+        const response = await fetch(`${apiUrl}/expenditures`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(expenditure),
+        });
+        if (response.ok) {
+            const data = response.json();
+            return data;
+        }
     } catch (error) {
         console.error(error);
     }

@@ -44,7 +44,10 @@ export class User {
    * El link a la imagen del Usuario
    * @example "http://imagenDeSilueta.com"
    */
-  @Column({ default: "http://imagenDeSilueta.com" })
+  @Column({
+    default:
+      'https://res.cloudinary.com/consorcify/image/upload/v1717986798/xhieldioaw4r59gfxqmp.jpg',
+  })
   picture: string;
 
   /**

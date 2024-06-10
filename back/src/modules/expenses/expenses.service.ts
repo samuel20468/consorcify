@@ -22,7 +22,8 @@ export class ExpensesService {
   ) {}
 
   async create(expenseToCreate: CreateExpenseDto) {
-    const { issue_date, expiration_date, consortium_id } = expenseToCreate;
+    const { name, issue_date, expiration_date, consortium_id } =
+      expenseToCreate;
 
     const foundConsortium: Consortium = await checkEntityExistence(
       this.consortiumsService,
@@ -31,6 +32,7 @@ export class ExpensesService {
     );
 
     const newExpense: Expense = new Expense();
+    newExpense.name = name;
     newExpense.issue_date = issue_date;
     newExpense.expiration_date = expiration_date;
     newExpense.consortium = foundConsortium;

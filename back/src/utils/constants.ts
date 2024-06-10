@@ -38,8 +38,8 @@ export enum FINANCIAL_STATUS {
 }
 
 export enum EXPENSE_STATUS {
-  OPEN = "Abierta",
-  CLOSED = "Cerrada",
+  OPEN = 'Abierta',
+  CLOSED = 'Cerrada',
 }
 
 export enum EXPENDITURE_STATUS {
@@ -57,4 +57,10 @@ export enum EXPENDITURE_CATEGORY {
   INSURANCES = 'Seguro',
   SALARIES = 'Sueldos',
   OTHER_EXPENSES = 'Otros',
+}
+
+export enum PAYMENT_STATUS { //Pendiente saber que devuelve exactamente el pago
+  PAID = 'Pagado',
+  UNPAID = 'Impago',
+  PENDING = 'Pendiente',
 }

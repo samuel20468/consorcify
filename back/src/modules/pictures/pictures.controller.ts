@@ -8,13 +8,18 @@ import {
   ParseUUIDPipe,
   Post,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { PicturesService } from './pictures.service';
 import { UploadApiResponse } from 'cloudinary';
-
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { AuthCustomGuard } from 'src/guards/auth.guard';
+@ApiTags('Pictures')
 @Controller('pictures')
+@ApiBearerAuth()
+@UseGuards(AuthCustomGuard)
 export class PicturesController {
   constructor(private readonly picturesService: PicturesService) {}
 

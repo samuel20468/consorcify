@@ -19,6 +19,7 @@ export interface IUser {
     email: string;
     password?: string;
     role?: string;
+    picture?: string;
 }
 
 export interface IAdmin extends IUser {
@@ -70,6 +71,7 @@ export interface IConsortium {
     category: number;
     first_due_day: number;
     interest_rate: number | string;
+    picture?: string;
     c_admin?: string | IRegisterAdmin;
 }
 export interface IConsortiumError {

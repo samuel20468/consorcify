@@ -1,27 +1,27 @@
-"use client";
+'use client';
 
 // Estilos y componentes
-import "./style.css";
-import { Input, Button, Label } from "../ui";
-import { EyeIcon, EyeIconOff } from "@/helpers/icons.helper";
-import { FcGoogle } from "react-icons/fc";
-import Swal from "sweetalert2";
+import './style.css';
+import { Input, Button, Label } from '../ui';
+import { EyeIcon, EyeIconOff } from '@/helpers/icons.helper';
+import { FcGoogle } from 'react-icons/fc';
+import Swal from 'sweetalert2';
 
 // Validaciones
-import { validateEmail } from "@/helpers/Validations/validate.email";
+import { validateEmail } from '@/helpers/Validations/validate.email';
 
 // Interfaces
-import { ILoginData } from "@/Interfaces/Interfaces";
-import { jwtDecode } from "jwt-decode";
+import { ILoginData } from '@/Interfaces/Interfaces';
+import { jwtDecode } from 'jwt-decode';
 
 // Endpoints
-import { apiUrl, loginFetch } from "@/helpers/fetch.helper";
+import { apiUrl, loginFetch } from '@/helpers/fetch.helper';
 
 // Hooks
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import useSesion from "@/helpers/useSesion";
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import useSesion from '@/helpers/useSesion';
 
 // ----------------------------
 
@@ -29,8 +29,8 @@ const Login = () => {
     const router = useRouter();
     const { token } = useSesion();
     const initialData = {
-        email: "",
-        password: "",
+        email: '',
+        password: '',
     };
     const [userData, setUserData] = useState<ILoginData>(initialData);
     const [errors, SetErrors] = useState(initialData);
@@ -41,51 +41,51 @@ const Login = () => {
 
         if (!userData.email || !userData.password) {
             Swal.fire({
-                title: "Error al iniciar sesión",
-                text: "Asegúrate de completar todos los campos del formulario.",
-                icon: "error",
-                confirmButtonColor: "#0b0c0d",
+                title: 'Error al iniciar sesión',
+                text: 'Asegúrate de completar todos los campos del formulario.',
+                icon: 'error',
+                confirmButtonColor: '#0b0c0d',
             });
         }
         try {
             const response = await loginFetch(userData);
             const decodeData = jwtDecode(response.token);
             localStorage.setItem(
-                "userData",
+                'userData',
                 JSON.stringify({ user: decodeData, token: response.token })
             );
             Swal.fire({
-                title: "Bienvenido de nuevo",
-                icon: "success",
-                confirmButtonColor: "#0b0c0d",
+                title: 'Bienvenido de nuevo',
+                icon: 'success',
+                confirmButtonColor: '#0b0c0d',
             }).then((res) => {
                 if (res.isConfirmed) {
                     setUserData(initialData);
                     SetErrors(initialData);
-                    router.push("/dashboard");
+                    router.push('/dashboard');
                 }
             });
         } catch (error) {
             Swal.fire({
-                title: "Error de información",
-                text: "Los datos que nos proporcionaste son inválidos.",
-                icon: "error",
-                confirmButtonColor: "#0b0c0d",
+                title: 'Error de información',
+                text: 'Los datos que nos proporcionaste son inválidos.',
+                icon: 'error',
+                confirmButtonColor: '#0b0c0d',
             });
         }
     };
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
-        const token = params.get("token");
+        const token = params.get('token');
 
         if (token) {
             const decodedData = jwtDecode(token);
             localStorage.setItem(
-                "userData",
+                'userData',
                 JSON.stringify({ user: decodedData, token })
             );
-            router.push("/dashboard");
+            router.push('/dashboard');
         }
     }, [router]);
 
@@ -113,7 +113,7 @@ const Login = () => {
     };
 
     if (token) {
-        router.push("/dashboard");
+        router.push('/dashboard');
     }
 
     return (
@@ -286,7 +286,7 @@ const Login = () => {
                             <Input
                                 id="password"
                                 name="password"
-                                type={lock ? "password" : "text"}
+                                type={lock ? 'password' : 'text'}
                                 placeholder="**********"
                                 onChange={handleChange}
                                 value={userData.password}

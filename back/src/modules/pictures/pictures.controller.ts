@@ -44,6 +44,27 @@ export class PicturesController {
   ): Promise<UploadApiResponse> {
     return await this.picturesService.uploadPicture(id, image, 'users');
   }
+  @Post('update-cadmin/:id')
+  @UseInterceptors(FileInterceptor('image'))
+  async uploadCAdminicture(
+    @Param('id', ParseUUIDPipe) id: string,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({
+            maxSize: 200000,
+            message: 'El archivo debe pesar menos de 200 Kb',
+          }),
+          new FileTypeValidator({
+            fileType: /(jpg|jpeg|png|webp|svg)/,
+          }),
+        ],
+      }),
+    )
+    image: Express.Multer.File,
+  ): Promise<UploadApiResponse> {
+    return await this.picturesService.uploadPicture(id, image, 'c-admins');
+  }
 
   @Post('update-consortium/:id')
   @UseInterceptors(FileInterceptor('image'))
@@ -65,27 +86,5 @@ export class PicturesController {
     image: Express.Multer.File,
   ): Promise<UploadApiResponse> {
     return await this.picturesService.uploadPicture(id, image, 'consortiums');
-  }
-
-  @Post('update-cadmin/:id')
-  @UseInterceptors(FileInterceptor('image'))
-  async uploadCAdminicture(
-    @Param('id', ParseUUIDPipe) id: string,
-    @UploadedFile(
-      new ParseFilePipe({
-        validators: [
-          new MaxFileSizeValidator({
-            maxSize: 200000,
-            message: 'El archivo debe pesar menos de 200 Kb',
-          }),
-          new FileTypeValidator({
-            fileType: /(jpg|jpeg|png|webp|svg)/,
-          }),
-        ],
-      }),
-    )
-    image: Express.Multer.File,
-  ): Promise<UploadApiResponse> {
-    return await this.picturesService.uploadPicture(id, image, 'c-admins');
   }
 }

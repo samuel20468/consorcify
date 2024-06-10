@@ -4,6 +4,7 @@ import { Button, ContainerDashboard } from '@/components/ui';
 import { getAdminById, getUserById } from '@/helpers/fetch.helper';
 import useAuth from '@/helpers/useAuth';
 import useSesion from '@/helpers/useSesion';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
@@ -12,7 +13,6 @@ const Profile = () => {
     const path = usePathname();
     useAuth();
     const [userData, setUserData] = useState<IUser | IRegisterAdmin | IAdmin>();
-    const [image, setImage] = useState(null);
     const { token, data } = useSesion();
     const prevTokenRef = useRef<string | null>(null);
 
@@ -53,12 +53,18 @@ const Profile = () => {
         <ContainerDashboard className="w-[90%] h-[90vh]">
             <div className="flex  w-[90%] h-full m-3 bg-slate-50 p-10 gap-10 rounded-[40px]">
                 <div className="flex flex-col rounded-[40px] w-1/2 p-2  h-full bg-gray-400">
-                    <div className="flex flex-col items-center justify-between w-full h-1/2 bg-white rounded-t-[40px] px-10 pt-10">
-                        <div className="flex items-center justify-center w-full p-1 border h-3/4">
-                            <img src="" alt="aca va la imagen" />
+                    <div className="flex flex-col items-center justify-center w-full h-1/2 bg-white rounded-t-[40px] px-10 pt-2">
+                        <div className="flex items-center justify-center w-200 border rounded-full h-200 pb-0 mb-2">
+                            <Image
+                                src={userData?.picture}
+                                alt="Imagen de perfil"
+                                className="order rounded-full"
+                                width={200}
+                                height={200}
+                            />
                         </div>
                         <Link href="/addAvatar" className="w-full">
-                            <Button className="w-full py-2 rounded-[40px]">
+                            <Button className="w-full py-1 rounded-[40px]">
                                 Cambiar Imagen
                             </Button>
                         </Link>

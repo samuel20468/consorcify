@@ -1,22 +1,22 @@
-"use client";
+'use client';
 
 // Estilos y componentes
-import { Button, ContainerDashboard, Title } from "@/components/ui";
-import SearchBar from "@/components/SearchBar/SearchBar";
-import ConsortiumCard from "@/components/ConsortiumCard/ConsortiumCard";
+import { Button, ContainerDashboard, Title } from '@/components/ui';
+import SearchBar from '@/components/SearchBar/SearchBar';
+import ConsortiumCard from '@/components/ConsortiumCard/ConsortiumCard';
 
 // Endpoints
-import { getConsortiums } from "@/helpers/fetch.helper";
+import { getConsortiums } from '@/helpers/fetch.helper';
 
 // Interfaces
-import { IConsortium } from "@/Interfaces/Interfaces";
+import { IConsortium } from '@/Interfaces/Interfaces';
 
 // Hooks
-import { useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
-import useAuth from "@/helpers/useAuth";
-import useSesion from "@/helpers/useSesion";
-import Link from "next/link";
+import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
+import useAuth from '@/helpers/useAuth';
+import useSesion from '@/helpers/useSesion';
+import Link from 'next/link';
 
 // ---------------------------
 
@@ -55,7 +55,7 @@ const Page = () => {
             (consortium: IConsortium) => {
                 return Object.values(consortium).some((value) => {
                     return (
-                        typeof value === "string" &&
+                        typeof value === 'string' &&
                         value.toLocaleLowerCase().includes(trimmedQuery)
                     );
                 });
@@ -65,20 +65,20 @@ const Page = () => {
         setResult(filteredData);
     };
 
-    const handleSort = (field: keyof IConsortium, order: "asc" | "desc") => {
+    const handleSort = (field: keyof IConsortium, order: 'asc' | 'desc') => {
         const sortedData = [...result].sort((a, b) => {
             const valueA = a[field];
             const valueB = b[field];
 
-            if (typeof valueA === "string" && typeof valueB === "string") {
-                return order === "asc"
+            if (typeof valueA === 'string' && typeof valueB === 'string') {
+                return order === 'asc'
                     ? valueA.localeCompare(valueB)
                     : valueB.localeCompare(valueA);
             } else if (
-                typeof valueA === "number" &&
-                typeof valueB === "number"
+                typeof valueA === 'number' &&
+                typeof valueB === 'number'
             ) {
-                return order === "asc" ? valueA - valueB : valueB - valueA;
+                return order === 'asc' ? valueA - valueB : valueB - valueA;
             } else {
                 return 0;
             }
@@ -91,7 +91,7 @@ const Page = () => {
         <div className="h-screen text-white">
             <ContainerDashboard>
                 <Title>
-                    Consorcios{" "}
+                    Consorcios{' '}
                     <span className="text-2xl font-thin">
                         | Todos los consorcios
                     </span>
@@ -107,7 +107,7 @@ const Page = () => {
                             onChange={(e) =>
                                 handleSort(
                                     e.target.value as keyof IConsortium,
-                                    "asc"
+                                    'asc'
                                 )
                             }
                         >
@@ -133,7 +133,7 @@ const Page = () => {
                     <select
                         className="h-10 p-2 my-1 text-gray-200 rounded-md shadow-xl bg-input placeholder:font-extralight placeholder:text-gray-500 focus:outline-none no-spinners"
                         onChange={(e) =>
-                            handleSort("name", e.target.value as "asc" | "desc")
+                            handleSort('name', e.target.value as 'asc' | 'desc')
                         }
                     >
                         <option value="asc">Ascendente</option>

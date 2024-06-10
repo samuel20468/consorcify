@@ -16,6 +16,13 @@ export class Payment {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  /**
+   * El correo electrónico del usuario que pago
+   * @example "juan.perez@example.com"
+   */
+  @Column({ length: 50 })
+  customer_email: string;
+
   @Column('numeric')
   amount: number;
 

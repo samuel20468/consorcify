@@ -1,5 +1,5 @@
 "use client";
-import React, { InputHTMLAttributes, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Input, Label } from "../ui";
 import { IConsortium, INewExpense } from "@/Interfaces/Interfaces";
 import useAuth from "@/helpers/useAuth";
@@ -8,10 +8,7 @@ import { getConsortiums, newExpense } from "@/helpers/fetch.helper";
 import { usePathname, useRouter } from "next/navigation";
 import { getCurrentDate } from "@/helpers/functions.helper";
 import { validateForm } from "@/helpers/Validations/vallidate.expense";
-import { Span } from "next/dist/trace";
-import { error } from "console";
 import Swal from "sweetalert2";
-import exp from "constants";
 import Link from "next/link";
 
 const addExpenses = () => {
@@ -23,6 +20,7 @@ const addExpenses = () => {
         issue_date: getCurrentDate(),
         expiration_date: "",
         consortium_id: "",
+        name: "",
     };
     const [expense, setExpense] = useState<INewExpense>(initialData);
     const [errors, setErrors] = useState<INewExpense>(initialData);
@@ -33,7 +31,8 @@ const addExpenses = () => {
             try {
                 const response = await getConsortiums(token);
                 if (response) {
-                    setconsortiums(response);
+                    const data = await response.json();
+                    setconsortiums(data);
                 }
             } catch (error) {}
         };
@@ -110,6 +109,18 @@ const addExpenses = () => {
                 <div className="w-full flex flex-col">
                     <div className="w-full flex justify-between">
                         <Label className="w-full text-black">
+                            Nombre de expensa:
+                        </Label>
+                    </div>
+                    <Input
+                        type="text"
+                        name="name"
+                        id="name"
+                        value={expense.name}
+                        onChange={handleChange}
+                    />
+                    <div className="w-full flex justify-between">
+                        <Label className="w-full text-black">
                             Fecha de Vencimiento
                         </Label>
                         {errors.expiration_date && (
@@ -133,9 +144,12 @@ const addExpenses = () => {
                             onChange={handleChange}
                             name="consortium_id"
                             id="consortium_id"
+                            defaultValue=""
                             className="w-full h-10 p-2 my-1 text-gray-200 rounded-md shadow-xl bg-input placeholder:font-extralight placeholder:text-gray-500 focus:outline-none no-spinners"
                         >
-                            <option value="">Elija un Consorcio</option>
+                            <option value="" disabled>
+                                Elija un Consorcio
+                            </option>
                             {consortiums.length !== 0 &&
                                 consortiums.map((consortium) => (
                                     <option

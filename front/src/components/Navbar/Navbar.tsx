@@ -89,7 +89,7 @@ const Navbar = ({ activeSection }: any) => {
                                 type="button"
                                 className="button-log text-black rounded-[50px] px-5 py-3 bg-white font-bold"
                             >
-                                Registar
+                                Registrarse
                             </Link>
                         </>
                     )}
@@ -150,7 +150,7 @@ const Navbar = ({ activeSection }: any) => {
                                         : ""
                                 }`}
                             >
-                                INICIÓ
+                                INICIO
                             </a>
                         </li>
                         <li className="py-[5px]">

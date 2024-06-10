@@ -16,13 +16,16 @@ import { jwtDecode } from 'jwt-decode';
 import { apiUrl, loginFetch } from '@/helpers/fetch.helper';
 
 // Hooks
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import useSesion from '@/helpers/useSesion';
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import useSesion from "@/helpers/useSesion";
+import Swal from "sweetalert2";
+
 
 const Login = () => {
     const router = useRouter();
+    const { token } = useSesion();
     const initialData = {
         email: '',
         password: '',
@@ -30,6 +33,7 @@ const Login = () => {
     const [userData, setUserData] = useState<ILoginData>(initialData);
     const [errors, SetErrors] = useState(initialData);
     const [lock, setLock] = useState<boolean>(true);
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e?.preventDefault();
@@ -83,7 +87,6 @@ const Login = () => {
         setLock(!lock);
     };
 
-    const [isPopupOpen, setIsPopupOpen] = useState(false);
     const handleLogin = () => {
         setIsPopupOpen(true);
     };
@@ -95,8 +98,6 @@ const Login = () => {
     const handleGoogle = async (e: any) => {
         window.location.href = `${apiUrl}/auth/google`;
     };
-
-    const { token } = useSesion();
 
     if (token) {
         router.push('/dashboard');
@@ -280,12 +281,12 @@ const Login = () => {
                             </button>
                         </div>
                         <div className="mt-10">
-                            <button
+                            <Button
                                 type="submit"
                                 className="w-full py-2 text-black rounded-[50px] shadow-md bg-neutral-50 hover:bg-input hover:text-white disabled:pointer-events-none duration-500"
                             >
                                 Iniciar sesión
-                            </button>
+                            </Button>
                         </div>
 
                         <div className="mt-5">

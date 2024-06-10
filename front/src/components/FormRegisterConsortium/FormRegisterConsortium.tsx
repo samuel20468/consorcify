@@ -88,7 +88,8 @@ const FormRegisterConsortium = ({ update = false }) => {
             try {
                 const response = await getAdmins(token);
                 if (response) {
-                    setAdmins(response);
+                    const data = await response.json();
+                    setAdmins(data);
                 }
             } catch (error) {
                 console.error(error);

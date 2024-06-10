@@ -1,34 +1,151 @@
 // Estilos y componentes
 import { Button, Input, Label, Select } from "../ui";
+import Swal from "sweetalert2";
 
 // Interfaces
-import { IExpenditures } from "@/Interfaces/Interfaces";
+import {
+    IConsortium,
+    IExpenditures,
+    IExpense,
+    ISuppliers,
+} from "@/Interfaces/Interfaces";
+
+// Endpoints
+import {
+    expenditureFetch,
+    getConsortiums,
+    getExpenses,
+    getSuppliers,
+} from "@/helpers/fetch.helper";
 
 // Hooks
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
+import useSesion from "@/helpers/useSesion";
 
 // -------------------
 
 const FormSpent = () => {
     useAuth();
+    const { token } = useSesion();
+    const pathname = usePathname();
+    const router = useRouter();
     const initialData = {
         date: "",
         total_amount: 0,
         category: "",
         invoice_number: "",
         description: "",
+        expense_id: "",
+        supplier_id: "",
+        consortium_id: "",
     };
     const [registerExpenditure, setRegisterExpenditure] =
-        useState<IExpenditures>();
+        useState<IExpenditures>(initialData);
+    const [consortiums, setConsortiums] = useState<IConsortium[]>([]);
+    const [expenses, setExpenses] = useState<IExpense[]>([]);
+    const [suppliers, setSuppliers] = useState<ISuppliers[]>([]);
 
-    // const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //     const { name, value } = e.target;
-    //     setExpenditure({
-    //         ...expenditure,
-    //         [name]:
-    //     })
-    // };
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await getConsortiums(token);
+                if (response) {
+                    const data = await response.json();
+                    setConsortiums(data);
+                }
+            } catch (error) {}
+        };
+        if (token) {
+            fetchData();
+        }
+    }, [token, pathname]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await getExpenses(token);
+                if (response) {
+                    const data = await response.json();
+                    setExpenses(data);
+                }
+            } catch (error) {}
+        };
+        if (token) {
+            fetchData();
+        }
+    }, [token, pathname]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await getSuppliers(token);
+                if (response) {
+                    const data = await response.json();
+                    setSuppliers(data);
+                }
+            } catch (error) {}
+        };
+        if (token) {
+            fetchData();
+        }
+    }, [token, pathname]);
+
+    const handleChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    ) => {
+        const { name, value } = e.target;
+        setRegisterExpenditure((prevState) => ({
+            ...prevState,
+            [name]: name === "total_amount" ? parseFloat(value) : value,
+        }));
+    };
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        if (
+            !registerExpenditure.date ||
+            !registerExpenditure.consortium_id ||
+            !registerExpenditure.expense_id ||
+            !registerExpenditure.category ||
+            !registerExpenditure.invoice_number ||
+            !registerExpenditure.total_amount ||
+            !registerExpenditure.supplier_id ||
+            !registerExpenditure.description
+        ) {
+            Swal.fire({
+                icon: "error",
+                title: "Por favor completa todos los campos",
+            });
+            return;
+        }
+        try {
+            const response = await expenditureFetch(token, registerExpenditure);
+            if (response) {
+                Swal.fire({
+                    icon: "success",
+                    title: "Gasto creado correctamente",
+                }).then((response) => {
+                    if (response.isConfirmed) {
+                        router.push("/dashboard/admin/spent");
+                    } else {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Error al crear el gasto",
+                        });
+                        return;
+                    }
+                });
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: "error",
+                title: "No se pudo crear el gasto",
+            });
+        }
+    };
 
     return (
         <div className="w-[80%] flex flex-col justify-center bg-[#d3d3d3] p-5 rounded-[50px] text-black">
@@ -36,10 +153,7 @@ const FormSpent = () => {
                 Este es el formulario de gastos
             </h1>
 
-            <form
-                autoComplete="off"
-                // onSubmit={handleSubmit}
-            >
+            <form autoComplete="off" onSubmit={handleSubmit}>
                 <div className="flex gap-2">
                     <div className="flex flex-col w-1/4">
                         <Label htmlFor="date">
@@ -48,9 +162,9 @@ const FormSpent = () => {
                         <Input
                             id="date"
                             name="date"
-                            // value={spent.date}
+                            value={registerExpenditure.date}
                             type="date"
-                            // onChange={handleChange}
+                            onChange={handleChange}
                         />
                     </div>
                     <div className="flex flex-col w-2/4">
@@ -60,42 +174,57 @@ const FormSpent = () => {
                         <Select
                             id="consortium_id"
                             name="consortium_id"
-                            defaultValue="S"
-                            // value={spent.consortium_id}
-                            // onChange={handleSelect}
+                            value={registerExpenditure.consortium_id}
+                            onChange={handleChange}
                         >
-                            <option value="S" disabled>
+                            <option value="" disabled>
                                 Seleccionar el consorcio
                             </option>
+                            {consortiums.length > 0 &&
+                                consortiums.map((consortium) => (
+                                    <option
+                                        value={consortium.id}
+                                        key={consortium.id}
+                                    >
+                                        {consortium.name}
+                                    </option>
+                                ))}
                         </Select>
                     </div>
                     <div className="flex flex-col w-1/4">
-                        <Label htmlFor="total_amount">
-                            Total:<span className="text-red-600">*</span>
+                        <Label htmlFor="expense_id">
+                            Expensa:<span className="text-red-600">*</span>
                         </Label>
-                        <Input
-                            id="total_amount"
-                            name="total_amount"
-                            // value={spent.total_amount}
-                            type="number"
-                            // onChange={handleChange}
-                            placeholder="$400.000"
-                        />
+                        <Select
+                            id="expense_id"
+                            name="expense_id"
+                            value={registerExpenditure.expense_id}
+                            onChange={handleChange}
+                        >
+                            <option value="" disabled>
+                                Seleccionar la expensa
+                            </option>
+                            {expenses.length > 0 &&
+                                expenses.map((expense) => (
+                                    <option value={expense.id} key={expense.id}>
+                                        {expense.id}
+                                    </option>
+                                ))}
+                        </Select>
                     </div>
                 </div>
                 <div className="flex gap-2">
-                    <div className="flex flex-col w-3/4">
+                    <div className="flex flex-col w-2/4">
                         <Label htmlFor="category">
                             Categoria:<span className="text-red-600">*</span>
                         </Label>
                         <Select
                             id="category"
                             name="category"
-                            defaultValue="S"
-                            // value={spent.category}
-                            // onChange={handleSelect}
+                            value={registerExpenditure.category}
+                            onChange={handleChange}
                         >
-                            <option value="S" disabled>
+                            <option value="" disabled>
                                 Seleccionar la categoría
                             </option>
                             <option value="Servicios Públicos">
@@ -129,10 +258,23 @@ const FormSpent = () => {
                         <Input
                             id="invoice_number"
                             name="invoice_number"
-                            // value={spent.invoice_number}
+                            value={registerExpenditure.invoice_number}
                             type="number"
-                            // onChange={handleChange}
+                            onChange={handleChange}
                             placeholder="0000-5678912"
+                        />
+                    </div>
+                    <div className="flex flex-col w-1/4">
+                        <Label htmlFor="total_amount">
+                            Total:<span className="text-red-600">*</span>
+                        </Label>
+                        <Input
+                            id="total_amount"
+                            name="total_amount"
+                            value={registerExpenditure.total_amount}
+                            type="number"
+                            onChange={handleChange}
+                            placeholder="$400.000"
                         />
                     </div>
                 </div>
@@ -144,13 +286,21 @@ const FormSpent = () => {
                         <Select
                             id="supplier_id"
                             name="supplier_id"
-                            defaultValue="S"
-                            // value={spent.supplier_id}
-                            // onChange={handleSelect}
+                            value={registerExpenditure.supplier_id}
+                            onChange={handleChange}
                         >
-                            <option value="S" disabled>
+                            <option value="" disabled>
                                 Seleccionar el proveedor
                             </option>
+                            {suppliers.length > 0 &&
+                                suppliers.map((supplier) => (
+                                    <option
+                                        value={supplier.id}
+                                        key={supplier.id}
+                                    >
+                                        {supplier.name}
+                                    </option>
+                                ))}
                         </Select>
                     </div>
                     <div className="flex flex-col w-2/4">
@@ -160,9 +310,9 @@ const FormSpent = () => {
                         <Input
                             id="description"
                             name="description"
-                            // value={spent.description}
+                            value={registerExpenditure.description}
                             type="text"
-                            // onChange={handleChange}
+                            onChange={handleChange}
                             placeholder="Descripción del servicio prestado"
                         />
                     </div>

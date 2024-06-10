@@ -8,13 +8,18 @@ import {
   ParseUUIDPipe,
   Post,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { PicturesService } from './pictures.service';
 import { UploadApiResponse } from 'cloudinary';
-
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { AuthCustomGuard } from 'src/guards/auth.guard';
+@ApiTags('Pictures')
 @Controller('pictures')
+@ApiBearerAuth()
+@UseGuards(AuthCustomGuard)
 export class PicturesController {
   constructor(private readonly picturesService: PicturesService) {}
 
@@ -39,6 +44,27 @@ export class PicturesController {
   ): Promise<UploadApiResponse> {
     return await this.picturesService.uploadPicture(id, image, 'users');
   }
+  @Post('update-cadmin/:id')
+  @UseInterceptors(FileInterceptor('image'))
+  async uploadCAdminicture(
+    @Param('id', ParseUUIDPipe) id: string,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({
+            maxSize: 200000,
+            message: 'El archivo debe pesar menos de 200 Kb',
+          }),
+          new FileTypeValidator({
+            fileType: /(jpg|jpeg|png|webp|svg)/,
+          }),
+        ],
+      }),
+    )
+    image: Express.Multer.File,
+  ): Promise<UploadApiResponse> {
+    return await this.picturesService.uploadPicture(id, image, 'c-admins');
+  }
 
   @Post('update-consortium/:id')
   @UseInterceptors(FileInterceptor('image'))
@@ -60,10 +86,5 @@ export class PicturesController {
     image: Express.Multer.File,
   ): Promise<UploadApiResponse> {
     return await this.picturesService.uploadPicture(id, image, 'consortiums');
-  }
-
-  @Get('hola')
-  hola() {
-    return 'hola';
   }
 }

@@ -13,6 +13,7 @@ import { ExpendituresModule } from './modules/expenditures/expenditures.module';
 import { ExpensesModule } from './modules/expenses/expenses.module';
 import { PicturesModule } from './modules/pictures/pictures.module';
 import { FunctionalUnitsExpensesModule } from './modules/functional-units-expenses/functional-units-expenses.module';
+import { PaymentsModule } from './modules/payments/payments.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { FunctionalUnitsExpensesModule } from './modules/functional-units-expens
     ExpendituresModule,
     PicturesModule,
     FunctionalUnitsExpensesModule,
+    PaymentsModule,
   ],
 })
 export class AppModule {}

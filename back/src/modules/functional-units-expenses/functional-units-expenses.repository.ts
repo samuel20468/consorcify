@@ -28,7 +28,7 @@ export class FunctionalUnitsExpensesRepository {
   }
 
   async create(
-    newFunctionalUnitExpense: Omit<FunctionalUnitExpense, 'id'>,
+    newFunctionalUnitExpense: Partial<FunctionalUnitExpense>,
   ): Promise<FunctionalUnitExpense> {
     const {
       monthly_expenditure,

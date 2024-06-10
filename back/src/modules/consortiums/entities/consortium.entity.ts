@@ -118,7 +118,10 @@ export class Consortium {
    * El link a la imagen del Usuario
    * @example "http://imagenDeSilueta.com"
    */
-  @Column({ default: 'http://imagenDeSilueta.com' })
+  @Column({
+    default:
+      'https://res.cloudinary.com/consorcify/image/upload/v1717987060/hiluk0b3nz4kkz0k33uc.jpg',
+  })
   picture: string;
 
   @Column('numeric', {

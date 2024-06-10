@@ -7,7 +7,6 @@ import { Repository } from 'typeorm';
 import { Consortium } from '../consortiums/entities/consortium.entity';
 import { generateFunctionalUnitCode } from 'src/helpers/generate-functional-unit-code.helper';
 import { User } from '../users/entities/user.entity';
-import { FunctionalUnitWhitUserIdDto } from './dto/functional-unit-whit-user-id.dto';
 
 @Injectable()
 export class FunctionalUnitsRepository {
@@ -109,10 +108,11 @@ export class FunctionalUnitsRepository {
   async assignUserToFunctionalUnit(
     functionalUnitCode: string,
     userId: string,
-  ): Promise<FunctionalUnitWhitUserIdDto> {
+  ): Promise<FunctionalUnit> {
     const functionalUnit: FunctionalUnit =
       await this.functionalUnitsRepository.findOne({
         where: { code: functionalUnitCode },
+        relations: ['user'],
       });
 
     if (!functionalUnit) {
@@ -128,20 +128,20 @@ export class FunctionalUnitsRepository {
     if (!user) {
       throw new NotFoundException(`El usuario con el id ${userId} no existe`);
     }
-    functionalUnit.user = user;
     try {
+      if (user.functional_units.length === 0) {
+        user.active = true;
+        await this.usersRepository.save(user);
+      }
+
+      functionalUnit.user = user;
       const updatedFunctionalUnit: FunctionalUnit =
         await this.functionalUnitsRepository.save(functionalUnit);
 
-      user.functional_units = [...user.functional_units, updatedFunctionalUnit];
-      await this.usersRepository.save(user);
-      const result: FunctionalUnitWhitUserIdDto = {
-        id: updatedFunctionalUnit.id,
-        code: updatedFunctionalUnit.code,
-        user_id: user.id,
-      };
-
-      return result;
+      return await this.functionalUnitsRepository.findOne({
+        where: { id: updatedFunctionalUnit.id },
+        relations: ['user', 'user.functional_units'],
+      });
     } catch (error) {
       throw new Error(
         `Error al asignar el usuario a la unidad funcional: ${error.message}`,

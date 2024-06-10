@@ -1,4 +1,6 @@
+"use client";
 import { Button, ContainerDashboard } from "@/components/ui";
+import { paymentCheckOut } from "@/helpers/fetch.helper";
 import {
     AccountBalance,
     ArrowBack,
@@ -7,9 +9,24 @@ import {
     HomeTwo,
     Stroke,
 } from "@/helpers/icons.helper";
+import useAuth from "@/helpers/useAuth";
+import useSesion from "@/helpers/useSesion";
 import Link from "next/link";
 
 const Expenses = () => {
+    useAuth();
+    const { token } = useSesion();
+    const handlePay = async () => {
+        try {
+            const idPrueba = "efb22fda-94aa-4808-90c0-c9396270edc4";
+            const response = await paymentCheckOut(token, idPrueba);
+            if (!response?.ok) {
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     return (
         <div>
             <ContainerDashboard className="w-[90%] h-[90vh] justify-center p-5 gap-3">
@@ -88,7 +105,10 @@ const Expenses = () => {
                             <div className="flex w-1/2">
                                 <div className="flex items-center justify-end w-full gap-2 p-5">
                                     <Cross />
-                                    <Button className="w-32 py-3 rounded-[40px]">
+                                    <Button
+                                        className="w-32 py-3 rounded-[40px]"
+                                        onClick={handlePay}
+                                    >
                                         Pagar
                                     </Button>
                                 </div>

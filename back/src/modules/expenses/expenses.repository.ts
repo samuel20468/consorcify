@@ -85,7 +85,7 @@ export class ExpensesRepository {
       let total_amount: number =
         previous_balance + interests + monthly_expenditure;
 
-      const functionalUnitExpense: Omit<FunctionalUnitExpense, 'id'> = {
+      const functionalUnitExpense: Partial<FunctionalUnitExpense> = {
         monthly_expenditure,
         interests,
         previous_balance,

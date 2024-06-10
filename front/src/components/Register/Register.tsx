@@ -1,26 +1,26 @@
-"use client";
+'use client';
 
 // Estilos y componentes
-import "./style.css";
-import { Button, Input, Label } from "../ui";
-import { EyeIcon, EyeIconOff } from "@/helpers/icons.helper";
-import { FcGoogle } from "react-icons/fc";
-import Swal from "sweetalert2";
+import './style.css';
+import { Button, Input, Label } from '../ui';
+import { EyeIcon, EyeIconOff } from '@/helpers/icons.helper';
+import { FcGoogle } from 'react-icons/fc';
+import Swal from 'sweetalert2';
 
 // Validaciones
-import { validateNombreCompleto } from "@/helpers/Validations/validate.nombre";
-import { validateEmail } from "@/helpers/Validations/validate.email";
-import { validatePwd } from "@/helpers/Validations/validate.password";
+import { validateNombreCompleto } from '@/helpers/Validations/validate.nombre';
+import { validateEmail } from '@/helpers/Validations/validate.email';
+import { validatePwd } from '@/helpers/Validations/validate.password';
 
 // Endpoint
-import { googleLogin, registerFetch } from "@/helpers/fetch.helper";
-import { jwtDecode } from "jwt-decode";
+import { apiUrl, googleLogin, registerFetch } from '@/helpers/fetch.helper';
+import { jwtDecode } from 'jwt-decode';
 
 // Hooks
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import useSesion from "@/helpers/useSesion";
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import useSesion from '@/helpers/useSesion';
 
 // ----------------------------
 
@@ -28,13 +28,13 @@ const Register = () => {
     const router = useRouter();
     const { token } = useSesion();
     const initialData = {
-        first_name: "",
-        last_name: "",
-        email: "",
-        password: "",
+        first_name: '',
+        last_name: '',
+        email: '',
+        password: '',
     };
     const [registerData, setRegisterData] = useState(initialData);
-    const [pass2, setPass2] = useState("");
+    const [pass2, setPass2] = useState('');
     const [lock, setLock] = useState<boolean>(true);
     const [errors, SetErrors] = useState(initialData);
 
@@ -48,10 +48,10 @@ const Register = () => {
             !registerData.password
         ) {
             Swal.fire({
-                title: "Error al iniciar sesión",
-                text: "Asegúrate de completar todos los campos del formulario.",
-                icon: "error",
-                confirmButtonColor: "#0b0c0d",
+                title: 'Error al iniciar sesión',
+                text: 'Asegúrate de completar todos los campos del formulario.',
+                icon: 'error',
+                confirmButtonColor: '#0b0c0d',
             });
         }
 
@@ -60,12 +60,12 @@ const Register = () => {
             if (response?.ok) {
                 Swal.fire({
                     title: `Bienvenid@, ${registerData.first_name}`,
-                    text: "Logueate para poder continuar.",
-                    icon: "success",
-                    confirmButtonColor: "#0b0c0d",
+                    text: 'Logueate para poder continuar.',
+                    icon: 'success',
+                    confirmButtonColor: '#0b0c0d',
                 }).then((res) => {
                     if (res.isConfirmed) {
-                        router.push("/login");
+                        router.push('/login');
                     }
                 });
             }
@@ -106,30 +106,11 @@ const Register = () => {
     };
 
     const handleGoogle = async (e: any) => {
-        e.preventDefault();
-        try {
-            const response = await googleLogin();
-            if (response) {
-                const decodeData = jwtDecode(response.token);
-                localStorage.setItem(
-                    "userData",
-                    JSON.stringify({ user: decodeData, token: response.token })
-                );
-                router.push("/dahsboard");
-            } else {
-                Swal.fire({
-                    icon: "error",
-                    title: "Error al conectarse",
-                    text: "Intentalo más tarde",
-                });
-            }
-        } catch (error) {
-            console.error(error);
-        }
+        window.location.href = `${apiUrl}/auth/google`;
     };
 
     if (token) {
-        router.push("/dashboard");
+        router.push('/dashboard');
     }
 
     return (
@@ -343,7 +324,7 @@ const Register = () => {
                             <Input
                                 id="pwd"
                                 name="password"
-                                type={lock ? "password" : "text"}
+                                type={lock ? 'password' : 'text'}
                                 placeholder="**********"
                                 onChange={handlerChange}
                                 value={registerData.password}
@@ -372,7 +353,7 @@ const Register = () => {
                             <Input
                                 id="pwd2"
                                 name="password2"
-                                type={lock ? "password" : "text"}
+                                type={lock ? 'password' : 'text'}
                                 placeholder="**********"
                                 onChange={handlePass2}
                                 value={pass2}

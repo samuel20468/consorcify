@@ -5,7 +5,6 @@ import {
   Body,
   Patch,
   Param,
-  Delete,
   ParseUUIDPipe,
   NotFoundException,
   Query,
@@ -18,7 +17,7 @@ import { UpdateFunctionalUnitDto } from './dto/update-functional-unit.dto';
 import { FunctionalUnit } from './entities/functional-unit.entity';
 import { AuthCustomGuard } from 'src/guards/auth.guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { FunctionalUnitWhitUserIdDto } from './dto/functional-unit-whit-user-id.dto';
+
 @ApiTags('Functional Units')
 @Controller('functional-units')
 @ApiBearerAuth()
@@ -88,7 +87,7 @@ export class FunctionalUnitsController {
   async assignUserToFunctionalUnit(
     @Param('functionalUnitCode') functionalUnitCode: string,
     @Param('userId', ParseUUIDPipe) userId: string,
-  ): Promise<FunctionalUnitWhitUserIdDto> {
+  ): Promise<FunctionalUnit> {
     if (!functionalUnitCode) {
       throw new BadRequestException('El código de la unidad funcional es requerido');
     }

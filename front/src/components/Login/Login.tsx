@@ -1,34 +1,31 @@
-"use client";
+'use client';
 
 // Estilos y componentes
-import "./style.css";
-import { Input, Button, Label } from "../ui";
-import { EyeIcon, EyeIconOff } from "@/helpers/icons.helper";
+import './style.css';
+import { Input, Button, Label } from '../ui';
+import { EyeIcon, EyeIconOff } from '@/helpers/icons.helper';
 
 // Validaciones
-import { validateEmail } from "@/helpers/Validations/validate.email";
+import { validateEmail } from '@/helpers/Validations/validate.email';
 
 // Interfaces
-import { ILoginData } from "@/Interfaces/Interfaces";
-import { jwtDecode } from "jwt-decode";
+import { ILoginData } from '@/Interfaces/Interfaces';
+import { jwtDecode } from 'jwt-decode';
 
 // Endpoints
-import { googleLogin, loginFetch } from "@/helpers/fetch.helper";
+import { apiUrl, loginFetch } from '@/helpers/fetch.helper';
 
 // Hooks
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import Footer from "../Footer/Footer";
-import useSesion from "@/helpers/useSesion";
-import Swal from "sweetalert2";
-import Background from "../Landing/Background/background";
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import useSesion from '@/helpers/useSesion';
 
 const Login = () => {
     const router = useRouter();
     const initialData = {
-        email: "",
-        password: "",
+        email: '',
+        password: '',
     };
     const [userData, setUserData] = useState<ILoginData>(initialData);
     const [errors, SetErrors] = useState(initialData);
@@ -42,15 +39,30 @@ const Login = () => {
             const decodeData = jwtDecode(response.token);
 
             localStorage.setItem(
-                "userData",
+                'userData',
                 JSON.stringify({ user: decodeData, token: response.token })
             );
 
             setUserData(initialData);
             SetErrors(initialData);
-            router.push("/dashboard");
+            router.push('/dashboard');
         } catch (error) {}
     };
+
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        const token = params.get('token');
+
+        if (token) {
+            const decodedData = jwtDecode(token);
+            localStorage.setItem(
+                'userData',
+                JSON.stringify({ user: decodedData, token })
+            );
+
+            router.push('/dashboard');
+        }
+    }, [router]);
 
     useEffect(() => {
         const liveErrors = validateEmail(userData.email);
@@ -81,35 +93,13 @@ const Login = () => {
     };
 
     const handleGoogle = async (e: any) => {
-        e.preventDefault();
-        try {
-            const response = await googleLogin();
-            if (response) {
-                const decodeData = jwtDecode(response.token);
-                localStorage.setItem(
-                    "userData",
-                    JSON.stringify({ user: decodeData, token: response.token })
-                );
-                router.push("/dahsboard");
-            } else {
-                Swal.fire({
-                    icon: "error",
-                    title: "Error al conectarse",
-                    text: "Intentalo más tarde",
-                    background: "#0f0e0e",
-                    color: "#f1f1f1",
-                });
-            }
-        } catch (error) {
-            console.error(error);
-        }
+        window.location.href = `${apiUrl}/auth/google`;
     };
 
     const { token } = useSesion();
 
     if (token) {
-        router.push("/dashboard");
-    } else {
+        router.push('/dashboard');
     }
 
     return (
@@ -275,7 +265,7 @@ const Login = () => {
                             <Input
                                 id="password"
                                 name="password"
-                                type={lock ? "password" : "text"}
+                                type={lock ? 'password' : 'text'}
                                 placeholder="**********"
                                 onChange={handleChange}
                                 value={userData.password}

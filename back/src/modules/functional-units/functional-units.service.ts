@@ -3,6 +3,7 @@ import { CreateFunctionalUnitDto } from './dto/create-functional-unit.dto';
 import { UpdateFunctionalUnitDto } from './dto/update-functional-unit.dto';
 import { FunctionalUnitsRepository } from './functional-units.repository';
 import { FunctionalUnit } from './entities/functional-unit.entity';
+import { FunctionalUnitWhitUserIdDto } from './dto/functional-unit-whit-user-id.dto';
 
 @Injectable()
 export class FunctionalUnitsService {
@@ -36,5 +37,9 @@ export class FunctionalUnitsService {
     status = functionalUnit.active;
     await this.functionalUnitsRepository.toggleStatus(id, status);
     return await this.functionalUnitsRepository.findOne(id);
+  }
+
+  async assignUserToFunctionalUnit(functionalUnitCode: string, userId: string): Promise<FunctionalUnitWhitUserIdDto> {
+    return await this.functionalUnitsRepository.assignUserToFunctionalUnit(functionalUnitCode, userId);
   }
 }

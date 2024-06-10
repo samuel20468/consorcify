@@ -1,24 +1,26 @@
 import {
     IConsortium,
+    IExpense,
     ILoginData,
+    INewExpense,
     IRegisterAdmin,
     ISuppliers,
     IUser,
-} from "@/Interfaces/Interfaces";
-const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+} from '@/Interfaces/Interfaces';
+export const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 // Inicio de sesión
 export const loginFetch = async (UserData: ILoginData) => {
     try {
         const response = await fetch(`${apiUrl}/auth/signin`, {
-            method: "POST",
+            method: 'POST',
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify(UserData),
         });
         if (!response.ok) {
-            throw new Error("Error al inicar Sesion");
+            throw new Error('Error al inicar Sesion');
         }
         const data = response.json();
         return data;
@@ -31,14 +33,14 @@ export const loginFetch = async (UserData: ILoginData) => {
 export const registerFetch = async (registerData: IUser) => {
     try {
         const response = await fetch(`${apiUrl}/auth/signup`, {
-            method: "POST",
+            method: 'POST',
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify(registerData),
         });
         if (!response.ok) {
-            throw new Error("Error al Registrarse");
+            throw new Error('Error al Registrarse');
         }
         return response;
     } catch (error) {
@@ -50,9 +52,9 @@ export const registerFetch = async (registerData: IUser) => {
 export const getUserById = async (id: string, token: string) => {
     try {
         const response = await fetch(`${apiUrl}/users/${id}`, {
-            method: "GET",
+            method: 'GET',
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
             },
         });
@@ -64,9 +66,9 @@ export const getUserById = async (id: string, token: string) => {
 export async function adminFetch(registerAdmin: IRegisterAdmin, token: string) {
     try {
         const response = await fetch(`${apiUrl}/auth/register-c-admin`, {
-            method: "POST",
+            method: 'POST',
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify(registerAdmin),
@@ -91,7 +93,7 @@ export async function adminFetch(registerAdmin: IRegisterAdmin, token: string) {
 export const getAdmins = async (token: string) => {
     try {
         const response = await fetch(`${apiUrl}/c-admins`, {
-            method: "GET",
+            method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -107,9 +109,9 @@ export const getAdmins = async (token: string) => {
 export const getAdminById = async (id: string, token: string) => {
     try {
         const response = await fetch(`${apiUrl}/c-admins/${id}`, {
-            method: "GET",
+            method: 'GET',
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
             },
         });
@@ -123,7 +125,7 @@ export const getAdminById = async (id: string, token: string) => {
 export const deleteAdmin = async (id: string, token: string) => {
     try {
         const response = await fetch(`${apiUrl}/c-admins/disable/${id}`, {
-            method: "PATCH",
+            method: 'PATCH',
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -143,9 +145,9 @@ export const updateAdmin = async (
 ) => {
     try {
         const response = await fetch(`${apiUrl}/c-admins/${id}`, {
-            method: "PATCH",
+            method: 'PATCH',
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify(data),
@@ -175,9 +177,9 @@ export async function consortiumFetch(
 ) {
     try {
         const response = await fetch(`${apiUrl}/consortiums`, {
-            method: "POST",
+            method: 'POST',
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify(consortiumData),
@@ -202,12 +204,15 @@ export async function consortiumFetch(
 export const getConsortiums = async (token: string) => {
     try {
         const response = await fetch(`${apiUrl}/consortiums`, {
-            method: "GET",
+            method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
             },
         });
-        return response;
+        if (response.ok) {
+            const data = response.json();
+            return data;
+        }
     } catch (error) {
         console.error(error);
     }
@@ -217,16 +222,20 @@ export const getConsortiums = async (token: string) => {
 export const getConsortiumById = async (id: string, token: string) => {
     try {
         const response = await fetch(`${apiUrl}/consortiums/${id}`, {
-            method: "GET",
-            cache: "no-cache",
+            method: 'GET',
+            cache: 'no-cache',
             headers: {
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
         });
-
-        const data = await response.json();
-        return data;
-    } catch (error) {}
+        if (response.ok) {
+            const data = await response.json();
+            return data;
+        }
+    } catch (error) {
+        console.error(error);
+    }
 };
 
 // Modificar consorcio
@@ -237,9 +246,9 @@ export const updateConsortium = async (
 ) => {
     try {
         const response = await fetch(`${apiUrl}/consortiums/${id}`, {
-            method: "PATCH",
+            method: 'PATCH',
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify(data),
@@ -264,7 +273,7 @@ export const updateConsortium = async (
 export const deleteConsortiumById = async (id: string, token: string) => {
     try {
         const response = await fetch(`${apiUrl}/consortiums/${id}`, {
-            method: "DELETE",
+            method: 'DELETE',
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -281,9 +290,9 @@ export const supplierFetch = async (
 ) => {
     try {
         const response = await fetch(`${apiUrl}/suppliers`, {
-            method: "POST",
+            method: 'POST',
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify(registerSupplier),
@@ -304,16 +313,25 @@ export const supplierFetch = async (
 };
 
 // Obtener proveedores
-export const getSuppliers = async (token: string) => {
+export const getSuppliers = async (
+    token: string,
+    page: number = 1,
+    limit: number = 20
+) => {
     try {
-        const response = await fetch("http://localhost:3001/suppliers", {
-            method: "GET",
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
-        const data = await response.json();
-        return data;
+        const response = await fetch(
+            `${apiUrl}/suppliers?page=${page}&limit=${limit}`,
+            {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
+        if (response.ok) {
+            const data = await response.json();
+            return data;
+        }
     } catch (error) {
         console.error(error);
     }
@@ -322,10 +340,10 @@ export const getSuppliers = async (token: string) => {
 // Obtener proveedor por ID
 export const getSuppliersById = async (id: string, token: string) => {
     try {
-        const response = await fetch(`http://localhost:3001/suppliers/${id}`, {
+        const response = await fetch(`${apiUrl}/suppliers/${id}`, {
             method: "GET",
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
             },
         });
@@ -338,15 +356,24 @@ export const getSuppliersById = async (id: string, token: string) => {
     }
 };
 
-export const googleLogin = async () => {
+export const newExpense = async (
+    token: string,
+    expense: INewExpense
+): Promise<IExpense | undefined> => {
     try {
-        const response = await fetch(`${apiUrl}/auth/auth0`, {
-            method: "GET",
+        const response = await fetch(`${apiUrl}/expenses`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(expense),
         });
         if (response.ok) {
-            const data = await response.json();
+            const data = response.json();
             return data;
         }
+        return undefined;
     } catch (error) {
         console.error(error);
     }

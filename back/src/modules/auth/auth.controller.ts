@@ -4,7 +4,7 @@ import {
   Get,
   Post,
   Req,
-  UnauthorizedException,
+  Res,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -12,19 +12,18 @@ import { AuthService } from './auth.service';
 import { CredentialsDto } from './dto/credentials.dto';
 import { CreateUserDto } from '../users/dto/create-user.dto';
 import { CreateCAdminDto } from '../c-admin/dto/create-c-admin.dto';
-import { User } from '../users/entities/user.entity';
 import { CAdmin } from '../c-admin/entities/c-admin.entity';
 import { ExcludePasswordInterceptor } from 'src/interceptors/exclude-password.interceptor';
 import { ExcludeActiveInterceptor } from 'src/interceptors/exclude-active.interceptor';
 import { ExcludeSuperAdminInterceptor } from 'src/interceptors/exclude-super-admin.interceptor';
-import { AuthGuard } from 'src/guards/auth.guard';
+import { AuthCustomGuard } from 'src/guards/auth.guard';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { Roles } from 'src/decorators/role.decorator';
 import { ROLE } from 'src/utils/constants';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { Request } from 'express';
-import { VerifyEntity } from 'src/guards/verifyEntity.guard';
+import { Request, Response } from 'express';
 import { TObjectToken } from 'src/utils/types';
+import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -32,14 +31,16 @@ import { TObjectToken } from 'src/utils/types';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Get('auth0')
-  @UseGuards(VerifyEntity)
-  async auth0(@Req() req: Request) {
-    const user = JSON.stringify(req.oidc?.user);
-    if (!user) {
-      throw new UnauthorizedException('Falla en autenticación de Auth0');
-    }
-    return await this.authService.auth0(JSON.parse(user));
+  @Get('google')
+  @UseGuards(AuthGuard('google'))
+  async googleAuth(@Req() req: Request) {}
+
+  @Get('google/callback')
+  @UseGuards(AuthGuard('google'))
+  async googleLogin(@Req() req: any, @Res() res: Response) {
+    const user = req.user;
+    const token = user.accesstoken;
+    res.redirect(`http://localhost:3000/login?token=${token}`);
   }
 
   @Post('signin')
@@ -55,7 +56,7 @@ export class AuthController {
 
   @Post('register-c-admin')
   @Roles(ROLE.SUPERADMIN)
-  @UseGuards(AuthGuard, RolesGuard)
+  @UseGuards(AuthCustomGuard, RolesGuard)
   @ApiBearerAuth()
   async signUpCAdmin(@Body() consAdmin: CreateCAdminDto): Promise<CAdmin> {
     return await this.authService.singUpCAdmin(consAdmin);

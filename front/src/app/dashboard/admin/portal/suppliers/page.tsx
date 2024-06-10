@@ -42,9 +42,12 @@ const Supplies = () => {
     }, [token, pathname]);
 
     return (
-        <div className="h-screen text-black bg-gray-100">
+        <div className="h-screen text-white">
             <ContainerDashboard>
-                <Title>Proveedores</Title>
+                <Title>
+                    Portal{" "}
+                    <span className="text-2xl font-thin">| Proveedores</span>
+                </Title>
 
                 {suppliers.length > 0 ? (
                     <SuppliersCards suppliers={suppliers} />

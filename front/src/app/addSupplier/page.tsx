@@ -13,9 +13,17 @@ const AddSupplier = () => {
     useAuth();
 
     return (
-        <div className="h-screen text-black bg-gray-100">
+        <div className="h-screen text-white">
             <ContainerDashboard>
-                <Title>Nuevo Proveedor</Title>
+                <Title>
+                    Portal{" "}
+                    <span className="text-2xl font-thin">
+                        | Proveedores |{" "}
+                        <span className="text-xl font-thin">
+                            Agregar proveedor
+                        </span>
+                    </span>
+                </Title>
                 <FormSupplier />
             </ContainerDashboard>
         </div>

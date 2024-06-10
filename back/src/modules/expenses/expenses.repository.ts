@@ -70,15 +70,8 @@ export class ExpensesRepository {
         'No se puede liquidar una expensa sin gastos',
       );
 
-    const totalExpendituresInExpense: number = expenseExpenditures.reduce(
-      (acum, exp) => acum + exp.total_amount,
-      0,
-    );
-
-    expenseToSettle.total_amount = totalExpendituresInExpense;
-
     const monthly_expenditure: number =
-      totalExpendituresInExpense / foundConsortium.ufs;
+      expenseToSettle.total_amount / foundConsortium.ufs;
 
     const consortiumInterestRate: number = foundConsortium.interest_rate;
 
@@ -114,7 +107,7 @@ export class ExpensesRepository {
 
     const finalExpense: Expense = await this.expenseRepository.findOne({
       where: { id: expenseToSettle.id, active: true },
-      relations: { expenditures: true, functional_units_expenses: true },
+      relations: { expenditures: { supplier: true }, functional_units_expenses: { functional_unit: true } },
     });
 
     return finalExpense;

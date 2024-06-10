@@ -20,7 +20,7 @@ const ConsorCard: React.FC<IConsortium> = ({
     c_admin,
 }: IConsortium) => {
     return (
-        <div className="flex justify-between py-2 text-center bg-gray-300 rounded-lg hover:bg-slate-300">
+        <div className="flex justify-between py-2 text-center text-black bg-gray-200 rounded-lg hover:bg-slate-400 hover:text-white">
             <div className="w-1/5">
                 <h1>{name}</h1>
             </div>

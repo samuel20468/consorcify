@@ -1,17 +1,30 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, ParseUUIDPipe, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+  ParseUUIDPipe,
+  UseGuards,
+} from '@nestjs/common';
 import { FunctionalUnitsExpensesService } from './functional-units-expenses.service';
 import { CreateFunctionalUnitsExpenseDto } from './dto/create-functional-units-expense.dto';
 import { UpdateFunctionalUnitsExpenseDto } from './dto/update-functional-units-expense.dto';
 import { FunctionalUnitExpense } from './entities/functional-units-expense.entity';
 import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
-import { AuthGuard } from 'src/guards/auth.guard';
+import { AuthCustomGuard } from 'src/guards/auth.guard';
 
 @ApiTags('Functional Units Expenses')
 @ApiBearerAuth()
-@UseGuards(AuthGuard)
+@UseGuards(AuthCustomGuard)
 @Controller('functional-units-expenses')
 export class FunctionalUnitsExpensesController {
-  constructor(private readonly functionalUnitsExpensesService: FunctionalUnitsExpensesService) {}
+  constructor(
+    private readonly functionalUnitsExpensesService: FunctionalUnitsExpensesService,
+  ) {}
 
   @ApiQuery({ name: 'page', type: Number, required: false })
   @ApiQuery({ name: 'limit', type: Number, required: false })

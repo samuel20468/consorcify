@@ -16,7 +16,7 @@ import { CreateSupplierDto } from './dto/create-supplier.dto';
 import { Supplier } from './entities/supplier.entity';
 import { STATUS_MESSAGE } from 'src/utils/constants';
 import { ExcludeActiveInterceptor } from 'src/interceptors/exclude-active.interceptor';
-import { AuthGuard } from 'src/guards/auth.guard';
+import { AuthCustomGuard } from 'src/guards/auth.guard';
 import { Roles } from 'src/decorators/role.decorator';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { UpdateSupplierDto } from './dto/update-supplier.dto';
@@ -24,7 +24,7 @@ import { UpdateSupplierDto } from './dto/update-supplier.dto';
 @ApiTags('Supplier')
 @Controller('suppliers')
 @ApiBearerAuth()
-// @UseGuards(AuthGuard)
+// @UseGuards(AuthCustomGuard)
 @UseInterceptors(ExcludeActiveInterceptor)
 export class SuppliersController {
   constructor(private readonly suppliersService: SuppliersService) {}

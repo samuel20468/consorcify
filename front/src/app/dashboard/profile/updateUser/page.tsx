@@ -24,7 +24,7 @@ const page = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await getUserById(data, token);
+                const response = await getUserById(data.id, token);
                 if (response?.ok) {
                     const data = await response.json();
                     setUserData(data);
@@ -57,13 +57,13 @@ const page = () => {
 
     return (
         <ContainerDashboard className="w-[90%] h-[90vh]">
-            <div className="self-start text-2xl mt-2">Modificar Datos</div>
+            <div className="self-start mt-2 text-2xl">Modificar Datos</div>
             <div className="flex flex-col items-center justify-center w-full h-full p-8">
                 <form
                     onSubmit={handleSubmit}
                     className=" flex flex-col w-1/2 h-[60%] border justify-between rounded-[40px] p-8 gap-3"
                 >
-                    <div className="w-full flex justify-end">
+                    <div className="flex justify-end w-full">
                         <Button
                             onClick={handleBack}
                             className="py-2 w-24 rounded-[40px]"

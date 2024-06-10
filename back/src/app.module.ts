@@ -11,6 +11,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConsortiumsModule } from './modules/consortiums/consortiums.module';
 import { ExpendituresModule } from './modules/expenditures/expenditures.module';
 import { ExpensesModule } from './modules/expenses/expenses.module';
+import { PicturesModule } from './modules/pictures/pictures.module';
 import { FunctionalUnitsExpensesModule } from './modules/functional-units-expenses/functional-units-expenses.module';
 import { PaymentsModule } from './modules/payments/payments.module';
 
@@ -40,6 +41,7 @@ import { PaymentsModule } from './modules/payments/payments.module';
     ConsortiumsModule,
     ExpensesModule,
     ExpendituresModule,
+    PicturesModule,
     FunctionalUnitsExpensesModule,
     PaymentsModule,
   ],

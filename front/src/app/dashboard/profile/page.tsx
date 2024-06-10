@@ -1,45 +1,60 @@
-"use client";
-import { IUser } from "@/Interfaces/Interfaces";
-import { Button, ContainerDashboard } from "@/components/ui";
-import { getUserById } from "@/helpers/fetch.helper";
-import useAuth from "@/helpers/useAuth";
-import useSesion from "@/helpers/useSesion";
-import { log } from "console";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import React, { useEffect, useState } from "react";
+'use client';
+import { IAdmin, IRegisterAdmin, IUser } from '@/Interfaces/Interfaces';
+import { Button, ContainerDashboard } from '@/components/ui';
+import { getAdminById, getUserById } from '@/helpers/fetch.helper';
+import useAuth from '@/helpers/useAuth';
+import useSesion from '@/helpers/useSesion';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import React, { useEffect, useRef, useState } from 'react';
 
 const Profile = () => {
     const path = usePathname();
     useAuth();
-    const [userData, setUserData] = useState<IUser>();
+    const [userData, setUserData] = useState<IUser | IRegisterAdmin | IAdmin>();
     const [image, setImage] = useState(null);
     const { token, data } = useSesion();
-    console.log(data);
-    console.log(userData);
+    const prevTokenRef = useRef<string | null>(null);
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await getUserById(data, token);
-                console.log(response);
+        if (token && token !== prevTokenRef.current) {
+            const fetchData = async () => {
+                try {
+                    if (
+                        data.roles?.[0] === 'user' ||
+                        data.roles?.[0] === 'superadmin'
+                    ) {
+                        const response = await getUserById(data.id, token);
 
-                if (response?.ok) {
-                    const data = await response.json();
+                        if (response?.ok) {
+                            const data = await response.json();
 
-                    setUserData(data);
+                            setUserData(data);
+                        }
+                    } else {
+                        const response = await getAdminById(data.id, token);
+
+                        if (response?.ok) {
+                            const data = await response.json();
+
+                            setUserData(data);
+                        }
+                    }
+                } catch (error) {
+                    console.error(error);
                 }
-            } catch (error) {}
-        };
-        fetchData();
-    }, [path, token]);
+            };
+            fetchData();
+        }
+        prevTokenRef.current = token;
+    }, [token, data]);
 
     return (
         <ContainerDashboard className="w-[90%] h-[90vh]">
             <div className="flex  w-[90%] h-full m-3 bg-slate-50 p-10 gap-10 rounded-[40px]">
                 <div className="flex flex-col rounded-[40px] w-1/2 p-2  h-full bg-gray-400">
                     <div className="flex flex-col items-center justify-between w-full h-1/2 bg-white rounded-t-[40px] px-10 pt-10">
-                        <div className="flex items-center justify-center  p-1 border w-full h-3/4">
+                        <div className="flex items-center justify-center w-full p-1 border h-3/4">
                             <img src="" alt="aca va la imagen" />
                         </div>
                         <Link href="/addAvatar" className="w-full">
@@ -50,8 +65,15 @@ const Profile = () => {
                     </div>
                     <div className="flex flex-col text-black w-full justify-between h-1/2 bg-white rounded-b-[40px] p-10 gap-3">
                         <div>
-                            <h3>NOMBRE: {userData?.first_name}</h3>
-                            <h3>APELLIDO: {userData?.last_name}</h3>
+                            {data.roles?.[0] === 'user' ||
+                            data.roles?.[0] === 'superadmin' ? (
+                                <div>
+                                    <h3>NOMBRE: {userData?.first_name}</h3>
+                                    <h3>APELLIDO: {userData?.last_name}</h3>
+                                </div>
+                            ) : (
+                                <h3>ADMINISTRADOR: {userData?.name}</h3>
+                            )}
                             <h3>EMAIL: {userData?.email}</h3>
                         </div>
                         <div className="w-full">

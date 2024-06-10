@@ -1,7 +1,22 @@
 import { Type } from 'class-transformer';
-import { IsDate, IsNotEmpty, IsUUID } from 'class-validator';
+import {
+  IsDate,
+  IsNotEmpty,
+  IsString,
+  IsUUID,
+  MaxLength,
+} from 'class-validator';
 
 export class CreateExpenseDto {
+  /**
+   * Nombre descriptivo de la expensa
+   * @example "Expensa de Junio"
+   */
+  @IsNotEmpty({ message: 'El nombre es requerido' })
+  @IsString({ message: 'El nombre debe ser una cadena de texto' })
+  @MaxLength(50, { message: 'El nombre debe tener como máximo 50 caracteres' })
+  name: string;
+
   /**
    * La fecha de emisión del gasto
    * @example "2024-06-02"

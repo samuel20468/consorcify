@@ -43,9 +43,16 @@ const Consortium = () => {
     }, [token, pathname]);
 
     return (
-        <div className="h-screen text-black bg-gray-100">
+        <div className="h-screen bg-fondo">
             <ContainerDashboard>
                 <Title>Consorcios</Title>
+                <div className="w-[90%] border-t border-b border-white flex justify-around p-2 my-5 text-center">
+                    <h1>Nombre</h1>
+                    <h1>CUIT</h1>
+                    <h1>Dirección</h1>
+                    <h1>UFs</h1>
+                    <h1>Deuda</h1>
+                </div>
                 {consortiums.length > 0 ? (
                     <ConsorCards consortiums={consortiums} />
                 ) : (
@@ -56,7 +63,7 @@ const Consortium = () => {
                     </div>
                 )}
                 <Link
-                    className="flex justify-center w-1/6"
+                    className="flex justify-center w-1/6 mt-4"
                     href={"/addConsortium"}
                 >
                     <Button className="w-full p-2 rounded-xl">

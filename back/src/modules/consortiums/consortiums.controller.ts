@@ -14,14 +14,14 @@ import {
 import { ConsortiumsService } from './consortiums.service';
 import { CreateConsortiumDto } from './dto/create-consortium.dto';
 import { UpdateConsortiumDto } from './dto/update-consortium.dto';
-import { AuthGuard } from 'src/guards/auth.guard';
+import { AuthCustomGuard } from 'src/guards/auth.guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ExcludeActiveInterceptor } from 'src/interceptors/exclude-active.interceptor';
 
 @ApiTags('Consortium')
 @Controller('consortiums')
 @ApiBearerAuth()
-@UseGuards(AuthGuard)
+@UseGuards(AuthCustomGuard)
 @UseInterceptors(ExcludeActiveInterceptor)
 export class ConsortiumsController {
   constructor(private readonly consortiumsService: ConsortiumsService) {}

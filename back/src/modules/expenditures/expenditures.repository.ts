@@ -21,17 +21,17 @@ export class ExpendituresRepository {
     private expenditureRepository: Repository<Expenditure>,
     @InjectRepository(Supplier)
     private supplierRepository: Repository<Supplier>,
-    private expensesRepository: ExpensesRepository,
+    @InjectRepository(Expense)
+    private expenseRepository: Repository<Expense>,
     private readonly dataSource: DataSource,
   ) {}
 
   async create(
     createExpenditureDto: CreateExpenditureDto,
   ): Promise<Expenditure> {
-    const { expense_id, supplier_id, consortium_id } = createExpenditureDto;
     const supplier = await this.supplierRepository.findOneBy({
       id: createExpenditureDto.supplier_id,
-    })
+    });
 
     if (!supplier) {
       throw new NotFoundException('El proveedor del consorcio no existe');
@@ -42,17 +42,19 @@ export class ExpendituresRepository {
         supplier: { id: createExpenditureDto.supplier_id },
         invoice_number: createExpenditureDto.invoice_number,
       },
-    })
+    });
 
     if (foundExpenditure) {
-      throw new ConflictException('La factura ya existe');
+      throw new ConflictException(`La factura ${createExpenditureDto.invoice_number} del proveedor ${createExpenditureDto.supplier_id} ya existe`);
     }
-      
-    const expense: Expense = await checkEntityExistence(
-      this.expensesRepository,
-      expense_id,
-      'la expensa',
-    );
+
+    const expense: Expense = await this.expenseRepository.findOneBy({
+      id: createExpenditureDto.expense_id,
+    });
+
+    if (!expense) {
+      throw new NotFoundException(`La expensa id ${createExpenditureDto.expense_id} no existe`);
+    }
 
     if (expense.status === EXPENSE_STATUS.CLOSED)
       throw new ConflictException(
@@ -71,6 +73,11 @@ export class ExpendituresRepository {
       await this.supplierRepository.update(supplier, {
         balance: newSupplierBalance,
       });
+      const newExpenseTotalAmount =
+        expense.total_amount + createExpenditureDto.total_amount;
+      await this.expenseRepository.update(expense, {
+        total_amount: newExpenseTotalAmount,
+      });
       return newExpenditure;
     } catch (error) {
       throw new Error(error);
@@ -88,7 +95,7 @@ export class ExpendituresRepository {
   async findOne(id: string): Promise<Expenditure> {
     return await this.expenditureRepository.findOne({
       where: { id },
-      relations: ['supplier_consortium', 'expense'],
+      relations: ['supplier', 'expense'],
     });
   }
 
@@ -132,7 +139,7 @@ export class ExpendituresRepository {
       await queryRunner.commitTransaction();
       return await this.expenditureRepository.findOne({
         where: { id },
-        relations: ['supplier_consortium'],
+        relations: ['supplier'],
       });
     } catch (error) {
       await queryRunner.rollbackTransaction();
@@ -145,7 +152,7 @@ export class ExpendituresRepository {
   async disable(id: string): Promise<Expenditure> {
     const expenditure = await this.expenditureRepository.findOne({
       where: { id },
-      relations: ['supplier_consortium'],
+      relations: ['supplier'],
     });
     if (!expenditure) {
       throw new NotFoundException(`Gasto con id ${id} no encontrado`);
@@ -155,7 +162,8 @@ export class ExpendituresRepository {
         `El gasto con id ${id} ya ha sido pagado, no se puede modificar`,
       );
     }
-    const newSupplierBalance = expenditure.supplier.balance - expenditure.total_amount;
+    const newSupplierBalance =
+      expenditure.supplier.balance - expenditure.total_amount;
     expenditure.supplier.balance = newSupplierBalance;
     await this.supplierRepository.save(expenditure.supplier);
     expenditure.active = false;

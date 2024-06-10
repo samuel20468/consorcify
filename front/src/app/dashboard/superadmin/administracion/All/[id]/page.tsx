@@ -61,7 +61,15 @@ const page = () => {
     return (
         <div className="flex w-full h-screen gap-3 bg-[#e5e7eb] text-black">
             <ContainerDashboard className="w-full flex flex-col bg-[#e5e7eb] p-5">
-                <Title>{admin?.name}</Title>
+                <Title>
+                    Administración{" "}
+                    <span className="text-2xl font-thin">
+                        | Administraciones{" "}
+                        <span className="text-xl font-thin">
+                            | {admin?.name}
+                        </span>
+                    </span>
+                </Title>
                 <div className="flex flex-col items-center justify-around w-3/4 p-10 text-black border rounded-[50px] h-3/4 bg-[#dadada]">
                     <div className="flex flex-col w-3/4 gap-2">
                         <p className="px-5 py-4  rounded-[50px] bg-[#e5e7eb] shadow text-fondo border-fondo">

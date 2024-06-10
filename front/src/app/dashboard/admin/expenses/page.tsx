@@ -50,9 +50,8 @@ const Expense = () => {
                 const response = await getExpenses(token);
                 if (response) {
                     const data = await response.json();
-                    console.log(data);
-
                     setExpensas(data);
+                    setResult(data);
                 }
             } catch (error) {}
         };
@@ -75,37 +74,47 @@ const Expense = () => {
             </div>
             <div className="w-[90%] boder rounded">
                 <div className="w-full flex justify-around">
-                    <p className="border-b border-black">Fecha de inicio</p>
-                    <p className="border-b border-black">
+                    <p className=" w-1/5 flex items-center justify-center border-b border-black">
+                        Fecha de inicio
+                    </p>
+                    <p className=" w-1/5 flex items-center justify-center border-b border-black">
                         Fecha de Vencimiento
                     </p>
-                    <p className="border-b border-black">Total Expensas</p>
-                    <p className="border-b border-black">Estado</p>
-                    <p className="border-b border-black">Consorcio</p>
+                    <p className=" w-1/5 flex items-center justify-center border-b border-black">
+                        Total Expensas
+                    </p>
+                    <p className=" w-1/5 flex items-center justify-center border-b border-black">
+                        Estado
+                    </p>
+                    <p className=" w-1/5 flex items-center justify-center border-b border-black">
+                        Consorcio
+                    </p>
                 </div>
                 <div className="w-full h-full">
                     {result.length > 0 ? (
                         result.map((expensa) => (
-                            <div
+                            <Link
+                                href={`/dashboard/admin/expenses/${expensa.id}`}
                                 key={expensa.id}
-                                className="w-full flex justify-around"
                             >
-                                <p className="border-b border-black text-black">
-                                    {expensa.issue_date}
-                                </p>
-                                <p className="border-b border-black">
-                                    {expensa.expiration_date}
-                                </p>
-                                <p className="border-b border-black">
-                                    {expensa.total_amount}
-                                </p>
-                                <p className="border-b border-black">
-                                    {expensa.status}
-                                </p>
-                                <p className="border-b border-black">
-                                    {expensa.consortium.name}
-                                </p>
-                            </div>
+                                <div className="w-full flex justify-around my-2 border py-2 rounded-[40px] border-black">
+                                    <p className="flex items-center justify-center w-1/5">
+                                        {expensa.issue_date}
+                                    </p>
+                                    <p className="flex items-center justify-center w-1/5">
+                                        {expensa.expiration_date}
+                                    </p>
+                                    <p className="flex items-center justify-center w-1/5">
+                                        {expensa.total_amount}
+                                    </p>
+                                    <p className="flex items-center justify-center w-1/5">
+                                        {expensa.status}
+                                    </p>
+                                    <p className="flex items-center justify-center w-1/5">
+                                        {expensa.consortium.name}
+                                    </p>
+                                </div>
+                            </Link>
                         ))
                     ) : (
                         <div className="w-full h-[30vh] flex justify-center items-center ">

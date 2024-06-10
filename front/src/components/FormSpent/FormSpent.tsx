@@ -207,7 +207,7 @@ const FormSpent = () => {
                             {expenses.length > 0 &&
                                 expenses.map((expense) => (
                                     <option value={expense.id} key={expense.id}>
-                                        {expense.id}
+                                        {expense.name}
                                     </option>
                                 ))}
                         </Select>

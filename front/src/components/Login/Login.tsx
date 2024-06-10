@@ -109,7 +109,7 @@ const Login = () => {
     };
 
     const handleGoogle = async (e: any) => {
-        window.location.href = `${apiUrl}/auth/google`;
+        window.location.href = `${apiUrl}/auth/google/callback`;
     };
 
     if (token) {

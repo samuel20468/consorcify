@@ -93,8 +93,8 @@ const addExpenses = () => {
     console.log(expense);
 
     return (
-        <div className="flex flex-col w-full items-center justify-center p-8 h-1/2">
-            <div className="w-1/2 flex justify-end">
+        <div className="flex flex-col items-center justify-center w-full p-8 h-1/2">
+            <div className="flex justify-end w-1/2">
                 <Link href="/dashboard/admin/expenses/">
                     <Button className="w-32 py-2 rounded-[40px]">Atrás</Button>
                 </Link>
@@ -106,8 +106,8 @@ const addExpenses = () => {
                 className="w-1/2 flex flex-col items-center justify-between h-full  p-8 rounded-[40px] border border-black"
                 onSubmit={handleSubmit}
             >
-                <div className="w-full flex flex-col">
-                    <div className="w-full flex justify-between">
+                <div className="flex flex-col w-full">
+                    <div className="flex justify-between w-full">
                         <Label className="w-full text-black">
                             Nombre de expensa:
                         </Label>
@@ -119,12 +119,12 @@ const addExpenses = () => {
                         value={expense.name}
                         onChange={handleChange}
                     />
-                    <div className="w-full flex justify-between">
+                    <div className="flex justify-between w-full">
                         <Label className="w-full text-black">
                             Fecha de Vencimiento
                         </Label>
                         {errors.expiration_date && (
-                            <span className="w-full flex items-center justify-center">
+                            <span className="flex items-center justify-center w-full">
                                 {errors.expiration_date}
                             </span>
                         )}
@@ -137,7 +137,7 @@ const addExpenses = () => {
                         value={expense.expiration_date}
                         onChange={handleChange}
                     />
-                    <div className="w-full flex flex-col">
+                    <div className="flex flex-col w-full">
                         <Label className="w-full text-black">Consorcio</Label>
                         <select
                             value={expense.consortium_id}

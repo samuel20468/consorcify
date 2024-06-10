@@ -89,7 +89,6 @@ export async function adminFetch(registerAdmin: IRegisterAdmin, token: string) {
                 );
             });
         }
-
         return response;
     } catch (error: any) {
         throw new Error(error);
@@ -397,8 +396,7 @@ export const newExpense = async (
             body: JSON.stringify(expense),
         });
         if (response.ok) {
-            const data = response.json();
-            return data;
+            response;
         }
         return undefined;
     } catch (error) {
@@ -436,8 +434,6 @@ export const expenditureFetch = async (
     token: string,
     expenditure: IExpenditures
 ) => {
-    console.log(expenditure);
-
     try {
         const response = await fetch(`${apiUrl}/expenditures`, {
             method: "POST",
@@ -447,10 +443,41 @@ export const expenditureFetch = async (
             },
             body: JSON.stringify(expenditure),
         });
-        if (response.ok) {
-            const data = response.json();
-            return data;
+        if (!response.ok) {
+            return response.json().then((errorInfo) => {
+                throw new Error(`
+                    Error ${response.status}: ${
+                    errorInfo.message || response.statusText
+                }
+            `);
+            });
         }
+        return response;
+    } catch (error: any) {
+        throw new Error(error);
+    }
+};
+
+// Obtener gastos
+export const getExpenditures = async (
+    token: string,
+    page: number = 1,
+    limit: number = 20
+) => {
+    try {
+        const response = await fetch(
+            `${apiUrl}/expenditures?page=${page}&limit=${limit}`,
+            {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
+        if (response.ok) {
+            return response;
+        }
+        console.log(response);
     } catch (error) {
         console.error(error);
     }

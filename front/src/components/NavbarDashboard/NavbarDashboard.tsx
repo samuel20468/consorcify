@@ -37,7 +37,7 @@ const NavbarDashboard = () => {
                 console.error(error);
             }
         };
-        if (token) {
+        if (data.roles?.[0] === "user" || data.roles?.[0] === "superadmin") {
             fetchData();
         }
     }, [token]);
@@ -54,7 +54,7 @@ const NavbarDashboard = () => {
                 console.error(error);
             }
         };
-        if (token) {
+        if (data.roles?.[0] === "cadmin") {
             fecthData();
         }
     }, [token]);

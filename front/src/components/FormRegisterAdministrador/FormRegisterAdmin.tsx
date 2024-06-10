@@ -86,11 +86,12 @@ const FormRegisterAdmin = ({ update = false }) => {
             !adminRegister.cuit
         ) {
             Swal.fire({
-                title: "Error al crear un administrador",
+                title: "Formulario incompleto",
                 text: "Asegúrate de completar todos los campos del formulario.",
                 icon: "error",
                 confirmButtonColor: "#0b0c0d",
             });
+            return;
         }
         try {
             if (update == true) {

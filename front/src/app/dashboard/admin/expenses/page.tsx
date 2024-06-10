@@ -62,7 +62,7 @@ const Expense = () => {
     }, [token, pathname]);
 
     return (
-        <ContainerDashboard className="h-[90vh] text-black bg-gray-100 w-[90%] gap-3">
+        <ContainerDashboard className="h-[90vh] text-white w-[90%] gap-3">
             <Title>Expensas</Title>
             <div className="w-[90%] flex justify-between">
                 <SearchBar onSearch={handleSearch} />
@@ -73,43 +73,41 @@ const Expense = () => {
                     </Button>
                 </Link>
             </div>
-            <div className="w-[90%] boder rounded">
-                <div className="w-full flex justify-around">
-                    <p className="border-b border-black">Fecha de inicio</p>
-                    <p className="border-b border-black">
-                        Fecha de Vencimiento
-                    </p>
-                    <p className="border-b border-black">Total Expensas</p>
-                    <p className="border-b border-black">Estado</p>
-                    <p className="border-b border-black">Consorcio</p>
+            <div className="w-[90%]">
+                <div className="flex justify-around w-full mb-4">
+                    <p className="w-1/5 text-center">Fecha de inicio</p>
+                    <p className="w-1/5 text-center">Fecha de Vencimiento</p>
+                    <p className="w-1/5 text-center">Total Expensas</p>
+                    <p className="w-1/5 text-center">Estado</p>
+                    <p className="w-1/5 text-center">Consorcio</p>
                 </div>
-                <div className="w-full h-full">
+                <div className="flex flex-col w-full h-full gap-3 ">
                     {result.length > 0 ? (
                         result.map((expensa) => (
                             <div
                                 key={expensa.id}
-                                className="w-full flex justify-around"
+                                className="flex justify-around w-full p-2 text-black bg-gray-100 rounded-xl"
                             >
-                                <p className="border-b border-black text-black">
+                                <p className="w-1/5 text-center">
                                     {expensa.issue_date}
                                 </p>
-                                <p className="border-b border-black">
+                                <p className="w-1/5 text-center">
                                     {expensa.expiration_date}
                                 </p>
-                                <p className="border-b border-black">
+                                <p className="w-1/5 text-center">
                                     {expensa.total_amount}
                                 </p>
-                                <p className="border-b border-black">
+                                <p className="w-1/5 text-center">
                                     {expensa.status}
                                 </p>
-                                <p className="border-b border-black">
+                                <p className="w-1/5 text-center">
                                     {expensa.consortium.name}
                                 </p>
                             </div>
                         ))
                     ) : (
                         <div className="w-full h-[30vh] flex justify-center items-center ">
-                            <p className="flex justify-center items-center w-full h-3/4 text-2xl">
+                            <p className="flex items-center justify-center w-full text-2xl h-3/4">
                                 {expensas.length === 0
                                     ? "No hay expensas para visualizar"
                                     : "No se encontraron coincidencias"}

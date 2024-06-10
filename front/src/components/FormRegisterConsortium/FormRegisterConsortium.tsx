@@ -191,14 +191,16 @@ const FormRegisterConsortium = ({ update = false }) => {
             !consortiumRegister.street_name ||
             !consortiumRegister.suterh_key ||
             !consortiumRegister.ufs ||
-            !consortiumRegister.zip_code
+            !consortiumRegister.zip_code ||
+            !consortiumRegister.interest_rate
         ) {
             Swal.fire({
-                title: "Error al crear un consorcio",
+                title: "Formulario incompleto",
                 text: "Asegúrate de completar todos los campos del formulario.",
                 icon: "error",
                 confirmButtonColor: "#0b0c0d",
             });
+            return;
         }
 
         const consortiumData = {
@@ -227,6 +229,10 @@ const FormRegisterConsortium = ({ update = false }) => {
                             if (data?.roles?.[0] == "superadmin") {
                                 router.push(
                                     `/dashboard/superadmin/consorcios/All/${params.id}`
+                                );
+                            } else {
+                                router.push(
+                                    `/dashboard/admin/consortiums/${params.id}`
                                 );
                             }
                         }
@@ -258,7 +264,7 @@ const FormRegisterConsortium = ({ update = false }) => {
                                 );
                             } else {
                                 router.push(
-                                    `/dashboard/admin/consortiums/All/${dato.id}`
+                                    `/dashboard/admin/consortiums/${dato.id}`
                                 );
                             }
                         }

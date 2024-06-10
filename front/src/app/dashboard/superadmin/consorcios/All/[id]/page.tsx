@@ -44,29 +44,33 @@ const page = () => {
     });
 
     const handleDelete = async () => {
-        const response = await deleteConsortiumById(params.id, token);
-
-        if (response?.ok) {
-            Swal.fire({
-                icon: "warning",
-                title: "Estás seguro?",
-                text: `Te recuerdo que si borras el consorcio ${consorcio?.name} no podrás volver atrás.`,
-                showCancelButton: true,
-                confirmButtonColor: "#008f39",
-                cancelButtonColor: "#8b0000",
-                confirmButtonText: "Si, borrarlo!",
-                cancelButtonText: "No, cancelar!",
-            }).then((result) => {
-                if (result.isConfirmed) {
+        Swal.fire({
+            icon: "warning",
+            title: "Estás seguro?",
+            text: `Te recuerdo que si borras el consorcio ${consorcio?.name} no podrás volver atrás.`,
+            showCancelButton: true,
+            confirmButtonColor: "#008f39",
+            cancelButtonColor: "#8b0000",
+            confirmButtonText: "Si, borrarlo!",
+            cancelButtonText: "No, cancelar!",
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    const response = await deleteConsortiumById(
+                        params.id,
+                        token
+                    );
                     Swal.fire({
                         title: "Consorcio borrado!",
                         text: `El consorcio ${consorcio?.name} fue borrado correctamente`,
                         icon: "success",
                     });
                     router.push("/dashboard/superadmin/consorcios/All");
+                } catch (error) {
+                    console.error(error);
                 }
-            });
-        }
+            }
+        });
     };
 
     return (

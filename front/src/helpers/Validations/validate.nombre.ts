@@ -1,5 +1,5 @@
 export const validateNombreCompleto = (nombre: string, apellido: string) => {
-    const reGeNombres = /^[A-Za-z\u00C0-\u017F\s]+$/;
+    const reGeNombres = /^[A-Za-zÀ-ÿ\s]+$/;
     const errors = {
         name: "",
         lastName: "",

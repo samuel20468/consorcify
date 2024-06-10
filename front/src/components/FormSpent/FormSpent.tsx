@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import {
     IConsortium,
     IExpenditures,
+    IExpendituresErrors,
     IExpense,
     ISuppliers,
 } from "@/Interfaces/Interfaces";
@@ -23,6 +24,7 @@ import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
+import { validateInvoiceNumber } from "@/helpers/Validations/validate.invoice_number";
 
 // -------------------
 
@@ -43,6 +45,8 @@ const FormSpent = () => {
     };
     const [registerExpenditure, setRegisterExpenditure] =
         useState<IExpenditures>(initialData);
+    const [errorRegisterExpenditure, setErrorRegisterExpenditure] =
+        useState<IExpendituresErrors>(initialData);
     const [consortiums, setConsortiums] = useState<IConsortium[]>([]);
     const [expenses, setExpenses] = useState<IExpense[]>([]);
     const [suppliers, setSuppliers] = useState<ISuppliers[]>([]);
@@ -116,36 +120,46 @@ const FormSpent = () => {
             !registerExpenditure.description
         ) {
             Swal.fire({
+                title: "Formulario incompleto",
+                text: "Asegúrate de completar todos los campos del formulario.",
                 icon: "error",
-                title: "Por favor completa todos los campos",
+                confirmButtonColor: "#0b0c0d",
             });
             return;
         }
         try {
             const response = await expenditureFetch(token, registerExpenditure);
-            if (response) {
+            if (response?.ok) {
                 Swal.fire({
+                    title: "Excelente",
+                    text: `El gasto se creó correctamente`,
                     icon: "success",
-                    title: "Gasto creado correctamente",
-                }).then((response) => {
-                    if (response.isConfirmed) {
-                        router.push("/dashboard/admin/spent");
-                    } else {
-                        Swal.fire({
-                            icon: "error",
-                            title: "Error al crear el gasto",
-                        });
-                        return;
-                    }
+                    confirmButtonColor: "#0b0c0d",
+                }).then(async (res) => {
+                    const data = await response.json();
+                    router.push("/dashboard/admin/spent");
                 });
             }
         } catch (error) {
             Swal.fire({
+                title: "Error de información",
+                text: "Los datos que nos proporcionaste son inválidos.",
                 icon: "error",
-                title: "No se pudo crear el gasto",
+                confirmButtonColor: "#0b0c0d",
             });
         }
     };
+
+    useEffect(() => {
+        const invoiceNumberErrors = validateInvoiceNumber(
+            registerExpenditure.invoice_number
+        );
+
+        setErrorRegisterExpenditure((prevErrors) => ({
+            ...prevErrors,
+            ...invoiceNumberErrors,
+        }));
+    }, [registerExpenditure]);
 
     return (
         <div className="w-[80%] flex flex-col justify-center bg-[#d3d3d3] p-5 rounded-[50px] text-black">
@@ -263,6 +277,12 @@ const FormSpent = () => {
                             onChange={handleChange}
                             placeholder="0000-5678912"
                         />
+                        {errorRegisterExpenditure.invoice_number &&
+                            registerExpenditure.invoice_number && (
+                                <span className="self-end text-xs text-red-500">
+                                    {errorRegisterExpenditure.invoice_number}
+                                </span>
+                            )}
                     </div>
                     <div className="flex flex-col w-1/4">
                         <Label htmlFor="total_amount">

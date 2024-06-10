@@ -45,32 +45,30 @@ const page = () => {
     }, [path, token]);
 
     const handleDelete = async () => {
-        try {
-            const response = await deleteAdmin(params.id, token);
-            if (response?.ok) {
-                Swal.fire({
-                    icon: "warning",
-                    title: "Estás seguro?",
-                    text: `Te recuerdo que si borras la administración ${admin?.name} no podrás volver atrás.`,
-                    showCancelButton: true,
-                    confirmButtonColor: "#008f39",
-                    cancelButtonColor: "#8b0000",
-                    confirmButtonText: "Si, borrarlo!",
-                    cancelButtonText: "No, cancelar!",
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        Swal.fire({
-                            title: "Administración borrada!",
-                            text: `La asministración ${admin?.name} fue borrado correctamente`,
-                            icon: "success",
-                        });
-                        router.push("/dashboard/superadmin/administracion/All");
-                    }
-                });
+        Swal.fire({
+            icon: "warning",
+            title: "Estás seguro?",
+            text: `Te recuerdo que si borras la administración ${admin?.name} no podrás volver atrás.`,
+            showCancelButton: true,
+            confirmButtonColor: "#008f39",
+            cancelButtonColor: "#8b0000",
+            confirmButtonText: "Si, borrarlo!",
+            cancelButtonText: "No, cancelar!",
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    const response = await deleteAdmin(params.id, token);
+                    Swal.fire({
+                        title: "Administración borrada!",
+                        text: `La asministración ${admin?.name} fue borrado correctamente`,
+                        icon: "success",
+                    });
+                    router.push("/dashboard/superadmin/administracion/All");
+                } catch (error) {
+                    console.error(error);
+                }
             }
-        } catch (error) {
-            console.error(error);
-        }
+        });
     };
 
     return (

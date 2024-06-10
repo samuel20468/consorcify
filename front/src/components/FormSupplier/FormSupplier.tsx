@@ -1,5 +1,6 @@
 // Estilos y componentes
 import { Button, Input, Label, Select } from "../ui";
+import Swal from "sweetalert2";
 
 // Interfaces
 import {
@@ -16,6 +17,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
+import { validateCuit } from "@/helpers/Validations/validate.cuit";
 
 // ---------------
 
@@ -70,24 +72,40 @@ const FormSupplier = () => {
             !registerSupplier.address ||
             !registerSupplier.balance === undefined
         ) {
-            alert("Faltan datos en el formulario");
+            Swal.fire({
+                title: "Formulario incompleto",
+                text: "Asegúrate de completar todos los campos del formulario.",
+                icon: "error",
+                confirmButtonColor: "#0b0c0d",
+            });
             return;
         }
 
         try {
             const response = await supplierFetch(registerSupplier, token);
-            console.log(response);
-
             if (response?.ok) {
-                alert("Registro exitoso");
-                const data = await response.json();
-                setRegisterSupplier(data);
-                router.push(`dashboard/admin/portal/suppliers/${data.id}`);
-            } else {
-                console.error("Error en la solicitud:", response?.statusText);
+                Swal.fire({
+                    title: "Excelente",
+                    text: `El consorcio ${registerSupplier.name} se creó correctamente`,
+                    icon: "success",
+                    confirmButtonColor: "#0b0c0d",
+                }).then(async (res) => {
+                    if (res.isConfirmed) {
+                        const data = await response.json();
+                        setRegisterSupplier(data);
+                        router.push(
+                            `dashboard/admin/portal/suppliers/${data.id}`
+                        );
+                    }
+                });
             }
         } catch (error) {
-            console.log("Error en la solicitud:", error);
+            Swal.fire({
+                title: "Error de información",
+                text: "Los datos que nos proporcionaste son inválidos.",
+                icon: "error",
+                confirmButtonColor: "#0b0c0d",
+            });
         }
     };
 
@@ -107,6 +125,14 @@ const FormSupplier = () => {
             fetchData();
         }
     }, [token, pathname]);
+
+    useEffect(() => {
+        const cuitErrors = validateCuit(registerSupplier.cuit);
+        setErrorSupplier((prevErrors) => ({
+            ...prevErrors,
+            ...cuitErrors,
+        }));
+    }, [registerSupplier]);
 
     return (
         <div className="w-[80%] flex flex-col justify-center bg-[#d3d3d3] p-5 rounded-[50px] text-black">
@@ -171,6 +197,11 @@ const FormSupplier = () => {
                             onChange={handleChange}
                             placeholder="11-11111111-1"
                         />
+                        {errorSupplier.cuit && registerSupplier.cuit && (
+                            <span className="self-end text-xs text-red-500">
+                                {errorSupplier.cuit}
+                            </span>
+                        )}
                     </div>
                     <div className="flex flex-col w-3/4">
                         <Label htmlFor="email">

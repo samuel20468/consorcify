@@ -62,8 +62,25 @@ export class PicturesController {
     return await this.picturesService.uploadPicture(id, image, 'consortiums');
   }
 
-  @Get('hola')
-  hola() {
-    return 'hola';
+  @Post('update-cadmin/:id')
+  @UseInterceptors(FileInterceptor('image'))
+  async uploadCAdminicture(
+    @Param('id', ParseUUIDPipe) id: string,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({
+            maxSize: 200000,
+            message: 'El archivo debe pesar menos de 200 Kb',
+          }),
+          new FileTypeValidator({
+            fileType: /(jpg|jpeg|png|webp|svg)/,
+          }),
+        ],
+      }),
+    )
+    image: Express.Multer.File,
+  ): Promise<UploadApiResponse> {
+    return await this.picturesService.uploadPicture(id, image, 'c-admins');
   }
 }

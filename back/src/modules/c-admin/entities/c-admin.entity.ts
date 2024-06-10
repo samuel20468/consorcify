@@ -70,6 +70,16 @@ export class CAdmin {
   rpa: string;
 
   /**
+   * El link a la imagen del Usuario
+   * @example "http://imagenDeSilueta.com"
+   */
+  @Column({
+    default:
+      'https://res.cloudinary.com/consorcify/image/upload/v1717986798/xhieldioaw4r59gfxqmp.jpg',
+  })
+  picture: string;
+
+  /**
    * Indica si el Administrador está activo
    * @example true
    */

@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { User } from '../users/entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Consortium } from '../consortiums/entities/consortium.entity';
+import { CAdmin } from '../c-admin/entities/c-admin.entity';
 
 @Injectable()
 export class PicturesService {
@@ -12,6 +13,8 @@ export class PicturesService {
     @InjectRepository(User) private readonly usersRepository: Repository<User>,
     @InjectRepository(Consortium)
     private readonly consortiumsRepository: Repository<Consortium>,
+    @InjectRepository(CAdmin)
+    private readonly cAdminsRepository: Repository<CAdmin>,
   ) {}
   async uploadPicture(
     id: string,
@@ -46,6 +49,8 @@ export class PicturesService {
               this.consortiumsRepository.update(id, {
                 picture: result.secure_url,
               });
+            } else if (entity === 'c-admins') {
+              this.cAdminsRepository.update(id, { picture: result.secure_url });
             }
           }
         },

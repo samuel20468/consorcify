@@ -186,7 +186,6 @@ export interface INewExpense {
 }
 
 export interface IExpense {
-    name?: string;
     id: string;
     name: string;
     issue_date: string;

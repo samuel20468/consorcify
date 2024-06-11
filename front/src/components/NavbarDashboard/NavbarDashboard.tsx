@@ -40,7 +40,7 @@ const NavbarDashboard = () => {
         if (data.roles?.[0] === "user" || data.roles?.[0] === "superadmin") {
             fetchData();
         }
-    }, [token]);
+    }, [token, data.id, data.roles]);
 
     useEffect(() => {
         const fecthData = async () => {
@@ -57,7 +57,7 @@ const NavbarDashboard = () => {
         if (data.roles?.[0] === "cadmin") {
             fecthData();
         }
-    }, [token]);
+    }, [token, data.id, data.roles]);
 
     const handleLogout = () => {
         localStorage.removeItem("userData");

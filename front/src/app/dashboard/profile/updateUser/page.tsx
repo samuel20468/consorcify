@@ -8,7 +8,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
-const page = () => {
+const Page = () => {
     const initialData = {
         first_name: "",
         last_name: "",
@@ -34,7 +34,7 @@ const page = () => {
             }
         };
         fetchData();
-    }, [token, path]);
+    }, [token, path, data.id]);
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -111,4 +111,4 @@ const page = () => {
     );
 };
 
-export default page;
+export default Page;

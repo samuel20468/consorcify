@@ -1,13 +1,13 @@
-'use client';
-import { IAdmin, IRegisterAdmin, IUser } from '@/Interfaces/Interfaces';
-import { Button, ContainerDashboard } from '@/components/ui';
-import { getAdminById, getUserById } from '@/helpers/fetch.helper';
-import useAuth from '@/helpers/useAuth';
-import useSesion from '@/helpers/useSesion';
-import Image from 'next/image';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import React, { useEffect, useRef, useState } from 'react';
+"use client";
+import { IAdmin, IRegisterAdmin, IUser } from "@/Interfaces/Interfaces";
+import { Button, ContainerDashboard } from "@/components/ui";
+import { getAdminById, getUserById } from "@/helpers/fetch.helper";
+import useAuth from "@/helpers/useAuth";
+import useSesion from "@/helpers/useSesion";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import React, { useEffect, useRef, useState } from "react";
 
 const Profile = () => {
     const path = usePathname();
@@ -21,8 +21,8 @@ const Profile = () => {
             const fetchData = async () => {
                 try {
                     if (
-                        data.roles?.[0] === 'user' ||
-                        data.roles?.[0] === 'superadmin'
+                        data.roles?.[0] === "user" ||
+                        data.roles?.[0] === "superadmin"
                     ) {
                         const response = await getUserById(data.id, token);
 
@@ -56,7 +56,7 @@ const Profile = () => {
                     <div className="flex flex-col items-center justify-center w-full h-1/2 bg-white rounded-t-[40px] px-10 pt-2">
                         <div className="flex items-center justify-center w-200 border rounded-full h-200 pb-0 mb-2">
                             <Image
-                                src={userData?.picture}
+                                src={userData?.picture!}
                                 alt="Imagen de perfil"
                                 className="order rounded-full"
                                 width={200}
@@ -71,8 +71,8 @@ const Profile = () => {
                     </div>
                     <div className="flex flex-col text-black w-full justify-between h-1/2 bg-white rounded-b-[40px] p-10 gap-3">
                         <div>
-                            {data.roles?.[0] === 'user' ||
-                            data.roles?.[0] === 'superadmin' ? (
+                            {data.roles?.[0] === "user" ||
+                            data.roles?.[0] === "superadmin" ? (
                                 <div>
                                     <h3>NOMBRE: {userData?.first_name}</h3>
                                     <h3>APELLIDO: {userData?.last_name}</h3>

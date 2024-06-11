@@ -14,7 +14,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
-const page = () => {
+const Page = () => {
     useAuth();
     const params: { id: string } = useParams();
     const { token } = useSesion();
@@ -41,7 +41,7 @@ const page = () => {
             const formatedCuit = formatearNumero(consorcio?.cuit!);
             setCuit(formatedCuit);
         }
-    });
+    }, [consorcio]);
 
     const handleDelete = async () => {
         Swal.fire({
@@ -98,7 +98,10 @@ const page = () => {
                         {consorcio?.name}
                     </h3>
                     <p className="px-5 py-4  rounded-[50px] bg-[#e5e7eb] shadow text-fondo border-fondo">
-                        Administrador: {consorcio?.c_admin?.name}
+                        Administrador:{" "}
+                        {typeof consorcio?.c_admin === "object"
+                            ? consorcio.c_admin.name
+                            : consorcio?.c_admin}
                     </p>
                     <p className="px-5 py-4  rounded-[50px] bg-[#e5e7eb] shadow text-fondo border-fondo">
                         CATEGORIA: {consorcio?.category}
@@ -140,4 +143,4 @@ const page = () => {
     );
 };
 
-export default page;
+export default Page;

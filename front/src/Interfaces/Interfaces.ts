@@ -14,6 +14,7 @@ export interface ILogedUser {
 }
 
 export interface IUser {
+    name?: string;
     first_name: string;
     last_name?: string;
     email: string;
@@ -31,9 +32,12 @@ export interface IAdmin extends IUser {
     sat: string;
     active: boolean;
     name?: string;
+    picture: string;
 }
 
 export interface IRegisterAdmin {
+    first_name?: string;
+    last_name?: string;
     name: string;
     email: string;
     password?: string;
@@ -43,6 +47,7 @@ export interface IRegisterAdmin {
     sat: string;
     rpa: string;
     id?: string;
+    picture?: string;
 }
 
 export interface IRegisterAdminError {

@@ -11,7 +11,7 @@ import { validateForm } from "@/helpers/Validations/vallidate.expense";
 import Swal from "sweetalert2";
 import Link from "next/link";
 
-const addExpenses = () => {
+const AddExpenses = () => {
     useAuth();
     const path = usePathname();
     const router = useRouter();
@@ -175,4 +175,4 @@ const addExpenses = () => {
     );
 };
 
-export default addExpenses;
+export default AddExpenses;

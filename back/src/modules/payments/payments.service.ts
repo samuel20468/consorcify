@@ -4,9 +4,7 @@ import Stripe from 'stripe';
 import { Repository } from 'typeorm';
 import { FunctionalUnitExpense } from '../functional-units-expenses/entities/functional-units-expense.entity';
 import { Payment } from './entities/payment.entity';
-import { PAYMENT_STATUS } from 'src/utils/constants';
-
-const SERVER_URL: string = process.env.API_BASE_URL;
+import { API_URL, PAYMENT_STATUS } from 'src/utils/constants';
 
 @Injectable()
 export class PaymentsService {
@@ -50,8 +48,8 @@ export class PaymentsService {
         },
       ],
       mode: 'payment',
-      success_url: `${SERVER_URL}/payments/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${SERVER_URL}/payments/cancel?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${API_URL}/payments/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${API_URL}/payments/cancel?session_id={CHECKOUT_SESSION_ID}`,
     });
 
     return session.url;

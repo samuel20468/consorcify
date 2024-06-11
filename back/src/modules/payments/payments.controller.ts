@@ -12,8 +12,8 @@ import { Response } from 'express';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthCustomGuard } from 'src/guards/auth.guard';
 import { Payment } from './entities/payment.entity';
+import { CLIENT_URL } from 'src/utils/constants';
 
-const CLIENT_URL: string = process.env.CLIENT_BASE_URL;
 @ApiTags('Payments')
 @Controller('payments')
 @ApiBearerAuth()

@@ -13,7 +13,7 @@ import { useParams, usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
-const page = () => {
+const Page = () => {
     useAuth();
     const router = useRouter();
     const path = usePathname();
@@ -43,7 +43,7 @@ const page = () => {
         if (token) {
             fecthData();
         }
-    }, [path, token]);
+    }, [path, token, id, router]);
 
     const handleSubmit = () => {
         Swal.fire({
@@ -167,4 +167,4 @@ const page = () => {
         </ContainerDashboard>
     );
 };
-export default page;
+export default Page;

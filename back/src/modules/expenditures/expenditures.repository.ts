@@ -10,9 +10,7 @@ import { CreateExpenditureDto } from './dto/create-expenditure.dto';
 import { UpdateExpenditureDto } from './dto/update-expenditure.dto';
 import { Supplier } from '../suppliers/entities/supplier.entity';
 import { EXPENDITURE_STATUS, EXPENSE_STATUS } from 'src/utils/constants';
-import { ExpensesRepository } from '../expenses/expenses.repository';
 import { Expense } from '../expenses/entities/expense.entity';
-import checkEntityExistence from 'src/helpers/check-entity-existence.helper';
 
 @Injectable()
 export class ExpendituresRepository {
@@ -31,6 +29,7 @@ export class ExpendituresRepository {
   ): Promise<Expenditure> {
     const supplier = await this.supplierRepository.findOneBy({
       id: createExpenditureDto.supplier_id,
+      consortium: { id: createExpenditureDto.consortium_id },
     });
 
     if (!supplier) {
@@ -50,10 +49,11 @@ export class ExpendituresRepository {
 
     const expense: Expense = await this.expenseRepository.findOneBy({
       id: createExpenditureDto.expense_id,
+      consortium: { id: createExpenditureDto.consortium_id },
     });
 
     if (!expense) {
-      throw new NotFoundException(`La expensa id ${createExpenditureDto.expense_id} no existe`);
+      throw new NotFoundException(`La expensa id ${createExpenditureDto.expense_id} del consorcio id ${createExpenditureDto.consortium_id} no existe`);
     }
 
     if (expense.status === EXPENSE_STATUS.CLOSED)

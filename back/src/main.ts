@@ -25,7 +25,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   app.use(morgan('dev'));
   app.enableCors({
-    origin: CLIENT_URL, // Ajusta según tu origen del frontend
+    origin: '*', // Ajusta según tu origen del frontend
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     allowedHeaders: 'Content-Type, Authorization',
   });

@@ -59,10 +59,6 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
 
       done(null, { ...createdUser, accesstoken: newAccessToken });
     } else {
-      foundUser.first_name = user.first_name;
-      foundUser.last_name = user.last_name;
-      foundUser.picture = user.picture;
-      await this.usersRepository.save(foundUser);
       const tokenPayload = {
         id: foundUser.id,
         email: foundUser.email,

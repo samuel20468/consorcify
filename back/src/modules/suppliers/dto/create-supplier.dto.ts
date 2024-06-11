@@ -8,7 +8,6 @@ import {
   MaxLength,
   IsUUID,
   IsNumber,
-  IsDecimal,
 } from 'class-validator';
 
 export class CreateSupplierDto {
@@ -19,7 +18,7 @@ export class CreateSupplierDto {
   @IsNotEmpty({ message: 'El nombre es requerido' })
   @IsString({ message: 'El nombre debe ser una cadena de texto' })
   @Length(3, 50, { message: 'El nombre debe tener entre 3 y 50 caracteres' })
-  // @Matches(/^[a-zA-Z\s]+$/, { message: 'El nombre no puede contener números' })
+  @Matches(/^[a-zA-Z0-9\s]+$/, { message: 'El nombre sólo puede contener letras y números' })
   name: string;
 
   /**

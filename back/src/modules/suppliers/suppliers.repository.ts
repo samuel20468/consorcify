@@ -38,16 +38,6 @@ export class SuppliersRepository {
     existingSupplier: Supplier,
     supplierToUpdate: UpdateSupplierDto,
   ): Promise<Supplier> {
-    const { name } = existingSupplier;
-    const supplierToUpdateName = supplierToUpdate.name;
-
-    name !== supplierToUpdateName &&
-      (await checkForDuplicates(
-        this.supplierRepository,
-        supplierToUpdateName,
-        'name',
-        'El nombre',
-      ));
 
     const mergedSupplier: Supplier = this.supplierRepository.merge(
       existingSupplier,

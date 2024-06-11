@@ -2,7 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { Supplier } from './entities/supplier.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateSupplierDto } from './dto/create-supplier.dto';
+import { UpdateSupplierDto } from './dto/update-supplier.dto';
+import { checkForDuplicates } from 'src/helpers/check-for-duplicates.helper';
 
 @Injectable()
 export class SuppliersRepository {
@@ -11,25 +12,43 @@ export class SuppliersRepository {
     private readonly supplierRepository: Repository<Supplier>,
   ) {}
 
-  async createSupplier(newSupplier: CreateSupplierDto): Promise<Supplier> {
-    const supplier = this.supplierRepository.create(newSupplier);
-    return this.supplierRepository.save(supplier);
+  async createSupplier(newSupplier: Supplier): Promise<Supplier> {
+    return await this.supplierRepository.save(newSupplier);
   }
 
   async findAll(): Promise<Supplier[]> {
     return this.supplierRepository.find({
       where: { active: true },
+      relations: ['consortium'],
     });
   }
 
   async findOne(id: string): Promise<Supplier> {
-    return this.supplierRepository.findOneBy({ id });
+    return this.supplierRepository.findOne({
+      where: { id },
+      relations: ['expenditures'],
+    });
+  }
+
+  async findOneByCuitAndConsortium(cuit: string, consortiumId: string): Promise<Supplier> {
+    return this.supplierRepository.findOneBy({ cuit, consortium: { id: consortiumId } });
   }
 
   async updateSupplier(
     existingSupplier: Supplier,
-    supplierToUpdate: CreateSupplierDto,
+    supplierToUpdate: UpdateSupplierDto,
   ): Promise<Supplier> {
+    const { name } = existingSupplier;
+    const supplierToUpdateName = supplierToUpdate.name;
+
+    name !== supplierToUpdateName &&
+      (await checkForDuplicates(
+        this.supplierRepository,
+        supplierToUpdateName,
+        'name',
+        'El nombre',
+      ));
+
     const mergedSupplier: Supplier = this.supplierRepository.merge(
       existingSupplier,
       supplierToUpdate,

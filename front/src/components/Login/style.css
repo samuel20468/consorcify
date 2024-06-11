@@ -1,0 +1,27 @@
+.col-izquierda {
+  background: rgb(11, 12, 13);
+  background: linear-gradient(
+    0deg,
+    rgba(11, 12, 13, 1) 18%,
+    rgba(32, 30, 30, 1) 81%
+  );
+}
+
+@media (max-height: 725px) {
+  .col-izquierda {
+    font-size: 13px;
+  }
+  .col-izquierda h1{
+    font-size: 20px;
+  }
+  .col-izquierda p{
+    font-size: 14px;
+  }
+}
+
+@media (max-height: 600px) {
+  .contenedor {
+    height: 100%;
+  }
+
+}

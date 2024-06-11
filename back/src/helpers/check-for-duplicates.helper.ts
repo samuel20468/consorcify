@@ -11,4 +11,5 @@ export const checkForDuplicates = async (
   if (foundItem) {
     throw new ConflictException(`${errorMessage} ya se encuentra registrado.`);
   }
+  return;
 };

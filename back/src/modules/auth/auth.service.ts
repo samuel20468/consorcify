@@ -4,7 +4,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { CredentialsDto } from './dto/credentials.dto';
-import { CreateUserDto } from './dto/create-user.dto';
+import { CreateUserDto } from '../users/dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
 import { User } from '../users/entities/user.entity';
 import { CreateCAdminDto } from '../c-admin/dto/create-c-admin.dto';
@@ -13,8 +13,8 @@ import { Repository } from 'typeorm';
 import { CAdmin } from '../c-admin/entities/c-admin.entity';
 import { CADMIN_PASS, SAT } from 'src/utils/constants';
 import { JwtService } from '@nestjs/jwt';
-import { signInHelper } from 'src/helpers/sign-in.helper';
-import { TObjectToken } from 'src/utils/types';
+import { generateToken, signInHelper } from 'src/helpers/sign-in.helper';
+import { IAuth0User, TObjectToken } from 'src/utils/types';
 import satSetter from 'src/helpers/sat-setter.helper';
 import { checkForDuplicates } from 'src/helpers/check-for-duplicates.helper';
 
@@ -51,13 +51,11 @@ export class AuthService {
     }
   }
 
-  async signUp(user: CreateUserDto): Promise<User> {
+  async signUp(user: CreateUserDto): Promise<TObjectToken> {
     const { first_name, last_name, email, password } = user;
-    const foundUser = await this.usersRepository.findOneBy({ email });
 
-    if (foundUser) {
-      throw new ConflictException('El email ya se encuentra registrado.');
-    }
+    await checkForDuplicates(this.usersRepository, email, 'email', 'El Email');
+    await checkForDuplicates(this.cAdminRepository, email, 'email', 'El email');
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User();
@@ -67,11 +65,13 @@ export class AuthService {
     newUser.password = hashedPassword;
 
     const createdUser = await this.usersRepository.save(newUser);
-    return createdUser;
+    const tokenUser = generateToken(createdUser, this.jwtService);
+    return tokenUser;
   }
 
   async singUpCAdmin(consAdmin: CreateCAdminDto): Promise<CAdmin> {
     const { name, address, email, phone_number, cuit, sat, rpa } = consAdmin;
+
     await checkForDuplicates(this.cAdminRepository, email, 'email', 'El email');
     await checkForDuplicates(this.cAdminRepository, cuit, 'cuit', 'El CUIT');
     await checkForDuplicates(
@@ -80,6 +80,8 @@ export class AuthService {
       'rpa',
       'El número de mátrícula RPA',
     );
+
+    await checkForDuplicates(this.usersRepository, email, 'email', 'El Email');
 
     const hashedPassword = await bcrypt.hash(CADMIN_PASS, 10);
     const satCAdmin: SAT = satSetter(sat);

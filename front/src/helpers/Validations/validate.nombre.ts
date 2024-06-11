@@ -1,7 +1,5 @@
-import { error } from "console";
-
 export const validateNombreCompleto = (nombre: string, apellido: string) => {
-    const reGeNombres = /^[A-Za-z\s]+$/;
+    const reGeNombres = /^[A-Za-zÀ-ÿ\s]+$/;
     const errors = {
         name: "",
         lastName: "",

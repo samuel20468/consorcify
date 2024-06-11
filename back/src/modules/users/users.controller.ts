@@ -9,6 +9,8 @@ import {
   Query,
   UseInterceptors,
   UseGuards,
+  Post,
+  UploadedFile,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -16,13 +18,17 @@ import { User } from './entities/user.entity';
 import { ExcludePasswordInterceptor } from 'src/interceptors/exclude-password.interceptor';
 import { ExcludeActiveInterceptor } from 'src/interceptors/exclude-active.interceptor';
 import { ExcludeSuperAdminInterceptor } from 'src/interceptors/exclude-super-admin.interceptor';
-import { AuthGuard } from 'src/guards/auth.guard';
+import { AuthCustomGuard } from 'src/guards/auth.guard';
 import { Roles } from 'src/decorators/role.decorator';
 import { ROLE } from 'src/utils/constants';
 import { RolesGuard } from 'src/guards/roles.guard';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
 
+@ApiTags('User')
 @Controller('users')
-@UseGuards(AuthGuard)
+@ApiBearerAuth()
+@UseGuards(AuthCustomGuard)
 @UseInterceptors(ExcludePasswordInterceptor)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
@@ -37,6 +43,12 @@ export class UsersController {
   ): Promise<User[]> {
     return await this.usersService.findAll(+page, +limit);
   }
+
+  // @Post('uploadPicture')
+  // @UseInterceptors(FileInterceptor('file'))
+  // async uploadPicture(@UploadedFile() file: Express.Multer.File) {
+  //   return file;
+  // }
 
   @Get(':id')
   @UseInterceptors(ExcludeActiveInterceptor, ExcludeSuperAdminInterceptor)
@@ -64,14 +76,9 @@ export class UsersController {
     userToggled.active
       ? (statusMessage = 'Activado')
       : (statusMessage = 'Desactivado');
-  
+
     return {
       message: `El usuario con el id ${userToggled.id} ha sido ${statusMessage}`,
-    }
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+    };
   }
 }

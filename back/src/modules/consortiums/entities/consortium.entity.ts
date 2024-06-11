@@ -1,4 +1,6 @@
+import ColumnNumericTransformer from 'src/helpers/numeric-transformer.helper';
 import { CAdmin } from 'src/modules/c-admin/entities/c-admin.entity';
+import { Expense } from 'src/modules/expenses/entities/expense.entity';
 import { FunctionalUnit } from 'src/modules/functional-units/entities/functional-unit.entity';
 import { Supplier } from 'src/modules/suppliers/entities/supplier.entity';
 import {
@@ -112,6 +114,23 @@ export class Consortium {
   @Column({ type: 'integer' })
   first_due_day: number;
 
+  /**
+   * El link a la imagen del Usuario
+   * @example "http://imagenDeSilueta.com"
+   */
+  @Column({
+    default:
+      'https://res.cloudinary.com/consorcify/image/upload/v1717987060/hiluk0b3nz4kkz0k33uc.jpg',
+  })
+  picture: string;
+
+  @Column('numeric', {
+    precision: 10,
+    scale: 2,
+    transformer: new ColumnNumericTransformer(),
+  })
+  interest_rate: number;
+
   @Column({ type: 'boolean', default: true })
   active: boolean;
 
@@ -125,6 +144,9 @@ export class Consortium {
   )
   functional_units: FunctionalUnit[];
 
-  // @OneToMany(() => Supplier, (supplier) => supplier.consortium)
-  // suppliers: Supplier[];
+  @OneToMany(() => Expense, (expense) => expense.consortium)
+  expenses: Expense[];
+
+  @OneToMany(() => Supplier, (supplier) => supplier.consortium)
+  suppliers: Supplier[];
 }

@@ -14,11 +14,12 @@ export interface ILogedUser {
 }
 
 export interface IUser {
-    name: string;
-    lastname?: string;
+    first_name: string;
+    last_name?: string;
     email: string;
-    password: string;
+    password?: string;
     role?: string;
+    picture?: string;
 }
 
 export interface IAdmin extends IUser {
@@ -29,9 +30,10 @@ export interface IAdmin extends IUser {
     rpa: string;
     sat: string;
     active: boolean;
+    name?: string;
 }
 
-export interface IRegisterConsortium {
+export interface IRegisterAdmin {
     name: string;
     email: string;
     password?: string;
@@ -40,9 +42,10 @@ export interface IRegisterConsortium {
     address: string;
     sat: string;
     rpa: string;
+    id?: string;
 }
 
-export interface IRegisterConsortiumError {
+export interface IRegisterAdminError {
     name?: string;
     email?: string;
     password?: string;
@@ -67,7 +70,9 @@ export interface IConsortium {
     ufs: number;
     category: number;
     first_due_day: number;
-    c_admin: any[];
+    interest_rate: number | string;
+    picture?: string;
+    c_admin?: string | IRegisterAdmin;
 }
 export interface IConsortiumError {
     id?: string;
@@ -84,14 +89,15 @@ export interface IConsortiumError {
     ufs?: number;
     category?: number;
     first_due_day?: number;
-    c_admin: any[];
+    interest_rate?: string | number;
+    c_admin?: string | IRegisterAdmin;
 }
 
 export interface IReviews {
     profilePic: string;
     text: string;
     author: string;
-    date: string;
+    type: string;
     rating: number;
 }
 
@@ -121,4 +127,74 @@ export interface IUFs {
     owner_email: string;
     balance: number;
     consortium_id: string;
+}
+
+export interface ISuppliers {
+    id?: string;
+    consortium_id?: string;
+    name: string;
+    cuit: string;
+    email: string;
+    phone_number: string;
+    address: string;
+    balance: number;
+    active?: boolean;
+}
+export interface ISuppliersError {
+    id?: string;
+    consortium_id?: string;
+    name?: string;
+    cuit?: string;
+    email?: string;
+    phone_number?: string;
+    address?: string;
+    balance?: number;
+    active?: boolean;
+}
+
+export interface IExpenditures {
+    id?: string;
+    expense_id: string;
+    supplier_id: string;
+    consortium_id: string;
+    date: string;
+    total_amount: number;
+    status?: string;
+    category: string;
+    invoice_number: string;
+    description: string;
+    active?: boolean;
+}
+
+export interface IExpendituresErrors {
+    id?: string;
+    expense_id?: string;
+    supplier_id?: string;
+    date?: string;
+    total_amount?: number;
+    status?: string;
+    category?: string;
+    invoice_number?: string;
+    description?: string;
+    active?: boolean;
+}
+export interface INewExpense {
+    issue_date: string;
+    expiration_date: string;
+    consortium_id: string;
+    name: string;
+}
+
+export interface IExpense {
+    name?: string;
+    id: string;
+    name: string;
+    issue_date: string;
+    expiration_date: string;
+    total_amount: number;
+    status: string;
+    active: boolean;
+    consortium: IConsortium;
+    expenditures: IExpenditures[];
+    functional_units_expenses: [];
 }

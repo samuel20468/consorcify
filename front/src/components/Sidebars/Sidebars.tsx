@@ -1,11 +1,18 @@
 "use client";
 
-import { IUserData } from "@/Interfaces/Interfaces";
-import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+// Estilos y componentes
 import SideBarUser from "../SideBarUser/SideBarUser";
 import SideBarAdmin from "../SidebarAdmin/SideBarAdmin";
 import SidebarSuperAdmin from "../SidebarSuperAdmin/SidebarSuperAdmin";
+
+// Interfaces
+import { IUserData } from "@/Interfaces/Interfaces";
+
+// Hooks
+import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+
+// -------------------
 
 const Sidebars = () => {
     const [userData, setUserData] = useState<IUserData>();

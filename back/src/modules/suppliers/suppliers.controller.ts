@@ -6,7 +6,6 @@ import {
   Param,
   Query,
   ParseUUIDPipe,
-  Put,
   Patch,
   UseInterceptors,
   UseGuards,
@@ -15,13 +14,17 @@ import {
 import { SuppliersService } from './suppliers.service';
 import { CreateSupplierDto } from './dto/create-supplier.dto';
 import { Supplier } from './entities/supplier.entity';
-import { STATUS } from 'src/utils/constants';
+import { STATUS_MESSAGE } from 'src/utils/constants';
 import { ExcludeActiveInterceptor } from 'src/interceptors/exclude-active.interceptor';
-import { AuthGuard } from 'src/guards/auth.guard';
+import { AuthCustomGuard } from 'src/guards/auth.guard';
 import { Roles } from 'src/decorators/role.decorator';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { UpdateSupplierDto } from './dto/update-supplier.dto';
 
+@ApiTags('Supplier')
 @Controller('suppliers')
-@UseGuards(AuthGuard)
+@ApiBearerAuth()
+// @UseGuards(AuthCustomGuard)
 @UseInterceptors(ExcludeActiveInterceptor)
 export class SuppliersController {
   constructor(private readonly suppliersService: SuppliersService) {}
@@ -34,7 +37,7 @@ export class SuppliersController {
   @Get()
   async findAll(
     @Query('page') page: number = 1,
-    @Query('limit') limit: number = 5,
+    @Query('limit') limit: number = 20,
   ) {
     return await this.suppliersService.findAll({ page, limit });
   }
@@ -44,10 +47,10 @@ export class SuppliersController {
     return await this.suppliersService.findOne(id);
   }
 
-  @Put(':id')
+  @Patch(':id')
   async updateSupplier(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() supplierToUpdate: CreateSupplierDto,
+    @Body() supplierToUpdate: UpdateSupplierDto,
   ) {
     return await this.suppliersService.updateSupplier(id, supplierToUpdate);
   }
@@ -60,8 +63,8 @@ export class SuppliersController {
       await this.suppliersService.toggleStatus(id);
 
     !supplierToggled.active //Se niega porque el service devuelve el objeto antes de ser modificado - Ln 55 en el service
-      ? (statusMessage = STATUS.ACTIVATED)
-      : (statusMessage = STATUS.DISABLED);
+      ? (statusMessage = STATUS_MESSAGE.ACTIVATED)
+      : (statusMessage = STATUS_MESSAGE.DISABLED);
 
     return {
       message: `Supplier with id ${supplierToggled.id} has been ${statusMessage}`,

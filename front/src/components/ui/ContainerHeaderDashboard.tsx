@@ -1,11 +1,14 @@
 interface Props {
     children: React.ReactNode;
+    className?: string;
 }
 export const ContainerHeaderDashboard = (props: Props) => {
-    const { children } = props;
+    const { children, className } = props;
 
     return (
-        <nav className="ml-[20%] lg:ml-[10%] h-20 flex justify-center items-center border-b-2">
+        <nav
+            className={`ml-[20%] lg:ml-[10%] h-20 flex items-center ${className}`}
+        >
             {children}
         </nav>
     );

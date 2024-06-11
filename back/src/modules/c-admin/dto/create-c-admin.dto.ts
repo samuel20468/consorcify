@@ -1,54 +1,85 @@
 import {
-  IsEmail,
-  IsEnum,
   IsNotEmpty,
-  IsPhoneNumber,
   IsString,
   Length,
   Matches,
-  MaxLength,
+  IsEmail,
+  IsEnum,
+  IsPhoneNumber,
 } from 'class-validator';
 import { SAT } from 'src/utils/constants';
 
 export class CreateCAdminDto {
-  @IsNotEmpty({ message: 'Name is required' })
-  @IsString({ message: 'Name must be a string' })
-  @Length(3, 80, { message: 'Name must be between 3 and 80 characters' })
-  @Matches(/^[a-zA-Z\s]+$/, {
-    message: 'Name cannot contain numbers',
-  })
+  /**
+   * El nombre del administrador del consorcio
+   * @example "Pedro Sanchez"
+   */
+  @IsNotEmpty({ message: 'El nombre es requerido' })
+  @IsString({ message: 'El nombre debe ser una cadena de texto' })
+  @Length(3, 80, { message: 'El nombre debe tener entre 3 y 80 caracteres' })
+  @Matches(/^[a-zA-Z\s]+$/, { message: 'El nombre no puede contener números' })
   name: string;
 
-  @IsNotEmpty({ message: 'Address is required' })
-  @IsString({ message: 'Address must be a string' })
-  @Length(6, 30, { message: 'Address must be between 6 and 30 characters' })
+  /**
+   * La dirección del administrador del consorcio
+   * @example "Av. Rivadavia 1234"
+   */
+  @IsNotEmpty({ message: 'La dirección es requerida' })
+  @IsString({ message: 'La dirección debe ser una cadena de texto' })
+  @Length(6, 30, { message: 'La dirección debe tener entre 6 y 30 caracteres' })
   address: string;
 
-  @IsNotEmpty({ message: 'Email is required' })
-  @IsEmail({}, { message: 'Email must be a valid email address' })
-  @Matches(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, {
-    message: 'Email contains invalid characters',
+  /**
+   * El correo electrónico del administrador del consorcio
+   * @example "pedro.sanchez@example.com"
+   */
+  @IsNotEmpty({ message: 'El correo electrónico es requerido' })
+  @IsEmail(
+    {},
+    {
+      message: 'El correo electrónico debe ser una dirección de correo válida',
+    },
+  )
+  @IsString({ message: 'El correo electrónico debe ser una cadena de texto' })
+  @Length(1, 50, {
+    message: 'El correo electrónico debe tener como máximo 50 caracteres',
   })
-  @IsString({ message: 'Email must be a string' })
-  @MaxLength(50, { message: 'Email must be at most 50 characters' })
   email: string;
 
-  @IsNotEmpty({ message: 'Phone number is required' })
-  @IsPhoneNumber(null, { message: 'Phone number must be a valid phone number' })
+  /**
+   * El número de teléfono del administrador del consorcio
+   * @example "+5491145678901"
+   */
+  @IsNotEmpty({ message: 'El número de teléfono es requerido' })
+  @IsPhoneNumber(null, {
+    message: 'El número de teléfono debe ser un número de teléfono válido',
+  })
   phone_number: string;
 
-  @IsNotEmpty({ message: 'CUIT is required' })
-  @IsString({ message: 'CUIT must be a string' })
-  @Length(11, 11, { message: 'CUIT must be exactly 11 characters' })
+  /**
+   * El CUIT del administrador del consorcio
+   * @example "20300345670"
+   */
+  @IsNotEmpty({ message: 'El CUIT es requerido' })
+  @IsString({ message: 'El CUIT debe ser una cadena de texto' })
+  @Length(11, 11, { message: 'El CUIT debe tener exactamente 11 caracteres' })
   cuit: string;
 
-  @IsNotEmpty({ message: 'SAT is required' })
-  @IsString({ message: 'SAT must be a string' })
-  @IsEnum(SAT, { message: 'SAT must be a valid enum value' })
+  /**
+   * El tipo de inscripción tributaria del administrador del consorcio (SAT)
+   * @example "Monotributo"
+   */
+  @IsNotEmpty({ message: 'El SAT es requerido' })
+  @IsString({ message: 'El SAT debe ser una cadena de texto' })
+  @IsEnum(SAT, { message: 'El SAT debe ser un valor de enumeración válido' })
   sat: SAT;
 
-  @IsNotEmpty({ message: 'RPA is required' })
-  @IsString({ message: 'RPA must be a string' })
-  @Length(5, 5, { message: 'RPA must be exactly 5 characters' })
+  /**
+   * El Registro de la Propiedad Automotor (RPA) del administrador del consorcio
+   * @example "ABCDE"
+   */
+  @IsNotEmpty({ message: 'El RPA es requerido' })
+  @IsString({ message: 'El RPA debe ser una cadena de texto' })
+  @Length(5, 5, { message: 'El RPA debe tener exactamente 5 caracteres' })
   rpa: string;
 }

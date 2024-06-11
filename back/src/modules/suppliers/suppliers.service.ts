@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ConflictException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -7,13 +8,54 @@ import { CreateSupplierDto } from './dto/create-supplier.dto';
 import { TPagination } from 'src/utils/types';
 import { Supplier } from './entities/supplier.entity';
 import { SuppliersRepository } from './suppliers.repository';
+import { UpdateSupplierDto } from './dto/update-supplier.dto';
+import { ConsortiumsService } from '../consortiums/consortiums.service';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Consortium } from '../consortiums/entities/consortium.entity';
+import checkEntityExistence from 'src/helpers/check-entity-existence.helper';
 
 @Injectable()
 export class SuppliersService {
-  constructor(private readonly suppliersRepository: SuppliersRepository) {}
+  constructor(
+    private readonly suppliersRepository: SuppliersRepository,
+    private readonly consortiumsService: ConsortiumsService,
+  ) {}
 
   async createSupplier(newSupplier: CreateSupplierDto): Promise<Supplier> {
-    return this.suppliersRepository.createSupplier(newSupplier);
+    const { name, cuit, email, phone_number, address, balance, consortium_id } =
+      newSupplier;
+
+    const consortium: Consortium = await checkEntityExistence(
+      this.consortiumsService,
+      consortium_id,
+      'el Consorcio',
+    );
+
+    const foundSupplier: Supplier =
+      await this.suppliersRepository.findOneByCuitAndConsortium(
+        cuit,
+        consortium_id,
+      );
+
+    if (foundSupplier) {
+      throw new ConflictException(
+        `El proveedor con el CUIT ${cuit} ya existe`,
+      )
+    }
+    const supplierToCreate = new Supplier();
+    supplierToCreate.name = name;
+    supplierToCreate.cuit = cuit;
+    supplierToCreate.email = email;
+    supplierToCreate.phone_number = phone_number;
+    supplierToCreate.address = address;
+    supplierToCreate.balance = balance;
+    supplierToCreate.consortium = consortium;
+
+    const supplierCreated: Supplier =
+      await this.suppliersRepository.createSupplier(supplierToCreate);
+
+    return supplierCreated;
   }
 
   async findAll({ page, limit }: TPagination): Promise<Supplier[]> {
@@ -37,25 +79,28 @@ export class SuppliersService {
       throw new BadRequestException('id is required');
     }
 
-    const supplier: Supplier = await this.suppliersRepository.findOne(id);
+    const foundSupplier: Supplier = await checkEntityExistence(
+      this.suppliersRepository,
+      id,
+      'el proveedor',
+    );
 
-    if (!supplier) throw new NotFoundException('Supplier not found');
-
-    return supplier;
+    return foundSupplier;
   }
 
   async updateSupplier(
     id: string,
-    supplierToUpdate: CreateSupplierDto,
+    supplierToUpdate: UpdateSupplierDto,
   ): Promise<Supplier> {
     if (!id) {
       throw new BadRequestException('id is required');
     }
 
-    const existingSupplier: Supplier =
-      await this.suppliersRepository.findOne(id);
-
-    if (!existingSupplier) throw new NotFoundException('Supplier not found');
+    const existingSupplier: Supplier = await checkEntityExistence(
+      this.suppliersRepository,
+      id,
+      'el proveedor',
+    );
 
     const updatedSupplier: Supplier =
       await this.suppliersRepository.updateSupplier(
@@ -72,14 +117,16 @@ export class SuppliersService {
       throw new BadRequestException('id is required');
     }
 
-    const existingSupplier: Supplier = await this.findOne(id);
+    const foundSupplier: Supplier = await checkEntityExistence(
+      this.suppliersRepository,
+      id,
+      'el proveedor',
+    );
 
-    status = existingSupplier.active;
-
-    if (!existingSupplier) throw new NotFoundException('Supplier not found');
+    status = foundSupplier.active;
 
     await this.suppliersRepository.toggleStatus(id, status);
 
-    return existingSupplier;
+    return foundSupplier;
   }
 }

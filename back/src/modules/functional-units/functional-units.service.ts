@@ -37,4 +37,8 @@ export class FunctionalUnitsService {
     await this.functionalUnitsRepository.toggleStatus(id, status);
     return await this.functionalUnitsRepository.findOne(id);
   }
+
+  async assignUserToFunctionalUnit(functionalUnitCode: string, userId: string): Promise<FunctionalUnit> {
+    return await this.functionalUnitsRepository.assignUserToFunctionalUnit(functionalUnitCode, userId);
+  }
 }

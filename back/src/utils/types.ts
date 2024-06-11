@@ -4,6 +4,7 @@ import { FunctionalUnit } from 'src/modules/functional-units/entities/functional
 import { SAT } from './constants';
 import { Consortium } from 'src/modules/consortiums/entities/consortium.entity';
 
+// TYPES
 export type TPagination = {
   page: number;
   limit: number;
@@ -13,6 +14,7 @@ export type TObjectToken = {
   token: string;
 };
 
+// INTERFACES
 export interface IUser {
   id: string;
   first_name: string;
@@ -44,4 +46,11 @@ export interface ISupplier {
   phone_number: string;
   address: string;
   balance?: number;
+}
+
+export interface IAuth0User {
+  given_name: string;
+  family_name: string;
+  email: string;
+  picture: string;
 }

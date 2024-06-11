@@ -7,3 +7,4 @@ export { ContainerDashboard } from "./ContainerDashboard";
 export { Mostrar } from "./Mostrar";
 export { Ocultar } from "./Ocultar";
 export { Title } from "./Title";
+export { Select } from "./Select";

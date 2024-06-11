@@ -6,8 +6,8 @@ const imagen = img.src;
 const About = () => {
   return (
     <>
-      <div className="flex flex-col text-[#0e0e0e]">
-        <div className="w-[90vw] bg-[#dadada] h-[20vh] mt-[-230px] rounded-[40px] mb-[10px] sombra">
+      <div className="flex flex-col text-[#0e0e0e] h-screen">
+        <div className="w-[90vw] bg-[#dadada] h-[20vh]  rounded-[40px] mb-[10px] mt-[30px]  sombra">
           <div className="flex font-[clash-regular]">
             <p className="px-9 pt-3 w-[38vw]">
           
@@ -41,6 +41,8 @@ const About = () => {
               </h2>
             </div>
           </div>
+
+
           <div className="child overflow-hidden">
             <img src={imagen} className=" rounded-[40px] object-cover w-[100%]"/>
           </div>

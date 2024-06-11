@@ -6,6 +6,7 @@ import { Strategy, VerifyCallback } from 'passport-google-oauth20';
 import { User } from 'src/modules/users/entities/user.entity';
 import { Repository } from 'typeorm';
 
+const API_URL: string = process.env.API_BASE_URL;
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   constructor(
@@ -15,7 +16,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     super({
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: 'http://localhost:3001/auth/google/callback',
+      callbackURL: `${API_URL}/auth/google/callback`,
       scope: ['email', 'profile'],
     });
   }

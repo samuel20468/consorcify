@@ -25,7 +25,7 @@ export class PaymentsController {
   async checkOut(@Param('id') id: string, @Res() res: Response) {
     const sessionUrl = await this.paymentsService.checkOut(id);
 
-    res.redirect(sessionUrl);
+    res.json({ url: sessionUrl });
   }
 
   @Get('success')

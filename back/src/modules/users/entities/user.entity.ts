@@ -23,7 +23,7 @@ export class User {
    * El apellido del Usuario
    * @example "Perez"
    */
-  @Column({ length: 80, nullable: false })
+  @Column({ length: 80, nullable: true })
   last_name: string;
 
   /**

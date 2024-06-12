@@ -1,5 +1,5 @@
 // Interfaces
-import { IConsortium } from "@/Interfaces/Interfaces";
+import { IConsortium } from "@/Interfaces/consortium.interfaces";
 
 // ----------------
 

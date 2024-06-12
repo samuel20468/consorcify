@@ -4,7 +4,7 @@
 import { ContainerDashboard, Title } from "@/components/ui";
 
 // Endpoints
-import { getSuppliersById } from "@/helpers/fetch.helper";
+import { getSupplierById } from "@/helpers/fetch.helper.supplier";
 
 // Interfaces
 import { ISuppliers } from "@/Interfaces/Interfaces";
@@ -27,9 +27,10 @@ const Supplier = () => {
     useEffect(() => {
         const fecthData = async () => {
             try {
-                const response = await getSuppliersById(params.id, token);
+                const response = await getSupplierById(params.id, token);
                 if (response) {
-                    setSuppliers(response);
+                    const data = await response.json();
+                    setSuppliers(data);
                 }
             } catch (error) {
                 console.error(error);

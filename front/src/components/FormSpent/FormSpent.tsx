@@ -2,29 +2,29 @@
 import { Button, Input, Label, Select } from "../ui";
 import Swal from "sweetalert2";
 
+// Validaciones
+import { validateInvoiceNumber } from "@/helpers/Validations/validate.invoice_number";
+
 // Interfaces
 import {
-    IConsortium,
-    IExpenditures,
-    IExpendituresErrors,
-    IExpense,
-    ISuppliers,
-} from "@/Interfaces/Interfaces";
+    INewExpenditure,
+    INewExpenditureError,
+} from "@/Interfaces/expenditures.interfaces";
+import { IConsortium } from "@/Interfaces/consortium.interfaces";
+import { IExpense } from "@/Interfaces/expenses.interfaces";
+import { ISupplier } from "@/Interfaces/suppliers.interfaces";
 
 // Endpoints
-import {
-    expenditureFetch,
-    getConsortiums,
-    getExpenses,
-    getSuppliers,
-} from "@/helpers/fetch.helper";
+import { expenditureFetch } from "@/helpers/fetch.helper.expenditure";
+import { getConsortiums } from "@/helpers/fetch.helper.consortium";
+import { getSuppliers } from "@/helpers/fetch.helper.supplier";
+import { getExpenses } from "@/helpers/fetch.helper.expense";
 
 // Hooks
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
-import { validateInvoiceNumber } from "@/helpers/Validations/validate.invoice_number";
 
 // -------------------
 
@@ -44,12 +44,12 @@ const FormSpent = () => {
         consortium_id: "",
     };
     const [registerExpenditure, setRegisterExpenditure] =
-        useState<IExpenditures>(initialData);
+        useState<INewExpenditure>(initialData);
     const [errorRegisterExpenditure, setErrorRegisterExpenditure] =
-        useState<IExpendituresErrors>(initialData);
+        useState<INewExpenditureError>(initialData);
     const [consortiums, setConsortiums] = useState<IConsortium[]>([]);
     const [expenses, setExpenses] = useState<IExpense[]>([]);
-    const [suppliers, setSuppliers] = useState<ISuppliers[]>([]);
+    const [suppliers, setSuppliers] = useState<ISupplier[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -136,17 +136,22 @@ const FormSpent = () => {
                     icon: "success",
                     confirmButtonColor: "#0b0c0d",
                 }).then(async (res) => {
-                    const data = await response.json();
-                    router.push("/dashboard/admin/spent");
+                    if (res.isConfirmed) {
+                        const data = await response.json();
+                        setRegisterExpenditure(data);
+                        router.push("/dashboard/admin/spent");
+                    }
+                });
+            } else {
+                Swal.fire({
+                    title: "Error de información",
+                    text: "Los datos que nos proporcionaste son inválidos.",
+                    icon: "error",
+                    confirmButtonColor: "#0b0c0d",
                 });
             }
         } catch (error) {
-            Swal.fire({
-                title: "Error de información",
-                text: "Los datos que nos proporcionaste son inválidos.",
-                icon: "error",
-                confirmButtonColor: "#0b0c0d",
-            });
+            console.error("Error grnade");
         }
     };
 

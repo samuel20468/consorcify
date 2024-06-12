@@ -2,7 +2,7 @@
 import ConsorCard from "../ConsorCard/ConsorCard";
 
 // Interfaces
-import { IConsortium } from "@/Interfaces/Interfaces";
+import { IConsortium } from "@/Interfaces/consortium.interfaces";
 
 // Hooks
 import Link from "next/link";

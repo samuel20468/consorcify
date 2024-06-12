@@ -1,15 +1,29 @@
 "use client";
-import React, { useEffect, useState } from "react";
+
+// Estilos y componentes
 import { Button, Input, Label } from "../ui";
-import { IConsortium, INewExpense } from "@/Interfaces/Interfaces";
+import Swal from "sweetalert2";
+
+// Validaciones
+import { validateForm } from "@/helpers/Validations/vallidate.expense";
+import { getCurrentDate } from "@/helpers/functions.helper";
+
+// Endpoints
+import { expenseFetch } from "@/helpers/fetch.helper.expense";
+import { getConsortiums } from "@/helpers/fetch.helper.consortium";
+
+// Interfaces
+import { IConsortium } from "@/Interfaces/consortium.interfaces";
+
+// Hooks
+import { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
-import { getConsortiums, newExpense } from "@/helpers/fetch.helper";
-import { usePathname, useRouter } from "next/navigation";
-import { getCurrentDate } from "@/helpers/functions.helper";
-import { validateForm } from "@/helpers/Validations/vallidate.expense";
-import Swal from "sweetalert2";
 import Link from "next/link";
+import { INewExpense } from "@/Interfaces/expenses.interfaces";
+
+// ------------------------
 
 const AddExpenses = () => {
     useAuth();
@@ -62,7 +76,7 @@ const AddExpenses = () => {
         }
 
         try {
-            const response = await newExpense(token, expense);
+            const response = await expenseFetch(token, expense);
             if (response) {
                 Swal.fire({
                     icon: "success",
@@ -100,7 +114,7 @@ const AddExpenses = () => {
                 </Link>
             </div>
             <div className="p-3">
-                <h3 className="text-2xl text-black">Nueva Expensa</h3>
+                <h3 className="text-2xl text-black">Nueva Expensa </h3>
             </div>
             <form
                 className="w-1/2 flex flex-col items-center justify-between h-full  p-8 rounded-[40px] border border-black"

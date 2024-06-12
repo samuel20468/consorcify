@@ -1,14 +1,13 @@
 // Interfaces
-import { IExpenditures } from "@/Interfaces/Interfaces";
+import { IExpenditure } from "@/Interfaces/expenditures.interfaces";
 import { IoTrashOutline } from "react-icons/io5";
 
 // ----------------
 
-const ExpenditureCard: React.FC<IExpenditures> = ({
+const ExpenditureCard: React.FC<IExpenditure> = ({
     id,
-    expense_id,
-    supplier_id,
-    consortium_id,
+    expense,
+    supplier,
     date,
     total_amount,
     status,
@@ -16,9 +15,12 @@ const ExpenditureCard: React.FC<IExpenditures> = ({
     invoice_number,
     description,
     active,
-}: IExpenditures) => {
+}: IExpenditure) => {
     return (
         <div className="flex justify-between py-2 text-center text-black bg-gray-200 rounded-lg hover:bg-slate-400 hover:text-white">
+            <div className="w-1/5 text-center">
+                <h1>{description}</h1>
+            </div>
             <div className="w-1/5 text-center">
                 <h1>{category}</h1>
             </div>

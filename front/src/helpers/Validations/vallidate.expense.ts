@@ -1,4 +1,4 @@
-import { INewExpense } from "@/Interfaces/Interfaces";
+import { INewExpense } from "@/Interfaces/expenses.interfaces";
 
 export const validateForm = (expense: INewExpense): INewExpense => {
     const errors: INewExpense = {

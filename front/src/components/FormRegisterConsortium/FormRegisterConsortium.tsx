@@ -2,26 +2,27 @@
 
 // Estilos y componentes
 import { Button, Input, Label, Select } from "../ui";
+import Swal from "sweetalert2";
 
 // Validaciones
 import { validateSuterh } from "@/helpers/Validations/validate.suterh";
 import { validateCuit } from "@/helpers/Validations/validate.cuit";
 
 // Endpoints
+import { IUserData } from "@/Interfaces/user.interfaces";
+import { getAdmins } from "@/helpers/fetch.helper.admin";
 import {
     consortiumFetch,
-    getAdmins,
     getConsortiumById,
     updateConsortium,
-} from "@/helpers/fetch.helper";
+} from "@/helpers/fetch.helper.consortium";
 
 // Iterfaces
+import { IAdmin } from "@/Interfaces/admin.interfaces";
 import {
-    IConsortium,
-    IConsortiumError,
-    IRegisterAdmin,
-    IUserData,
-} from "@/Interfaces/Interfaces";
+    INewConsortium,
+    INewConsortiumError,
+} from "@/Interfaces/consortium.interfaces";
 
 // Hooks
 import { useEffect, useState } from "react";
@@ -29,13 +30,11 @@ import { useParams, useRouter } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
 import path from "path";
-import Swal from "sweetalert2";
 
 // -----------------
 
 const FormRegisterConsortium = ({ update = false }) => {
     const initialData = {
-        interest_rate: "" || 0,
         suterh_key: "",
         name: "",
         cuit: "",
@@ -49,18 +48,19 @@ const FormRegisterConsortium = ({ update = false }) => {
         ufs: 0,
         category: 0,
         first_due_day: 0,
-        c_admin: "" || ({ id: "" } as IRegisterAdmin),
+        interest_rate: 0,
+        c_admin: "" || ({ id: "" } as IAdmin),
     };
     useAuth();
     const { token, data }: { token: string; data: IUserData } = useSesion();
     const router = useRouter();
     const params: { id: string } = useParams();
 
-    const [admins, setAdmins] = useState<IRegisterAdmin[]>();
+    const [admins, setAdmins] = useState<IAdmin[]>();
     const [consortiumRegister, setConsortiumRegister] =
-        useState<IConsortium>(initialData);
+        useState<INewConsortium>(initialData);
     const [consortiumRegisterError, setConsortiumRegisterError] =
-        useState<IConsortiumError>(initialData);
+        useState<INewConsortiumError>(initialData);
 
     // ---------------------------------------------------------------------------
 
@@ -69,16 +69,17 @@ const FormRegisterConsortium = ({ update = false }) => {
             if (update) {
                 try {
                     const response = await getConsortiumById(params.id, token);
+                    const data = await response?.json();
                     if (
-                        response.c_admin !== null &&
-                        typeof response.c_admin === "object"
+                        data.c_admin !== null &&
+                        typeof data.c_admin === "object"
                     ) {
                         setConsortiumRegister((prevState) => ({
                             ...prevState,
-                            c_admin: response.c_admin.id,
+                            c_admin: data.c_admin.id,
                         }));
                     }
-                    setConsortiumRegister(response);
+                    setConsortiumRegister(data);
                 } catch (error) {
                     console.error(error);
                 }
@@ -288,6 +289,7 @@ const FormRegisterConsortium = ({ update = false }) => {
                 c_admin: data.id,
             });
         }
+
     }, [token, consortiumRegister, data.id, data?.roles]);
 
     // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

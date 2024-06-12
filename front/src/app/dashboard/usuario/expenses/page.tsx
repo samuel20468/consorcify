@@ -14,6 +14,7 @@ import useSesion from "@/helpers/useSesion";
 import Link from "next/link";
 
 const Expenses = () => {
+
   useAuth();
   const { token } = useSesion();
   const handlePay = async () => {

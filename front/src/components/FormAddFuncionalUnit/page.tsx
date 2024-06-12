@@ -8,7 +8,7 @@ import { validateBalance } from "@/helpers/Validations/validate.balance";
 import { validateEmail } from "@/helpers/Validations/validate.email";
 import Swal from "sweetalert2";
 import { areFieldsNotEmpty } from "@/helpers/Validations/validate.empty";
-import { addFuncionalUnit } from "@/helpers/fetch.helper";
+import { addFuncionalUnit } from "@/helpers/fetch.helper.uf";
 
 const FormAddFuncionalUnit = ({ consortium_id }: { consortium_id: string }) => {
     useAuth();
@@ -97,7 +97,7 @@ const FormAddFuncionalUnit = ({ consortium_id }: { consortium_id: string }) => {
     useEffect(() => {
         const validateMail = validateEmail(formData.owner_email);
         setErrors({ ...errors, owner_email: validateMail.email });
-    }, [formData]);
+    }, [formData, errors]);
 
     return (
         <div className="flex flex-col items-center justify-center w-1/4 h-full">

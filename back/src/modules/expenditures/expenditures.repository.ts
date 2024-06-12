@@ -78,13 +78,16 @@ export class ExpendituresRepository {
       await this.expenseRepository.update(expense, {
         total_amount: newExpenseTotalAmount,
       });
-      return newExpenditure;
+      return this.expenditureRepository.findOne({
+        where: { id: newExpenditure.id },
+        relations: ['supplier', 'expense'],
+      })
     } catch (error) {
       throw new Error(error);
     }
   }
 
-  async findAll(page: number = 1, limit: number = 10): Promise<Expenditure[]> {
+  async findAll(page: number, limit: number): Promise<Expenditure[]> {
     return await this.expenditureRepository.find({
       skip: (page - 1) * limit,
       take: limit,
@@ -152,7 +155,7 @@ export class ExpendituresRepository {
   async disable(id: string): Promise<Expenditure> {
     const expenditure = await this.expenditureRepository.findOne({
       where: { id },
-      relations: ['supplier'],
+      relations: ['supplier', 'expense'],
     });
     if (!expenditure) {
       throw new NotFoundException(`Gasto con id ${id} no encontrado`);
@@ -162,11 +165,24 @@ export class ExpendituresRepository {
         `El gasto con id ${id} ya ha sido pagado, no se puede modificar`,
       );
     }
+    if (expenditure.expense.status === EXPENSE_STATUS.CLOSED) {
+      throw new ConflictException(
+        `La expensa con id ${expenditure.expense.id} ya ha sido cerrada, no se puede eliminar el gasto`,
+      );
+    }
     const newSupplierBalance =
       expenditure.supplier.balance - expenditure.total_amount;
     expenditure.supplier.balance = newSupplierBalance;
     await this.supplierRepository.save(expenditure.supplier);
+    const newExpenseTotalAmount = expenditure.expense.total_amount - expenditure.total_amount;
+    await this.expenseRepository.update(expenditure.expense, {
+      total_amount: newExpenseTotalAmount,
+    })
     expenditure.active = false;
-    return await this.expenditureRepository.save(expenditure);
+    await this.expenditureRepository.save(expenditure);
+    return this.expenditureRepository.findOne({
+      where: { id },
+      relations: ['supplier', 'expense'],
+    })
   }
 }

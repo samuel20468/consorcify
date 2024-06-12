@@ -13,7 +13,7 @@ const Hero = () => {
                             Tus administraciones, <br /> con un click.
                         </span>
                     </h1>
-                    <h3 className=" overflow-hidden">
+                    <h3 className="overflow-hidden ">
                         <p className="text-white font-sans md:text-[1.3rem] text-center text-[1rem] mt-5 reveal-text">
                             Gestión eficiente y análisis integral para
                             consorcios de viviendas. <br />
@@ -23,7 +23,7 @@ const Hero = () => {
                     </h3>
 
                     <div className="lighting"></div>
-                    <img src={image} className="building z-20" />
+                    <img src={image} alt="Edificio" className="z-20 building" />
                 </div>
             </div>
         </>

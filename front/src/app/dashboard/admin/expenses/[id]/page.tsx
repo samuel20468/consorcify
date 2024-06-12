@@ -23,7 +23,7 @@ import Link from "next/link";
 
 // ------------------
 
-const page = () => {
+const Page = () => {
     useAuth();
     const router = useRouter();
     const path = usePathname();
@@ -53,7 +53,7 @@ const page = () => {
         if (token) {
             fecthData();
         }
-    }, [path, token]);
+    }, [path, token, id, router]);
 
     const handleSubmit = () => {
         Swal.fire({
@@ -105,7 +105,7 @@ const page = () => {
 
             {expensa ? (
                 <div className="w-[90%] h-full flex flex-col">
-                    <div className="w-full flex justify-end">
+                    <div className="flex justify-end w-full">
                         <Link href="/dashboard/admin/expenses">
                             <Button className="w-32 py-2 rounded-[40px] text-sm">
                                 Volver
@@ -113,20 +113,17 @@ const page = () => {
                         </Link>
                     </div>
 
-                    <div
-                        className="w-full h-auto
-                    flex justify-center py-2"
-                    >
-                        <p className="w-1/4 flex items-center justify-center">
+                    <div className="flex justify-center w-full h-auto py-2">
+                        <p className="flex items-center justify-center w-1/4">
                             Fecha
                         </p>
-                        <p className="w-1/4 flex items-center justify-center">
+                        <p className="flex items-center justify-center w-1/4">
                             Descripción
                         </p>
-                        <p className="w-1/4 flex items-center justify-center">
+                        <p className="flex items-center justify-center w-1/4">
                             Categoría
                         </p>
-                        <p className="w-1/4 flex items-center justify-center">
+                        <p className="flex items-center justify-center w-1/4">
                             Total
                         </p>
                     </div>
@@ -139,23 +136,23 @@ const page = () => {
                                 key={expenditure.id}
                                 className="text-white w-full border rounded-[40px] flex items-center py-3"
                             >
-                                <p className="w-1/4 flex items-center justify-center">
+                                <p className="flex items-center justify-center w-1/4">
                                     {expenditure.date}
                                 </p>
-                                <p className="w-1/4 flex items-center justify-center">
+                                <p className="flex items-center justify-center w-1/4">
                                     {expenditure.description}
                                 </p>
-                                <p className="w-1/4 flex items-center justify-center">
+                                <p className="flex items-center justify-center w-1/4">
                                     {expenditure.category}
                                 </p>
-                                <p className="w-1/4 flex items-center justify-center">
+                                <p className="flex items-center justify-center w-1/4">
                                     {expenditure.total_amount}
                                 </p>
                             </div>
                         ))}
                     </div>
-                    <div className="flex w-full justify-end py-2 gap-2 items-center">
-                        <div className="w-1/4 flex justify-end items-center">
+                    <div className="flex items-center justify-end w-full gap-2 py-2">
+                        <div className="flex items-center justify-end w-1/4">
                             TOTAL ${expensa.total_amount}
                         </div>
                         {expensa.status !== "Cerrada" && (
@@ -170,11 +167,11 @@ const page = () => {
                 </div>
             ) : (
                 // Renderizar un indicador de carga mientras se carga la información de la expensa
-                <p className="h-full w-full items-center justify-center">
+                <p className="items-center justify-center w-full h-full">
                     Cargando...
                 </p>
             )}
         </ContainerDashboard>
     );
 };
-export default page;
+export default Page;

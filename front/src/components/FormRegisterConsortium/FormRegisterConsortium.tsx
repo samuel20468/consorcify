@@ -103,7 +103,7 @@ const FormRegisterConsortium = ({ update = false }) => {
                 fetchConsortium();
             }
         }
-    }, [token]);
+    }, [token, params.id, update]);
 
     // useEffect(() => {
     //     const fetchData = async () => {
@@ -289,7 +289,7 @@ const FormRegisterConsortium = ({ update = false }) => {
                 c_admin: data.id,
             });
         }
-    }, [token, path]);
+    }, [token, consortiumRegister, data.id, data.roles]);
 
     // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     //     e.preventDefault();
@@ -542,7 +542,7 @@ const FormRegisterConsortium = ({ update = false }) => {
                     </div>
                     <div className="flex flex-col lg:w-1/4">
                         <Label htmlFor="ufs">
-                            Cantidad UF's:
+                            Cantidad UF&apos;s:
                             <span className="text-red-600">*</span>
                         </Label>
                         <Input

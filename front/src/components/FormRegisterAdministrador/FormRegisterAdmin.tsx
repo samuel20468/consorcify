@@ -72,7 +72,7 @@ const FormRegisterAdmin = ({ update = false }) => {
         if (token && update) {
             fetchData();
         }
-    }, [token, path]);
+    }, [token, path, params.id, update]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setAdminRegister({

@@ -51,7 +51,7 @@ const Page = () => {
             const formatedCuit = formatearNumero(consorcio?.cuit!);
             setCuit(formatedCuit);
         }
-    });
+    }, [consorcio]);
 
     const handleDelete = async () => {
         Swal.fire({

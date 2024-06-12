@@ -44,7 +44,7 @@ const UpdateUser = () => {
             }
         };
         fetchData();
-    }, [token, path]);
+    }, [token, path, data.id]);
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();

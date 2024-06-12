@@ -14,7 +14,6 @@ import { getConsortiums } from "@/helpers/fetch.helper.consortium";
 
 // Interfaces
 import { IConsortium } from "@/Interfaces/consortium.interfaces";
-import { INewExpense } from "@/Interfaces/expenses.interfaces";
 
 // Hooks
 import { useEffect, useState } from "react";
@@ -22,10 +21,11 @@ import { usePathname, useRouter } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
 import Link from "next/link";
+import { INewExpense } from "@/Interfaces/expenses.interfaces";
 
 // ------------------------
 
-const addExpenses = () => {
+const AddExpenses = () => {
     useAuth();
     const path = usePathname();
     const router = useRouter();
@@ -189,4 +189,4 @@ const addExpenses = () => {
     );
 };
 
-export default addExpenses;
+export default AddExpenses;

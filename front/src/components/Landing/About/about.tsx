@@ -41,9 +41,10 @@ const About = () => {
                         </div>
                     </div>
 
-                    <div className="child overflow-hidden">
+                    <div className="overflow-hidden child">
                         <img
                             src={imagen}
+                            alt="Edificio"
                             className=" rounded-[40px] object-cover w-[100%]"
                         />
                     </div>

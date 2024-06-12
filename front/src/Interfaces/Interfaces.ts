@@ -97,10 +97,10 @@ export interface IExpendituresErrors {
     active?: boolean;
 }
 export interface INewExpense {
-    issue_date: string;
-    expiration_date: string;
-    consortium_id: string;
-    name: string;
+    issue_date?: string;
+    expiration_date?: string;
+    consortium_id?: string;
+    name?: string;
 }
 
 export interface IExpense {

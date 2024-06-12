@@ -19,7 +19,7 @@ import Link from "next/link";
 
 // -----------------------
 
-const page = () => {
+const Page = () => {
     useAuth();
     const router = useRouter();
     const params: { id: string } = useParams();
@@ -42,7 +42,7 @@ const page = () => {
         if (token) {
             fecthData();
         }
-    }, [path, token]);
+    }, [path, token, params.id]);
 
     const handleDelete = async () => {
         Swal.fire({
@@ -120,4 +120,4 @@ const page = () => {
     );
 };
 
-export default page;
+export default Page;

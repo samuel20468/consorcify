@@ -1,6 +1,3 @@
-import { Depto } from "@/utils/ufs";
-import Link from "next/link";
-
 const Renter = () => {
     return (
         <div className="flex flex-col w-full gap-5 px-12">

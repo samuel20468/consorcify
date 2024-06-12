@@ -39,7 +39,7 @@ const ConsortiumId = () => {
         if (token) {
             fetchData();
         }
-    }, [token, pathname]);
+    }, [token, pathname, params.id]);
 
     return (
         <div className="h-screen text-white">

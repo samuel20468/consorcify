@@ -119,4 +119,8 @@ export class ExpensesRepository {
 
     return finalExpense;
   }
+
+  async toggleStatus(id: string, status: boolean): Promise<void> {
+    await this.expenseRepository.update(id, { active: !status });
+  }
 }

@@ -38,7 +38,7 @@ const DashboardA = () => {
         if (token) {
             fecthData();
         }
-    }, [token]);
+    }, [token, data.id]);
 
     return (
         <div className="h-screen text-white">

@@ -19,12 +19,11 @@ import { ExcludeSuperAdminInterceptor } from 'src/interceptors/exclude-super-adm
 import { AuthCustomGuard } from 'src/guards/auth.guard';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { Roles } from 'src/decorators/role.decorator';
-import { ROLE } from 'src/utils/constants';
+import { CLIENT_URL, ROLE } from 'src/utils/constants';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 import { TObjectToken } from 'src/utils/types';
 import { AuthGuard } from '@nestjs/passport';
-
 @ApiTags('Auth')
 @Controller('auth')
 @UseInterceptors(ExcludePasswordInterceptor, ExcludeActiveInterceptor)
@@ -40,7 +39,7 @@ export class AuthController {
   async googleLogin(@Req() req: any, @Res() res: Response) {
     const user = req.user;
     const token = user.accesstoken;
-    res.redirect(`http://localhost:3000/login?token=${token}`);
+    res.redirect(`${CLIENT_URL}/login?token=${token}`);
   }
 
   @Post('signin')

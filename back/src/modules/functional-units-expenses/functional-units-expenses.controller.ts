@@ -36,6 +36,22 @@ export class FunctionalUnitsExpensesController {
     return await this.functionalUnitsExpensesService.findAll(+page, +limit);
   }
 
+  @Get(':id/user')
+  async findAllByUser(
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 5,
+    @Param('id', ParseUUIDPipe) id: string,
+  ): Promise<FunctionalUnitExpense[]> {
+    page = page ?? 1;
+    limit = limit ?? 5;
+
+    return await this.functionalUnitsExpensesService.findAllByUser(
+      page,
+      limit,
+      id,
+    );
+  }
+
   @Get(':id')
   async findOne(@Param('id', ParseUUIDPipe) id: string) {
     return await this.functionalUnitsExpensesService.findOne(id);

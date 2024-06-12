@@ -35,6 +35,9 @@ export class Payment {
   @Column('enum', { enum: PAYMENT_STATUS })
   payment_status: PAYMENT_STATUS;
 
+  @Column('boolean', { default: true })
+  active: boolean;
+
   @ManyToOne(
     () => FunctionalUnitExpense,
     (functionalUnitExpense) => functionalUnitExpense.payments,

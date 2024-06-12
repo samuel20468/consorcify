@@ -6,18 +6,20 @@ import {
   Res,
   UseGuards,
   Query,
+  ParseUUIDPipe,
+  Patch,
 } from '@nestjs/common';
 import { PaymentsService } from './payments.service';
 import { Response } from 'express';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthCustomGuard } from 'src/guards/auth.guard';
 import { Payment } from './entities/payment.entity';
+import { CLIENT_URL, STATUS_MESSAGE } from 'src/utils/constants';
 
-const CLIENT_URL: string = process.env.CLIENT_BASE_URL;
 @ApiTags('Payments')
 @Controller('payments')
 @ApiBearerAuth()
-// @UseGuards(AuthCustomGuard)
+@UseGuards(AuthCustomGuard)
 export class PaymentsController {
   constructor(private readonly paymentsService: PaymentsService) {}
 
@@ -25,7 +27,7 @@ export class PaymentsController {
   async checkOut(@Param('id') id: string, @Res() res: Response) {
     const sessionUrl = await this.paymentsService.checkOut(id);
 
-    res.redirect(sessionUrl);
+    res.json({ url: sessionUrl });
   }
 
   @Get('success')
@@ -65,17 +67,45 @@ export class PaymentsController {
   }
 
   @Get()
-  findAll() {
-    return this.paymentsService.findAll();
+  async findAll(
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 5,
+  ): Promise<Payment[]> {
+    page = page ?? 1;
+    limit = limit ?? 5;
+
+    return await this.paymentsService.findAll({ page, limit });
+  }
+
+  @Get(':id/user')
+  async findAllByUser(
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 5,
+    @Param('id', ParseUUIDPipe) id: string,
+  ): Promise<Payment[]> {
+    page = page ?? 1;
+    limit = limit ?? 5;
+
+    return await this.paymentsService.findAllByUser({ page, limit }, id);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.paymentsService.findOne(id);
+  async findOne(@Param('id', ParseUUIDPipe) id: string) {
+    return await this.paymentsService.findOne(id);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.paymentsService.remove(+id);
+  @Patch('toggle-status/:id')
+  async toggleStatus(@Param('id', ParseUUIDPipe) id: string) {
+    let statusMessage: string;
+
+    const paymentToggled: Payment = await this.paymentsService.toggleStatus(id);
+
+    !paymentToggled.active //Se niega porque el service devuelve el objeto antes de ser modificado - Ln 55 en el service
+      ? (statusMessage = STATUS_MESSAGE.ACTIVATED)
+      : (statusMessage = STATUS_MESSAGE.DISABLED);
+
+    return {
+      message: `Payment with id ${paymentToggled.id} has been ${statusMessage}`,
+    };
   }
 }

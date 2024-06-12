@@ -289,7 +289,8 @@ const FormRegisterConsortium = ({ update = false }) => {
                 c_admin: data.id,
             });
         }
-    }, [token, consortiumRegister, data.id, data.roles]);
+
+    }, [token, consortiumRegister, data.id, data?.roles]);
 
     // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     //     e.preventDefault();

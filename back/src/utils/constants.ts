@@ -4,6 +4,8 @@ import { config as dotenvConfig } from 'dotenv';
 dotenvConfig({ path: './.env.development' });
 
 export const CADMIN_PASS = process.env.CADMIN_PASS;
+export const CLIENT_URL: string = process.env.CLIENT_BASE_URL;
+export const API_URL: string = process.env.API_BASE_URL;
 
 export enum SAT {
   MONOTAX = 'Monotributo',

@@ -14,6 +14,7 @@ const Hero = () => {
                         </span>
                     </h1>
                     <h3 className="overflow-hidden ">
+
                         <p className="text-white font-sans md:text-[1.3rem] text-center text-[1rem] mt-5 reveal-text">
                             Gestión eficiente y análisis integral para
                             consorcios de viviendas. <br />
@@ -24,6 +25,7 @@ const Hero = () => {
 
                     <div className="lighting"></div>
                     <img src={image} alt="Edificio" className="z-20 building" />
+
                 </div>
             </div>
         </>

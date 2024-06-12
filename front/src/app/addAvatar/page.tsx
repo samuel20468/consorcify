@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import useSesion from "@/helpers/useSesion";
 import Image from "next/image";
+
 import {
     handleDrop,
     handleErrorResponse,
@@ -13,6 +14,7 @@ import {
     preventDefaults,
     uploadImage,
 } from "@/helpers/toUpdateImage/updateImage.helper";
+
 
 const AddAvatar: React.FC = () => {
     const [image, setImage] = useState<string | null>(null);
@@ -43,6 +45,7 @@ const AddAvatar: React.FC = () => {
             try {
                 const endpoint =
                     role === "user"
+
                         ? `update-user/${id}`
                         : `update-cadmin/${id}`;
                 const response = await uploadImage(formData, endpoint, token);
@@ -51,6 +54,7 @@ const AddAvatar: React.FC = () => {
                 } else {
                     throw new Error(
                         "Hubo un error al actualizar tu imagen de perfil."
+
                     );
                 }
             } catch (error: any) {
@@ -83,6 +87,7 @@ const AddAvatar: React.FC = () => {
                             src={image}
                             alt="Preview"
                             className="object-cover w-full h-full"
+
                             width={300}
                             height={300}
                         />

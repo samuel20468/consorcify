@@ -23,6 +23,7 @@ import Link from "next/link";
 
 // ---------------------
 
+
 const Page = () => {
     useAuth();
     const params: { id: string } = useParams();
@@ -105,7 +106,10 @@ const Page = () => {
                         {consorcio?.name}
                     </h3>
                     <p className="px-5 py-4  rounded-[50px] bg-[#e5e7eb] shadow text-fondo border-fondo">
-                        Administrador: {consorcio?.c_admin?.name}
+                        Administrador:{" "}
+                        {typeof consorcio?.c_admin === "object"
+                            ? consorcio.c_admin.name
+                            : consorcio?.c_admin}
                     </p>
                     <p className="px-5 py-4  rounded-[50px] bg-[#e5e7eb] shadow text-fondo border-fondo">
                         CATEGORIA: {consorcio?.category}

@@ -22,6 +22,7 @@ const UpdateUser = () => {
     const { token, data } = useSesion();
     const path = usePathname();
     const router = useRouter();
+
     const initialData = {
         first_name: "",
         last_name: "",
@@ -122,3 +123,4 @@ const UpdateUser = () => {
 };
 
 export default UpdateUser;
+

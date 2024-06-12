@@ -14,12 +14,14 @@ import { IAdmin } from "@/Interfaces/admin.interfaces";
 // Hooks
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
+
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
 import Image from "next/image";
 import Link from "next/link";
 
 // ----------------------
+
 
 const Profile = () => {
     const path = usePathname();
@@ -66,7 +68,8 @@ const Profile = () => {
                     <div className="flex flex-col items-center justify-center w-full h-1/2 bg-white rounded-t-[40px] px-10 pt-2">
                         <div className="flex items-center justify-center pb-0 mb-2 border rounded-full w-200 h-200">
                             <Image
-                                src=""
+
+                                src={userData?.picture!}
                                 alt="Imagen de perfil"
                                 className="rounded-full order"
                                 width={200}

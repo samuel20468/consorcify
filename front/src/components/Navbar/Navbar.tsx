@@ -20,6 +20,7 @@ const Navbar = ({ activeSection }: any) => {
                 setLastScrollY(window.scrollY);
             }
         };
+
         if (typeof window !== "undefined") {
             window.addEventListener("scroll", controlNavbar);
 

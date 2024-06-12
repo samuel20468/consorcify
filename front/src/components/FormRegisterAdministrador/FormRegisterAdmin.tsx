@@ -10,6 +10,7 @@ import {
     INewRegisterAdminError,
 } from "@/Interfaces/admin.interfaces";
 
+
 // Validaciones
 import { validateCuit } from "@/helpers/Validations/validate.cuit";
 import { validateNombre } from "@/helpers/Validations/validate.name";
@@ -132,11 +133,13 @@ const FormRegisterAdmin = ({ update = false }) => {
                             confirmButtonColor: "#0b0c0d",
                         }).then(async (res) => {
                             const data = await response.json();
+
                             router.push(
                                 `/dashboard/superadmin/administracion/All/${data.id}`
                             );
                         });
                     }
+
                 }
             } catch (error: any) {
                 Swal.fire({

@@ -1,21 +1,29 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import Stripe from 'stripe';
 import { Repository } from 'typeorm';
 import { FunctionalUnitExpense } from '../functional-units-expenses/entities/functional-units-expense.entity';
 import { Payment } from './entities/payment.entity';
-import { PAYMENT_STATUS } from 'src/utils/constants';
-
-const SERVER_URL: string = process.env.API_BASE_URL;
+import { API_URL, PAYMENT_STATUS } from 'src/utils/constants';
+import { PaymentsRepository } from './payments.repository';
+import checkEntityExistence from 'src/helpers/check-entity-existence.helper';
+import { TPagination } from 'src/utils/types';
+import { User } from '../users/entities/user.entity';
+import { UsersRepository } from '../users/users.repository';
 
 @Injectable()
 export class PaymentsService {
   private stripe;
   constructor(
-    @InjectRepository(Payment)
-    private paymentRepository: Repository<Payment>,
+    private readonly paymentsRepository: PaymentsRepository,
+    private readonly usersRepository: UsersRepository,
     @InjectRepository(FunctionalUnitExpense)
-    private functionalUnitExpenseRepository: Repository<FunctionalUnitExpense>,
+    private readonly functionalUnitExpenseRepository: Repository<FunctionalUnitExpense>,
   ) {
     this.stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
       apiVersion: '2024-04-10',
@@ -50,8 +58,8 @@ export class PaymentsService {
         },
       ],
       mode: 'payment',
-      success_url: `${SERVER_URL}/payments/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${SERVER_URL}/payments/cancel?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${API_URL}/payments/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${API_URL}/payments/cancel?session_id={CHECKOUT_SESSION_ID}`,
     });
 
     return session.url;
@@ -92,21 +100,84 @@ export class PaymentsService {
 
     payment.functional_unit_expense = functionalUnitExpense;
 
-    return await this.paymentRepository.save(payment);
+    return await this.paymentsRepository.createPayment(payment);
   }
 
-  findAll() {
-    return `This action returns all payments`;
+  async findAll({ page, limit }: TPagination): Promise<Payment[]> {
+    const payments: Payment[] = await this.paymentsRepository.findAll();
+
+    if (payments.length == 0) throw new NotFoundException('No payments found');
+
+    page = Math.max(1, page);
+
+    limit = Math.max(1, limit);
+
+    const startIndex = (page - 1) * limit;
+    const endIndex = startIndex + limit;
+
+    return payments.slice(startIndex, endIndex);
+  }
+
+  async findAllByUser(
+    { page, limit }: TPagination,
+    userId: string,
+  ): Promise<Payment[]> {
+    if (!userId) {
+      throw new BadRequestException('id is required');
+    }
+    
+    const user: User = await checkEntityExistence(
+      this.usersRepository,
+      userId,
+      'el usuario',
+    );
+
+    const payments: Payment[] =
+      await this.paymentsRepository.findAllByUser(user);
+
+    if (payments.length == 0) throw new NotFoundException('No payments found');
+
+    page = Math.max(1, page);
+
+    limit = Math.max(1, limit);
+
+    const startIndex = (page - 1) * limit;
+    const endIndex = startIndex + limit;
+
+    return payments.slice(startIndex, endIndex);
   }
 
   async findOne(id: string) {
-    return await this.paymentRepository.findOne({
-      where: { id },
-      relations: { functional_unit_expense: true },
-    });
+    if (!id) {
+      throw new BadRequestException('id is required');
+    }
+
+    const payment: Payment = await checkEntityExistence(
+      this.paymentsRepository,
+      id,
+      'el pago',
+    );
+
+    return payment;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} payment`;
+  async toggleStatus(id: string) {
+    let status: boolean;
+
+    if (!id) {
+      throw new BadRequestException('id is required');
+    }
+
+    const foundPayment: Payment = await checkEntityExistence(
+      this.paymentsRepository,
+      id,
+      'el pago',
+    );
+
+    status = foundPayment.active;
+
+    await this.paymentsRepository.toggleStatus(id, status);
+
+    return foundPayment;
   }
 }

@@ -4,10 +4,13 @@ import { PaymentsController } from './payments.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Payment } from './entities/payment.entity';
 import { FunctionalUnitExpense } from '../functional-units-expenses/entities/functional-units-expense.entity';
+import { PaymentsRepository } from './payments.repository';
+import { UsersRepository } from '../users/users.repository';
+import { User } from '../users/entities/user.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Payment, FunctionalUnitExpense])],
+  imports: [TypeOrmModule.forFeature([Payment, FunctionalUnitExpense, User])],
   controllers: [PaymentsController],
-  providers: [PaymentsService],
+  providers: [PaymentsService, PaymentsRepository, UsersRepository],
 })
 export class PaymentsModule {}

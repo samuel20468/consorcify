@@ -1,11 +1,18 @@
 "use client";
 
-import { IUserData } from "@/Interfaces/Interfaces";
-import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+// Estilos y componentes
 import DashboardA from "../DashboardA/DashboardA";
 import DashboardU from "../DashboardU/DashboardU";
 import DashboardSA from "../DashboardSA/DashboardSA";
+
+// Interfaces
+import { useEffect, useState } from "react";
+
+// Hooks
+import { IUserData } from "@/Interfaces/user.interfaces";
+import { usePathname } from "next/navigation";
+
+// ------------------
 
 const Dashboards = () => {
     const [userData, setUserData] = useState<IUserData>();

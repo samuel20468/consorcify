@@ -1,5 +1,9 @@
-import { IConsortium, Props } from "@/Interfaces/Interfaces";
-import React from "react";
+interface Props {
+    children?: React.ReactNode;
+    className?: string;
+}
+
+import { IConsortium } from "@/Interfaces/consortium.interfaces";
 
 const ConsortiumCard = (props: Props & { consortium: IConsortium }) => {
     const { className, consortium } = props;

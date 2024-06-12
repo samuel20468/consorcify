@@ -4,9 +4,9 @@ import { PassportStrategy } from '@nestjs/passport';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Strategy, VerifyCallback } from 'passport-google-oauth20';
 import { User } from 'src/modules/users/entities/user.entity';
+import { API_URL } from 'src/utils/constants';
 import { Repository } from 'typeorm';
 
-const API_URL: string = process.env.API_BASE_URL;
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   constructor(

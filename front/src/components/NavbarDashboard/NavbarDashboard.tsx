@@ -5,10 +5,12 @@ import { Button, ContainerHeaderDashboard } from "../ui";
 import { CiUser } from "react-icons/ci";
 
 // Interfaces
-import { IAdmin, IUser } from "@/Interfaces/Interfaces";
+import { IUser } from "@/Interfaces/user.interfaces";
+import { IAdmin } from "@/Interfaces/admin.interfaces";
 
 // Endpoints
-import { getAdminById, getUserById } from "@/helpers/fetch.helper";
+import { getUserById } from "@/helpers/fetch.helper.user";
+import { getAdminById } from "@/helpers/fetch.helper.admin";
 
 // Hooks
 import { useEffect, useState } from "react";

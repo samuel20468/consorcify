@@ -2,20 +2,22 @@
 
 // Estilos y componentes
 import { Button, ContainerDashboard, Title } from "@/components/ui";
+import SearchBar from "@/components/SearchBar/SearchBar";
 
 // Interfaces
-import { IAdmin, IRegisterAdmin } from "@/Interfaces/Interfaces";
+import { IAdmin } from "@/Interfaces/admin.interfaces";
 
 // Endpoints
-import { getAdmins } from "@/helpers/fetch.helper";
+import { getAdmins } from "@/helpers/fetch.helper.admin";
 
 // Hooks
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import SearchBar from "@/components/SearchBar/SearchBar";
+
+
 // -------------------
 
 const Page = () => {

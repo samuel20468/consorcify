@@ -5,10 +5,10 @@ import { Button, ContainerDashboard, Title } from "@/components/ui";
 import SuppliersCards from "@/components/SuppliersCards/SuppliersCards";
 
 // Endpoints
-import { getSuppliers } from "@/helpers/fetch.helper";
+import { getSuppliers } from "@/helpers/fetch.helper.supplier";
 
 // Interfaces
-import { ISuppliers } from "@/Interfaces/Interfaces";
+import { ISupplier } from "@/Interfaces/suppliers.interfaces";
 
 // Hooks
 import { useEffect, useState } from "react";
@@ -21,7 +21,7 @@ import Link from "next/link";
 
 const Supplies = () => {
     useAuth();
-    const [suppliers, setSuppliers] = useState<ISuppliers[]>([]);
+    const [suppliers, setSuppliers] = useState<ISupplier[]>([]);
     const { token } = useSesion();
     const pathname = usePathname();
 

@@ -5,24 +5,20 @@ import { Button, ContainerDashboard, Select, Title } from "@/components/ui";
 import ExpenditureCards from "@/components/ExpenditureCards/ExpenditureCards";
 
 // Endpoints
-import {
-    getConsortiums,
-    getExpenditures,
-    getSuppliers,
-} from "@/helpers/fetch.helper";
+import { getConsortiums } from "@/helpers/fetch.helper.consortium";
+import { getSuppliers } from "@/helpers/fetch.helper.supplier";
 
 // Interfaces
-import {
-    IConsortium,
-    IExpenditures,
-    ISuppliers,
-} from "@/Interfaces/Interfaces";
+import { IExpenditure } from "@/Interfaces/expenditures.interfaces";
+import { ISupplier } from "@/Interfaces/suppliers.interfaces";
+import { IConsortium } from "@/Interfaces/consortium.interfaces";
 
 // Hooks
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
+import { getExpenditures } from "@/helpers/fetch.helper.expenditure";
 
 // ------------------
 
@@ -31,14 +27,14 @@ const Spent = () => {
     const { token } = useSesion();
     const router = useRouter();
     const pathname = usePathname();
-    const [expenditures, setExpenditures] = useState<IExpenditures[]>([]);
-    const [suppliers, setSuppliers] = useState<ISuppliers[]>([]);
+    const [expenditures, setExpenditures] = useState<IExpenditure[]>([]);
+    const [suppliers, setSuppliers] = useState<ISupplier[]>([]);
     const [consortiums, setConsortiums] = useState<IConsortium[]>([]);
     const [filteredExpenditures, setFilteredExpenditures] = useState<
-        IExpenditures[]
+        IExpenditure[]
     >([]);
     const [sortConfig, setSortConfig] = useState<{
-        field: keyof IExpenditures;
+        field: keyof IExpenditure;
         order: "asc" | "desc";
     } | null>(null);
 
@@ -93,7 +89,7 @@ const Spent = () => {
         router.push("/addSpent");
     };
 
-    const handleSort = (field: keyof IExpenditures, order: "asc" | "desc") => {
+    const handleSort = (field: keyof IExpenditure, order: "asc" | "desc") => {
         const sortedData = [...expenditures].sort((a, b) => {
             const valueA = a[field];
             const valueB = b[field];
@@ -115,7 +111,7 @@ const Spent = () => {
         setExpenditures(sortedData);
     };
 
-    const handleHeaderClick = (field: keyof IExpenditures) => {
+    const handleHeaderClick = (field: keyof IExpenditure) => {
         let order: "asc" | "desc" = "asc";
         if (
             sortConfig &&
@@ -186,7 +182,18 @@ const Spent = () => {
                     </div>
                 </div>
                 <div className="w-[90%] border-t border-b border-white flex justify-around p-2 my-5 text-center">
-                    <h1>Expensa</h1>
+                    <h1
+                        className="cursor-pointer"
+                        onClick={() => handleHeaderClick("description")}
+                    >
+                        Descripción
+                    </h1>
+                    <h1
+                        className="cursor-pointer"
+                        onClick={() => handleHeaderClick("category")}
+                    >
+                        Categoría
+                    </h1>
                     <h1>Consorcio</h1>
                     <h1>Proveedor</h1>
                     <h1

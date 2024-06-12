@@ -1,5 +1,3 @@
-import { error } from "console";
-
 export function formatearNumero(numero: string) {
     // Eliminar todos los caracteres que no sean dígitos
     const numerosSolo = numero.replace(/\D/g, "");

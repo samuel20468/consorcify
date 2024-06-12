@@ -6,7 +6,6 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { RedirectMiddleware } from './middlewares/redirect.middleware';
 
 const PORT = process.env.PORT || 3001;
-const CLIENT_URL = process.env.CLIENT_BASE_URL;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

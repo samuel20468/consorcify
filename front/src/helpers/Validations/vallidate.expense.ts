@@ -6,7 +6,6 @@ export const validateForm = (expense: INewExpense): INewExpense => {
         issue_date: "",
         expiration_date: "",
         consortium_id: "",
-        name: "",
     };
 
     // Validar la fecha de vencimiento

@@ -27,14 +27,14 @@ export class ExpensesRepository {
 
   async findAll(): Promise<Expense[]> {
     return await this.expenseRepository.find({
-      where: { active: true },
+      where: { active: true, expenditures: { active: true } },
       relations: { consortium: true, expenditures: true },
     });
   }
 
   async findOne(id: string): Promise<Expense> {
     return await this.expenseRepository.findOne({
-      where: { id, active: true },
+      where: { id, active: true, expenditures: { active: true } },
       relations: {
         expenditures: true,
         consortium: true,
@@ -106,8 +106,15 @@ export class ExpensesRepository {
     await Promise.all(promises);
 
     const finalExpense: Expense = await this.expenseRepository.findOne({
-      where: { id: expenseToSettle.id, active: true },
-      relations: { expenditures: { supplier: true }, functional_units_expenses: { functional_unit: true } },
+      where: {
+        id: expenseToSettle.id,
+        active: true,
+        expenditures: { active: true },
+      },
+      relations: {
+        expenditures: { supplier: true },
+        functional_units_expenses: { functional_unit: true },
+      },
     });
 
     return finalExpense;

@@ -4,6 +4,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Strategy, VerifyCallback } from 'passport-google-oauth20';
 import { User } from 'src/modules/users/entities/user.entity';
+import { API_URL } from 'src/utils/constants';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -15,7 +16,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     super({
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: 'http://localhost:3001/auth/google/callback',
+      callbackURL: `${API_URL}/auth/google/callback`,
       scope: ['email', 'profile'],
     });
   }
@@ -59,10 +60,6 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
 
       done(null, { ...createdUser, accesstoken: newAccessToken });
     } else {
-      foundUser.first_name = user.first_name;
-      foundUser.last_name = user.last_name;
-      foundUser.picture = user.picture;
-      await this.usersRepository.save(foundUser);
       const tokenPayload = {
         id: foundUser.id,
         email: foundUser.email,

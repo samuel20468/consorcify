@@ -10,6 +10,7 @@ import {
     INewRegisterAdminError,
 } from "@/Interfaces/admin.interfaces";
 
+
 // Validaciones
 import { validateCuit } from "@/helpers/Validations/validate.cuit";
 import { validateNombre } from "@/helpers/Validations/validate.name";
@@ -22,6 +23,7 @@ import {
     getAdminById,
     updateAdmin,
 } from "@/helpers/fetch.helper.admin";
+
 
 // Hooks
 import { useEffect, useState } from "react";
@@ -72,7 +74,7 @@ const FormRegisterAdmin = ({ update = false }) => {
         if (token && update) {
             fetchData();
         }
-    }, [token, path]);
+    }, [token, path, params.id, update]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setAdminRegister({
@@ -132,11 +134,13 @@ const FormRegisterAdmin = ({ update = false }) => {
                             confirmButtonColor: "#0b0c0d",
                         }).then(async (res) => {
                             const data = await response.json();
+
                             router.push(
                                 `/dashboard/superadmin/administracion/All/${data.id}`
                             );
                         });
                     }
+
                 }
             } catch (error: any) {
                 Swal.fire({
@@ -146,6 +150,7 @@ const FormRegisterAdmin = ({ update = false }) => {
                     confirmButtonColor: "#0b0c0d",
                 });
             }
+
         }
     };
 

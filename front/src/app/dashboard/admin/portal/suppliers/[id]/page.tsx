@@ -39,7 +39,7 @@ const Supplier = () => {
         if (token) {
             fecthData();
         }
-    }, [path, token]);
+    }, [path, token, params.id]);
 
     return (
         <div className="h-screen text-white">

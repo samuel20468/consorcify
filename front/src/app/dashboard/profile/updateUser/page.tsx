@@ -15,6 +15,7 @@ import { usePathname, useRouter } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
 
+
 // -------------------------
 
 const UpdateUser = () => {
@@ -22,6 +23,7 @@ const UpdateUser = () => {
     const { token, data } = useSesion();
     const path = usePathname();
     const router = useRouter();
+
     const initialData = {
         first_name: "",
         last_name: "",
@@ -44,7 +46,7 @@ const UpdateUser = () => {
             }
         };
         fetchData();
-    }, [token, path]);
+    }, [token, path, data.id]);
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -121,4 +123,6 @@ const UpdateUser = () => {
     );
 };
 
+
 export default UpdateUser;
+

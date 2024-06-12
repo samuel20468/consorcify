@@ -10,6 +10,7 @@ const About = () => {
                 <div className="w-[90vw] bg-[#dadada] h-[20vh] rounded-[40px] mb-[10px] mt-[30px]  sombra">
                     <div className="flex font-[clash-regular]">
                         <p className="px-9 pt-4 w-[38vw] ">
+
                             <span className="font-[clash-medium] -tracking-tighter text-2xl text-black">
                                 Lorem ipsum accusantium.
                             </span>
@@ -23,6 +24,7 @@ const About = () => {
                                 LOREM IPSUM DOLOR.
                             </h2>
                         </div>
+
                     </div>
                 </div>
 
@@ -44,6 +46,7 @@ const About = () => {
                     <div className="child overflow-hidden">
                         <img
                             src={imagen}
+
                             className=" rounded-[40px] object-cover w-[100%]"
                         />
                     </div>

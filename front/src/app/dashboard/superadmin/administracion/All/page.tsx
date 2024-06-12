@@ -2,6 +2,7 @@
 
 // Estilos y componentes
 import { Button, ContainerDashboard, Title } from "@/components/ui";
+
 import SearchBar from "@/components/SearchBar/SearchBar";
 
 // Interfaces
@@ -19,7 +20,7 @@ import Link from "next/link";
 
 // -------------------
 
-const page = () => {
+const Page = () => {
     useAuth();
     const pathname = usePathname();
     const { token } = useSesion();
@@ -167,4 +168,4 @@ const page = () => {
     );
 };
 
-export default page;
+export default Page;

@@ -23,7 +23,11 @@ async function bootstrap() {
   app.use(new RedirectMiddleware().use);
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   app.use(morgan('dev'));
-  app.enableCors();
+  app.enableCors({
+    origin: '*', // Ajusta según tu origen del frontend
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    allowedHeaders: 'Content-Type, Authorization',
+  });
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,

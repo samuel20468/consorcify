@@ -11,6 +11,7 @@ const Hero = () => {
                     <h1 className="text-white pt-[5rem] font-[clash-regular] text-[2rem] md:text-[4rem] text-center md:leading-[4rem] leading-[2.5rem]  overflow-hidden">
                         <span className="reveal-text ">
                             Tus administraciones, <br /> con un click.
+
                         </span>
                     </h1>
                     <h3 className=" overflow-hidden">
@@ -24,6 +25,7 @@ const Hero = () => {
 
                     <div className="lighting"></div>
                     <img src={image} className="building z-20" />
+
                 </div>
             </div>
         </>

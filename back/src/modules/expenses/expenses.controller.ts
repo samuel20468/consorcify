@@ -16,6 +16,7 @@ import { UpdateExpenseDto } from './dto/update-expense.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthCustomGuard } from 'src/guards/auth.guard';
 import { Expense } from './entities/expense.entity';
+import { STATUS_MESSAGE } from 'src/utils/constants';
 
 @ApiTags('Expenses')
 @Controller('expenses')
@@ -52,8 +53,19 @@ export class ExpensesController {
     return this.expensesService.closeExpense(id);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.expensesService.remove(+id);
+  @Patch('toggle-status/:id')
+  async toggleStatus(@Param('id', ParseUUIDPipe) id: string) {
+    let statusMessage: string;
+
+    const expenseToggled: Expense =
+      await this.expensesService.toggleStatus(id);
+
+    !expenseToggled.active //Se niega porque el service devuelve el objeto antes de ser modificado - Ln 55 en el service
+      ? (statusMessage = STATUS_MESSAGE.ACTIVATED)
+      : (statusMessage = STATUS_MESSAGE.DISABLED);
+
+    return {
+      message: `Expense with id ${expenseToggled.id} has been ${statusMessage}`,
+    };
   }
 }

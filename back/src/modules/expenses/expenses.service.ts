@@ -94,7 +94,23 @@ export class ExpensesService {
     return await this.expensesRepository.settleExpense(foundExpense);
   }
 
-  async remove(id: number) {
-    return `This action removes a #${id} expense`;
+  async toggleStatus(id: string) {
+    let status: boolean;
+
+    if (!id) {
+      throw new BadRequestException('id is required');
+    }
+
+    const foundExpense: Expense = await checkEntityExistence(
+      this.expensesRepository,
+      id,
+      'la expensa',
+    );
+
+    status = foundExpense.active;
+
+    await this.expensesRepository.toggleStatus(id, status);
+
+    return foundExpense;
   }
 }

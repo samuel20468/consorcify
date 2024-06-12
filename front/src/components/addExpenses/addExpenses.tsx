@@ -114,7 +114,7 @@ const AddExpenses = () => {
                 </Link>
             </div>
             <div className="p-3">
-                <h3 className="text-2xl text-black">Nueva Expensa</h3>
+                <h3 className="text-2xl text-black">Nueva Expensa </h3>
             </div>
             <form
                 className="w-1/2 flex flex-col items-center justify-between h-full  p-8 rounded-[40px] border border-black"

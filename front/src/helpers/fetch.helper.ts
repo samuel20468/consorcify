@@ -2,8 +2,10 @@ import {
     IConsortium,
     IExpenditures,
     IExpense,
+    IFuncionalUnit,
     ILoginData,
     INewExpense,
+    INewFuncionalUnit,
     IRegisterAdmin,
     ISuppliers,
     IUser,
@@ -566,4 +568,33 @@ export const paymentCheckOut = async (token: string, id: string) => {
     } catch (error) {
         console.error(error);
     }
+};
+
+export const addFuncionalUnit = async (
+    token: string,
+    data: INewFuncionalUnit
+): Promise<IFuncionalUnit | undefined> => {
+    try {
+        const response = await fetch(`${apiUrl}/funcional-units`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(data),
+        });
+        if (!response.ok) {
+            return response.json().then((errorInfo) => {
+                throw new Error(
+                    `Error ${response.status}: ${
+                        errorInfo.message || response.statusText
+                    }`
+                );
+            });
+        }
+        if (response.ok) {
+            const data = response.json();
+            return data;
+        }
+    } catch (error) {}
 };

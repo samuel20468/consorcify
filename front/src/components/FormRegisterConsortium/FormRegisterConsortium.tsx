@@ -582,7 +582,6 @@ const FormRegisterConsortium = ({ update = false }) => {
                             id="first_due_day"
                             name="first_due_day"
                             type="number"
-                            step="00.01"
                             placeholder="10"
                             value={
                                 consortiumRegister.first_due_day == 0

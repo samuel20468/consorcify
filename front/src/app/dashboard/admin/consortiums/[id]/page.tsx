@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { useParams, usePathname } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
+import FormAddFuncionalUnit from "@/components/FormAddFuncionalUnit/page";
 
 // --------------------
 
@@ -41,17 +42,15 @@ const ConsortiumId = () => {
     }, [token, pathname, params.id]);
 
     return (
-        <div className="h-screen text-white">
-            <ContainerDashboard>
-                <Title>
-                    Consorcios{" "}
-                    <span className="text-xl font-thin">
-                        | {consortium?.name}
-                    </span>
-                </Title>
-                <h1>aca van los detalles del consorcio: {consortium?.name}</h1>
-            </ContainerDashboard>
-        </div>
+        <ContainerDashboard className="w-[90%] h-[90vh]">
+            <Title>
+                Consorcios{" "}
+                <span className="text-xl font-thin">| {consortium?.name}</span>
+            </Title>
+            <div className="w-[90%] h-full border rounded-[40px] flex justify-center items-center">
+                <FormAddFuncionalUnit consortium_id={consortium?.id!} />
+            </div>
+        </ContainerDashboard>
     );
 };
 

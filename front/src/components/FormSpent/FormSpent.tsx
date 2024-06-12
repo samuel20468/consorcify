@@ -15,12 +15,10 @@ import { IExpense } from "@/Interfaces/expenses.interfaces";
 import { ISupplier } from "@/Interfaces/suppliers.interfaces";
 
 // Endpoints
+import { expenditureFetch } from "@/helpers/fetch.helper.expenditure";
 import { getConsortiums } from "@/helpers/fetch.helper.consortium";
-import {
-    expenditureFetch,
-    getExpenses,
-    getSuppliers,
-} from "@/helpers/fetch.helper";
+import { getSuppliers } from "@/helpers/fetch.helper.supplier";
+import { getExpenses } from "@/helpers/fetch.helper.expense";
 
 // Hooks
 import { useEffect, useState } from "react";
@@ -138,17 +136,22 @@ const FormSpent = () => {
                     icon: "success",
                     confirmButtonColor: "#0b0c0d",
                 }).then(async (res) => {
-                    const data = await response.json();
-                    router.push("/dashboard/admin/spent");
+                    if (res.isConfirmed) {
+                        const data = await response.json();
+                        setRegisterExpenditure(data);
+                        router.push("/dashboard/admin/spent");
+                    }
+                });
+            } else {
+                Swal.fire({
+                    title: "Error de información",
+                    text: "Los datos que nos proporcionaste son inválidos.",
+                    icon: "error",
+                    confirmButtonColor: "#0b0c0d",
                 });
             }
         } catch (error) {
-            Swal.fire({
-                title: "Error de información",
-                text: "Los datos que nos proporcionaste son inválidos.",
-                icon: "error",
-                confirmButtonColor: "#0b0c0d",
-            });
+            console.error("Error grnade");
         }
     };
 

@@ -1,33 +1,43 @@
 "use client";
-import { IExpense } from "@/Interfaces/Interfaces";
+
+// Estilos y componentes
 import { Button, ContainerDashboard, Title } from "@/components/ui";
+import Swal from "sweetalert2";
+
+// Endpoints
 import {
     closeExpense,
-    getExpensesById,
+    getExpenseById,
     settleExpense,
-} from "@/helpers/fetch.helper";
+} from "@/helpers/fetch.helper.expense";
+
+// Interfaces
+import { IExpense } from "@/Interfaces/expenses.interfaces";
+
+// Hooks
+import { useEffect, useState } from "react";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
 import Link from "next/link";
-import { useParams, usePathname, useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import Swal from "sweetalert2";
+
+// ------------------
 
 const page = () => {
     useAuth();
     const router = useRouter();
     const path = usePathname();
-    const { token, data } = useSesion();
+    const { token } = useSesion();
     const { id }: { id: string } = useParams();
     const [expensa, setExpensa] = useState<IExpense>();
 
     useEffect(() => {
         const fecthData = async () => {
             try {
-                const response = await getExpensesById(token, id);
-                console.log(response);
+                const response = await getExpenseById(token, id);
                 if (response) {
-                    setExpensa(response);
+                    const data = await response.json();
+                    setExpensa(data);
                 } else {
                     Swal.fire({
                         icon: "error",

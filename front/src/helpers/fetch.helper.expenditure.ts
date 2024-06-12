@@ -1,50 +1,49 @@
-// Intrefaces
-import { INewRegisterAdmin } from "@/Interfaces/admin.interfaces";
+import { INewExpenditure } from "@/Interfaces/expenditures.interfaces";
 
 // Rutas
 export const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 // ------------------
 
-// Creación de administrador
-export const adminFetch = async (
-    registerAdmin: INewRegisterAdmin,
-    token: string
+// Creación de gastos
+export const expenditureFetch = async (
+    token: string,
+    newExpenditure: INewExpenditure
 ) => {
     try {
-        const response = await fetch(`${apiUrl}/auth/register-c-admin`, {
+        const response = await fetch(`${apiUrl}/expenditures`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
-            body: JSON.stringify(registerAdmin),
+            body: JSON.stringify(newExpenditure),
         });
         if (!response.ok) {
             return response.json().then((errorInfo) => {
-                throw new Error(
-                    `Error ${response.status}: ${
-                        errorInfo.message || response.statusText
-                    }`
-                );
+                throw new Error(`
+                    Error ${response.status}: ${
+                    errorInfo.message || response.statusText
+                }
+            `);
             });
         } else {
             return response;
         }
     } catch (error) {
-        console.error("El error está en el adminFetch", error);
+        console.error("El error está en el expenditureFetch", error);
     }
 };
 
-// Obtener todos los administradores
-export const getAdmins = async (
+// Obtener todos los gastos
+export const getExpenditures = async (
     token: string,
     page: number = 1,
-    limit: number = 5
+    limit: number = 20
 ) => {
     try {
         const response = await fetch(
-            `${apiUrl}/c-admins?page=${page}&limit=${limit}`,
+            `${apiUrl}/expenditures?page=${page}&limit=${limit}`,
             {
                 method: "GET",
                 headers: {
@@ -64,14 +63,14 @@ export const getAdmins = async (
             return response;
         }
     } catch (error) {
-        console.error("El error está en el getAdmins", error);
+        console.error("El error está en el getExpenditures", error);
     }
 };
 
-// Obtener administrador por ID
-export const getAdminById = async (id: string, token: string) => {
+// Obtener un gasto por ID
+export const getExpeditureById = async (token: string, id: string) => {
     try {
-        const response = await fetch(`${apiUrl}/c-admins/${id}`, {
+        const response = await fetch(`${apiUrl}/ expenditures/${id}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -90,18 +89,18 @@ export const getAdminById = async (id: string, token: string) => {
             return response;
         }
     } catch (error) {
-        console.error("El error está en el getAdmins", error);
+        console.error("El error está en el getExpenditureById", error);
     }
 };
 
-// Modificar un administrador
-export const updateAdmin = async (
-    data: INewRegisterAdmin,
+// Modificar un gasto
+export const updateExpenditure = async (
     id: string,
-    token: string
+    token: string,
+    data: INewExpenditure
 ) => {
     try {
-        const response = await fetch(`${apiUrl}/c-admins/${id}`, {
+        const response = await fetch(`${apiUrl}/expenditures/${id}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
@@ -121,14 +120,14 @@ export const updateAdmin = async (
             return response;
         }
     } catch (error) {
-        console.error("El error está en el updateAdmin", error);
+        console.error("El error está en el updateExpenditure", error);
     }
 };
 
-// Borrar un administrador
-export const deleteAdmin = async (id: string, token: string) => {
+// Borrar un gasto
+export const deleteSupplier = async (id: string, token: string) => {
     try {
-        const response = await fetch(`${apiUrl}/c-admins/disable/${id}`, {
+        const response = await fetch(`${apiUrl}/expenditures/disable/${id}`, {
             method: "PATCH",
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -146,6 +145,6 @@ export const deleteAdmin = async (id: string, token: string) => {
             return response;
         }
     } catch (error) {
-        console.error("El error está en el deleteAdmin", error);
+        console.error("El error está en el deleteExpenditure", error);
     }
 };

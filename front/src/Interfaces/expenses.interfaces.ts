@@ -1,5 +1,6 @@
 // Interfaces
 import { IConsortium } from "./consortium.interfaces";
+import { IExpenditure } from "./expenditures.interfaces";
 
 // Interfaz de creación de una nueva expensa
 export interface INewExpense {
@@ -27,6 +28,6 @@ export interface IExpense {
     status: string;
     active: boolean;
     consortium: IConsortium;
-    // expenditures: IExpenditures[];
+    expenditures: IExpenditure[];
     functional_units_expenses: [];
 }

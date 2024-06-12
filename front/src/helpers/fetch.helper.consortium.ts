@@ -1,3 +1,4 @@
+// Interfaces
 import { INewConsortium } from "@/Interfaces/consortium.interfaces";
 
 // Rutas

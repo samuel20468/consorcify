@@ -13,14 +13,14 @@ import {
 import { IConsortium } from "@/Interfaces/consortium.interfaces";
 
 // Endpoints
-import { supplierFetch } from "@/helpers/fetch.helper";
+import { getConsortiums } from "@/helpers/fetch.helper.consortium";
+import { supplierFetch } from "@/helpers/fetch.helper.supplier";
 
 // Hooks
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
-import { getConsortiums } from "@/helpers/fetch.helper.consortium";
 
 // ---------------
 
@@ -90,7 +90,7 @@ const FormSupplier = () => {
             if (response?.ok) {
                 Swal.fire({
                     title: "Excelente",
-                    text: `El consorcio ${registerSupplier.name} se creó correctamente`,
+                    text: `El proveedor ${registerSupplier.name} se creó correctamente`,
                     icon: "success",
                     confirmButtonColor: "#0b0c0d",
                 }).then(async (res) => {

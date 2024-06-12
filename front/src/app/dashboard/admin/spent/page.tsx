@@ -6,7 +6,7 @@ import ExpenditureCards from "@/components/ExpenditureCards/ExpenditureCards";
 
 // Endpoints
 import { getConsortiums } from "@/helpers/fetch.helper.consortium";
-import { getExpenditures, getSuppliers } from "@/helpers/fetch.helper";
+import { getSuppliers } from "@/helpers/fetch.helper.supplier";
 
 // Interfaces
 import { IExpenditure } from "@/Interfaces/expenditures.interfaces";
@@ -18,6 +18,7 @@ import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
+import { getExpenditures } from "@/helpers/fetch.helper.expenditure";
 
 // ------------------
 

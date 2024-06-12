@@ -1,19 +1,22 @@
 "use client";
 
-import { IExpense } from "@/Interfaces/Interfaces";
-import SearchBar from "@/components/SearchBar/SearchBar";
-import AddExpenses from "@/components/addExpenses/addExpenses";
 // Estilos y componentes
 import { Button, ContainerDashboard, Title } from "@/components/ui";
 import { FaPlus } from "react-icons/fa6";
+import SearchBar from "@/components/SearchBar/SearchBar";
+
+// Interfaces
+import { IExpense } from "@/Interfaces/expenses.interfaces";
+
+// Endpoints
+import { getExpenses } from "@/helpers/fetch.helper.expense";
 
 // Hooks
+import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { getExpenses } from "@/helpers/fetch.helper";
-import { usePathname } from "next/navigation";
 
 // --------------------
 
@@ -97,7 +100,6 @@ const Expense = () => {
                             <Link
                                 href={`/dashboard/admin/expenses/${expensa.id}`}
                                 key={expensa.id}
-
                             >
                                 <div className="w-full flex justify-around my-2 border py-2 rounded-[40px] border-black">
                                     <p className="flex items-center justify-center w-1/5">

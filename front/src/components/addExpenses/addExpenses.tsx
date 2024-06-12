@@ -9,8 +9,8 @@ import { validateForm } from "@/helpers/Validations/vallidate.expense";
 import { getCurrentDate } from "@/helpers/functions.helper";
 
 // Endpoints
+import { expenseFetch } from "@/helpers/fetch.helper.expense";
 import { getConsortiums } from "@/helpers/fetch.helper.consortium";
-import { newExpense } from "@/helpers/fetch.helper";
 
 // Interfaces
 import { IConsortium } from "@/Interfaces/consortium.interfaces";
@@ -76,7 +76,7 @@ const addExpenses = () => {
         }
 
         try {
-            const response = await newExpense(token, expense);
+            const response = await expenseFetch(token, expense);
             if (response) {
                 Swal.fire({
                     icon: "success",

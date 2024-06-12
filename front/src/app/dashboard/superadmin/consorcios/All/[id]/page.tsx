@@ -1,20 +1,29 @@
 "use client";
 
-import { IConsortium } from "@/Interfaces/Interfaces";
+// Estilos y componentes
 import { Button, ContainerDashboard } from "@/components/ui";
-import {
-    deleteConsortiumById,
-    getConsortiumById,
-} from "@/helpers/fetch.helper";
 import { formatearNumero } from "@/helpers/functions.helper";
+import Swal from "sweetalert2";
+
+// Endpoints
+import {
+    deleteConsortium,
+    getConsortiumById,
+} from "@/helpers/fetch.helper.consortium";
+
+// Interfaces
+import { IConsortium } from "@/Interfaces/consortium.interfaces";
+
+// Hooks
+import { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import Swal from "sweetalert2";
 
-const page = () => {
+// ---------------------
+
+const Page = () => {
     useAuth();
     const params: { id: string } = useParams();
     const { token } = useSesion();
@@ -25,7 +34,8 @@ const page = () => {
     useEffect(() => {
         const fetchData = async (token: string) => {
             const response = await getConsortiumById(params.id, token);
-            setConsorcio(response);
+            const data = await response?.json();
+            setConsorcio(data);
         };
         try {
         } catch (error) {
@@ -56,10 +66,7 @@ const page = () => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    const response = await deleteConsortiumById(
-                        params.id,
-                        token
-                    );
+                    const response = await deleteConsortium(params.id, token);
                     Swal.fire({
                         title: "Consorcio borrado!",
                         text: `El consorcio ${consorcio?.name} fue borrado correctamente`,
@@ -140,4 +147,4 @@ const page = () => {
     );
 };
 
-export default page;
+export default Page;

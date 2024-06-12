@@ -2,7 +2,7 @@
 import ExpenditureCard from "../ExpenditureCard/ExpenditureCard";
 
 // Interfaces
-import { IExpenditures } from "@/Interfaces/Interfaces";
+import { IExpenditure } from "@/Interfaces/expenditures.interfaces";
 
 // Hooks
 import Link from "next/link";
@@ -12,7 +12,7 @@ import Link from "next/link";
 const ExpenditureCards = ({
     expenditures,
 }: {
-    expenditures: IExpenditures[];
+    expenditures: IExpenditure[];
 }) => {
     return (
         <div className="flex flex-col justify-center gap-5 py-5 w-[90%]">

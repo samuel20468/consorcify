@@ -5,10 +5,10 @@ import { GrUserWorker } from "react-icons/gr";
 import { FaMoneyBillTransfer } from "react-icons/fa6";
 
 // Interfaces
-import { IAdmin } from "@/Interfaces/Interfaces";
+import { IAdmin } from "@/Interfaces/admin.interfaces";
 
 // Endpoints
-import { getAdminById } from "@/helpers/fetch.helper";
+import { getAdminById } from "@/helpers/fetch.helper.admin";
 
 // Hooks
 import { useEffect, useState } from "react";

@@ -2,19 +2,22 @@
 import { Button, Input, Label, Select } from "../ui";
 import Swal from "sweetalert2";
 
+// Validaciones
+import { validateInvoiceNumber } from "@/helpers/Validations/validate.invoice_number";
+
 // Interfaces
 import {
-    IConsortium,
-    IExpenditures,
-    IExpendituresErrors,
-    IExpense,
-    ISuppliers,
-} from "@/Interfaces/Interfaces";
+    INewExpenditure,
+    INewExpenditureError,
+} from "@/Interfaces/expenditures.interfaces";
+import { IConsortium } from "@/Interfaces/consortium.interfaces";
+import { IExpense } from "@/Interfaces/expenses.interfaces";
+import { ISupplier } from "@/Interfaces/suppliers.interfaces";
 
 // Endpoints
+import { getConsortiums } from "@/helpers/fetch.helper.consortium";
 import {
     expenditureFetch,
-    getConsortiums,
     getExpenses,
     getSuppliers,
 } from "@/helpers/fetch.helper";
@@ -24,7 +27,6 @@ import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
-import { validateInvoiceNumber } from "@/helpers/Validations/validate.invoice_number";
 
 // -------------------
 
@@ -44,12 +46,12 @@ const FormSpent = () => {
         consortium_id: "",
     };
     const [registerExpenditure, setRegisterExpenditure] =
-        useState<IExpenditures>(initialData);
+        useState<INewExpenditure>(initialData);
     const [errorRegisterExpenditure, setErrorRegisterExpenditure] =
-        useState<IExpendituresErrors>(initialData);
+        useState<INewExpenditureError>(initialData);
     const [consortiums, setConsortiums] = useState<IConsortium[]>([]);
     const [expenses, setExpenses] = useState<IExpense[]>([]);
-    const [suppliers, setSuppliers] = useState<ISuppliers[]>([]);
+    const [suppliers, setSuppliers] = useState<ISupplier[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {

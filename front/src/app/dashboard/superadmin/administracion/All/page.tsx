@@ -1,21 +1,22 @@
-'use client';
+"use client";
 
 // Estilos y componentes
-import { Button, ContainerDashboard, Title } from '@/components/ui';
+import { Button, ContainerDashboard, Title } from "@/components/ui";
+import SearchBar from "@/components/SearchBar/SearchBar";
 
 // Interfaces
-import { IAdmin, IRegisterAdmin } from '@/Interfaces/Interfaces';
+import { IAdmin } from "@/Interfaces/admin.interfaces";
 
 // Endpoints
-import { getAdmins } from '@/helpers/fetch.helper';
+import { getAdmins } from "@/helpers/fetch.helper.admin";
 
 // Hooks
-import { useEffect, useState } from 'react';
-import useAuth from '@/helpers/useAuth';
-import useSesion from '@/helpers/useSesion';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import SearchBar from '@/components/SearchBar/SearchBar';
+import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import useAuth from "@/helpers/useAuth";
+import useSesion from "@/helpers/useSesion";
+import Link from "next/link";
+
 // -------------------
 
 const page = () => {
@@ -51,7 +52,7 @@ const page = () => {
         const filteredData = (admins || []).filter((consortium: IAdmin) => {
             return Object.values(consortium).some((value) => {
                 return (
-                    typeof value === 'string' &&
+                    typeof value === "string" &&
                     value.toLocaleLowerCase().includes(trimmedQuery)
                 );
             });
@@ -60,20 +61,20 @@ const page = () => {
         setResult(filteredData);
     };
 
-    const handleSort = (field: keyof IAdmin, order: 'asc' | 'desc') => {
+    const handleSort = (field: keyof IAdmin, order: "asc" | "desc") => {
         const sortedData = [...result].sort((a, b) => {
             const valueA = a[field];
             const valueB = b[field];
 
-            if (typeof valueA === 'string' && typeof valueB === 'string') {
-                return order === 'asc'
+            if (typeof valueA === "string" && typeof valueB === "string") {
+                return order === "asc"
                     ? valueA.localeCompare(valueB)
                     : valueB.localeCompare(valueA);
             } else if (
-                typeof valueA === 'number' &&
-                typeof valueB === 'number'
+                typeof valueA === "number" &&
+                typeof valueB === "number"
             ) {
-                return order === 'asc' ? valueA - valueB : valueB - valueA;
+                return order === "asc" ? valueA - valueB : valueB - valueA;
             } else {
                 return 0;
             }
@@ -86,7 +87,7 @@ const page = () => {
         <div className="h-screen text-white">
             <ContainerDashboard>
                 <Title>
-                    Administración{' '}
+                    Administración{" "}
                     <span className="text-2xl font-thin">
                         | Administraciones
                     </span>
@@ -102,7 +103,7 @@ const page = () => {
                             onChange={(e) =>
                                 handleSort(
                                     e.target.value as keyof IAdmin,
-                                    'asc'
+                                    "asc"
                                 )
                             }
                         >
@@ -120,7 +121,7 @@ const page = () => {
                     <select
                         className="h-10 p-2 my-1 text-gray-200 rounded-md shadow-xl bg-input placeholder:font-extralight placeholder:text-gray-500 focus:outline-none no-spinners"
                         onChange={(e) =>
-                            handleSort('name', e.target.value as 'asc' | 'desc')
+                            handleSort("name", e.target.value as "asc" | "desc")
                         }
                     >
                         <option value="asc">Ascendente</option>

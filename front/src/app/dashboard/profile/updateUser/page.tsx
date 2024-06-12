@@ -1,25 +1,35 @@
 "use client";
-import { IUser } from "@/Interfaces/Interfaces";
+
+// Estilos y componentes
 import { Button, ContainerDashboard, Input, Label } from "@/components/ui";
-import { getUserById } from "@/helpers/fetch.helper";
+
+// Endpoints
+import { getUserById } from "@/helpers/fetch.helper.user";
+
+// Interfaces
+import { IRegister, IRegisterError } from "@/Interfaces/user.interfaces";
+
+// Hooks
+import { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
 
-const page = () => {
+// -------------------------
+
+const UpdateUser = () => {
+    useAuth();
+    const { token, data } = useSesion();
+    const path = usePathname();
+    const router = useRouter();
     const initialData = {
         first_name: "",
         last_name: "",
         email: "",
+        password: "",
     };
-    useAuth();
-    const path = usePathname();
-    const router = useRouter();
-    const [userData, setUserData] = useState<IUser>(initialData);
-    const [errors, setErrors] = useState<IUser>(initialData);
-    const { token, data } = useSesion();
+    const [userData, setUserData] = useState<IRegister>(initialData);
+    const [errors, setErrors] = useState<IRegisterError>(initialData);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -111,4 +121,4 @@ const page = () => {
     );
 };
 
-export default page;
+export default UpdateUser;

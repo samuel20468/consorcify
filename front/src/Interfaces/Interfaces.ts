@@ -1,60 +1,3 @@
-export interface ILoginData {
-    email: string;
-    password: string;
-}
-
-export interface ILoginDataError {
-    email: string;
-    password?: string;
-}
-
-export interface ILogedUser {
-    token: string;
-    user: IUser;
-}
-
-export interface IUser {
-    first_name: string;
-    last_name?: string;
-    email: string;
-    password?: string;
-    role?: string;
-    picture?: string;
-}
-
-export interface IAdmin extends IUser {
-    id?: string;
-    phone_number: number;
-    address: string;
-    cuit: string;
-    rpa: string;
-    sat: string;
-    active: boolean;
-    name?: string;
-}
-
-export interface IRegisterAdmin {
-    name: string;
-    email: string;
-    password?: string;
-    phone_number: string;
-    cuit: string;
-    address: string;
-    sat: string;
-    rpa: string;
-    id?: string;
-}
-
-export interface IRegisterAdminError {
-    name?: string;
-    email?: string;
-    password?: string;
-    phone_number?: string;
-    cuit?: string;
-    adress?: string;
-    sat?: string;
-    rpa?: string;
-}
 export interface IConsortium {
     id?: string;
     suterh_key: string;
@@ -72,7 +15,7 @@ export interface IConsortium {
     first_due_day: number;
     interest_rate: number | string;
     picture?: string;
-    c_admin?: string | IRegisterAdmin;
+    c_admin?: string;
 }
 export interface IConsortiumError {
     id?: string;
@@ -90,32 +33,7 @@ export interface IConsortiumError {
     category?: number;
     first_due_day?: number;
     interest_rate?: string | number;
-    c_admin?: string | IRegisterAdmin;
-}
-
-export interface IReviews {
-    profilePic: string;
-    text: string;
-    author: string;
-    type: string;
-    rating: number;
-}
-
-export interface IReviewCardProps {
-    review: IReviews;
-}
-
-export interface IUserData {
-    email: string;
-    exp: number;
-    iat: number;
-    id: string;
-    roles: string[];
-}
-
-export interface Props {
-    children?: React.ReactNode;
-    className?: string;
+    c_admin?: string;
 }
 
 export interface IUFs {
@@ -186,7 +104,6 @@ export interface INewExpense {
 }
 
 export interface IExpense {
-    name?: string;
     id: string;
     name: string;
     issue_date: string;

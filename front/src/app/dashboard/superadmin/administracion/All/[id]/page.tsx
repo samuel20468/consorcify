@@ -5,10 +5,10 @@ import { ContainerDashboard, Title } from "@/components/ui";
 import Swal from "sweetalert2";
 
 // Interfaces
-import { IAdmin } from "@/Interfaces/Interfaces";
+import { IAdmin } from "@/Interfaces/admin.interfaces";
 
 // Endpoints
-import { deleteAdmin, getAdminById } from "@/helpers/fetch.helper";
+import { deleteAdmin, getAdminById } from "@/helpers/fetch.helper.admin";
 
 // Hooks
 import { useEffect, useState } from "react";

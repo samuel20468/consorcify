@@ -1,15 +1,29 @@
 "use client";
-import React, { useEffect, useState } from "react";
+
+// Estilos y componentes
 import { Button, Input, Label } from "../ui";
-import { IConsortium, INewExpense } from "@/Interfaces/Interfaces";
+import Swal from "sweetalert2";
+
+// Validaciones
+import { validateForm } from "@/helpers/Validations/vallidate.expense";
+import { getCurrentDate } from "@/helpers/functions.helper";
+
+// Endpoints
+import { getConsortiums } from "@/helpers/fetch.helper.consortium";
+import { newExpense } from "@/helpers/fetch.helper";
+
+// Interfaces
+import { IConsortium } from "@/Interfaces/consortium.interfaces";
+import { INewExpense } from "@/Interfaces/expenses.interfaces";
+
+// Hooks
+import { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
-import { getConsortiums, newExpense } from "@/helpers/fetch.helper";
-import { usePathname, useRouter } from "next/navigation";
-import { getCurrentDate } from "@/helpers/functions.helper";
-import { validateForm } from "@/helpers/Validations/vallidate.expense";
-import Swal from "sweetalert2";
 import Link from "next/link";
+
+// ------------------------
 
 const addExpenses = () => {
     useAuth();

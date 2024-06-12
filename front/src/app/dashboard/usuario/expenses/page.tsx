@@ -18,7 +18,7 @@ const Expenses = () => {
     const { token } = useSesion();
     const handlePay = async () => {
         try {
-            const idPrueba = "efb22fda-94aa-4808-90c0-c9396270edc4";
+            const idPrueba = "52dbad94-ec6c-466e-aa0b-41de39662227";
             const response = await paymentCheckOut(token, idPrueba);
             if (!response?.ok) {
             }

@@ -1,4 +1,7 @@
-import { Props } from "@/Interfaces/Interfaces";
+interface Props {
+    children?: React.ReactNode;
+    className?: string;
+}
 
 export const ContainerDashboard = (props: Props) => {
     const { children, className } = props;

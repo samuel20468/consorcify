@@ -2,22 +2,25 @@
 import { Button, Input, Label, Select } from "../ui";
 import Swal from "sweetalert2";
 
+// Validaciones
+import { validateCuit } from "@/helpers/Validations/validate.cuit";
+
 // Interfaces
 import {
-    IConsortium,
-    ISuppliers,
-    ISuppliersError,
-} from "@/Interfaces/Interfaces";
+    INewSupplier,
+    INewSupplierError,
+} from "@/Interfaces/suppliers.interfaces";
+import { IConsortium } from "@/Interfaces/consortium.interfaces";
 
 // Endpoints
-import { getConsortiums, supplierFetch } from "@/helpers/fetch.helper";
+import { supplierFetch } from "@/helpers/fetch.helper";
 
 // Hooks
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
-import { validateCuit } from "@/helpers/Validations/validate.cuit";
+import { getConsortiums } from "@/helpers/fetch.helper.consortium";
 
 // ---------------
 
@@ -33,11 +36,12 @@ const FormSupplier = () => {
         phone_number: "",
         address: "",
         balance: 0,
+        consortium_id: "",
     };
     const [registerSupplier, setRegisterSupplier] =
-        useState<ISuppliers>(initialData);
+        useState<INewSupplier>(initialData);
     const [errorSupplier, setErrorSupplier] =
-        useState<ISuppliersError>(initialData);
+        useState<INewSupplierError>(initialData);
     const [consortiums, setConsortiums] = useState<IConsortium[]>();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

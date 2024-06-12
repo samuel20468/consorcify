@@ -4,10 +4,10 @@
 import { ContainerDashboard, Title } from "@/components/ui";
 
 // Endpoints
-import { getConsortiumById } from "@/helpers/fetch.helper";
+import { getConsortiumById } from "@/helpers/fetch.helper.consortium";
 
 // Interfaces
-import { IConsortium } from "@/Interfaces/Interfaces";
+import { IConsortium } from "@/Interfaces/consortium.interfaces";
 
 // Hooks
 import { useEffect, useState } from "react";
@@ -29,7 +29,8 @@ const ConsortiumId = () => {
             try {
                 const response = await getConsortiumById(params.id, token);
                 if (response) {
-                    setConsortium(response);
+                    const data = await response.json();
+                    setConsortium(data);
                 }
             } catch (error) {
                 console.error(error);

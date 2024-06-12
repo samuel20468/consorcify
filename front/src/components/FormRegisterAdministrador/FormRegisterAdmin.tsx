@@ -1,26 +1,33 @@
-'use client';
+"use client";
 
 // Estilos y componentes
-import { Button, Input, Label, Select } from '../ui';
-import Swal from 'sweetalert2';
+import { Button, Input, Label, Select } from "../ui";
+import Swal from "sweetalert2";
 
 // Iterfaces
-import { IRegisterAdmin, IRegisterAdminError } from '@/Interfaces/Interfaces';
+import {
+    INewRegisterAdmin,
+    INewRegisterAdminError,
+} from "@/Interfaces/admin.interfaces";
 
 // Validaciones
-import { validateCuit } from '@/helpers/Validations/validate.cuit';
-import { validateNombre } from '@/helpers/Validations/validate.name';
-import { validateRPA } from '@/helpers/Validations/validate.rpa';
-import { validateEmail } from '@/helpers/Validations/validate.email';
+import { validateCuit } from "@/helpers/Validations/validate.cuit";
+import { validateNombre } from "@/helpers/Validations/validate.name";
+import { validateRPA } from "@/helpers/Validations/validate.rpa";
+import { validateEmail } from "@/helpers/Validations/validate.email";
 
 // Endpoints
-import { adminFetch, getAdminById, updateAdmin } from '@/helpers/fetch.helper';
+import {
+    adminFetch,
+    getAdminById,
+    updateAdmin,
+} from "@/helpers/fetch.helper.admin";
 
 // Hooks
-import { useEffect, useState } from 'react';
-import { useParams, usePathname, useRouter } from 'next/navigation';
-import useAuth from '@/helpers/useAuth';
-import useSesion from '@/helpers/useSesion';
+import { useEffect, useState } from "react";
+import { useParams, usePathname, useRouter } from "next/navigation";
+import useAuth from "@/helpers/useAuth";
+import useSesion from "@/helpers/useSesion";
 
 // -----------------
 
@@ -29,25 +36,25 @@ const FormRegisterAdmin = ({ update = false }) => {
     const path = usePathname();
     const router = useRouter();
     const initialData = {
-        name: '',
-        address: '',
-        phone_number: '',
-        cuit: '',
-        sat: '',
-        rpa: '',
-        email: '',
+        name: "",
+        address: "",
+        phone_number: "",
+        cuit: "",
+        sat: "",
+        rpa: "",
+        email: "",
     };
     const { token } = useSesion();
     const params: { id: string } = useParams();
     const [adminRegister, setAdminRegister] =
-        useState<IRegisterAdmin>(initialData);
+        useState<INewRegisterAdmin>(initialData);
     const [errorAdminRegister, setErrorAdminRegister] =
-        useState<IRegisterAdminError>(initialData);
+        useState<INewRegisterAdminError>(initialData);
 
     useEffect(() => {
         const fetchData = async () => {
             if (update && !params.id) {
-                console.error('El ID del administrador es undefined o vacío');
+                console.error("El ID del administrador es undefined o vacío");
                 return;
             }
             try {
@@ -92,51 +99,53 @@ const FormRegisterAdmin = ({ update = false }) => {
                 confirmButtonColor: "#0b0c0d",
             });
             return;
-        }
-        try {
-            if (update == true) {
-                const response = await updateAdmin(
-                    adminRegister,
-                    params.id,
-                    token
-                );
-                if (response) {
-                    Swal.fire({
-                        title: 'Excelente',
-                        text: `La administración ${adminRegister.name} se modificó correctamente`,
-                        icon: 'success',
-                        confirmButtonColor: '#0b0c0d',
-                    }).then((res) => {
-                        if (res.isConfirmed) {
+        } else {
+            try {
+                if (update == true) {
+                    const response = await updateAdmin(
+                        adminRegister,
+                        params.id,
+                        token
+                    );
+                    if (response) {
+                        Swal.fire({
+                            title: "Excelente",
+                            text: `La administración ${adminRegister.name} se modificó correctamente`,
+                            icon: "success",
+                            confirmButtonColor: "#0b0c0d",
+                        }).then(async (res) => {
+                            if (res.isConfirmed) {
+                                const data = await response.json();
+                                router.push(
+                                    `/dashboard/superadmin/administracion/All/${params.id}`
+                                );
+                            }
+                        });
+                    }
+                } else {
+                    const response = await adminFetch(adminRegister, token);
+                    if (response?.ok) {
+                        Swal.fire({
+                            title: "Excelente",
+                            text: `La administración ${adminRegister.name} se creó correctamente`,
+                            icon: "success",
+                            confirmButtonColor: "#0b0c0d",
+                        }).then(async (res) => {
+                            const data = await response.json();
                             router.push(
-                                `/dashboard/superadmin/administracion/All/${params.id}`
+                                `/dashboard/superadmin/administracion/All/${data.id}`
                             );
-                        }
-                    });
+                        });
+                    }
                 }
-            } else {
-                const response = await adminFetch(adminRegister, token);
-                if (response.ok) {
-                    Swal.fire({
-                        title: 'Excelente',
-                        text: `La administración ${adminRegister.name} se creó correctamente`,
-                        icon: 'success',
-                        confirmButtonColor: '#0b0c0d',
-                    }).then(async (res) => {
-                        const data = await response.json();
-                        router.push(
-                            `/dashboard/superadmin/administracion/All/${data.id}`
-                        );
-                    });
-                }
+            } catch (error: any) {
+                Swal.fire({
+                    title: "Error de información",
+                    text: error.message,
+                    icon: "error",
+                    confirmButtonColor: "#0b0c0d",
+                });
             }
-        } catch (error: any) {
-            Swal.fire({
-                title: 'Error de información',
-                text: error.message,
-                icon: 'error',
-                confirmButtonColor: '#0b0c0d',
-            });
         }
     };
 
@@ -296,8 +305,8 @@ const FormRegisterAdmin = ({ update = false }) => {
                         className="w-full py-2 rounded-[40px]"
                     >
                         {update
-                            ? 'Modificar Administrador'
-                            : 'Registrar Administrador'}
+                            ? "Modificar Administrador"
+                            : "Registrar Administrador"}
                     </Button>
                 </div>
             </form>

@@ -15,6 +15,7 @@ import checkEntityExistence from 'src/helpers/check-entity-existence.helper';
 import { TPagination } from 'src/utils/types';
 import { User } from '../users/entities/user.entity';
 import { UsersRepository } from '../users/users.repository';
+import { FunctionalUnit } from '../functional-units/entities/functional-unit.entity';
 
 @Injectable()
 export class PaymentsService {
@@ -24,6 +25,8 @@ export class PaymentsService {
     private readonly usersRepository: UsersRepository,
     @InjectRepository(FunctionalUnitExpense)
     private readonly functionalUnitExpenseRepository: Repository<FunctionalUnitExpense>,
+    @InjectRepository(FunctionalUnit)
+    private readonly functionalUnitRepository: Repository<FunctionalUnit>,
   ) {
     this.stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
       apiVersion: '2024-04-10',
@@ -71,19 +74,11 @@ export class PaymentsService {
   }
 
   async savePayment(session: Stripe.Checkout.Session) {
-    const paymentStatusMapping = {
-      paid: PAYMENT_STATUS.PAID,
-      unpaid: PAYMENT_STATUS.UNPAID,
-    };
-
-    const paymentStatus =
-      paymentStatusMapping[session.payment_status] || PAYMENT_STATUS.PENDING;
-
     const payment = new Payment();
     payment.amount = session.amount_total / 100; // Convertir de centavos a la moneda original
     payment.payment_date = new Date();
     payment.payment_method = session.payment_method_types[0];
-    payment.payment_status = paymentStatus;
+    payment.payment_status = PAYMENT_STATUS.PAID;
     payment.customer_email = session.customer_email;
 
     const functionalUnitExpense =
@@ -100,7 +95,13 @@ export class PaymentsService {
 
     payment.functional_unit_expense = functionalUnitExpense;
 
-    return await this.paymentsRepository.createPayment(payment);
+    const savedPayment = await this.paymentsRepository.createPayment(payment);
+
+    const functional_unit = functionalUnitExpense.functional_unit;
+    functional_unit.balance = functional_unit.balance - payment.amount;
+    await this.functionalUnitRepository.save(functional_unit);
+
+    return savedPayment;
   }
 
   async findAll({ page, limit }: TPagination): Promise<Payment[]> {
@@ -125,7 +126,7 @@ export class PaymentsService {
     if (!userId) {
       throw new BadRequestException('id is required');
     }
-    
+
     const user: User = await checkEntityExistence(
       this.usersRepository,
       userId,
@@ -168,15 +169,23 @@ export class PaymentsService {
       throw new BadRequestException('id is required');
     }
 
-    const foundPayment: Payment = await checkEntityExistence(
-      this.paymentsRepository,
-      id,
-      'el pago',
-    );
+    const foundPayment: Payment = await this.paymentsRepository.findOne(id);
+
+    if (!foundPayment) {
+      throw new NotFoundException('Pago no encontrado');
+    }
 
     status = foundPayment.active;
 
     await this.paymentsRepository.toggleStatus(id, status);
+
+    foundPayment.functional_unit_expense.functional_unit.balance =
+      foundPayment.functional_unit_expense.functional_unit.balance +
+      foundPayment.amount;
+
+    await this.functionalUnitRepository.save(
+      foundPayment.functional_unit_expense.functional_unit,
+    );
 
     return foundPayment;
   }

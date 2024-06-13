@@ -18,11 +18,11 @@ import { CLIENT_URL, STATUS_MESSAGE } from 'src/utils/constants';
 
 @ApiTags('Payments')
 @Controller('payments')
-@ApiBearerAuth()
-@UseGuards(AuthCustomGuard)
 export class PaymentsController {
   constructor(private readonly paymentsService: PaymentsService) {}
 
+  @ApiBearerAuth()
+  @UseGuards(AuthCustomGuard)
   @Get(':id/check-out')
   async checkOut(@Param('id') id: string, @Res() res: Response) {
     const sessionUrl = await this.paymentsService.checkOut(id);
@@ -66,6 +66,8 @@ export class PaymentsController {
     }
   }
 
+  @ApiBearerAuth()
+  @UseGuards(AuthCustomGuard)
   @Get()
   async findAll(
     @Query('page') page: number = 1,
@@ -77,6 +79,8 @@ export class PaymentsController {
     return await this.paymentsService.findAll({ page, limit });
   }
 
+  @ApiBearerAuth()
+  @UseGuards(AuthCustomGuard)
   @Get(':id/user')
   async findAllByUser(
     @Query('page') page: number = 1,
@@ -89,11 +93,15 @@ export class PaymentsController {
     return await this.paymentsService.findAllByUser({ page, limit }, id);
   }
 
+  @ApiBearerAuth()
+  @UseGuards(AuthCustomGuard)
   @Get(':id')
   async findOne(@Param('id', ParseUUIDPipe) id: string) {
     return await this.paymentsService.findOne(id);
   }
 
+  @ApiBearerAuth()
+  @UseGuards(AuthCustomGuard)
   @Patch('toggle-status/:id')
   async toggleStatus(@Param('id', ParseUUIDPipe) id: string) {
     let statusMessage: string;

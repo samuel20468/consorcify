@@ -60,6 +60,7 @@ export interface IConsortium {
     ufs: number;
     category: number;
     first_due_day: number;
+    picture: string;
     interest_rate: number;
     active: boolean;
     c_admin: IAdmin;

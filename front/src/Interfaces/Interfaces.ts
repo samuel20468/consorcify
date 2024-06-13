@@ -1,4 +1,5 @@
 export interface IConsortium {
+    active?: boolean;
     id?: string;
     suterh_key: string;
     name: string;
@@ -114,4 +115,29 @@ export interface IExpense {
     consortium: IConsortium;
     expenditures: IExpenditures[];
     functional_units_expenses: [];
+}
+
+export interface INewFuncionalUnit {
+    type: string;
+    location: string;
+    number: string;
+    owner: string;
+    owner_phone_number: string;
+    owner_email: string;
+    balance: number;
+    consortium_id: string;
+}
+
+export interface IFuncionalUnit {
+    id: string;
+    type: string;
+    location: string;
+    number: string;
+    owner: string;
+    owner_phone_number: string;
+    owner_email: string;
+    balance: number;
+    code: string;
+    active: boolean;
+    consortium: IConsortium;
 }

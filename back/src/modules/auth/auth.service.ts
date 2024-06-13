@@ -14,9 +14,10 @@ import { CAdmin } from '../c-admin/entities/c-admin.entity';
 import { CADMIN_PASS, SAT } from 'src/utils/constants';
 import { JwtService } from '@nestjs/jwt';
 import { generateToken, signInHelper } from 'src/helpers/sign-in.helper';
-import { IAuth0User, TObjectToken } from 'src/utils/types';
+import { TObjectToken } from 'src/utils/types';
 import satSetter from 'src/helpers/sat-setter.helper';
 import { checkForDuplicates } from 'src/helpers/check-for-duplicates.helper';
+import { MailsService } from '../mails/mails.service';
 
 @Injectable()
 export class AuthService {
@@ -25,6 +26,7 @@ export class AuthService {
     @InjectRepository(CAdmin)
     private readonly cAdminRepository: Repository<CAdmin>,
     private readonly jwtService: JwtService,
+    private readonly mailsService: MailsService,
   ) {}
 
   async signIn(credentials: CredentialsDto): Promise<TObjectToken> {
@@ -65,6 +67,11 @@ export class AuthService {
     newUser.password = hashedPassword;
 
     const createdUser = await this.usersRepository.save(newUser);
+    try {
+      await this.mailsService.sendUserConfirmation(user.first_name, user.email);
+    } catch (error) {
+      console.error('Error sending confirmation email:', error);
+    }
     const tokenUser = generateToken(createdUser, this.jwtService);
     return tokenUser;
   }

@@ -14,6 +14,7 @@ import { ExpensesModule } from './modules/expenses/expenses.module';
 import { PicturesModule } from './modules/pictures/pictures.module';
 import { FunctionalUnitsExpensesModule } from './modules/functional-units-expenses/functional-units-expenses.module';
 import { PaymentsModule } from './modules/payments/payments.module';
+import { MailsModule } from './modules/mails/mails.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { PaymentsModule } from './modules/payments/payments.module';
     PicturesModule,
     FunctionalUnitsExpensesModule,
     PaymentsModule,
+    MailsModule,
   ],
 })
 export class AppModule {}

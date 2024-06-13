@@ -1,5 +1,5 @@
 // Interfaces
-import { ILogin, IRegister } from "@/Interfaces/user.interfaces";
+import { ILogin, IRegister, IUser } from "@/Interfaces/user.interfaces";
 
 // Rutas
 export const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -85,7 +85,10 @@ export const getUsers = async (token: string) => {
 };
 
 // Obtener usuario por ID
-export const getUserById = async (id: string, token: string) => {
+export const getUserById = async (
+    id: string,
+    token: string
+): Promise<IUser | any> => {
     try {
         const response = await fetch(`${apiUrl}/users/${id}`, {
             method: "GET",

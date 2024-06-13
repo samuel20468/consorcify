@@ -4,23 +4,28 @@
 import { Button, ContainerDashboard, Title } from "@/components/ui";
 
 // Endpoints
-import { getConsortiumById } from "@/helpers/fetch.helper.consortium";
+import {
+    deleteConsortium,
+    getConsortiumById,
+} from "@/helpers/fetch.helper.consortium";
 
 // Interfaces
 import { IConsortium } from "@/Interfaces/consortium.interfaces";
 
 // Hooks
 import { useEffect, useState } from "react";
-import { useParams, usePathname } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
 import FormAddFuncionalUnit from "@/components/FormAddFuncionalUnit/page";
 import Link from "next/link";
+import Swal from "sweetalert2";
 
 // --------------------
 
 const ConsortiumId = () => {
     useAuth();
+    const router = useRouter();
     const { token } = useSesion();
     const pathname = usePathname();
     const params: { id: string } = useParams();
@@ -43,22 +48,53 @@ const ConsortiumId = () => {
         }
     }, [token, pathname, params.id]);
 
+    const handleDelete = async () => {
+        Swal.fire({
+            icon: "warning",
+            title: "Desactivar Consorcio",
+            text: "¿Está seguro que desea desactivar el Consorcio?",
+            showCancelButton: true,
+            confirmButtonText: "Desactivar",
+            cancelButtonText: "Cancelar",
+            cancelButtonColor: "#8b0000",
+            confirmButtonColor: "#008f39",
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    const response = await deleteConsortium(
+                        consortium?.id!,
+                        token
+                    );
+                    if (response) {
+                        Swal.fire({
+                            icon: "success",
+                            title: "Consorcio Desactivado",
+                            text: "El Consorcio se ha desactivado correctamente",
+                            confirmButtonText: "Aceptar",
+                        });
+                        router.push("/dashboard/admin/consortiums");
+                    } else {
+                        Swal.fire({
+                            icon: "error",
+                            title: "No se ha podido desactivar el Consorcio",
+                            text: "Intentelo mas tarde o contacta con el administrador",
+                            confirmButtonText: "Aceptar",
+                        });
+                    }
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+        });
+    };
+
     return (
         <ContainerDashboard className="w-[90%] h-[90vh]">
             <Title>
-                Consorcios{" "}
+                <Link href="/dashboard/admin/consortiums">Consorcios </Link>
                 <span className="text-xl font-thin">| {consortium?.name}</span>
             </Title>
-            <div className="flex justify-end w-[85%] py-2">
-                <Link
-                    href={`/dashboard/admin/consortiums/${params.id}/${consortium?.id}`}
-                    as={`/dashboard/admin/consortiums/${params.id}/addunidad`}
-                >
-                    <Button className="w-44 py-2 rounded-[40px]">
-                        Agregar Unidad Funcional
-                    </Button>
-                </Link>
-            </div>
+
             <div className="w-[90%] h-full border rounded-[40px] flex justify-center items-center flex-col">
                 <div className="w-full h-[40%]  p-2 flex justify-center items-center">
                     <img
@@ -166,6 +202,34 @@ const ConsortiumId = () => {
                         </div>
                     </div>
                 </div>
+            </div>
+            <div className="flex justify-end w-[85%] py-2 gap-2">
+                <Link
+                    href={`/dashboard/admin/consortiums/unidadesFuncionales/${consortium?.id}`}
+                >
+                    <Button className="w-44 py-2 rounded-[40px]">
+                        Unidades Funcionales
+                    </Button>
+                </Link>
+                <Link href={`/updateConsortium/${consortium?.id}`}>
+                    <Button className="w-44 py-2 rounded-[40px]">
+                        Modificar Consorcio
+                    </Button>
+                </Link>
+                <Button
+                    className="w-44 py-2 rounded-[40px]"
+                    onClick={handleDelete}
+                >
+                    Desactivar Consorcio
+                </Button>
+                <Link
+                    href={`/dashboard/admin/consortiums/${params.id}/${consortium?.id}`}
+                    as={`/dashboard/admin/consortiums/${params.id}/addunidad`}
+                >
+                    <Button className="w-44 py-2 rounded-[40px]">
+                        Agregar Unidad Funcional
+                    </Button>
+                </Link>
             </div>
         </ContainerDashboard>
     );

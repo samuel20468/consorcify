@@ -103,7 +103,7 @@ const FormRegisterConsortium = ({ update = false }) => {
                 fetchConsortium();
             }
         }
-    }, [token, params.id, update]);
+    }, [token, params.id]);
 
     // useEffect(() => {
     //     const fetchData = async () => {
@@ -289,8 +289,7 @@ const FormRegisterConsortium = ({ update = false }) => {
                 c_admin: data.id,
             });
         }
-
-    }, [token, consortiumRegister, data.id, data?.roles]);
+    }, [token]);
 
     // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     //     e.preventDefault();

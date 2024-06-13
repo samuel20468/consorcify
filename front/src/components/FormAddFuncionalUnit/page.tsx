@@ -4,11 +4,14 @@ import { Button, Input, Label } from "../ui";
 import { usePathname } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
-import { validateBalance } from "@/helpers/Validations/validate.balance";
 import { validateEmail } from "@/helpers/Validations/validate.email";
-import Swal from "sweetalert2";
 import { areFieldsNotEmpty } from "@/helpers/Validations/validate.empty";
 import { addFuncionalUnit } from "@/helpers/fetch.helper.uf";
+import Swal from "sweetalert2";
+import {
+    INewFunctionalUnits,
+    INewFunctionalUnitsError,
+} from "@/Interfaces/functionalUnits.interfaces";
 
 const FormAddFuncionalUnit = ({ consortium_id }: { consortium_id: string }) => {
     useAuth();
@@ -24,16 +27,8 @@ const FormAddFuncionalUnit = ({ consortium_id }: { consortium_id: string }) => {
         consortium_id: consortium_id,
     };
     const path = usePathname();
-    const [formData, setFormData] = useState(initialData);
-    const [errors, setErrors] = useState<{
-        type: string;
-        location: string;
-        number: string;
-        owner: string;
-        owner_phone_number: string;
-        owner_email: string;
-        balance: string | number; // Ajuste aquí
-    }>({
+    const [formData, setFormData] = useState<INewFunctionalUnits>(initialData);
+    const [errors, setErrors] = useState<INewFunctionalUnitsError>({
         type: "",
         location: "",
         number: "",
@@ -58,6 +53,7 @@ const FormAddFuncionalUnit = ({ consortium_id }: { consortium_id: string }) => {
 
         try {
             const response = await addFuncionalUnit(token, formData);
+            console.log(response);
             if (response) {
                 Swal.fire({
                     title: " Unidad Funcional agregada",
@@ -65,16 +61,20 @@ const FormAddFuncionalUnit = ({ consortium_id }: { consortium_id: string }) => {
                     icon: "success",
                     confirmButtonText: "Ok",
                 });
+                setFormData(initialData);
             } else {
                 Swal.fire({
-                    title: "Error",
-                    text: "Error al agregar el Funcional Unit",
+                    title: "Error al agregar la unidad",
+                    text: "Intentalo nuevamente o contacta con el administrador",
                     icon: "error",
                     confirmButtonText: "Ok",
                 });
             }
         } catch (error) {
-            console.error(error);
+            Swal.fire({
+                title: "Error de Información",
+                text: (error as Error).message,
+            });
         }
     };
 
@@ -92,12 +92,11 @@ const FormAddFuncionalUnit = ({ consortium_id }: { consortium_id: string }) => {
                     : value,
         });
     };
-    console.log(formData);
 
     useEffect(() => {
         const validateMail = validateEmail(formData.owner_email);
         setErrors({ ...errors, owner_email: validateMail.email });
-    }, [formData, errors]);
+    }, [formData]);
 
     return (
         <div className="flex flex-col items-center justify-center w-1/4 h-full">
@@ -141,7 +140,7 @@ const FormAddFuncionalUnit = ({ consortium_id }: { consortium_id: string }) => {
                 <div className="w-full">
                     <Label>Numero</Label>
                     <Input
-                        type="number"
+                        type="text"
                         name="number"
                         value={formData.number}
                         onChange={handleChange}

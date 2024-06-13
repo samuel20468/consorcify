@@ -23,7 +23,7 @@ export interface INewFunctionalUnitsError {
     owner?: string;
     owner_phone_number?: string;
     owner_email?: string;
-    balance?: number;
+    balance?: string;
     consortium_id?: string;
 }
 

@@ -1,15 +1,16 @@
 // Interfaces
-import { ISuppliers } from "@/Interfaces/Interfaces";
+
+import { ISupplier } from "@/Interfaces/suppliers.interfaces";
 
 // ----------------
 
-const SuppliersCard: React.FC<ISuppliers> = ({
+const SuppliersCard: React.FC<ISupplier> = ({
     name,
     cuit,
     email,
     phone_number,
     address,
-}: ISuppliers) => {
+}: ISupplier) => {
     return (
         <div className="flex justify-between py-2 text-center bg-gray-300 rounded-lg hover:bg-slate-300">
             <div className="w-1/5">

@@ -97,6 +97,28 @@ export class PaymentsService {
 
     const savedPayment = await this.paymentsRepository.createPayment(payment);
 
+    const functional_units_expenses: FunctionalUnitExpense[] =
+      await this.functionalUnitExpenseRepository.find({
+        where: {
+          functional_unit: {
+            id: functionalUnitExpense.functional_unit.id,
+          },
+        },
+      });
+
+    if (payment.amount >= functionalUnitExpense.total_amount) {
+      for (const fue of functional_units_expenses) {
+        if (fue.payment_status === PAYMENT_STATUS.PAID) continue;
+        fue.payment_status = PAYMENT_STATUS.PAID;
+        await this.functionalUnitExpenseRepository.save(fue);
+      }
+    } else {
+      for (const fue of functional_units_expenses) {
+        if (fue.payment_status === PAYMENT_STATUS.PAID) continue;
+        fue.payment_status = PAYMENT_STATUS.PARTIAL;
+        await this.functionalUnitExpenseRepository.save(fue);
+      }
+    }
     const functional_unit = functionalUnitExpense.functional_unit;
     functional_unit.balance = functional_unit.balance - payment.amount;
     await this.functionalUnitRepository.save(functional_unit);

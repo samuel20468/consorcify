@@ -65,4 +65,5 @@ export enum PAYMENT_STATUS { //Pendiente saber que devuelve exactamente el pago
   PAID = 'Pagado',
   UNPAID = 'Impago',
   PENDING = 'Pendiente',
+  PARTIAL = 'Parcial',
 }

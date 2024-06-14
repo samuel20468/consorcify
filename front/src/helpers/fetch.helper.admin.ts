@@ -1,5 +1,5 @@
 // Intrefaces
-import { INewRegisterAdmin } from "@/Interfaces/admin.interfaces";
+import { IAdmin, INewRegisterAdmin } from "@/Interfaces/admin.interfaces";
 
 // Rutas
 export const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -10,7 +10,7 @@ export const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 export const adminFetch = async (
     registerAdmin: INewRegisterAdmin,
     token: string
-) => {
+): Promise<IAdmin | any> => {
     try {
         const response = await fetch(`${apiUrl}/auth/register-c-admin`, {
             method: "POST",
@@ -41,7 +41,7 @@ export const getAdmins = async (
     token: string,
     page: number = 1,
     limit: number = 5
-) => {
+): Promise<IAdmin[] | any> => {
     try {
         const response = await fetch(
             `${apiUrl}/c-admins?page=${page}&limit=${limit}`,
@@ -69,7 +69,10 @@ export const getAdmins = async (
 };
 
 // Obtener administrador por ID
-export const getAdminById = async (id: string, token: string) => {
+export const getAdminById = async (
+    id: string,
+    token: string
+): Promise<IAdmin | any> => {
     try {
         const response = await fetch(`${apiUrl}/c-admins/${id}`, {
             method: "GET",
@@ -99,7 +102,7 @@ export const updateAdmin = async (
     data: INewRegisterAdmin,
     id: string,
     token: string
-) => {
+): Promise<IAdmin | any> => {
     try {
         const response = await fetch(`${apiUrl}/c-admins/${id}`, {
             method: "PATCH",
@@ -126,7 +129,7 @@ export const updateAdmin = async (
 };
 
 // Borrar un administrador
-export const deleteAdmin = async (id: string, token: string) => {
+export const deleteAdmin = async (id: string, token: string): Promise<void> => {
     try {
         const response = await fetch(`${apiUrl}/c-admins/disable/${id}`, {
             method: "PATCH",
@@ -143,7 +146,8 @@ export const deleteAdmin = async (id: string, token: string) => {
                 );
             });
         } else {
-            return response;
+            const data = await response.json();
+            return data;
         }
     } catch (error) {
         console.error("El error está en el deleteAdmin", error);

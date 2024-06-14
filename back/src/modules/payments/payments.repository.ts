@@ -18,6 +18,7 @@ export class PaymentsRepository {
   async findAll(): Promise<Payment[]> {
     return await this.paymentRepository.find({
       where: { active: true },
+      relations: { functional_unit_expense: { functional_unit: { user: true } } },
     });
   }
 
@@ -42,7 +43,7 @@ export class PaymentsRepository {
   async findOne(id: string): Promise<Payment> {
     return await this.paymentRepository.findOne({
       where: { id },
-      relations: { functional_unit_expense: true },
+      relations: { functional_unit_expense: { functional_unit: { user: true } } },
     });
   }
 

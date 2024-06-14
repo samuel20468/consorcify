@@ -7,7 +7,7 @@ import { ContainerDashboard, Title } from "@/components/ui";
 import { getSupplierById } from "@/helpers/fetch.helper.supplier";
 
 // Interfaces
-import { ISuppliers } from "@/Interfaces/Interfaces";
+import { ISupplier } from "@/Interfaces/suppliers.interfaces";
 
 // Hooks
 import { useEffect, useState } from "react";
@@ -21,7 +21,7 @@ const Supplier = () => {
     useAuth();
     const { token } = useSesion();
     const params: { id: string } = useParams();
-    const [suppliers, setSuppliers] = useState<ISuppliers>();
+    const [suppliers, setSuppliers] = useState<ISupplier>();
     const path = usePathname();
 
     useEffect(() => {

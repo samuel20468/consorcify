@@ -13,7 +13,7 @@ import {
 import { IConsortium } from "@/Interfaces/consortium.interfaces";
 
 // Endpoints
-import { getConsortiums } from "@/helpers/fetch.helper.consortium";
+import { getConsortiumsByAdminId } from "@/helpers/fetch.helper.consortium";
 import { supplierFetch } from "@/helpers/fetch.helper.supplier";
 
 // Hooks
@@ -26,7 +26,7 @@ import useSesion from "@/helpers/useSesion";
 
 const FormSupplier = () => {
     useAuth();
-    const { token } = useSesion();
+    const { token, data } = useSesion();
     const pathname = useParams();
     const router = useRouter();
     const initialData = {
@@ -116,7 +116,7 @@ const FormSupplier = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await getConsortiums(token);
+                const response = await getConsortiumsByAdminId(data.id, token);
                 if (response) {
                     const data = await response.json();
                     setConsortiums(data);

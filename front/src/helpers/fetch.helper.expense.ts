@@ -1,5 +1,5 @@
 // Interfaces
-import { INewExpense } from "@/Interfaces/expenses.interfaces";
+import { IExpense, INewExpense } from "@/Interfaces/expenses.interfaces";
 
 // Rutas
 export const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -7,7 +7,10 @@ export const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 // ------------------
 
 // Creación de expensa
-export const expenseFetch = async (token: string, newExpense: INewExpense) => {
+export const expenseFetch = async (
+    token: string,
+    newExpense: INewExpense
+): Promise<IExpense | any> => {
     try {
         const response = await fetch(`${apiUrl}/expenses`, {
             method: "POST",
@@ -37,8 +40,8 @@ export const expenseFetch = async (token: string, newExpense: INewExpense) => {
 export const getExpenses = async (
     token: string,
     page: number = 1,
-    limit: number = 20
-) => {
+    limit: number = 5
+): Promise<IExpense[] | any> => {
     try {
         const response = await fetch(
             `${apiUrl}/expenses?page=${page}&limit=${limit}`,
@@ -66,7 +69,10 @@ export const getExpenses = async (
 };
 
 // Obtener expensa por ID
-export const getExpenseById = async (token: string, id: string) => {
+export const getExpenseById = async (
+    token: string,
+    id: string
+): Promise<IExpense | any> => {
     try {
         const response = await fetch(`${apiUrl}/expenses/${id}`, {
             method: "GET",
@@ -145,10 +151,13 @@ export const closeExpense = async (token: string, id: string) => {
 };
 
 // Borrar expensa
-export const deleteExpense = async (id: string, token: string) => {
+export const deleteExpense = async (
+    id: string,
+    token: string
+): Promise<void> => {
     try {
-        const response = await fetch(`${apiUrl}/expenses/${id}`, {
-            method: "DELETE",
+        const response = await fetch(`${apiUrl}/expenses/toggle-status/${id}`, {
+            method: "PATCH",
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -162,7 +171,8 @@ export const deleteExpense = async (id: string, token: string) => {
                 );
             });
         } else {
-            return response;
+            const data = response.json();
+            return data;
         }
     } catch (error) {
         console.error("El error está en el deleteExpense", error);

@@ -5,7 +5,7 @@ import { Button, ContainerDashboard, Select, Title } from "@/components/ui";
 import ConsortiumDetails from "@/components/ConsortiumDetails/ConsortiumDetails";
 
 // Endpoints
-import { getConsortiums } from "@/helpers/fetch.helper.consortium";
+import { getConsortiumsByAdminId } from "@/helpers/fetch.helper.consortium";
 
 // Interfaces
 import { IConsortium } from "@/Interfaces/consortium.interfaces";
@@ -21,17 +21,17 @@ import Link from "next/link";
 
 const Consortium = () => {
     useAuth();
+    const { token, data } = useSesion();
+    const pathname = usePathname();
     const [consortiums, setConsortiums] = useState<IConsortium[]>([]);
     const [selectedConsortiumId, setSelectedConsortiumId] = useState<
         string | null
     >(null);
-    const { token } = useSesion();
-    const pathname = usePathname();
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await getConsortiums(token);
+                const response = await getConsortiumsByAdminId(data.id, token);
                 if (response) {
                     const data = await response.json();
                     setConsortiums(data);
@@ -48,6 +48,8 @@ const Consortium = () => {
         }
     }, [token, pathname]);
 
+    // Filtros
+
     const handleSelectChange = (
         event: React.ChangeEvent<HTMLSelectElement>
     ) => {
@@ -59,38 +61,42 @@ const Consortium = () => {
     );
 
     return (
-        <div className="h-screen bg-fondo">
+        <div className="h-screen">
             <ContainerDashboard>
                 <Title>Consorcios</Title>
-                <div className="flex items-center justify-around w-full">
-                    <Select
-                        id="consortium_id"
-                        name="consortium_id"
-                        className="w-1/3 h-10 px-2 my-1 text-gray-200 rounded-md shadow-xl cursor-pointer bg-input focus:outline-none no-spinners"
-                        value={selectedConsortiumId || ""}
-                        onChange={handleSelectChange}
-                    >
-                        {consortiums.length > 0 &&
-                            consortiums.map((consortium) => (
-                                <option
-                                    value={consortium.id}
-                                    key={consortium.id}
-                                >
-                                    {consortium.name}
-                                </option>
-                            ))}
-                    </Select>
-                    <Link
-                        className="flex justify-center w-1/6"
-                        href={"/addConsortium"}
-                    >
-                        <Button className="w-full p-2 rounded-xl">
-                            Agregar consorcio
-                        </Button>
-                    </Link>
+                <div className="flex items-center justify-between w-[98%]">
+                    <div className="w-2/3">
+                        <Select
+                            id="consortium_id"
+                            name="consortium_id"
+                            className="w-1/3 h-10 px-2 my-1 text-gray-200 rounded-md shadow-xl cursor-pointer bg-input focus:outline-none no-spinners"
+                            value={selectedConsortiumId || ""}
+                            onChange={handleSelectChange}
+                        >
+                            {consortiums.length > 0 &&
+                                consortiums.map((consortium) => (
+                                    <option
+                                        value={consortium.id}
+                                        key={consortium.id}
+                                    >
+                                        {consortium.name}
+                                    </option>
+                                ))}
+                        </Select>
+                    </div>
+                    <div className="flex w-1/3">
+                        <Link
+                            className="flex justify-end w-full mr-5"
+                            href={"/addConsortium"}
+                        >
+                            <Button className="w-1/2 p-2 rounded-[40px]">
+                                Agregar consorcio
+                            </Button>
+                        </Link>
+                    </div>
                 </div>
                 {selectedConsortium ? (
-                    <div className="flex justify-center gap-5 py-5 w-[90%]">
+                    <div className="flex justify-center gap-5 w-[90%]">
                         <ConsortiumDetails {...selectedConsortium} />
                     </div>
                 ) : (
@@ -100,28 +106,15 @@ const Consortium = () => {
                         </h1>
                     </div>
                 )}
-                <div className="flex justify-between w-2/4 mt-2 mb-10">
-                    <div className="w-1/3 ml-12">
-                        <Link
-                            href={`/dashboard/admin/consortiums/${selectedConsortiumId}`}
-                        >
-                            <Button className="w-2/4 p-2 rounded-xl">
-                                Ver detalle
-                            </Button>
-                        </Link>
-                    </div>
-                    <div className="flex justify-end w-2/3 gap-3 mr-12">
-                        <Link href="#" className="w-1/4">
-                            <Button className="w-full p-2 rounded-xl">
-                                Modificar
-                            </Button>
-                        </Link>
-                        <Link href="#" className="w-1/4">
-                            <Button className="w-full p-2 rounded-xl">
-                                Eliminar
-                            </Button>
-                        </Link>
-                    </div>
+                <div className="flex justify-center w-2/4 mt-5 mb-10">
+                    <Link
+                        href={`/dashboard/admin/consortiums/${selectedConsortiumId}`}
+                        className="w-1/4"
+                    >
+                        <Button className="w-full p-2 rounded-[40px]">
+                            Ver detalle
+                        </Button>
+                    </Link>
                 </div>
             </ContainerDashboard>
         </div>

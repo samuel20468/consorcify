@@ -7,6 +7,7 @@ import { FunctionalUnitExpense } from '../functional-units-expenses/entities/fun
 import { PaymentsRepository } from './payments.repository';
 import { UsersRepository } from '../users/users.repository';
 import { User } from '../users/entities/user.entity';
+<<<<<<< HEAD
 import { MailsModule } from '../mails/mails.module';
 import { MailsService } from '../mails/mails.service';
 
@@ -15,6 +16,12 @@ import { MailsService } from '../mails/mails.service';
     TypeOrmModule.forFeature([Payment, FunctionalUnitExpense, User]),
     MailsModule,
   ],
+=======
+import { FunctionalUnit } from '../functional-units/entities/functional-unit.entity';
+
+@Module({
+  imports: [TypeOrmModule.forFeature([Payment, FunctionalUnitExpense, User, FunctionalUnit])],
+>>>>>>> develop
   controllers: [PaymentsController],
   providers: [
     PaymentsService,

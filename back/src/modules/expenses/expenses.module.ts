@@ -11,8 +11,12 @@ import { ConsortiumsRepository } from '../consortiums/consortiums.repository';
 import { FunctionalUnitsExpensesRepository } from '../functional-units-expenses/functional-units-expenses.repository';
 import { FunctionalUnitExpense } from '../functional-units-expenses/entities/functional-units-expense.entity';
 import { FunctionalUnit } from '../functional-units/entities/functional-unit.entity';
+<<<<<<< HEAD
 import { MailsModule } from '../mails/mails.module';
 import { MailsService } from '../mails/mails.service';
+=======
+import { GoogleMapsService } from '../google-maps/google-maps.service';
+>>>>>>> develop
 
 @Module({
   imports: [
@@ -32,7 +36,11 @@ import { MailsService } from '../mails/mails.service';
     ConsortiumsService,
     ConsortiumsRepository,
     FunctionalUnitsExpensesRepository,
+<<<<<<< HEAD
     MailsService,
+=======
+    GoogleMapsService
+>>>>>>> develop
   ],
 })
 export class ExpensesModule {}

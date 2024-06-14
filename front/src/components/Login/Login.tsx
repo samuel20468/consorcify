@@ -51,10 +51,10 @@ const Login = () => {
         } else {
             try {
                 const response = await loginFetch(userData);
-                const decodeData = jwtDecode(response.token);
+                const decodeData = jwtDecode(token);
                 localStorage.setItem(
                     "userData",
-                    JSON.stringify({ user: decodeData, token: response.token })
+                    JSON.stringify({ user: decodeData, token: token })
                 );
                 Swal.fire({
                     title: "Bienvenido de nuevo",
@@ -70,7 +70,7 @@ const Login = () => {
             } catch (error) {
                 Swal.fire({
                     title: "Error de información",
-                    text: "Los datos que nos proporcionaste son inválidos.",
+                    text: (error as Error).message,
                     icon: "error",
                     confirmButtonColor: "#0b0c0d",
                 });

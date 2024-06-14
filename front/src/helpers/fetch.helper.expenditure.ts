@@ -1,4 +1,8 @@
-import { INewExpenditure } from "@/Interfaces/expenditures.interfaces";
+// Interfaces
+import {
+    IExpenditure,
+    INewExpenditure,
+} from "@/Interfaces/expenditures.interfaces";
 
 // Rutas
 export const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -9,7 +13,7 @@ export const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 export const expenditureFetch = async (
     token: string,
     newExpenditure: INewExpenditure
-) => {
+): Promise<IExpenditure | any> => {
     try {
         const response = await fetch(`${apiUrl}/expenditures`, {
             method: "POST",
@@ -40,7 +44,7 @@ export const getExpenditures = async (
     token: string,
     page: number = 1,
     limit: number = 20
-) => {
+): Promise<IExpenditure[] | any> => {
     try {
         const response = await fetch(
             `${apiUrl}/expenditures?page=${page}&limit=${limit}`,
@@ -68,9 +72,12 @@ export const getExpenditures = async (
 };
 
 // Obtener un gasto por ID
-export const getExpeditureById = async (token: string, id: string) => {
+export const getExpeditureById = async (
+    token: string,
+    id: string
+): Promise<IExpenditure | any> => {
     try {
-        const response = await fetch(`${apiUrl}/ expenditures/${id}`, {
+        const response = await fetch(`${apiUrl}/expenditures/${id}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -98,7 +105,7 @@ export const updateExpenditure = async (
     id: string,
     token: string,
     data: INewExpenditure
-) => {
+): Promise<IExpenditure | any> => {
     try {
         const response = await fetch(`${apiUrl}/expenditures/${id}`, {
             method: "PATCH",
@@ -125,7 +132,10 @@ export const updateExpenditure = async (
 };
 
 // Borrar un gasto
-export const deleteSupplier = async (id: string, token: string) => {
+export const deleteExpenditure = async (
+    id: string,
+    token: string
+): Promise<any> => {
     try {
         const response = await fetch(`${apiUrl}/expenditures/disable/${id}`, {
             method: "PATCH",

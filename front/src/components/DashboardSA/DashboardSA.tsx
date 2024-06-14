@@ -12,12 +12,9 @@ const DashboardSA = () => {
     return (
         <div className="flex items-center justify-center w-full h-screen gap-3 font-sans text-white">
             <ContainerDashboard className="w-full h-full">
-                <Title className="flex justify-center">
-                    Administración general
-                </Title>
-
+                <Title>Administración general</Title>
                 <div className="flex items-center justify-between w-1/2 gap-4 h-3/4">
-                    <div className="w-full max-w-sm overflow-hidden bg-[#d3d3d3] rounded-[40px] shadow-[0_3px_10px_rgb(0,0,0,0.2)] py-6">
+                    <div className="w-full max-w-sm overflow-hidden bg-[#d3d3d3] rounded-[40px] shadow-[0_3px_10px_rgb(255,255,255,0.8)] py-6">
                         <div className="flex flex-col items-center p-4 space-y-2">
                             <IoMdPersonAdd size={100} color="black" />
                             <h3 className="text-xl font-bold text-black">
@@ -35,7 +32,7 @@ const DashboardSA = () => {
                         </div>
                     </div>
 
-                    <div className="w-full max-w-sm overflow-hidden bg-[#d3d3d3] rounded-[40px] shadow-[0_3px_10px_rgb(0,0,0,0.2)] py-6">
+                    <div className="w-full max-w-sm overflow-hidden bg-[#d3d3d3] rounded-[40px] shadow-[0_3px_10px_rgb(255,255,255,0.8)] py-6">
                         <div className="flex flex-col items-center p-4 space-y-2">
                             <BsBuildingFillAdd size={100} color="black" />
                             <h3 className="text-xl font-bold text-black">

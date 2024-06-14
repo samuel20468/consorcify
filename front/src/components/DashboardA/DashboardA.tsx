@@ -45,7 +45,7 @@ const DashboardA = () => {
         <div className="h-screen text-white">
             <ContainerDashboard>
                 <Title>{admin?.name}</Title>
-                <div className="grid w-full h-auto grid-cols-1 gap-10 p-4 mb-10 text-black md:grid-cols-2 lg:grid-cols-3">
+                <div className="grid w-full h-auto grid-cols-1 gap-10 p-4 mb-10 text-black md:grid-cols-2 lg:grid-cols-3 ">
                     <Link
                         href="/addConsortium"
                         className="flex flex-col items-center justify-center text-3xl text-white border rounded-[40px] pb-2 gradiente shadow-[0_3px_10px_rgb(255,255,255,0.8)]"

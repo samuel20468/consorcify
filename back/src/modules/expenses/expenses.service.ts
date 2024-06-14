@@ -13,10 +13,12 @@ import { ConsortiumsService } from '../consortiums/consortiums.service';
 import { Expense } from './entities/expense.entity';
 import { TPagination } from 'src/utils/types';
 import { EXPENSE_STATUS } from 'src/utils/constants';
+import { MailsService } from '../mails/mails.service';
 
 @Injectable()
 export class ExpensesService {
   constructor(
+    private readonly mailsService: MailsService,
     private readonly expensesRepository: ExpensesRepository,
     private readonly consortiumsService: ConsortiumsService,
   ) {}
@@ -79,6 +81,14 @@ export class ExpensesService {
     await this.expensesRepository.closeExpense(id);
 
     foundExpense.status = EXPENSE_STATUS.CLOSED;
+    const { consortium } = foundExpense;
+    await this.mailsService.sendNewExpense(
+      consortium.c_admin.name,
+      consortium.c_admin.email,
+      foundExpense.total_amount,
+      consortium.name,
+      foundExpense.name,
+    );
 
     return foundExpense;
   }

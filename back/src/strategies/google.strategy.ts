@@ -3,8 +3,14 @@ import { JwtService } from '@nestjs/jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Strategy, VerifyCallback } from 'passport-google-oauth20';
+import { generateToken } from 'src/helpers/sign-in.helper';
+import { MailsService } from 'src/modules/mails/mails.service';
 import { User } from 'src/modules/users/entities/user.entity';
-import { API_URL } from 'src/utils/constants';
+import {
+  API_URL,
+  GOOGLE_CLIENT_ID,
+  GOOGLE_CLIENT_SECRET,
+} from 'src/utils/constants';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -12,10 +18,11 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   constructor(
     @InjectRepository(User) private readonly usersRepository: Repository<User>,
     private readonly jwtService: JwtService,
+    private readonly mailsService: MailsService,
   ) {
     super({
-      clientID: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      clientID: GOOGLE_CLIENT_ID,
+      clientSecret: GOOGLE_CLIENT_SECRET,
       callbackURL: `${API_URL}/auth/google/callback`,
       scope: ['email', 'profile'],
     });
@@ -50,24 +57,19 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       newUser.auth0 = true;
       const createdUser = await this.usersRepository.save(newUser);
 
-      const tokenPayload = {
-        id: createdUser.id,
-        email: createdUser.email,
-        roles: ['user'],
-      };
+      const tokenUser = generateToken(createdUser, this.jwtService);
+      const { token } = tokenUser;
+      await this.mailsService.sendNewAccount(
+        createdUser.first_name,
+        createdUser.email,
+      );
 
-      const newAccessToken = this.jwtService.sign(tokenPayload);
-
-      done(null, { ...createdUser, accesstoken: newAccessToken });
+      done(null, { ...createdUser, accesstoken: token });
     } else {
-      const tokenPayload = {
-        id: foundUser.id,
-        email: foundUser.email,
-        roles: ['user'],
-      };
-      const newAccessToken = this.jwtService.sign(tokenPayload);
+      const tokenUser = generateToken(foundUser, this.jwtService);
+      const { token } = tokenUser;
 
-      done(null, { ...foundUser, accesstoken: newAccessToken });
+      done(null, { ...foundUser, accesstoken: token });
     }
   }
 }

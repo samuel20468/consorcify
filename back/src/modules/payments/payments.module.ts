@@ -7,10 +7,20 @@ import { FunctionalUnitExpense } from '../functional-units-expenses/entities/fun
 import { PaymentsRepository } from './payments.repository';
 import { UsersRepository } from '../users/users.repository';
 import { User } from '../users/entities/user.entity';
+import { MailsModule } from '../mails/mails.module';
+import { MailsService } from '../mails/mails.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Payment, FunctionalUnitExpense, User])],
+  imports: [
+    TypeOrmModule.forFeature([Payment, FunctionalUnitExpense, User]),
+    MailsModule,
+  ],
   controllers: [PaymentsController],
-  providers: [PaymentsService, PaymentsRepository, UsersRepository],
+  providers: [
+    PaymentsService,
+    PaymentsRepository,
+    UsersRepository,
+    MailsService,
+  ],
 })
 export class PaymentsModule {}

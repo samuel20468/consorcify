@@ -11,6 +11,8 @@ import { ConsortiumsRepository } from '../consortiums/consortiums.repository';
 import { FunctionalUnitsExpensesRepository } from '../functional-units-expenses/functional-units-expenses.repository';
 import { FunctionalUnitExpense } from '../functional-units-expenses/entities/functional-units-expense.entity';
 import { FunctionalUnit } from '../functional-units/entities/functional-unit.entity';
+import { MailsModule } from '../mails/mails.module';
+import { MailsService } from '../mails/mails.service';
 
 @Module({
   imports: [
@@ -21,6 +23,7 @@ import { FunctionalUnit } from '../functional-units/entities/functional-unit.ent
       FunctionalUnitExpense,
       FunctionalUnit,
     ]),
+    MailsModule,
   ],
   controllers: [ExpensesController],
   providers: [
@@ -29,6 +32,7 @@ import { FunctionalUnit } from '../functional-units/entities/functional-unit.ent
     ConsortiumsService,
     ConsortiumsRepository,
     FunctionalUnitsExpensesRepository,
+    MailsService,
   ],
 })
 export class ExpensesModule {}

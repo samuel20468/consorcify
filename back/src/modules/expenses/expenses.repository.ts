@@ -8,6 +8,7 @@ import { Consortium } from '../consortiums/entities/consortium.entity';
 import { Expenditure } from '../expenditures/entities/expenditure.entity';
 import { FunctionalUnitsExpensesRepository } from '../functional-units-expenses/functional-units-expenses.repository';
 import { FunctionalUnitExpense } from '../functional-units-expenses/entities/functional-units-expense.entity';
+import { MailsService } from '../mails/mails.service';
 
 @Injectable()
 export class ExpensesRepository {
@@ -19,6 +20,7 @@ export class ExpensesRepository {
     private readonly functionalUnitsExpensesRepository: FunctionalUnitsExpensesRepository,
     @InjectRepository(FunctionalUnit)
     private readonly functionalUnitRepository: Repository<FunctionalUnit>,
+    private readonly mailsService: MailsService,
   ) {}
 
   async createExpense(newExpense: Expense) {
@@ -118,6 +120,14 @@ export class ExpensesRepository {
       uf.balance = total_amount;
 
       await this.functionalUnitRepository.save(uf);
+
+      await this.mailsService.sendIndividualExpense(
+        uf.user.first_name,
+        uf.user.email,
+        monthly_expenditure,
+        uf.balance,
+        uf.number,
+      );
 
       await this.functionalUnitsExpensesRepository.create(
         functionalUnitExpense,

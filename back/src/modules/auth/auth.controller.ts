@@ -24,6 +24,8 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 import { TObjectToken } from 'src/utils/types';
 import { AuthGuard } from '@nestjs/passport';
+import { EmailDto } from './dto/email.dto';
+import { ResetPasswordDto } from './dto/reset-password.dto';
 @ApiTags('Auth')
 @Controller('auth')
 @UseInterceptors(ExcludePasswordInterceptor, ExcludeActiveInterceptor)
@@ -59,5 +61,15 @@ export class AuthController {
   @ApiBearerAuth()
   async signUpCAdmin(@Body() consAdmin: CreateCAdminDto): Promise<CAdmin> {
     return await this.authService.singUpCAdmin(consAdmin);
+  }
+
+  @Post('request-reset-password')
+  async requestPasswordReset(@Body() emailEntity: EmailDto) {
+    return this.authService.requestPasswordReset(emailEntity);
+  }
+
+  @Post('reset-password')
+  async resetPassword(@Body() resetData: ResetPasswordDto) {
+    return this.authService.resetPassword(resetData);
   }
 }

@@ -123,7 +123,7 @@ const Expense = () => {
                 ) : (
                     <div className="p-8">
                         <h1 className="text-2xl">
-                            "No hay expensas para visualizar"
+                            No hay expensas para visualizar
                         </h1>
                     </div>
                 )}

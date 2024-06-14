@@ -51,10 +51,10 @@ const Login = () => {
         } else {
             try {
                 const response = await loginFetch(userData);
-                const decodeData = jwtDecode(response.token);
+                const decodeData = jwtDecode(token);
                 localStorage.setItem(
                     "userData",
-                    JSON.stringify({ user: decodeData, token: response.token })
+                    JSON.stringify({ user: decodeData, token: token })
                 );
                 Swal.fire({
                     title: "Bienvenido de nuevo",

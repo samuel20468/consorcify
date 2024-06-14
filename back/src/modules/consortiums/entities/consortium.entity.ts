@@ -135,10 +135,10 @@ export class Consortium {
   })
   interest_rate: number;
 
-  @Column({ type: 'double precision' })
+  @Column({ type: 'double precision', default: -34.6701584 })
   latitude: number;
 
-  @Column({ type: 'double precision' })
+  @Column({ type: 'double precision', default: -58.3713336 })
   longitude: number;
 
   @Column({ type: 'boolean', default: true })

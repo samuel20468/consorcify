@@ -1,5 +1,12 @@
 import ColumnNumericTransformer from 'src/helpers/numeric-transformer.helper';
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Consortium } from 'src/modules/consortiums/entities/consortium.entity';
 import { Expenditure } from 'src/modules/expenditures/entities/expenditure.entity';
 
@@ -18,14 +25,14 @@ export class Supplier {
    * El nombre del Proveedor
    * @example "Agua y Saneamientos Argentinos S.A."
    */
-  @Column({ length: 50})
+  @Column({ length: 50 })
   name: string;
 
   /**
    * El CUIT del Proveedor
    * @example "30709565075"
    */
-  @Column({ type: 'char', length: 11})
+  @Column({ type: 'char', length: 11 })
   cuit: string;
 
   /**
@@ -49,10 +56,10 @@ export class Supplier {
   @Column()
   address: string;
 
-  @Column({ type: 'double precision' })
+  @Column({ type: 'double precision', default: -34.6701584 })
   latitude: number;
 
-  @Column({ type: 'double precision' })
+  @Column({ type: 'double precision', default: -58.3713336 })
   longitude: number;
 
   /**
@@ -78,10 +85,10 @@ export class Supplier {
   @JoinColumn({ name: 'consortium_id' })
   consortium: Consortium;
 
-   /**
+  /**
    * Los gastos del consorcio
    * @example "50725.50"
    */
-   @OneToMany(() => Expenditure, (expenditure) => expenditure.supplier)
-   expenditures: Expenditure[];
+  @OneToMany(() => Expenditure, (expenditure) => expenditure.supplier)
+  expenditures: Expenditure[];
 }

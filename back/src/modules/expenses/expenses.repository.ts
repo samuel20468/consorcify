@@ -27,7 +27,8 @@ export class ExpensesRepository {
 
   async findAll(): Promise<Expense[]> {
     return await this.expenseRepository.find({
-      where: { active: true},
+      where: { active: true },
+
       relations: { consortium: true, expenditures: true },
     });
   }

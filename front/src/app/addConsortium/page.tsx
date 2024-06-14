@@ -21,7 +21,7 @@ const AddConsortium = () => {
                         | Crear consorcio
                     </span>
                 </Title>
-                <div className="flex items-center justify-center my-10 bg-[#d3d3d3] rounded-lg h-content">
+                <div className="w-[80%]">
                     <FormRegisterConsortium />
                 </div>
             </ContainerDashboard>

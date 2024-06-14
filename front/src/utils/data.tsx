@@ -1,10 +1,9 @@
 // Iconos
 import { PiBuildingLight } from "react-icons/pi";
 import { GiPayMoney, GiReceiveMoney } from "react-icons/gi";
-import { CiBank, CiHome } from "react-icons/ci";
 import { HiOutlineClipboardDocumentList } from "react-icons/hi2";
 import { IoIosInformationCircleOutline } from "react-icons/io";
-import { IoNewspaperOutline, IoDocumentOutline } from "react-icons/io5";
+import { IoNewspaperOutline, IoHomeOutline } from "react-icons/io5";
 import { GrUserWorker } from "react-icons/gr";
 import { RiAdminLine } from "react-icons/ri";
 
@@ -30,18 +29,12 @@ export const itemsNavbarAdmin = [
     },
     {
         id: 4,
-        title: "Caja",
-        icon: <CiBank size={40} />,
-        link: "/dashboard/admin/money",
-    },
-    {
-        id: 5,
         title: "Expensas",
         icon: <HiOutlineClipboardDocumentList size={40} />,
         link: "/dashboard/admin/expenses",
     },
     {
-        id: 6,
+        id: 5,
         title: "Portal",
         icon: <IoIosInformationCircleOutline size={40} />,
         link: "/dashboard/admin/portal",
@@ -53,7 +46,7 @@ export const itemsNavbarUser = [
     {
         id: 1,
         title: "Consorcio",
-        icon: <CiHome size={40} />,
+        icon: <IoHomeOutline size={40} />,
         link: "/dashboard/usuario/consortium",
     },
     {
@@ -70,18 +63,6 @@ export const itemsNavbarUser = [
     },
     {
         id: 4,
-        title: "Documentos",
-        icon: <IoDocumentOutline size={40} />,
-        link: "/dashboard/usuario/documen",
-    },
-    {
-        id: 5,
-        title: "Datos útiles",
-        icon: <IoIosInformationCircleOutline size={40} />,
-        link: "/dashboard/usuario/information",
-    },
-    {
-        id: 6,
         title: "Proveedores",
         icon: <GrUserWorker size={40} />,
         link: "/dashboard/usuario/workers",
@@ -89,7 +70,6 @@ export const itemsNavbarUser = [
 ];
 
 // reviews de las cards
-
 export const reviews = [
     {
         profilePic: "https://randomuser.me/api/portraits/men/31.jpg",

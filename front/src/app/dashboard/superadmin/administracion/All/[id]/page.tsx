@@ -1,6 +1,6 @@
 "use client";
 
-// Stilos y componentes
+// Estilos y componentes
 import { ContainerDashboard, Title } from "@/components/ui";
 import Swal from "sweetalert2";
 

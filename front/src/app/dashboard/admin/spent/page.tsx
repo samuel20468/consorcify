@@ -5,7 +5,7 @@ import { Button, ContainerDashboard, Select, Title } from "@/components/ui";
 import ExpenditureCards from "@/components/ExpenditureCards/ExpenditureCards";
 
 // Endpoints
-import { getConsortiums } from "@/helpers/fetch.helper.consortium";
+import { getConsortiumsByAdminId } from "@/helpers/fetch.helper.consortium";
 import { getSuppliers } from "@/helpers/fetch.helper.supplier";
 
 // Interfaces
@@ -19,20 +19,20 @@ import { usePathname, useRouter } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
 import { getExpenditures } from "@/helpers/fetch.helper.expenditure";
+import Link from "next/link";
 
 // ------------------
 
 const Spent = () => {
     useAuth();
-    const { token } = useSesion();
-    const router = useRouter();
+    const { token, data } = useSesion();
     const pathname = usePathname();
     const [expenditures, setExpenditures] = useState<IExpenditure[]>([]);
     const [suppliers, setSuppliers] = useState<ISupplier[]>([]);
     const [consortiums, setConsortiums] = useState<IConsortium[]>([]);
-    const [filteredExpenditures, setFilteredExpenditures] = useState<
-        IExpenditure[]
-    >([]);
+    const [selectedConsortiumId, setSelectedConsortiumId] = useState<
+        string | null
+    >(null);
     const [sortConfig, setSortConfig] = useState<{
         field: keyof IExpenditure;
         order: "asc" | "desc";
@@ -58,7 +58,7 @@ const Spent = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await getConsortiums(token);
+                const response = await getConsortiumsByAdminId(data.id, token);
                 if (response) {
                     const data = await response.json();
                     setConsortiums(data);
@@ -85,9 +85,19 @@ const Spent = () => {
         }
     }, [token, pathname]);
 
-    const handleOnClick = () => {
-        router.push("/addSpent");
+    // Filtros
+
+    const handleSelectChange = (
+        event: React.ChangeEvent<HTMLSelectElement>
+    ) => {
+        setSelectedConsortiumId(event.target.value);
     };
+
+    const selectedConsortium = consortiums.find(
+        (c) => c.id === selectedConsortiumId
+    );
+
+    // Ordenamientos
 
     const handleSort = (field: keyof IExpenditure, order: "asc" | "desc") => {
         const sortedData = [...expenditures].sort((a, b) => {
@@ -125,21 +135,18 @@ const Spent = () => {
     };
 
     return (
-        <div className="h-screen text-white">
+        <div className="h-screen">
             <ContainerDashboard>
                 <Title>Gastos</Title>
-                <div className="flex justify-between w-[95%]">
-                    <div className="flex justify-start gap-3">
+                <div className="flex items-center justify-between w-[98%]">
+                    <div className="flex justify-start w-2/3 gap-3">
                         <Select
                             id="consortium_id"
                             name="consortium_id"
-                            defaultValue=""
-                            // value={adminRegister.sat}
-                            // onChange={handleSelect}
+                            className="w-1/3 h-10 px-2 my-1 text-gray-200 rounded-md shadow-xl cursor-pointer bg-input focus:outline-none no-spinners"
+                            value={selectedConsortiumId || ""}
+                            onChange={handleSelectChange}
                         >
-                            <option value="" disabled>
-                                Selecciona el consorcio
-                            </option>
                             {consortiums.length > 0 &&
                                 consortiums.map((consortium) => (
                                     <option
@@ -154,6 +161,7 @@ const Spent = () => {
                         <Select
                             id="supplier_id"
                             name="supplier_id"
+                            className="w-1/3 h-10 px-2 my-1 text-gray-200 rounded-md shadow-xl cursor-pointer bg-input focus:outline-none no-spinners"
                             defaultValue=""
                             // value={adminRegister.sat}
                             // onChange={handleSelect}
@@ -172,37 +180,53 @@ const Spent = () => {
                                 ))}
                         </Select>
                     </div>
-                    <div className="flex items-end">
-                        <Button
-                            onClick={handleOnClick}
-                            className="py-2 px-4 rounded-[40px]"
+                    <div className="flex w-1/3">
+                        <Link
+                            href="/addSpent"
+                            className="flex justify-end w-full mr-5"
                         >
-                            Agregar gasto
-                        </Button>
+                            <Button className="w-1/2 p-2 rounded-[40px]">
+                                Agregar gasto
+                            </Button>
+                        </Link>
                     </div>
                 </div>
-                <div className="w-[90%] border-t border-b border-white flex justify-around p-2 my-5 text-center">
-                    <h1
-                        className="cursor-pointer"
-                        onClick={() => handleHeaderClick("description")}
-                    >
-                        Descripción
-                    </h1>
-                    <h1
-                        className="cursor-pointer"
-                        onClick={() => handleHeaderClick("category")}
-                    >
-                        Categoría
-                    </h1>
-                    <h1>Consorcio</h1>
-                    <h1>Proveedor</h1>
-                    <h1
-                        className="cursor-pointer"
-                        onClick={() => handleHeaderClick("total_amount")}
-                    >
-                        Monto
-                    </h1>
-                    <h1>Eliminar</h1>
+                <div className="w-[90%] border-t border-b border-white flex justify-between p-2 mt-5 text-center">
+                    <div className="w-1/5 text-xl">
+                        <h1
+                            className="cursor-pointer"
+                            onClick={() => handleHeaderClick("description")}
+                        >
+                            Descripción
+                        </h1>
+                    </div>
+                    <div className="w-1/5 text-xl">
+                        <h1
+                            className="cursor-pointer"
+                            onClick={() => handleHeaderClick("category")}
+                        >
+                            Categoría
+                        </h1>
+                    </div>
+                    <div className="w-1/5 text-xl">
+                        <h1
+                            className="cursor-pointer"
+                            onClick={() => handleHeaderClick("supplier")}
+                        >
+                            Proveedor
+                        </h1>
+                    </div>
+                    <div className="w-1/5 text-xl">
+                        <h1
+                            className="cursor-pointer"
+                            onClick={() => handleHeaderClick("total_amount")}
+                        >
+                            Monto
+                        </h1>
+                    </div>
+                    <div className="w-1/5 text-xl">
+                        <h1>Eliminar</h1>
+                    </div>
                 </div>
                 {expenditures.length > 0 ? (
                     <ExpenditureCards expenditures={expenditures} />

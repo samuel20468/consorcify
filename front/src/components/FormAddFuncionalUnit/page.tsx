@@ -97,7 +97,7 @@ const FormAddFuncionalUnit = ({ consortium_id }: { consortium_id: string }) => {
     useEffect(() => {
         const validateMail = validateEmail(formData.owner_email);
         setErrors({ ...errors, owner_email: validateMail.email });
-    }, [formData, errors]);
+    }, [formData]);
 
     return (
         <div className="flex flex-col items-center justify-center w-1/4 h-full">

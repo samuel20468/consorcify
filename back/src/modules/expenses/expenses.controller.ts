@@ -21,7 +21,7 @@ import { STATUS_MESSAGE } from 'src/utils/constants';
 @ApiTags('Expenses')
 @Controller('expenses')
 @ApiBearerAuth()
-@UseGuards(AuthCustomGuard)
+// @UseGuards(AuthCustomGuard)
 export class ExpensesController {
   constructor(private readonly expensesService: ExpensesService) {}
 

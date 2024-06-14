@@ -27,13 +27,17 @@ const ConsortiumDetails: React.FC<IConsortium> = ({
     functional_units,
     expenses,
     suppliers,
+    picture,
 }: IConsortium) => {
     return (
         <div className="flex flex-col justify-center w-2/4 gap-5 p-5 mt-5 border rounded-3xl grad">
             <div className="flex w-full h-[55vh] gap-5">
                 <div className="flex items-center justify-center w-2/3 bg-blue-300 rounded-2xl">
-                    {" "}
-                    Acá va a ir la imágen
+                    <img
+                        src={picture}
+                        alt="imagen"
+                        className="rounded-[40px]"
+                    />
                 </div>
                 <div className="flex flex-col justify-center w-1/3">
                     <h1 className="mb-2 text-2xl ">{name}</h1>

@@ -14,7 +14,6 @@ import { useEffect, useState } from "react";
 import { useParams, usePathname } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
-import FormAddFuncionalUnit from "@/components/FormAddFuncionalUnit/page";
 import Link from "next/link";
 
 // --------------------

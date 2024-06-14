@@ -16,7 +16,7 @@ import { ISupplier } from "@/Interfaces/suppliers.interfaces";
 
 // Endpoints
 import { expenditureFetch } from "@/helpers/fetch.helper.expenditure";
-import { getConsortiums } from "@/helpers/fetch.helper.consortium";
+import { getConsortiumsByAdminId } from "@/helpers/fetch.helper.consortium";
 import { getSuppliers } from "@/helpers/fetch.helper.supplier";
 import { getExpenses } from "@/helpers/fetch.helper.expense";
 
@@ -30,7 +30,7 @@ import useSesion from "@/helpers/useSesion";
 
 const FormSpent = () => {
     useAuth();
-    const { token } = useSesion();
+    const { token, data } = useSesion();
     const pathname = usePathname();
     const router = useRouter();
     const initialData = {
@@ -54,7 +54,7 @@ const FormSpent = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await getConsortiums(token);
+                const response = await getConsortiumsByAdminId(data.id, token);
                 if (response) {
                     const data = await response.json();
                     setConsortiums(data);
@@ -150,8 +150,8 @@ const FormSpent = () => {
                     confirmButtonColor: "#0b0c0d",
                 });
             }
-        } catch (error) {
-            console.error("Error grnade");
+        } catch (error: any) {
+            console.error(error.message);
         }
     };
 

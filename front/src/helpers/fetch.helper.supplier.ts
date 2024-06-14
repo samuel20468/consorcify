@@ -1,5 +1,5 @@
 // Interfaces
-import { INewSupplier } from "@/Interfaces/suppliers.interfaces";
+import { INewSupplier, ISupplier } from "@/Interfaces/suppliers.interfaces";
 
 // Rutas
 export const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -10,7 +10,7 @@ export const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 export const supplierFetch = async (
     registerSupplier: INewSupplier,
     token: string
-) => {
+): Promise<INewSupplier | any> => {
     try {
         const response = await fetch(`${apiUrl}/suppliers`, {
             method: "POST",
@@ -41,7 +41,7 @@ export const getSuppliers = async (
     token: string,
     page: number = 1,
     limit: number = 20
-) => {
+): Promise<ISupplier[] | any> => {
     try {
         const response = await fetch(
             `${apiUrl}/suppliers?page=${page}&limit=${limit}`,
@@ -69,7 +69,10 @@ export const getSuppliers = async (
 };
 
 // Obtener proveedor por ID
-export const getSupplierById = async (token: string, id: string) => {
+export const getSupplierById = async (
+    token: string,
+    id: string
+): Promise<ISupplier | any> => {
     try {
         const response = await fetch(`${apiUrl}/suppliers/${id}`, {
             method: "GET",
@@ -99,7 +102,7 @@ export const updateSupplier = async (
     id: string,
     token: string,
     data: INewSupplier
-) => {
+): Promise<ISupplier | any> => {
     try {
         const response = await fetch(`${apiUrl}/suppliers/${id}`, {
             method: "PATCH",
@@ -126,7 +129,10 @@ export const updateSupplier = async (
 };
 
 // Borrar un proveedor
-export const deleteSupplier = async (id: string, token: string) => {
+export const deleteSupplier = async (
+    id: string,
+    token: string
+): Promise<void> => {
     try {
         const response = await fetch(
             `${apiUrl}/suppliers/toggle-status/${id}`,
@@ -146,7 +152,8 @@ export const deleteSupplier = async (id: string, token: string) => {
                 );
             });
         } else {
-            return response;
+            const data = await response.json();
+            return data;
         }
     } catch (error) {
         console.error("El error está en el deleteSupplier", error);

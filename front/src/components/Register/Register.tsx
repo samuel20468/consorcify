@@ -54,6 +54,13 @@ const Register = () => {
                 icon: "error",
                 confirmButtonColor: "#0b0c0d",
             });
+        } else if (registerData.password !== pass2) {
+            Swal.fire({
+                title: "Error al iniciar sesión",
+                text: "Las contraseñas deben coincidir.",
+                icon: "error",
+                confirmButtonColor: "#0b0c0d",
+            });
         } else {
             try {
                 const response = await registerFetch(registerData);
@@ -69,10 +76,10 @@ const Register = () => {
                         }
                     });
                 }
-            } catch (error) {
+            } catch (error: any) {
                 Swal.fire({
                     title: "Error de información",
-                    text: "Los datos que nos proporcionaste son inválidos.",
+                    text: (error as Error).message,
                     icon: "error",
                     confirmButtonColor: "#0b0c0d",
                 });

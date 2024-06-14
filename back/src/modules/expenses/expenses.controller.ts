@@ -21,7 +21,7 @@ import { STATUS_MESSAGE } from 'src/utils/constants';
 @ApiTags('Expenses')
 @Controller('expenses')
 @ApiBearerAuth()
-@UseGuards(AuthCustomGuard)
+// @UseGuards(AuthCustomGuard)
 export class ExpensesController {
   constructor(private readonly expensesService: ExpensesService) {}
 
@@ -57,8 +57,7 @@ export class ExpensesController {
   async toggleStatus(@Param('id', ParseUUIDPipe) id: string) {
     let statusMessage: string;
 
-    const expenseToggled: Expense =
-      await this.expensesService.toggleStatus(id);
+    const expenseToggled: Expense = await this.expensesService.toggleStatus(id);
 
     !expenseToggled.active //Se niega porque el service devuelve el objeto antes de ser modificado - Ln 55 en el service
       ? (statusMessage = STATUS_MESSAGE.ACTIVATED)

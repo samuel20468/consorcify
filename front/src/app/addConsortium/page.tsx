@@ -13,12 +13,12 @@ const AddConsortium = () => {
     useAuth();
 
     return (
-        <div className="flex flex-col h-screen">
+        <div className="h-screen">
             <ContainerDashboard>
                 <Title>
                     Consorcios{" "}
                     <span className="text-2xl font-thin">
-                        | Crear consorcio
+                        | Crear Consorcio
                     </span>
                 </Title>
                 <div className="w-[80%]">

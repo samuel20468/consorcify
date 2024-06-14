@@ -13,7 +13,7 @@ const AddSupplier = () => {
     useAuth();
 
     return (
-        <div className="h-screen text-white">
+        <div className="h-screen">
             <ContainerDashboard>
                 <Title>
                     Portal{" "}
@@ -24,7 +24,9 @@ const AddSupplier = () => {
                         </span>
                     </span>
                 </Title>
-                <FormSupplier />
+                <div className="w-[80%]">
+                    <FormSupplier />
+                </div>
             </ContainerDashboard>
         </div>
     );

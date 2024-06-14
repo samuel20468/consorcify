@@ -186,7 +186,7 @@ const Spent = () => {
                             className="flex justify-end w-full mr-5"
                         >
                             <Button className="w-1/2 p-2 rounded-[40px]">
-                                Agregar gasto
+                                Agregar Gasto
                             </Button>
                         </Link>
                     </div>

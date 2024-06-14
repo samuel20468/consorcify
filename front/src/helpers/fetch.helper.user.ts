@@ -35,7 +35,7 @@ export const registerFetch = async (
 };
 
 // Inicio de sesión
-export const loginFetch = async (userData: ILogin): Promise<void> => {
+export const loginFetch = async (userData: ILogin) => {
     try {
         const response = await fetch(`${apiUrl}/auth/signin`, {
             method: "POST",

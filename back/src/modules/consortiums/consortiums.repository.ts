@@ -8,6 +8,12 @@ import { Consortium } from './entities/consortium.entity';
 import { Repository } from 'typeorm';
 import { CAdmin } from '../c-admin/entities/c-admin.entity';
 import { ExcludeActiveInterceptor } from 'src/interceptors/exclude-active.interceptor';
+import { GoogleMapsService } from '../google-maps/google-maps.service';
+import {
+  AddressType,
+  GeocodeResult,
+  GeocodingAddressComponentType,
+} from '@googlemaps/google-maps-services-js';
 
 @Injectable()
 export class ConsortiumsRepository {
@@ -16,6 +22,7 @@ export class ConsortiumsRepository {
     private consortiumsRepository: Repository<Consortium>,
     @InjectRepository(CAdmin)
     private readonly cAdminRepository: Repository<CAdmin>,
+    private readonly googleMapsService: GoogleMapsService,
   ) {}
 
   async create(consortium: Partial<Consortium>): Promise<Consortium> {
@@ -35,6 +42,39 @@ export class ConsortiumsRepository {
         `CAdmin ID: ${consortium.c_admin} no encontrado.`,
       );
     }
+
+    const googleMapsResponse: GeocodeResult =
+      await this.googleMapsService.getGeocoding({
+        street: consortium.street_name,
+        number: consortium.building_number.toString(),
+        city: consortium.city,
+      });
+    if (!googleMapsResponse) {
+      throw new NotFoundException(
+        `No se encontró ubicación para el domicilio ingresado (Geocoder Error)`,
+      );
+    }
+
+    const addressComponents = googleMapsResponse.address_components;
+    const getAddressComponent = (types: (AddressType | GeocodingAddressComponentType)[]) =>
+      addressComponents.find((component) => types.every((type) => component.types.includes(type)));
+
+    const streetNameComponent = getAddressComponent([AddressType.route]);
+    const buildingNumberComponent = getAddressComponent([AddressType.street_number]);
+    const zipCodeComponent = getAddressComponent([AddressType.postal_code]);
+    const countryComponent = getAddressComponent([AddressType.country]);
+    const provinceComponent = getAddressComponent([AddressType.administrative_area_level_1, AddressType.political]);
+    const cityComponent = getAddressComponent([AddressType.locality, AddressType.political]);
+
+    consortium.latitude = googleMapsResponse.geometry.location.lat;
+    consortium.longitude = googleMapsResponse.geometry.location.lng;
+    consortium.street_name = streetNameComponent ? streetNameComponent.short_name : consortium.street_name;
+    consortium.building_number = buildingNumberComponent ? Number(buildingNumberComponent.short_name) : consortium.building_number;
+    consortium.zip_code = zipCodeComponent ? zipCodeComponent.short_name : consortium.zip_code;
+    consortium.country = countryComponent ? countryComponent.long_name : consortium.country;
+    consortium.province = provinceComponent ? provinceComponent.long_name : consortium.province;
+    consortium.city = cityComponent ? cityComponent.short_name : consortium.city;
+
     const newConsortium: Consortium =
       await this.consortiumsRepository.save(consortium);
     return newConsortium;
@@ -70,8 +110,8 @@ export class ConsortiumsRepository {
       relations: {
         c_admin: true,
         functional_units: {
-          user: true
-        }
+          user: true,
+        },
       },
       where: { id: id, active: true },
     });
@@ -97,6 +137,7 @@ export class ConsortiumsRepository {
         `El CUIT del Consorcio no puede ser cambiado.`,
       );
     }
+
     await this.consortiumsRepository.update(id, consortium);
     const updatedConsortium: Consortium =
       await this.consortiumsRepository.findOne({

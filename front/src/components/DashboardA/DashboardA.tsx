@@ -45,36 +45,57 @@ const DashboardA = () => {
         <div className="h-screen text-white">
             <ContainerDashboard>
                 <Title>{admin?.name}</Title>
-                <div className="grid w-full h-auto grid-cols-1 gap-10 p-4 mb-10 text-black md:grid-cols-2 lg:grid-cols-3">
+                <div className="grid w-full h-auto grid-cols-1 gap-10 p-4 mb-10 text-black md:grid-cols-2 lg:grid-cols-3 ">
                     <Link
                         href="/addConsortium"
-                        className="flex flex-col items-center justify-center text-3xl text-white border rounded-[50px] pb-2 gradiente"
+                        className="flex flex-col items-center justify-center text-3xl text-white border rounded-[40px] pb-2 gradiente shadow-[0_3px_10px_rgb(255,255,255,0.8)]"
                     >
-                        <BsBuildingFillAdd size={120} />
-                        <h1 className="mt-3">Agregar consorcio</h1>
+                        <BsBuildingFillAdd size={100} />
+                        <h3 className="text-2xl font-bold mt-4 mb-1">
+                            Agregar un consorcio
+                        </h3>
+                        <p className=" text-base text-center w-2/3">
+                            Inicia un nuevo consorcio con gestión eficiente y
+                            transparente.
+                        </p>
                     </Link>
                     <Link
                         href="/addSupplier"
-                        className="flex flex-col items-center justify-center text-3xl text-white border rounded-[50px] pb-2 gradiente "
+                        className="flex flex-col items-center justify-center text-3xl text-white border rounded-[40px] pb-2 gradiente shadow-[0_3px_10px_rgb(255,255,255,0.8)]"
                     >
-                        <GrUserWorker size={120} />
-                        <h1 className="mt-3">Agregar proveedor</h1>
+                        <GrUserWorker size={100} />
+                        <h3 className="text-2xl font-bold mt-4 mb-1">
+                            Agregar un proveedor
+                        </h3>
+                        <p className=" text-base text-center w-2/3">
+                            Agregar un proveedor a tu lista para poder
+                            mantenerla actualizada.
+                        </p>
                     </Link>
                     <Link
                         href="/addSpent"
-                        className="flex flex-col items-center justify-center text-3xl text-white border rounded-[50px] pb-2 gradiente"
+                        className="flex flex-col items-center justify-center text-3xl text-white border rounded-[40px] pb-2 gradiente shadow-[0_3px_10px_rgb(255,255,255,0.8)]"
                     >
-                        <FaMoneyBillTransfer size={120} />
-
-                        <h1 className="mt-3">Agregar gasto</h1>
+                        <FaMoneyBillTransfer size={100} />
+                        <h3 className="text-2xl font-bold mt-4 mb-1">
+                            Agregar un gasto
+                        </h3>
+                        <p className=" text-base text-center w-2/3">
+                            Agrega un gasto para poder llevar un registro
+                            exitoso de los movimientos del consorcio.
+                        </p>
                     </Link>
                 </div>
                 <div className="grid w-full h-auto grid-cols-1 gap-10 p-4 mb-4 text-black md:grid-cols-2">
-                    <div className="h-24 bg-white rounded-[50px] flex justify-center items-center">
-                        <h1 className="text-2xl">Detalle 1</h1>
+                    <div className="h-24 bg-[#d3d3d3] rounded-[50px] flex justify-center items-center shadow-[0_3px_10px_rgb(255,255,255,0.8)]">
+                        <h1 className="text-2xl">
+                            Detalle sobre la cuenta corriente del consrcio.
+                        </h1>
                     </div>
-                    <div className="h-24 bg-white rounded-[50px] flex justify-center items-center">
-                        <h1 className="text-2xl">Detalle 2</h1>
+                    <div className="h-24 bg-[#d3d3d3] rounded-[50px] flex justify-center items-center shadow-[0_3px_10px_rgb(255,255,255,0.8)]">
+                        <h1 className="text-2xl">
+                            Detalle sobre la deuda de expensas del mes en curso
+                        </h1>
                     </div>
                 </div>
             </ContainerDashboard>

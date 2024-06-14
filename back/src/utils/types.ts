@@ -14,6 +14,17 @@ export type TObjectToken = {
   token: string;
 };
 
+export type TContextMail = {
+  user: string;
+  email?: string;
+  url: string;
+  amount?: number;
+  totalAmount?: number;
+  nameConsortium?: string;
+  nameExpense?: string;
+  uF?: string;
+};
+
 // INTERFACES
 export interface IUser {
   id: string;

@@ -15,6 +15,9 @@ import { FunctionalUnitsExpensesRepository } from '../functional-units-expenses/
 import { FunctionalUnitsRepository } from '../functional-units/functional-units.repository';
 import { FunctionalUnit } from '../functional-units/entities/functional-unit.entity';
 import { User } from '../users/entities/user.entity';
+import { MailsService } from '../mails/mails.service';
+import { GoogleMapsService } from '../google-maps/google-maps.service';
+
 
 @Module({
   imports: [
@@ -26,7 +29,7 @@ import { User } from '../users/entities/user.entity';
       CAdmin,
       FunctionalUnitExpense,
       FunctionalUnit,
-      User
+      User,
     ]),
   ],
   controllers: [ExpendituresController],
@@ -37,6 +40,8 @@ import { User } from '../users/entities/user.entity';
     ConsortiumsRepository,
     FunctionalUnitsExpensesRepository,
     FunctionalUnitsRepository,
+    MailsService,
+    GoogleMapsService
   ],
 })
 export class ExpendituresModule {}

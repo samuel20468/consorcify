@@ -7,6 +7,10 @@ import { ContainerDashboard, Title } from "@/components/ui";
 import { getSupplierById } from "@/helpers/fetch.helper.supplier";
 
 // Interfaces
+<<<<<<< HEAD
+=======
+import { ISupplier } from "@/Interfaces/suppliers.interfaces";
+>>>>>>> develop
 
 // Hooks
 import { useEffect, useState } from "react";

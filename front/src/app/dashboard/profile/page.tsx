@@ -22,7 +22,6 @@ import Link from "next/link";
 
 // ----------------------
 
-
 const Profile = () => {
     const path = usePathname();
     useAuth();
@@ -48,8 +47,7 @@ const Profile = () => {
                         const response = await getAdminById(data.id, token);
                         if (response?.ok) {
                             const data = await response.json();
-
-                            setUserData(data);
+                            setAdminData(data);
                         }
                     }
                 } catch (error) {
@@ -67,14 +65,24 @@ const Profile = () => {
                 <div className="flex flex-col rounded-[40px] w-1/2 p-2  h-full bg-gray-400">
                     <div className="flex flex-col items-center justify-center w-full h-1/2 bg-white rounded-t-[40px] px-10 pt-2">
                         <div className="flex items-center justify-center pb-0 mb-2 border rounded-full w-200 h-200">
-                            <Image
-
-                                src={userData?.picture!}
-                                alt="Imagen de perfil"
-                                className="rounded-full order"
-                                width={200}
-                                height={200}
-                            />
+                            {data.roles?.[0] === "user" ||
+                            data.roles?.[0] === "superadmin" ? (
+                                <Image
+                                    src={userData?.picture!}
+                                    alt="Imagen de perfil"
+                                    className="rounded-full order"
+                                    width={200}
+                                    height={200}
+                                />
+                            ) : (
+                                <Image
+                                    src={adminData?.picture!}
+                                    alt="Imagen de perfil"
+                                    className="rounded-full order"
+                                    width={200}
+                                    height={200}
+                                />
+                            )}
                         </div>
                         <Link href="/addAvatar" className="w-full">
                             <Button className="w-full py-1 rounded-[40px]">

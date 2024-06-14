@@ -30,6 +30,7 @@ export class FunctionalUnitsExpensesRepository {
     functionalUnitsExpense.interests = interests;
     functionalUnitsExpense.previous_balance = previous_balance;
     functionalUnitsExpense.total_amount = total_amount;
+    functionalUnitsExpense.created_at = new Date();
 
     return await this.functionalUnitsExpensesRepository.save(
       functionalUnitsExpense,
@@ -60,6 +61,7 @@ export class FunctionalUnitsExpensesRepository {
       .innerJoinAndSelect('functional_unit_expense.functional_unit', 'functional_unit')
       .innerJoinAndSelect('functional_unit.user', 'user')
       .where('user.id = :id', { id: user.id })
+      .orderBy('functional_unit_expense.created_at', 'DESC')
       .skip((page - 1) * limit)
       .take(limit)
       .getMany();

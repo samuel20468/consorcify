@@ -7,7 +7,9 @@ export const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 // ------------------
 
 // Creación de usuario
-export const registerFetch = async (registerData: IRegister) => {
+export const registerFetch = async (
+    registerData: IRegister
+): Promise<IUser | any> => {
     try {
         const response = await fetch(`${apiUrl}/auth/signup`, {
             method: "POST",
@@ -59,8 +61,31 @@ export const loginFetch = async (userData: ILogin) => {
     }
 };
 
+// Autenticación Google
+export const googleLogin = async (): Promise<void> => {
+    try {
+        const response = await fetch(`${apiUrl}/auth/auth0`, {
+            method: "GET",
+        });
+        if (!response.ok) {
+            return response.json().then((errorInfo) => {
+                throw new Error(
+                    `Error ${response.status}: ${
+                        errorInfo.message || response.statusText
+                    }`
+                );
+            });
+        } else {
+            const data = await response.json();
+            return data;
+        }
+    } catch (error) {
+        console.error("El error está en el googleLogin", error);
+    }
+};
+
 // Obtener todos los usuarios
-export const getUsers = async (token: string) => {
+export const getUsers = async (token: string): Promise<IUser[] | any> => {
     try {
         const response = await fetch(`${apiUrl}/users`, {
             method: "GET",
@@ -118,7 +143,7 @@ export const updateUser = async (
     data: IRegister,
     id: string,
     token: string
-) => {
+): Promise<IUser | any> => {
     try {
         const response = await fetch(`${apiUrl}/users/${id}`, {
             method: "PATCH",
@@ -145,7 +170,7 @@ export const updateUser = async (
 };
 
 // Eliminar un usuario
-export const deleteUser = async (id: string, token: string) => {
+export const deleteUser = async (id: string, token: string): Promise<void> => {
     try {
         const response = await fetch(`${apiUrl}/users/toggle-status/${id}`, {
             method: "PATCH",
@@ -162,7 +187,8 @@ export const deleteUser = async (id: string, token: string) => {
                 );
             });
         } else {
-            return response;
+            const data = response.json();
+            return data;
         }
     } catch (error) {
         console.error("El error está en el deleteUser", error);

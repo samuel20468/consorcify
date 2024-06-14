@@ -17,6 +17,7 @@ import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import useSesion from "@/helpers/useSesion";
+import { FaUser, FaUserSecret, FaUserTie } from "react-icons/fa6";
 
 // ----------------------------
 
@@ -103,7 +104,7 @@ const NavbarDashboard = () => {
                                 <p>{admin?.name}</p>
                             )}
 
-                            <CiUser size={25} />
+                            <FaUser size={25} />
                         </Button>
                     </Link>
                     <Button

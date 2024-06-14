@@ -22,6 +22,6 @@
 
 .gradiente:hover {
     background-image: none;
-    background-color: hsl(0, 0%, 54%);
+    background-color: #c4c0c2;
     color: #0f0e0e;
 }

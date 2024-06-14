@@ -35,7 +35,7 @@ export class CreateExpenditureDto {
 
   /**
    * La fecha del Gasto
-   * @example "2022-01-01"
+   * @example "2024-05-01"
    */
   @IsNotEmpty({ message: 'La fecha es requerida' })
   @IsDateString()

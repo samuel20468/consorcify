@@ -8,6 +8,7 @@ import { Consortium } from '../consortiums/entities/consortium.entity';
 import { Expenditure } from '../expenditures/entities/expenditure.entity';
 import { FunctionalUnitsExpensesRepository } from '../functional-units-expenses/functional-units-expenses.repository';
 import { FunctionalUnitExpense } from '../functional-units-expenses/entities/functional-units-expense.entity';
+import { MailsService } from '../mails/mails.service';
 
 @Injectable()
 export class ExpensesRepository {
@@ -19,6 +20,7 @@ export class ExpensesRepository {
     private readonly functionalUnitsExpensesRepository: FunctionalUnitsExpensesRepository,
     @InjectRepository(FunctionalUnit)
     private readonly functionalUnitRepository: Repository<FunctionalUnit>,
+    private readonly mailsService: MailsService,
   ) {}
 
   async createExpense(newExpense: Expense) {
@@ -27,9 +29,30 @@ export class ExpensesRepository {
 
   async findAll(): Promise<Expense[]> {
     return await this.expenseRepository.find({
-      where: { active: true, expenditures: { active: true } },
+      where: { active: true },
+
       relations: { consortium: true, expenditures: true },
     });
+  }
+
+  async findOpenByConsortium(consortiumId: string): Promise<Expense> {
+    const consortium: Consortium = await this.consortiumRepository.findOne({
+      where: { id: consortiumId },
+    })
+
+    if (!consortium)
+      throw new ConflictException(`El Consorcio id ${consortiumId} no existe`);
+
+    const foundConsortium: Consortium = await this.consortiumRepository.findOne(
+      {
+        where: { id: consortiumId, expenses: { active: true , status: EXPENSE_STATUS.OPEN} },
+        relations: { expenses: true },
+      },
+    );
+    if (!foundConsortium) 
+      throw new ConflictException(`El Consorcio "${consortium.name}" no tiene una expensa abierta`);
+
+    return foundConsortium.expenses[0];
   }
 
   async findOne(id: string): Promise<Expense> {
@@ -97,6 +120,14 @@ export class ExpensesRepository {
       uf.balance = total_amount;
 
       await this.functionalUnitRepository.save(uf);
+
+      await this.mailsService.sendIndividualExpense(
+        uf.user.first_name,
+        uf.user.email,
+        monthly_expenditure,
+        uf.balance,
+        uf.number,
+      );
 
       await this.functionalUnitsExpensesRepository.create(
         functionalUnitExpense,

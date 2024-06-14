@@ -10,7 +10,7 @@ import { getCurrentDate } from "@/helpers/functions.helper";
 
 // Endpoints
 import { expenseFetch } from "@/helpers/fetch.helper.expense";
-import { getConsortiums } from "@/helpers/fetch.helper.consortium";
+import { getConsortiumsByAdminId } from "@/helpers/fetch.helper.consortium";
 
 // Interfaces
 import { IConsortium } from "@/Interfaces/consortium.interfaces";
@@ -43,7 +43,7 @@ const AddExpenses = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await getConsortiums(token);
+                const response = await getConsortiumsByAdminId(data.id, token);
                 if (response) {
                     const data = await response.json();
                     setconsortiums(data);

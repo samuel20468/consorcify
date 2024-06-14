@@ -32,7 +32,7 @@ export class Consortium {
 
   /**
    * La Razon Social del Consorcio
-   * @example "Consorcio Edificio Rivadavia 456"
+   * @example "Consorcio Palacio Barolo"
    */
   @Column({ type: 'varchar', length: 50 })
   name: string;
@@ -46,21 +46,21 @@ export class Consortium {
 
   /**
    * La calle del domicilio del Consorcio
-   * @example "Av. Rivadavia"
+   * @example "Av. de Mayo"
    */
   @Column({ type: 'varchar', length: 30 })
   street_name: string;
 
   /**
    * El número del domicilio del Consorcio
-   * @example "456"
+   * @example "1370"
    */
   @Column({ type: 'integer' })
   building_number: number;
 
   /**
    * El código postal del Consorcio
-   * @example "C1002AAP"
+   * @example "C1085"
    */
   @Column({ type: 'varchar', length: 10 })
   zip_code: string;
@@ -88,14 +88,14 @@ export class Consortium {
 
   /**
    * La cantidad de pisos del Consorcio
-   * @example "5"
+   * @example "22"
    */
   @Column({ type: 'integer' })
   floors: number;
 
   /**
    * La cantidad de unidades funcionales del Consorcio
-   * @example "17"
+   * @example "22"
    */
   @Column({ type: 'integer' })
   ufs: number;
@@ -116,7 +116,7 @@ export class Consortium {
 
   /**
    * El link a la imagen del Usuario
-   * @example "http://imagenDeSilueta.com"
+   * @example "https://upload.wikimedia.org/wikipedia/commons/0/07/Palacio_Barolo.JPG"
    */
   @Column({
     default:
@@ -124,12 +124,22 @@ export class Consortium {
   })
   picture: string;
 
+  /**
+   * La tasa de interes de las expensas atrasadas
+   * @example 10
+   */
   @Column('numeric', {
     precision: 10,
     scale: 2,
     transformer: new ColumnNumericTransformer(),
   })
   interest_rate: number;
+
+  @Column({ type: 'double precision', default: -34.6701584 })
+  latitude: number;
+
+  @Column({ type: 'double precision', default: -58.3713336 })
+  longitude: number;
 
   @Column({ type: 'boolean', default: true })
   active: boolean;

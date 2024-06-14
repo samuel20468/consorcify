@@ -9,6 +9,14 @@ export function formatearNumero(numero: string) {
     }
 }
 
+export function formatMoney(amount: number): string {
+    return new Intl.NumberFormat("es-AR", {
+        style: "currency",
+        currency: "ARS",
+        minimumFractionDigits: 2,
+    }).format(amount);
+}
+
 export const validateInterestRate = (value: string): string | null => {
     const regex = /^\d{0,2}(\.\d{0,2})?$/;
     const errors = {

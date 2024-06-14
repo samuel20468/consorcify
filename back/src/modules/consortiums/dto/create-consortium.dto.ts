@@ -27,7 +27,7 @@ export class CreateConsortiumDto {
 
   /**
    * La Razón Social del Consorcio
-   * @example "Consorcio Edificio Rivadavia 456"
+   * @example "Consorcio Palacio Barolo"
    */
   @IsNotEmpty({ message: 'El nombre es requerido' })
   @IsString({ message: 'El nombre debe ser una cadena de texto' })
@@ -45,7 +45,7 @@ export class CreateConsortiumDto {
 
   /**
    * La calle del domicilio del Consorcio
-   * @example "Av. Rivadavia"
+   * @example "Av. de Mayo"
    */
   @IsNotEmpty({ message: 'El nombre de la calle es requerido' })
   @IsString({ message: 'El nombre de la calle debe ser una cadena de texto' })
@@ -56,14 +56,14 @@ export class CreateConsortiumDto {
 
   /**
    * El número del domicilio del Consorcio
-   * @example 456
+   * @example 1370
    */
   @IsNotEmpty({ message: 'El número del edificio es requerido' })
   building_number: number;
 
   /**
    * El código postal del Consorcio
-   * @example "C1002AAP"
+   * @example "C1085"
    */
   @IsNotEmpty({ message: 'El código postal es requerido' })
   @IsString({ message: 'El código postal debe ser una cadena de texto' })
@@ -103,7 +103,7 @@ export class CreateConsortiumDto {
 
   /**
    * La cantidad de pisos del Consorcio
-   * @example 5
+   * @example 22
    */
   @IsNotEmpty({ message: 'La cantidad de pisos es requerida' })
   @IsInt({
@@ -113,7 +113,7 @@ export class CreateConsortiumDto {
 
   /**
    * La cantidad de unidades funcionales del Consorcio
-   * @example 17
+   * @example 22
    */
   @IsNotEmpty({ message: 'La cantidad de UFs es requerida' })
   @IsInt({
@@ -144,6 +144,10 @@ export class CreateConsortiumDto {
   @Max(31, { message: 'El primer día de vencimiento debe ser como máximo 31' })
   first_due_day: number;
 
+  /**
+   * La tasa de interes de las expensas atrasadas
+   * @example 10
+   */
   @IsNumber({}, { message: 'La tasa de interés debe ser un número válido' })
   @Min(0, { message: 'La tasa de interés no puede ser menor que 0' })
   @Max(99.99, { message: 'La tasa de interés no puede ser mayor que 99.99' })

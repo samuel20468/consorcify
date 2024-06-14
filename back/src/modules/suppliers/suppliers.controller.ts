@@ -42,6 +42,22 @@ export class SuppliersController {
     return await this.suppliersService.findAll({ page, limit });
   }
 
+  @Get('consortium/:consortiumId')
+  async findAllByConsortium(
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 5,
+    @Param('consortiumId', ParseUUIDPipe) consortiumId: string,
+  ) {
+    if (!page || page < 1 || isNaN(page)) {
+      page = 1;
+    }
+
+    if (!limit || limit < 1 || isNaN(limit)) {
+      limit = 5;
+    }
+    return await this.suppliersService.findAllByConsortium(consortiumId, +page, +limit);
+  }
+
   @Get(':id')
   async findOne(@Param('id', ParseUUIDPipe) id: string) {
     return await this.suppliersService.findOne(id);

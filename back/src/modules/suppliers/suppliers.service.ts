@@ -74,6 +74,9 @@ export class SuppliersService {
     return suppliers.slice(startIndex, endIndex);
   }
 
+  async findAllByConsortium(consortiumId: string, page: number, limit: number) {
+    return await this.suppliersRepository.findAllByConsortium(consortiumId, page, limit);
+  }
   async findOne(id: string): Promise<Supplier> {
     if (!id) {
       throw new BadRequestException('id is required');

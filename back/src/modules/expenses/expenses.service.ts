@@ -5,37 +5,53 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { CreateExpenseDto } from './dto/create-expense.dto';
-import { UpdateExpenseDto } from './dto/update-expense.dto';
 import { ExpensesRepository } from './expenses.repository';
 import { Consortium } from '../consortiums/entities/consortium.entity';
 import checkEntityExistence from 'src/helpers/check-entity-existence.helper';
-import { ConsortiumsService } from '../consortiums/consortiums.service';
 import { Expense } from './entities/expense.entity';
 import { TPagination } from 'src/utils/types';
 import { EXPENSE_STATUS } from 'src/utils/constants';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class ExpensesService {
   constructor(
     private readonly expensesRepository: ExpensesRepository,
-    private readonly consortiumsService: ConsortiumsService,
+    @InjectRepository(Consortium)
+    private readonly consortiumRepository: Repository<Consortium>,
   ) {}
 
   async create(expenseToCreate: CreateExpenseDto) {
     const { name, issue_date, expiration_date, consortium_id } =
       expenseToCreate;
 
-    const foundConsortium: Consortium = await checkEntityExistence(
-      this.consortiumsService,
-      consortium_id,
-      'el Consorcio',
-    );
+    const consortium: Consortium = await this.consortiumRepository.findOne({
+      where: { id: consortium_id },
+    });
+
+    if (!consortium)
+      throw new NotFoundException(`El Consorcio id ${consortium_id} no existe`);
+
+    const foundConsortiumWithOpenExpense: Consortium =
+      await this.consortiumRepository.findOne({
+        where: {
+          id: consortium_id,
+          expenses: { active: true, status: EXPENSE_STATUS.OPEN },
+        },
+        relations: { expenses: true },
+      });
+
+    if (foundConsortiumWithOpenExpense)
+      throw new ConflictException(
+        `El Consorcio "${foundConsortiumWithOpenExpense.name}" tiene la expensa "${foundConsortiumWithOpenExpense.expenses[0].name}" abierta. No se puede crear una nueva.`,
+      );
 
     const newExpense: Expense = new Expense();
     newExpense.name = name;
     newExpense.issue_date = issue_date;
     newExpense.expiration_date = expiration_date;
-    newExpense.consortium = foundConsortium;
+    newExpense.consortium = consortium;
 
     return await this.expensesRepository.createExpense(newExpense);
   }
@@ -52,6 +68,10 @@ export class ExpensesService {
     const endIndex = startIndex + limit;
 
     return expenses.slice(startIndex, endIndex);
+  }
+
+  async findOpenByConsortium(consortiumId: string): Promise<Expense> {
+    return await this.expensesRepository.findOpenByConsortium(consortiumId);
   }
 
   async findOne(id: string): Promise<Expense> {

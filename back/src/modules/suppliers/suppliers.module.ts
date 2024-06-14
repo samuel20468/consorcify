@@ -8,6 +8,7 @@ import { ConsortiumsService } from '../consortiums/consortiums.service';
 import { ConsortiumsRepository } from '../consortiums/consortiums.repository';
 import { Consortium } from '../consortiums/entities/consortium.entity';
 import { CAdmin } from '../c-admin/entities/c-admin.entity';
+import { GoogleMapsService } from '../google-maps/google-maps.service';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { CAdmin } from '../c-admin/entities/c-admin.entity';
     SuppliersRepository,
     ConsortiumsRepository,
     ConsortiumsService,
+    GoogleMapsService
   ],
 })
 export class SuppliersModule {}

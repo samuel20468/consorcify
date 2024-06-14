@@ -44,7 +44,7 @@ export const signInHelper = async (
     foundEntity.password,
   );
   if (!verifyPassword) {
-    throw new UnauthorizedException('Invalid Credentials');
+    throw new UnauthorizedException('Credenciales Inválidas');
   }
   const token = generateToken(foundEntity, jwtService);
   return token;

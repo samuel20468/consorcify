@@ -13,17 +13,16 @@ import {
 export class CreateSupplierDto {
   /**
    * El nombre del Proveedor
-   * @example "Limpiezas SRL"
+   * @example "Agua y Saneamientos Argentinos S.A."
    */
   @IsNotEmpty({ message: 'El nombre es requerido' })
   @IsString({ message: 'El nombre debe ser una cadena de texto' })
   @Length(3, 50, { message: 'El nombre debe tener entre 3 y 50 caracteres' })
-  @Matches(/^[a-zA-Z0-9\s]+$/, { message: 'El nombre sólo puede contener letras y números' })
   name: string;
 
   /**
    * El CUIT del Proveedor
-   * @example "30567891234"
+   * @example "30709565075"
    */
   @IsNotEmpty({ message: 'El CUIT es requerido' })
   @IsString({ message: 'El CUIT debe ser una cadena de texto' })
@@ -32,7 +31,7 @@ export class CreateSupplierDto {
 
   /**
    * El correo electrónico del Proveedor
-   * @example "contacto@limpiezassrl.com"
+   * @example "contacto@aysa.com.ar"
    */
   @IsNotEmpty({ message: 'El correo electrónico es requerido' })
   @IsEmail(
@@ -52,7 +51,7 @@ export class CreateSupplierDto {
 
   /**
    * El número de teléfono del Proveedor
-   * @example "+5491145678901"
+   * @example "+5491122334567"
    */
   @IsNotEmpty({ message: 'El número de teléfono es requerido' })
   @IsPhoneNumber(null, {
@@ -61,16 +60,17 @@ export class CreateSupplierDto {
   phone_number: string;
 
   /**
-   * La dirección del Proveedor
-   * @example "Av. Siempre Viva 123"
+   * La dirección del Proveedor (calle altura, ciudad)
+   * @example "Riobamba 750, CABA"
    */
   @IsNotEmpty({ message: 'La dirección es requerida' })
   @IsString({ message: 'La dirección debe ser una cadena de texto' })
+  @Matches(/^[a-zA-Z0-9\s.'-]+,\s*[a-zA-Z\s.'-]+$/, { message: 'La dirección debe estar en el formato "calle altura, ciudad"' })
   address: string;
 
   /**
    * El saldo del Proveedor
-   * @example "-2000.00"
+   * @example "2000.00"
    */
   @IsNotEmpty({ message: 'El saldo es requerido' })
   @IsNumber()

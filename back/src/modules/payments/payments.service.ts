@@ -15,11 +15,8 @@ import checkEntityExistence from 'src/helpers/check-entity-existence.helper';
 import { TPagination } from 'src/utils/types';
 import { User } from '../users/entities/user.entity';
 import { UsersRepository } from '../users/users.repository';
-<<<<<<< HEAD
 import { MailsService } from '../mails/mails.service';
-=======
 import { FunctionalUnit } from '../functional-units/entities/functional-unit.entity';
->>>>>>> develop
 
 @Injectable()
 export class PaymentsService {

@@ -11,12 +11,9 @@ import checkEntityExistence from 'src/helpers/check-entity-existence.helper';
 import { Expense } from './entities/expense.entity';
 import { TPagination } from 'src/utils/types';
 import { EXPENSE_STATUS } from 'src/utils/constants';
-<<<<<<< HEAD
 import { MailsService } from '../mails/mails.service';
-=======
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
->>>>>>> develop
 
 @Injectable()
 export class ExpensesService {

@@ -10,7 +10,7 @@ const DashboardU = () => {
                     <div className="flex items-center justify-center w-full h-full">
                         <AccountBalance className="w-10 text-black" />
                     </div>
-                    <div className="flex flex-col items-center justify-center w-full h-full text-xl">
+                    <div className="flex flex-col items-center justify-center w-full h-full text-xl text-white">
                         <p className="flex items-center justify-center w-full h-1/4">
                             Saldo
                         </p>
@@ -28,7 +28,7 @@ const DashboardU = () => {
                             <Home className="w-10 text-black" />
                         </Link>
                     </div>
-                    <div className="flex flex-col items-center justify-center w-full h-full text-xl">
+                    <div className="flex flex-col items-center justify-center w-full h-full text-xl text-white">
                         <p className="flex items-center justify-center w-full h-1/4">
                             Unidad Funcional
                         </p>

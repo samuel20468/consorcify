@@ -1,9 +1,15 @@
 "use client";
+import { RxCross1 } from "react-icons/rx";
+import { IoCheckmarkOutline } from "react-icons/io5";
 import { IFunctionalUnits } from "@/Interfaces/functionalUnits.interfaces";
 import { IUser } from "@/Interfaces/user.interfaces";
-import { Button, ContainerDashboard } from "@/components/ui";
+import { Button, ContainerDashboard, Select } from "@/components/ui";
 import { paymentCheckOut } from "@/helpers/fetch.helper";
-import { getFuncionalUnitByID } from "@/helpers/fetch.helper.uf";
+import {
+    functionalUnitExpensesId,
+    getFuncionalUnitByID,
+    getFuncionalUnitByUser,
+} from "@/helpers/fetch.helper.uf";
 import { getUserById } from "@/helpers/fetch.helper.user";
 import {
     AccountBalance,
@@ -25,20 +31,21 @@ const Expenses = () => {
     const path = usePathname();
     const { token, data } = useSesion();
     const [user, setUser] = useState<IUser>();
-    const [functionalUnit, setFunctionalUnit] = useState<IFunctionalUnits>();
-    const [id, setId] = useState<string>();
-    console.log(functionalUnit);
+    const [functionalUnit, setFunctionalUnit] = useState<IFunctionalUnits[]>(
+        []
+    );
+    const [expenses, setExpenses] = useState<any[]>();
+    const [id, setId] = useState<string>("");
 
     useEffect(() => {
         const fecthUser = async () => {
             try {
                 const response = await getUserById(data.id, token);
-                console.log(response);
 
                 if (response?.ok) {
                     const datos = await response.json();
                     setUser(datos);
-                    setId(datos?.functional_units?.[0].id);
+                    setFunctionalUnit(datos?.functional_units);
                 }
             } catch (error) {
                 console.error(error);
@@ -50,11 +57,11 @@ const Expenses = () => {
     }, [token, path]);
 
     useEffect(() => {
-        const fetchData = async () => {
+        const fechtExpenses = async () => {
             try {
-                const response = await getFuncionalUnitByID(id!, token);
+                const response = await functionalUnitExpensesId(id!, token);
                 if (response) {
-                    setFunctionalUnit(response);
+                    setExpenses(response);
                 } else {
                     Swal.fire({
                         title: "Error",
@@ -68,22 +75,14 @@ const Expenses = () => {
                 console.error(error);
             }
         };
-        if (user) {
-            fetchData();
+        if (token) {
+            fechtExpenses();
         }
-    }, [user]);
+    }, [token]);
 
-    const handlePay = async () => {
-        try {
-            const idPrueba = "951db13b-317d-4eb4-bb57-ea71970c6fb9";
-            const response = await paymentCheckOut(token, idPrueba);
-            if (response?.ok) {
-                const { url } = await response.json();
-                window.location.href = url;
-            }
-        } catch (error) {
-            console.error(error);
-        }
+    const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const { value } = e.target;
+        setId(value);
     };
 
     return (
@@ -96,7 +95,7 @@ const Expenses = () => {
                         </Link>
                     </div>
                     <p className="flex items-center justify-center w-full">
-                        Consorcio: {functionalUnit?.consortium?.name}
+                        Consorcio:{" "}
                     </p>
                 </div>
                 <div className="flex items-center justify-around  rounded-[40px] h-[15%] w-full  gap-5">
@@ -109,7 +108,12 @@ const Expenses = () => {
                                 Saldo
                             </p>
                             <p className="flex items-center justify-center w-full h-1/4 text-2xl">
-                                ${functionalUnit?.balance}
+                                $
+                                {expenses?.reduce(
+                                    (acc, expense) =>
+                                        acc + expense.total_amount,
+                                    0
+                                )}
                             </p>
                         </div>
                     </div>
@@ -117,12 +121,27 @@ const Expenses = () => {
                         <div className="flex items-center justify-center w-full h-full itc">
                             <HomeTwo className="" />
                         </div>
-                        <div className="flex flex-col items-center justify-center w-full h-full itc">
+                        <div className="flex flex-col items-center justify-center w-full h-full gap-2">
                             <p className="flex items-center justify-center w-full h-1/4">
                                 Unidad Funcional
                             </p>
                             <p className="flex items-center justify-center w-full h-1/4">
-                                {functionalUnit?.location}
+                                <Select
+                                    onChange={handleChange}
+                                    value={id}
+                                    name="id"
+                                    id="id"
+                                >
+                                    {functionalUnit?.map((unit) => (
+                                        <option
+                                            value={unit.id}
+                                            key={unit.id}
+                                            selected={id !== ""}
+                                        >
+                                            {unit.location}
+                                        </option>
+                                    ))}
+                                </Select>
                             </p>
                         </div>
                     </div>
@@ -133,29 +152,64 @@ const Expenses = () => {
                     </div>
 
                     <div className="flex flex-col w-full h-[75%] p-5 gap-2">
-                        <div className="flex w-full h-1/4 border rounded-[40px]">
-                            <div className="flex items-center justify-center w-1/2 h-full gap-2">
-                                <p className="flex items-center justify-center w-1/3">
-                                    Junio
-                                </p>
-                                <p className="flex items-center justify-center w-1/3">
-                                    $ 35.000
-                                </p>
-                                <p className="flex items-center justify-center w-1/3">
-                                    10
-                                </p>
-                            </div>
-                            <div className="flex w-1/2">
-                                <div className="flex items-center justify-end w-full gap-2 p-5">
-                                    <Cross />
-                                    <Button
-                                        className="w-32 py-3 rounded-[40px]"
-                                        onClick={handlePay}
-                                    >
-                                        Pagar
-                                    </Button>
+                        <div className="flex flex-col w-full  gap-2">
+                            <div className="flex border-b w-full items-center justify-center gap-2">
+                                <div className="w-2/3 flex justify-center font-bold text-xl">
+                                    <div className="w-1/3 flex justify-center">
+                                        Año
+                                    </div>
+                                    <div className="w-1/3 flex justify-center">
+                                        Mes
+                                    </div>
+                                    <div className="w-1/3 flex justify-center">
+                                        Monto
+                                    </div>
                                 </div>
+                                <div className="w-1/3  flex "></div>
                             </div>
+                            {expenses?.map((expense, index) => {
+                                return (
+                                    <div
+                                        key={index}
+                                        className="flex  w-full gap-2"
+                                    >
+                                        <div className="w-2/3 border flex py-2">
+                                            <div className="w-1/3 flex justify-center">
+                                                {
+                                                    expense.expense.expiration_date.split(
+                                                        "-"
+                                                    )[0]
+                                                }
+                                            </div>
+                                            <div className="w-1/3 flex justify-center">
+                                                {
+                                                    expense.expense.expiration_date.split(
+                                                        "-"
+                                                    )[1]
+                                                }
+                                            </div>
+                                            <div className="w-1/3 flex justify-center">
+                                                ${expense.total_amount}
+                                            </div>
+                                        </div>
+                                        <div className="w-1/3 border flex ">
+                                            <div className="w-1/2 flex justify-center items-center">
+                                                <RxCross1 className="text-red-500" />
+                                                <IoCheckmarkOutline className="text-green-500" />
+                                            </div>
+                                            <div className="w-1/2 flex justify-center items-center p-1">
+                                                <Link
+                                                    href={`/dashboard/usuario/expenses/${expense.id}`}
+                                                >
+                                                    <Button className="w-32 rounded-[40px]">
+                                                        Pagar
+                                                    </Button>
+                                                </Link>
+                                            </div>
+                                        </div>
+                                    </div>
+                                );
+                            })}
                         </div>
                     </div>
                 </div>

@@ -1,5 +1,7 @@
 // Interfaces
 import { IConsortium } from "./consortium.interfaces";
+import { IExpense } from "./expenses.interfaces";
+import { IUser } from "./user.interfaces";
 
 // -------------------
 
@@ -40,4 +42,16 @@ export interface IFunctionalUnits {
     code: string;
     active: boolean;
     consortium: IConsortium;
+    expenses: IExpense[];
+    user: IUser;
+}
+
+export interface IFunctionalUnitExpenses {
+    id: string;
+    interests: number;
+    monthly_expenditure: number;
+    previous_balance: number;
+    total_amount: number;
+    functional_unit: IFunctionalUnits;
+    expense: IExpense;
 }

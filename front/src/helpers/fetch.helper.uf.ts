@@ -1,4 +1,5 @@
 import {
+    IFunctionalUnitExpenses,
     IFunctionalUnits,
     INewFunctionalUnits,
 } from "@/Interfaces/functionalUnits.interfaces";
@@ -98,6 +99,34 @@ export const getFuncionalUnitByID = async (
     }
 };
 
+export const getFuncionalUnitByUser = async (
+    id: string,
+    token: string
+): Promise<IFunctionalUnits | any> => {
+    try {
+        const response = await fetch(`${apiUrl}/functional-units/${id}/user`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        if (response.ok) {
+            return response.json();
+        } else {
+            return response.json().then((errorInfo) => {
+                throw new Error(
+                    `Error ${response.status}: ${
+                        errorInfo.message || response.statusText
+                    }`
+                );
+            });
+        }
+    } catch (error) {
+        console.error(error);
+    }
+};
+
 export const linkFunctionalUnit = async (
     id: string,
     token: string,
@@ -116,6 +145,38 @@ export const linkFunctionalUnit = async (
         );
         if (response.ok) {
             return response.json();
+        } else {
+            return response.json().then((errorInfo) => {
+                throw new Error(
+                    `Error ${response.status}: ${
+                        errorInfo.message || response.statusText
+                    }`
+                );
+            });
+        }
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+export const functionalUnitExpensesId = async (
+    id: string,
+    token: string
+): Promise<IFunctionalUnitExpenses | any> => {
+    try {
+        const response = await fetch(
+            `${apiUrl}/functional-units-expenses/${id}`,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
+        if (response.ok) {
+            const datos = await response.json();
+            return datos;
         } else {
             return response.json().then((errorInfo) => {
                 throw new Error(

@@ -15,15 +15,22 @@ export const googleLogin = async () => {
     }
 };
 
-export const paymentCheckOut = async (token: string, id: string) => {
+export const paymentCheckOut = async (
+    token: string,
+    id: string,
+    amount: number
+) => {
     try {
-        const response = await fetch(`${apiUrl}/payments/${id}/check-out`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-            },
-        });
+        const response = await fetch(
+            `${apiUrl}/payments/${id}/${amount}/check-out`,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
         return response;
     } catch (error) {
         console.error(error);

@@ -1,12 +1,10 @@
 // Estilos y componentes
-import { ISupplier } from "@/Interfaces/suppliers.interfaces";
 import SuppliersCard from "../SuppliersCard/SuppliersCard";
 
 // Interfaces
-<<<<<<< HEAD
-=======
+
 import { ISupplier } from "@/Interfaces/suppliers.interfaces";
->>>>>>> develop
+
 
 // Hooks
 import Link from "next/link";

@@ -1,6 +1,5 @@
 export const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-<<<<<<< HEAD
 // Autenticación Google
 export const googleLogin = async () => {
     try {
@@ -21,9 +20,6 @@ export const paymentCheckOut = async (
     id: string,
     amount: number
 ) => {
-=======
-export const paymentCheckOut = async (token: string, id: string) => {
->>>>>>> develop
     try {
         const response = await fetch(
             `${apiUrl}/payments/${id}/${amount}/check-out`,

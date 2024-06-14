@@ -7,17 +7,13 @@ import { ContainerDashboard, Title } from "@/components/ui";
 import { getSupplierById } from "@/helpers/fetch.helper.supplier";
 
 // Interfaces
-<<<<<<< HEAD
-=======
 import { ISupplier } from "@/Interfaces/suppliers.interfaces";
->>>>>>> develop
 
 // Hooks
 import { useEffect, useState } from "react";
 import { useParams, usePathname } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
-import { ISupplier } from "@/Interfaces/suppliers.interfaces";
 
 // -------------------
 

@@ -2,10 +2,6 @@
 import { formatearNumero } from "@/helpers/functions.helper";
 
 // Interfaces
-<<<<<<< HEAD
-
-=======
->>>>>>> develop
 import { ISupplier } from "@/Interfaces/suppliers.interfaces";
 
 // ----------------

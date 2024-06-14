@@ -28,10 +28,17 @@ export class ExpensesService {
 
     const consortium: Consortium = await this.consortiumRepository.findOne({
       where: { id: consortium_id },
+      relations: { functional_units: true },
     });
 
     if (!consortium)
       throw new NotFoundException(`El Consorcio id ${consortium_id} no existe`);
+
+    if (consortium.ufs > consortium.functional_units.length) {
+      throw new ConflictException(
+        `Aún le restan cargar ${consortium.ufs - consortium.functional_units.length} unidades funcionales para crear una expensa. Cargue las UF antes de crear una expensa.`,
+      );
+    }
 
     const foundConsortiumWithOpenExpense: Consortium =
       await this.consortiumRepository.findOne({

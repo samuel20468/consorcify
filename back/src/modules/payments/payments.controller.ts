@@ -23,9 +23,15 @@ export class PaymentsController {
 
   @ApiBearerAuth()
   @UseGuards(AuthCustomGuard)
-  @Get(':id/check-out')
-  async checkOut(@Param('id') id: string, @Res() res: Response) {
-    const sessionUrl = await this.paymentsService.checkOut(id);
+  @Get(':functionalUnitExpenseId/:paymentAmount/check-out')
+  async checkOut(
+    @Param('paymentAmount') paymentAmount: number,
+    @Param('functionalUnitExpenseId') functionalUnitExpenseId: string,
+    @Res() res: Response,
+  ) {
+    const sessionUrl = await this.paymentsService.checkOut(
+      functionalUnitExpenseId, paymentAmount,
+    );
 
     res.json({ url: sessionUrl });
   }

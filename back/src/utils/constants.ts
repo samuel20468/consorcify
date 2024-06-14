@@ -61,9 +61,8 @@ export enum EXPENDITURE_CATEGORY {
   OTHER_EXPENSES = 'Otros',
 }
 
-export enum PAYMENT_STATUS { //Pendiente saber que devuelve exactamente el pago
+export enum PAYMENT_STATUS {
   PAID = 'Pagado',
   UNPAID = 'Impago',
-  PENDING = 'Pendiente',
   PARTIAL = 'Parcial',
 }

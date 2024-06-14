@@ -33,7 +33,7 @@ export class PaymentsService {
     });
   }
 
-  async checkOut(functionalUnitExpenseId: string) {
+  async checkOut(functionalUnitExpenseId: string, paymentAmount: number) {
     const functionalUnitExpense =
       await this.functionalUnitExpenseRepository.findOne({
         where: { id: functionalUnitExpenseId },
@@ -45,10 +45,19 @@ export class PaymentsService {
         'Se necesita una expensa de unidad funcional para efectuar el pago',
       );
 
-    const amount: number = functionalUnitExpense.total_amount * 100;
+    if (paymentAmount < 0) {
+      throw new BadRequestException('El monto no puede ser negativo');
+    }
+    let amount: number;
+    if (!paymentAmount) {
+      amount = functionalUnitExpense.total_amount * 100;
+    } else {
+      amount = paymentAmount * 100;
+    }
     const userEmail: string = functionalUnitExpense.functional_unit.user.email;
 
     const session = await this.stripe.checkout.sessions.create({
+      client_reference_id: functionalUnitExpenseId,
       customer_email: userEmail,
       line_items: [
         {
@@ -84,11 +93,7 @@ export class PaymentsService {
     const functionalUnitExpense =
       await this.functionalUnitExpenseRepository.findOne({
         where: {
-          functional_unit: {
-            user: {
-              email: session.customer_email,
-            },
-          },
+          id: session.client_reference_id,
         },
         relations: ['functional_unit'],
       });
@@ -106,7 +111,7 @@ export class PaymentsService {
         },
       });
 
-    if (payment.amount >= functionalUnitExpense.total_amount) {
+    if (payment.amount >= functionalUnitExpense.functional_unit.balance) {
       for (const fue of functional_units_expenses) {
         if (fue.payment_status === PAYMENT_STATUS.PAID) continue;
         fue.payment_status = PAYMENT_STATUS.PAID;

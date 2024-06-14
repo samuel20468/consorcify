@@ -32,6 +32,26 @@ export class ExpensesRepository {
     });
   }
 
+  async findOpenByConsortium(consortiumId: string): Promise<Expense> {
+    const consortium: Consortium = await this.consortiumRepository.findOne({
+      where: { id: consortiumId },
+    })
+
+    if (!consortium)
+      throw new ConflictException(`El Consorcio id ${consortiumId} no existe`);
+
+    const foundConsortium: Consortium = await this.consortiumRepository.findOne(
+      {
+        where: { id: consortiumId, expenses: { active: true , status: EXPENSE_STATUS.OPEN} },
+        relations: { expenses: true },
+      },
+    );
+    if (!foundConsortium) 
+      throw new ConflictException(`El Consorcio "${consortium.name}" no tiene una expensa abierta`);
+
+    return foundConsortium.expenses[0];
+  }
+
   async findOne(id: string): Promise<Expense> {
     return await this.expenseRepository.findOne({
       where: { id, active: true, expenditures: { active: true } },

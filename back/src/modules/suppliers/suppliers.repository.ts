@@ -1,18 +1,31 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Supplier } from './entities/supplier.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UpdateSupplierDto } from './dto/update-supplier.dto';
 import { checkForDuplicates } from 'src/helpers/check-for-duplicates.helper';
+import { GoogleMapsService } from '../google-maps/google-maps.service';
+import { GeocodeResult } from '@googlemaps/google-maps-services-js';
 
 @Injectable()
 export class SuppliersRepository {
   constructor(
     @InjectRepository(Supplier)
     private readonly supplierRepository: Repository<Supplier>,
+    private readonly googleMapsService: GoogleMapsService,
   ) {}
 
-  async createSupplier(newSupplier: Supplier): Promise<Supplier> {
+  async createSupplier(newSupplier: Partial<Supplier>): Promise<Supplier> {
+    const googleMapsResponse: GeocodeResult =
+      await this.googleMapsService.getGeocoding({
+        street: newSupplier.address, number: "", city: "",
+      });
+    if (!googleMapsResponse) {
+      throw new NotFoundException(`No se encontró ubicación para el domicilio ingresado (Geocoder Error)`);
+    }
+    newSupplier.latitude = googleMapsResponse.geometry.location.lat;
+    newSupplier.longitude = googleMapsResponse.geometry.location.lng;
+
     return await this.supplierRepository.save(newSupplier);
   }
 

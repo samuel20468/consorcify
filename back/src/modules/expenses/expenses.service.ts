@@ -13,6 +13,7 @@ import { TPagination } from 'src/utils/types';
 import { EXPENSE_STATUS } from 'src/utils/constants';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { FunctionalUnitExpense } from '../functional-units-expenses/entities/functional-units-expense.entity';
 
 @Injectable()
 export class ExpensesService {
@@ -91,6 +92,32 @@ export class ExpensesService {
       id,
       'la expensa',
     );
+
+    return expense;
+  }
+
+  async undoExpense(expenseId: string) {
+    if (!expenseId) {
+      throw new BadRequestException('Id is required');
+    }
+
+    const expense: Expense = await checkEntityExistence(
+      this.expensesRepository,
+      expenseId,
+      'la expensa',
+    );
+
+    if (expense.status === EXPENSE_STATUS.CLOSED)
+      throw new ConflictException(
+        'No se puede deshacer una expensa que esta cerrada',
+      );
+
+    if (expense.functional_units_expenses.length <= 0)
+      throw new ConflictException(
+        'No se puede deshacer una expensa que no se ha generado',
+      );
+
+    await this.expensesRepository.undoExpense(expenseId);
 
     return expense;
   }

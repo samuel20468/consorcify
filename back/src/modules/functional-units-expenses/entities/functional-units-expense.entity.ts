@@ -71,14 +71,14 @@ export class FunctionalUnitExpense {
    * El estado del pago de la expensa. Default: "impago"
    * @example "pagado"
    */
-  @Column('enum', { enum: PAYMENT_STATUS , default: PAYMENT_STATUS.UNPAID })
+  @Column('enum', { enum: PAYMENT_STATUS, default: PAYMENT_STATUS.UNPAID })
   payment_status: PAYMENT_STATUS;
 
   /**
    * Fecha de creacion de la expensa por la Unidad Funcional
    * @example "2024-07-12T00:00:00.000Z"
    * */
-  @Column({ type: 'timestamp'})
+  @Column({ type: 'timestamp' })
   created_at: Date;
 
   @ManyToOne(

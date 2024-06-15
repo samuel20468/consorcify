@@ -15,12 +15,14 @@ import checkEntityExistence from 'src/helpers/check-entity-existence.helper';
 import { TPagination } from 'src/utils/types';
 import { User } from '../users/entities/user.entity';
 import { UsersRepository } from '../users/users.repository';
+import { MailsService } from '../mails/mails.service';
 import { FunctionalUnit } from '../functional-units/entities/functional-unit.entity';
 
 @Injectable()
 export class PaymentsService {
   private stripe;
   constructor(
+    private readonly mailsService: MailsService,
     private readonly paymentsRepository: PaymentsRepository,
     private readonly usersRepository: UsersRepository,
     @InjectRepository(FunctionalUnitExpense)
@@ -99,6 +101,14 @@ export class PaymentsService {
       });
 
     payment.functional_unit_expense = functionalUnitExpense;
+    const user = await this.usersRepository.findOneByEmail(
+      payment.customer_email,
+    );
+    await this.mailsService.sendSuccessfulPayment(
+      user.first_name,
+      user.email,
+      payment.amount,
+    );
 
     const savedPayment = await this.paymentsRepository.createPayment(payment);
 

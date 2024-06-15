@@ -11,6 +11,7 @@ import checkEntityExistence from 'src/helpers/check-entity-existence.helper';
 import { Expense } from './entities/expense.entity';
 import { TPagination } from 'src/utils/types';
 import { EXPENSE_STATUS } from 'src/utils/constants';
+import { MailsService } from '../mails/mails.service';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { FunctionalUnitExpense } from '../functional-units-expenses/entities/functional-units-expense.entity';
@@ -18,6 +19,7 @@ import { FunctionalUnitExpense } from '../functional-units-expenses/entities/fun
 @Injectable()
 export class ExpensesService {
   constructor(
+    private readonly mailsService: MailsService,
     private readonly expensesRepository: ExpensesRepository,
     @InjectRepository(Consortium)
     private readonly consortiumRepository: Repository<Consortium>,
@@ -133,6 +135,14 @@ export class ExpensesService {
     await this.expensesRepository.closeExpense(id);
 
     foundExpense.status = EXPENSE_STATUS.CLOSED;
+    const { consortium } = foundExpense;
+    await this.mailsService.sendNewExpense(
+      consortium.c_admin.name,
+      consortium.c_admin.email,
+      foundExpense.total_amount,
+      consortium.name,
+      foundExpense.name,
+    );
 
     return foundExpense;
   }

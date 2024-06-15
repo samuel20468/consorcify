@@ -1,6 +1,6 @@
 import React from "react";
 
-const RoleIcon = ({ role }: any) => {
+const RoleIcon = ({ role }: { role: string }) => {
     // Renderizar SVG según el rol
     switch (role) {
         case "superadmin":
@@ -34,7 +34,7 @@ const RoleIcon = ({ role }: any) => {
                     />
                 </svg>
             );
-        case "admin":
+        case "cadmin":
             return (
                 <svg
                     xmlns="http://www.w3.org/2000/svg"

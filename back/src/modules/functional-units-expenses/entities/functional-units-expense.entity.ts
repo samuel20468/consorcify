@@ -78,7 +78,7 @@ export class FunctionalUnitExpense {
    * Fecha de creacion de la expensa por la Unidad Funcional
    * @example "2024-07-12T00:00:00.000Z"
    * */
-  @Column({ type: 'timestamp' })
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;
 
   @ManyToOne(

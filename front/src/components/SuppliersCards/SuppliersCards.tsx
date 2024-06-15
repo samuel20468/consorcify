@@ -2,7 +2,9 @@
 import SuppliersCard from "../SuppliersCard/SuppliersCard";
 
 // Interfaces
+
 import { ISupplier } from "@/Interfaces/suppliers.interfaces";
+
 
 // Hooks
 import Link from "next/link";

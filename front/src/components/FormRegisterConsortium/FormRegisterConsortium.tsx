@@ -348,10 +348,10 @@ const FormRegisterConsortium = ({ update = false }) => {
     // ---------------------------------------------------------------------------
 
     return (
-        <div className="w-full h-auto p-4 text-black bg-slate-200">
-            <div className="flex items-center justify-between px-5">
-                <h1 className="mb-2 text-lg font-bold">
-                    {update ? " Modificar consorcio" : " Crear nuevo Consorcio"}
+        <div className="w-full h-auto p-4 text-white border rounded-[40px]">
+            <div className="text-center my-2">
+                <h1 className="mb-2 text-2xl font-bold">
+                    {update ? " Modificar Consorcio" : " Crear Nuevo Consorcio"}
                 </h1>
             </div>
             <form
@@ -360,10 +360,8 @@ const FormRegisterConsortium = ({ update = false }) => {
                 onSubmit={handleSubmit}
             >
                 <div className="flex flex-row gap-4">
-                    <div className="flex flex-col lg:w-1/4">
-                        <Label htmlFor="suterh_key">
-                            Clave SUTERH:<span className="text-red-600">*</span>
-                        </Label>
+                    <div className="flex flex-col w-1/4">
+                        <Label htmlFor="suterh_key">Clave SUTERH:</Label>
                         <Input
                             id="suterh_key"
                             name="suterh_key"
@@ -374,15 +372,13 @@ const FormRegisterConsortium = ({ update = false }) => {
                         />
                         {consortiumRegisterError.suterh_key &&
                             consortiumRegister.suterh_key && (
-                                <span className="self-end text-xs text-red-500">
+                                <span className="self-end text-xs text-red">
                                     {consortiumRegisterError.suterh_key}
                                 </span>
                             )}
                     </div>
-                    <div className="flex flex-col lg:w-1/2">
-                        <Label htmlFor="name">
-                            Razon Social:<span className="text-red-600">*</span>
-                        </Label>
+                    <div className="flex flex-col w-2/4">
+                        <Label htmlFor="name">Razon Social:</Label>
                         <Input
                             id="name"
                             name="name"
@@ -392,10 +388,8 @@ const FormRegisterConsortium = ({ update = false }) => {
                             onChange={handleChange}
                         />
                     </div>
-                    <div className="flex flex-col lg:w-1/4">
-                        <Label htmlFor="cuit">
-                            CUIT:<span className="text-red-600">*</span>
-                        </Label>
+                    <div className="flex flex-col w-1/4">
+                        <Label htmlFor="cuit">CUIT:</Label>
                         <Input
                             id="cuit"
                             name="cuit"
@@ -407,18 +401,16 @@ const FormRegisterConsortium = ({ update = false }) => {
                         />
                         {consortiumRegisterError.cuit &&
                             consortiumRegister.cuit && (
-                                <span className="self-end text-xs text-red-500">
+                                <span className="self-end text-xs text-red">
                                     {consortiumRegisterError.cuit}
                                 </span>
                             )}
                     </div>
                 </div>
 
-                <div className="flex flex-row gap-4 ">
-                    <div className="flex flex-col lg:w-2/4">
-                        <Label htmlFor="street_name">
-                            Dirección:<span className="text-red-600">*</span>
-                        </Label>
+                <div className="flex flex-row gap-4">
+                    <div className="flex flex-col w-2/4">
+                        <Label htmlFor="street_name">Dirección:</Label>
                         <Input
                             id="street_name"
                             name="street_name"
@@ -428,10 +420,8 @@ const FormRegisterConsortium = ({ update = false }) => {
                             onChange={handleChange}
                         />
                     </div>
-                    <div className="flex flex-col lg:w-1/4">
-                        <Label htmlFor="building_number">
-                            Altura:<span className="text-red-600">*</span>
-                        </Label>
+                    <div className="flex flex-col w-1/4">
+                        <Label htmlFor="building_number">Altura:</Label>
                         <Input
                             id="building_number"
                             name="building_number"
@@ -445,11 +435,8 @@ const FormRegisterConsortium = ({ update = false }) => {
                             onChange={handleChange}
                         />
                     </div>
-                    <div className="flex flex-col lg:w-1/4">
-                        <Label htmlFor="category">
-                            Categoría edificio:
-                            <span className="text-red-600">*</span>
-                        </Label>
+                    <div className="flex flex-col w-1/4">
+                        <Label htmlFor="category">Categoría edificio:</Label>
                         <Input
                             id="category"
                             name="category"
@@ -466,10 +453,8 @@ const FormRegisterConsortium = ({ update = false }) => {
                 </div>
 
                 <div className="flex flex-row gap-4">
-                    <div className="flex flex-col lg:w-1/4">
-                        <Label htmlFor="country">
-                            País:<span className="text-red-600">*</span>
-                        </Label>
+                    <div className="flex flex-col w-1/4">
+                        <Label htmlFor="country">País:</Label>
                         <Input
                             id="country"
                             name="country"
@@ -479,10 +464,8 @@ const FormRegisterConsortium = ({ update = false }) => {
                             onChange={handleChange}
                         />
                     </div>
-                    <div className="flex flex-col lg:w-1/4">
-                        <Label htmlFor="province">
-                            Provincia:<span className="text-red-600">*</span>
-                        </Label>
+                    <div className="flex flex-col w-1/4">
+                        <Label htmlFor="province">Provincia:</Label>
                         <Input
                             id="province"
                             name="province"
@@ -492,10 +475,8 @@ const FormRegisterConsortium = ({ update = false }) => {
                             onChange={handleChange}
                         />
                     </div>
-                    <div className="flex flex-col lg:w-1/4">
-                        <Label htmlFor="city">
-                            Ciudad:<span className="text-red-600">*</span>
-                        </Label>
+                    <div className="flex flex-col w-1/4">
+                        <Label htmlFor="city">Ciudad:</Label>
                         <Input
                             id="city"
                             name="city"
@@ -505,11 +486,8 @@ const FormRegisterConsortium = ({ update = false }) => {
                             onChange={handleChange}
                         />
                     </div>
-                    <div className="flex flex-col lg:w-1/4">
-                        <Label htmlFor="zip_code">
-                            Código postal:
-                            <span className="text-red-600">*</span>
-                        </Label>
+                    <div className="flex flex-col w-1/4">
+                        <Label htmlFor="zip_code">Código postal:</Label>
                         <Input
                             id="zip_code"
                             name="zip_code"
@@ -522,11 +500,8 @@ const FormRegisterConsortium = ({ update = false }) => {
                 </div>
 
                 <div className="flex flex-row gap-4">
-                    <div className="flex flex-col lg:w-1/4">
-                        <Label htmlFor="floors">
-                            Cantidad de pisos:
-                            <span className="text-red-600">*</span>
-                        </Label>
+                    <div className="flex flex-col w-1/4">
+                        <Label htmlFor="floors">Cantidad de pisos:</Label>
                         <Input
                             id="floors"
                             name="floors"
@@ -540,11 +515,8 @@ const FormRegisterConsortium = ({ update = false }) => {
                             onChange={handleChange}
                         />
                     </div>
-                    <div className="flex flex-col lg:w-1/4">
-                        <Label htmlFor="ufs">
-                            Cantidad UF&apos;s:
-                            <span className="text-red-600">*</span>
-                        </Label>
+                    <div className="flex flex-col w-1/4">
+                        <Label htmlFor="ufs">Cantidad UF&apos;s:</Label>
                         <Input
                             id="ufs"
                             name="ufs"
@@ -558,7 +530,7 @@ const FormRegisterConsortium = ({ update = false }) => {
                             onChange={handleChange}
                         />
                     </div>
-                    <div className="flex flex-col lg:w-1/4">
+                    <div className="flex flex-col w-1/4">
                         <Label htmlFor="interest_rate">Tasa de Interes</Label>
                         <Input
                             id="interest_rate"
@@ -574,10 +546,9 @@ const FormRegisterConsortium = ({ update = false }) => {
                             onChange={handleChange}
                         />
                     </div>
-                    <div className="flex flex-col lg:w-1/4">
+                    <div className="flex flex-col w-1/4">
                         <Label htmlFor="first_due_day">
                             Primer vencimiento:
-                            <span className="text-red-600">*</span>
                         </Label>
                         <Input
                             id="first_due_day"
@@ -595,7 +566,7 @@ const FormRegisterConsortium = ({ update = false }) => {
                 </div>
                 <div className="flex items-center w-full gap-2">
                     <div className="flex w-full">
-                        <div className="flex flex-col lg:w-full">
+                        <div className="flex flex-col w-full">
                             {data?.roles?.[0] === "superadmin" && (
                                 <Label htmlFor="c_admin">Administrador </Label>
                             )}{" "}
@@ -631,11 +602,8 @@ const FormRegisterConsortium = ({ update = false }) => {
                         </div>
                     </div>
                 </div>
-                <div className="mt-4">
-                    <Button
-                        type="submit"
-                        className="w-full py-2 rounded-[40px]"
-                    >
+                <div className="mt-5 flex justify-center">
+                    <Button type="submit" className="w-1/3 py-2 rounded-[40px]">
                         {update ? "Modificar Consorcio" : "Crear Consorcio"}
                     </Button>
                 </div>

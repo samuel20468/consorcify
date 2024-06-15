@@ -13,13 +13,15 @@ const AddSpent = () => {
     useAuth();
 
     return (
-        <div className="h-screen text-white">
+        <div className="h-screen">
             <ContainerDashboard>
                 <Title>
                     Gastos{" "}
-                    <span className="text-2xl font-thin">| Nuevo gasto</span>
+                    <span className="text-2xl font-thin">| Nuevo Gasto</span>
                 </Title>
-                <FormSpent />
+                <div className="w-[80%]">
+                    <FormSpent />
+                </div>
             </ContainerDashboard>
         </div>
     );

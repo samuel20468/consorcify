@@ -29,7 +29,7 @@ const ExpenditureId = () => {
             try {
                 const response = await getExpeditureById(token, params.id);
                 if (response) {
-                    const data = response.json();
+                    const data = await response.json();
                     setExpenditure(data);
                 }
             } catch (error) {
@@ -42,12 +42,12 @@ const ExpenditureId = () => {
     }, [token, params.id, pathname]);
 
     return (
-        <div className="h-screen text-white">
+        <div className="h-screen">
             <ContainerDashboard>
                 <Title>
                     Gastos{" "}
                     <span className="text-xl font-thin">
-                        | {expenditure?.description}
+                        | Detalle de gasto
                     </span>
                 </Title>
                 <div>

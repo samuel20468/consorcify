@@ -90,7 +90,7 @@ const Consortium = () => {
                             href={"/addConsortium"}
                         >
                             <Button className="w-1/2 p-2 rounded-[40px]">
-                                Agregar consorcio
+                                Agregar Consorcio
                             </Button>
                         </Link>
                     </div>
@@ -112,7 +112,7 @@ const Consortium = () => {
                         className="w-1/4"
                     >
                         <Button className="w-full p-2 rounded-[40px]">
-                            Ver detalle
+                            Ver Detalle
                         </Button>
                     </Link>
                 </div>

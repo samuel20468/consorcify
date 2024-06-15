@@ -27,8 +27,8 @@ export const expenditureFetch = async (
             return response.json().then((errorInfo) => {
                 throw new Error(`
                     Error ${response.status}: ${
-                    errorInfo.message || response.statusText
-                }
+                        errorInfo.message || response.statusText
+                    }
             `);
             });
         } else {

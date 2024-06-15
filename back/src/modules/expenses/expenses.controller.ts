@@ -65,9 +65,17 @@ export class ExpensesController {
     return await this.expensesService.findOne(id);
   }
 
+  @Patch(':id/undo')
+  async undoExpense(@Param('id', ParseUUIDPipe) id: string) {
+    const expense: Expense = await this.expensesService.undoExpense(id);
+    return {
+      response: `La expensa con id: ${expense.id} fue exitosamente deshecha`,
+    };
+  }
+
   @Patch(':id/close-expense')
-  closeExpense(@Param('id', ParseUUIDPipe) id: string) {
-    return this.expensesService.closeExpense(id);
+  async closeExpense(@Param('id', ParseUUIDPipe) id: string) {
+    return await this.expensesService.closeExpense(id);
   }
 
   @Patch('toggle-status/:id')

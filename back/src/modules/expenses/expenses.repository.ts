@@ -38,19 +38,24 @@ export class ExpensesRepository {
   async findOpenByConsortium(consortiumId: string): Promise<Expense> {
     const consortium: Consortium = await this.consortiumRepository.findOne({
       where: { id: consortiumId },
-    })
+    });
 
     if (!consortium)
       throw new ConflictException(`El Consorcio id ${consortiumId} no existe`);
 
     const foundConsortium: Consortium = await this.consortiumRepository.findOne(
       {
-        where: { id: consortiumId, expenses: { active: true , status: EXPENSE_STATUS.OPEN} },
+        where: {
+          id: consortiumId,
+          expenses: { active: true, status: EXPENSE_STATUS.OPEN },
+        },
         relations: { expenses: true },
       },
     );
-    if (!foundConsortium) 
-      throw new ConflictException(`El Consorcio "${consortium.name}" no tiene una expensa abierta`);
+    if (!foundConsortium)
+      throw new ConflictException(
+        `El Consorcio "${consortium.name}" no tiene una expensa abierta`,
+      );
 
     return foundConsortium.expenses[0];
   }
@@ -64,6 +69,26 @@ export class ExpensesRepository {
         functional_units_expenses: true,
       },
     });
+  }
+
+  async undoExpense(expenseId: string): Promise<void> {
+    const expense: Expense = await this.expenseRepository.findOne({
+      where: { id: expenseId },
+      relations: { functional_units_expenses: { functional_unit: true } },
+    });
+    const functionalUnitsExpenses: FunctionalUnitExpense[] =
+      expense.functional_units_expenses;
+
+    const promises = functionalUnitsExpenses.map(async (ufe) => {
+      const functionalUnit: FunctionalUnit = ufe.functional_unit;
+
+      functionalUnit.balance = ufe.previous_balance;
+      await this.functionalUnitRepository.save(functionalUnit);
+
+      await this.functionalUnitsExpensesRepository.remove(ufe.id);
+    });
+
+    await Promise.all(promises);
   }
 
   async closeExpense(id: string): Promise<void> {

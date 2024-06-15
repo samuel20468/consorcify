@@ -6,6 +6,7 @@ import { Button, Input, Label } from "../ui";
 import { PiEyeClosed, PiEye } from "react-icons/pi";
 import { FcGoogle } from "react-icons/fc";
 import Swal from "sweetalert2";
+import { jwtDecode } from "jwt-decode";
 
 // Validaciones
 import { validateNombreCompleto } from "@/helpers/Validations/validate.nombre";
@@ -72,7 +73,15 @@ const Register = () => {
                         confirmButtonColor: "#0b0c0d",
                     }).then((res) => {
                         if (res.isConfirmed) {
-                            router.push("/login");
+                            const decodeData = jwtDecode(response.token);
+                            localStorage.setItem(
+                                "userData",
+                                JSON.stringify({
+                                    user: decodeData,
+                                    token: response.token,
+                                })
+                            );
+                            router.push("/dashboard");
                         }
                     });
                 }

@@ -7,23 +7,24 @@ const About = () => {
     return (
         <>
             <div className="flex flex-col text-[#0e0e0e] h-screen">
-                <div className="w-[90vw] bg-[#dadada] h-[20vh]  rounded-[40px] mb-[10px] mt-[30px]  sombra">
+                <div className="w-[90vw] bg-[#dadada] h-[20vh] rounded-[40px] mb-[10px] mt-[30px]  sombra">
                     <div className="flex font-[clash-regular]">
-                        <p className="px-9 pt-3 w-[38vw]">
+                        <p className="px-9 pt-4 w-[38vw] ">
+
                             <span className="font-[clash-medium] -tracking-tighter text-2xl text-black">
                                 Lorem ipsum accusantium.
                             </span>
                             <br />
                             dolor sit, amet consectetur adipisicing elit. Sit
                             explicabo dolorum magni accusantium error autem
-                            illum quisquam vel tempora, rerum, vitae expedita
-                            non dolorem similique velit ipsum deleniti
-                            consectetur ratione. Lorem ipsum dolor sit amet
-                            consectetur adipisicing elit.
+                            illum quisquam vel tempora.
                         </p>
-                        <h2 className="text-black font-[clash-medium] lg:text-5xl items-center flex mx-[140px]">
-                            LOREM IPSUM DOLOR.
-                        </h2>
+                        <div className="flex items-center mt-5">
+                            <h2 className="text-black font-[clash-medium] lg:text-5xl mx-[140px]">
+                                LOREM IPSUM DOLOR.
+                            </h2>
+                        </div>
+
                     </div>
                 </div>
 
@@ -42,10 +43,11 @@ const About = () => {
                         </div>
                     </div>
 
-                    <div className="child overflow-hidden">
+                    <div className="overflow-hidden child">
                         <img
                             src={imagen}
-                            alt="ImagenAboutUs"
+                            alt="Edificio"
+
                             className=" rounded-[40px] object-cover w-[100%]"
                         />
                     </div>

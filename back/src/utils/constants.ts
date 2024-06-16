@@ -3,9 +3,20 @@ import { config as dotenvConfig } from 'dotenv';
 
 dotenvConfig({ path: './.env.development' });
 
-export const CADMIN_PASS = process.env.CADMIN_PASS;
+export const CADMIN_PASS: string = process.env.CADMIN_PASS;
 export const CLIENT_URL: string = process.env.CLIENT_BASE_URL;
 export const API_URL: string = process.env.API_BASE_URL;
+
+//OAUTH STRATEGY
+export const GOOGLE_CLIENT_ID: string = process.env.GOOGLE_CLIENT_ID;
+export const GOOGLE_CLIENT_SECRET: string = process.env.GOOGLE_CLIENT_SECRET;
+
+//NODEMAILER
+export const MAIL_HOST: string = process.env.MAIL_HOST;
+export const MAIL_USER: string = process.env.MAIL_USER;
+export const MAIL_PASSWORD: string = process.env.MAIL_PASSWORD;
+export const MAIL_FROM: string = process.env.MAIL_FROM;
+export const MAIL_REDIRECT_URL: string = process.env.MAIL_REDIRECT_URL;
 
 export enum SAT {
   MONOTAX = 'Monotributo',
@@ -61,8 +72,27 @@ export enum EXPENDITURE_CATEGORY {
   OTHER_EXPENSES = 'Otros',
 }
 
-export enum PAYMENT_STATUS { //Pendiente saber que devuelve exactamente el pago
+export enum PAYMENT_STATUS {
   PAID = 'Pagado',
   UNPAID = 'Impago',
-  PENDING = 'Pendiente',
+  PARTIAL = 'Parcial',
+}
+
+export enum SUBJECT_MAIL {
+  NEW_ACCOUNT = 'Confirmación de cuenta en Consorcify',
+  NEW_PASSWORD = 'Reestablecer contraseña en Consorcify',
+  NEW_EXPENSE = 'Confirmación de expensa generada',
+  INDIVIDUAL_EXPENSE = 'Nueva expensa para abonar',
+  SUCCESSFUL_PAYMENT = 'Pago de expensa realizado con éxito',
+  PAYMENT_REMINDER = 'Recordatorio de pago de expensa',
+}
+
+export enum TEMPLATES_MAIL {
+  WELCOME_USER = './welcome',
+  WELCOME_CADMIN = './welcome-cadmin',
+  NEW_PASSWORD = './reset-password',
+  NEW_EXPENSE = './new-expense',
+  INDIVIDUAL_EXPENSE = './individual-expense',
+  SUCCESSFUL_PAYMENT = './successful-payment',
+  PAYMENT_REMINDER = './payment-reminder',
 }

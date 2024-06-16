@@ -5,40 +5,42 @@ import { Button, ContainerDashboard, Select, Title } from "@/components/ui";
 import ExpenditureCards from "@/components/ExpenditureCards/ExpenditureCards";
 
 // Endpoints
-import {
-    getConsortiums,
-    getExpenditures,
-    getSuppliers,
-} from "@/helpers/fetch.helper";
+import { getExpenditures } from "@/helpers/fetch.helper.expenditure";
+import { getConsortiumsByAdminId } from "@/helpers/fetch.helper.consortium";
+import { getSuppliersByConsortiumId } from "@/helpers/fetch.helper.supplier";
 
 // Interfaces
-import {
-    IConsortium,
-    IExpenditures,
-    ISuppliers,
-} from "@/Interfaces/Interfaces";
+import { IExpenditure } from "@/Interfaces/expenditures.interfaces";
+import { IConsortium } from "@/Interfaces/consortium.interfaces";
+import { ISupplier } from "@/Interfaces/suppliers.interfaces";
 
 // Hooks
 import { useEffect, useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
+import Link from "next/link";
 
-// ------------------
+// ------------------------------------------------------------
 
 const Spent = () => {
     useAuth();
-    const { token } = useSesion();
-    const router = useRouter();
+    const { token, data } = useSesion();
     const pathname = usePathname();
-    const [expenditures, setExpenditures] = useState<IExpenditures[]>([]);
-    const [suppliers, setSuppliers] = useState<ISuppliers[]>([]);
+    const [expenditures, setExpenditures] = useState<IExpenditure[]>([]);
+    const [suppliers, setSuppliers] = useState<ISupplier[]>([]);
     const [consortiums, setConsortiums] = useState<IConsortium[]>([]);
+    const [selectedConsortiumId, setSelectedConsortiumId] = useState<
+        string | null
+    >(null);
+    const [selectedSupplierId, setSelectedSupplierId] = useState<string | null>(
+        null
+    );
     const [filteredExpenditures, setFilteredExpenditures] = useState<
-        IExpenditures[]
+        IExpenditure[]
     >([]);
     const [sortConfig, setSortConfig] = useState<{
-        field: keyof IExpenditures;
+        field: keyof IExpenditure;
         order: "asc" | "desc";
     } | null>(null);
 
@@ -46,9 +48,10 @@ const Spent = () => {
         const fetchData = async () => {
             try {
                 const response = await getExpenditures(token);
-                if (response) {
+                if (response.ok) {
                     const data = await response.json();
                     setExpenditures(data);
+                    setFilteredExpenditures(data);
                 }
             } catch (error) {
                 console.error(error);
@@ -60,41 +63,96 @@ const Spent = () => {
     }, [token, pathname]);
 
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchConsortiums = async () => {
             try {
-                const response = await getConsortiums(token);
-                if (response) {
+                const response = await getConsortiumsByAdminId(data.id, token);
+                if (response.ok) {
                     const data = await response.json();
                     setConsortiums(data);
+                    if (data.length > 0) {
+                        const consortiumExists = data.some(
+                            (c: { id: string | null }) =>
+                                c.id === selectedConsortiumId
+                        );
+                        if (!consortiumExists) {
+                            setSelectedConsortiumId(data[0].id);
+                            setSelectedSupplierId(null);
+                        }
+                    }
                 }
-            } catch (error) {}
+            } catch (error) {
+                console.error(error);
+            }
         };
         if (token) {
-            fetchData();
+            fetchConsortiums();
         }
-    }, [token, pathname]);
+    }, [token, data.id, selectedConsortiumId]);
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await getSuppliers(token);
-                if (response) {
-                    const data = await response.json();
-                    setSuppliers(data);
+        const fetchSuppliers = async () => {
+            if (selectedConsortiumId) {
+                try {
+                    const response = await getSuppliersByConsortiumId(
+                        selectedConsortiumId,
+                        token
+                    );
+                    if (response.ok) {
+                        const data = await response.json();
+                        setSuppliers(data);
+                        if (data.length > 0) {
+                            setSelectedSupplierId(data[0].id);
+                        } else {
+                            setSelectedSupplierId(null);
+                        }
+                    }
+                } catch (error) {
+                    console.error(error);
                 }
-            } catch (error) {}
+            }
         };
-        if (token) {
-            fetchData();
+        if (token && selectedConsortiumId) {
+            fetchSuppliers();
         }
-    }, [token, pathname]);
+    }, [token, selectedConsortiumId]);
 
-    const handleOnClick = () => {
-        router.push("/addSpent");
+    useEffect(() => {
+        const filterExpenditures = () => {
+            let filteredData = expenditures;
+
+            if (selectedSupplierId) {
+                filteredData = filteredData.filter(
+                    (expenditure) =>
+                        expenditure.supplier?.id === selectedSupplierId
+                );
+            }
+            if (selectedSupplierId) {
+                filteredData = filteredData.filter(
+                    (expenditure) =>
+                        expenditure.supplier?.id === selectedSupplierId
+                );
+            }
+
+            setFilteredExpenditures(filteredData);
+        };
+
+        filterExpenditures();
+    }, [expenditures, selectedSupplierId]);
+
+    const handleSelectChange = (
+        event: React.ChangeEvent<HTMLSelectElement>
+    ) => {
+        const { name, value } = event.target;
+        if (name === "consortium_id") {
+            setSelectedConsortiumId(value);
+            setSelectedSupplierId(null);
+        } else if (name === "supplier_id") {
+            setSelectedSupplierId(value);
+        }
     };
 
-    const handleSort = (field: keyof IExpenditures, order: "asc" | "desc") => {
-        const sortedData = [...expenditures].sort((a, b) => {
+    const handleSort = (field: keyof IExpenditure, order: "asc" | "desc") => {
+        const sortedData = [...filteredExpenditures].sort((a, b) => {
             const valueA = a[field];
             const valueB = b[field];
 
@@ -112,10 +170,10 @@ const Spent = () => {
             }
         });
 
-        setExpenditures(sortedData);
+        setFilteredExpenditures(sortedData);
     };
 
-    const handleHeaderClick = (field: keyof IExpenditures) => {
+    const handleHeaderClick = (field: keyof IExpenditure) => {
         let order: "asc" | "desc" = "asc";
         if (
             sortConfig &&
@@ -129,21 +187,18 @@ const Spent = () => {
     };
 
     return (
-        <div className="h-screen text-white">
+        <div className="h-screen">
             <ContainerDashboard>
                 <Title>Gastos</Title>
-                <div className="flex justify-between w-[95%]">
-                    <div className="flex justify-start gap-3">
+                <div className="flex items-center justify-between w-[98%]">
+                    <div className="flex justify-start w-2/3 gap-3">
                         <Select
                             id="consortium_id"
                             name="consortium_id"
-                            defaultValue=""
-                            // value={adminRegister.sat}
-                            // onChange={handleSelect}
+                            className="w-1/3 h-10 px-2 my-1 text-gray-200 rounded-md shadow-xl cursor-pointer bg-input focus:outline-none no-spinners"
+                            value={selectedConsortiumId || ""}
+                            onChange={handleSelectChange}
                         >
-                            <option value="" disabled>
-                                Selecciona el consorcio
-                            </option>
                             {consortiums.length > 0 &&
                                 consortiums.map((consortium) => (
                                     <option
@@ -158,47 +213,73 @@ const Spent = () => {
                         <Select
                             id="supplier_id"
                             name="supplier_id"
-                            defaultValue=""
-                            // value={adminRegister.sat}
-                            // onChange={handleSelect}
+                            className="w-1/3 h-10 px-2 my-1 text-gray-200 rounded-md shadow-xl cursor-pointer bg-input focus:outline-none no-spinners"
+                            value={selectedSupplierId || ""}
+                            onChange={handleSelectChange}
+                            disabled={!selectedConsortiumId}
                         >
                             <option value="" disabled>
-                                Seleccionar proveedor
+                                {suppliers.length === 0
+                                    ? "Aún no hay proveedores registrados"
+                                    : "Seleccionar proveedor"}
                             </option>
-                            {suppliers.length > 0 &&
-                                suppliers.map((supplier) => (
-                                    <option
-                                        value={supplier.id}
-                                        key={supplier.id}
-                                    >
-                                        {supplier.name}
-                                    </option>
-                                ))}
+                            {suppliers.map((supplier) => (
+                                <option value={supplier.id} key={supplier.id}>
+                                    {supplier.name}
+                                </option>
+                            ))}
                         </Select>
                     </div>
-                    <div className="flex items-end">
-                        <Button
-                            onClick={handleOnClick}
-                            className="py-2 px-4 rounded-[40px]"
+                    <div className="flex w-1/3">
+                        <Link
+                            href="/addSpent"
+                            className="flex justify-end w-full mr-5"
                         >
-                            Agregar gasto
-                        </Button>
+                            <Button className="w-1/2 p-2 rounded-[40px]">
+                                Agregar Gasto
+                            </Button>
+                        </Link>
                     </div>
                 </div>
-                <div className="w-[90%] border-t border-b border-white flex justify-around p-2 my-5 text-center">
-                    <h1>Expensa</h1>
-                    <h1>Consorcio</h1>
-                    <h1>Proveedor</h1>
-                    <h1
-                        className="cursor-pointer"
-                        onClick={() => handleHeaderClick("total_amount")}
-                    >
-                        Monto
-                    </h1>
-                    <h1>Eliminar</h1>
+                <div className="w-[90%] border-t border-b border-white flex justify-between p-2 mt-5 text-center">
+                    <div className="w-1/5 text-xl">
+                        <h1
+                            className="cursor-pointer"
+                            onClick={() => handleHeaderClick("description")}
+                        >
+                            Descripción
+                        </h1>
+                    </div>
+                    <div className="w-1/5 text-xl">
+                        <h1
+                            className="cursor-pointer"
+                            onClick={() => handleHeaderClick("category")}
+                        >
+                            Categoría
+                        </h1>
+                    </div>
+                    <div className="w-1/5 text-xl">
+                        <h1
+                            className="cursor-pointer"
+                            onClick={() => handleHeaderClick("supplier")}
+                        >
+                            Proveedor
+                        </h1>
+                    </div>
+                    <div className="w-1/5 text-xl">
+                        <h1
+                            className="cursor-pointer"
+                            onClick={() => handleHeaderClick("total_amount")}
+                        >
+                            Monto
+                        </h1>
+                    </div>
+                    <div className="w-1/5 text-xl">
+                        <h1>Eliminar</h1>
+                    </div>
                 </div>
-                {expenditures.length > 0 ? (
-                    <ExpenditureCards expenditures={expenditures} />
+                {suppliers.length > 0 && filteredExpenditures.length > 0 ? (
+                    <ExpenditureCards expenditures={filteredExpenditures} />
                 ) : (
                     <div className="p-8">
                         <h1 className="text-2xl">

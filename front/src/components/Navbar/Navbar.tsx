@@ -2,10 +2,52 @@ import React, { useEffect, useState } from "react";
 import "./style.css";
 import Link from "next/link";
 import RoleIcon from "./RoleIcon/roleIcon";
+import useSesion from "@/helpers/useSesion";
+import { IAdmin } from "@/Interfaces/admin.interfaces";
+import { IUser } from "@/Interfaces/user.interfaces";
+import { getAdminById } from "@/helpers/fetch.helper.admin";
+import { getUserById } from "@/helpers/fetch.helper.user";
 
 const Navbar = ({ activeSection }: any) => {
     const [showNavbar, setShowNavbar] = useState(true);
     const [lastScrollY, setLastScrollY] = useState(0);
+    const [user, setUser] = useState<IUser>();
+    const [admin, setAdmin] = useState<IAdmin>();
+    const { token, data } = useSesion();
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await getUserById(data.id, token);
+                if (response) {
+                    const data = await response.json();
+                    setUser(data);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        if (data.roles?.[0] === "user" || data.roles?.[0] === "superadmin") {
+            fetchData();
+        }
+    }, [token, data.id, data.roles]);
+
+    useEffect(() => {
+        const fecthData = async () => {
+            try {
+                const response = await getAdminById(data.id, token);
+                if (response) {
+                    const data = await response.json();
+                    setAdmin(data);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        if (data.roles?.[0] === "cadmin") {
+            fecthData();
+        }
+    }, [token, data.id, data.roles]);
 
     useEffect(() => {
         const controlNavbar = () => {
@@ -32,27 +74,6 @@ const Navbar = ({ activeSection }: any) => {
 
     //control del login y del rol del usuario.
 
-    const [token, setToken] = useState(null);
-    const [roles, setRoles] = useState([]);
-
-    useEffect(() => {
-        const storedToken = localStorage.getItem("userData");
-        if (storedToken) {
-            setToken(JSON.parse(storedToken));
-        }
-    }, []);
-
-    useEffect(() => {
-        const userData = localStorage.getItem("userData");
-        if (userData) {
-            const parsedUserData = JSON.parse(userData);
-
-            const userRoles = parsedUserData.user.roles;
-
-            setRoles(userRoles);
-        }
-    }, []);
-
     return (
         <nav
             className={` fixed w-full z-20 mt-10 transition-transform duration-[1s] ${
@@ -72,8 +93,11 @@ const Navbar = ({ activeSection }: any) => {
                             href="/dashboard"
                             className="flex justify-center no-underlin w-[195px] text-black rounded-[50px] px-5 py-3 bg-white font-bold gap-4"
                         >
-                            {roles.length > 0 && roles[0]}
-                            {roles.length > 0 && <RoleIcon role={roles[0]} />}
+                            {data?.roles?.[0] === "superadmin" ||
+                            data?.roles?.[0] === "user"
+                                ? user?.first_name!
+                                : admin?.name!}
+                            {data.roles && <RoleIcon role={data.roles[0]} />}
                         </Link>
                     ) : (
                         <>

@@ -2,6 +2,7 @@ import ColumnNumericTransformer from 'src/helpers/numeric-transformer.helper';
 import { Expense } from 'src/modules/expenses/entities/expense.entity';
 import { FunctionalUnit } from 'src/modules/functional-units/entities/functional-unit.entity';
 import { Payment } from 'src/modules/payments/entities/payment.entity';
+import { PAYMENT_STATUS } from 'src/utils/constants';
 import {
   Column,
   Entity,
@@ -65,6 +66,20 @@ export class FunctionalUnitExpense {
     transformer: new ColumnNumericTransformer(),
   })
   total_amount: number;
+
+  /**
+   * El estado del pago de la expensa. Default: "impago"
+   * @example "pagado"
+   */
+  @Column('enum', { enum: PAYMENT_STATUS, default: PAYMENT_STATUS.UNPAID })
+  payment_status: PAYMENT_STATUS;
+
+  /**
+   * Fecha de creacion de la expensa por la Unidad Funcional
+   * @example "2024-07-12T00:00:00.000Z"
+   * */
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  created_at: Date;
 
   @ManyToOne(
     () => FunctionalUnit,

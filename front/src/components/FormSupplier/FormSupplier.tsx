@@ -2,28 +2,31 @@
 import { Button, Input, Label, Select } from "../ui";
 import Swal from "sweetalert2";
 
+// Validaciones
+import { validateCuit } from "@/helpers/Validations/validate.cuit";
+
 // Interfaces
 import {
-    IConsortium,
-    ISuppliers,
-    ISuppliersError,
-} from "@/Interfaces/Interfaces";
+    INewSupplier,
+    INewSupplierError,
+} from "@/Interfaces/suppliers.interfaces";
+import { IConsortium } from "@/Interfaces/consortium.interfaces";
 
 // Endpoints
-import { getConsortiums, supplierFetch } from "@/helpers/fetch.helper";
+import { getConsortiumsByAdminId } from "@/helpers/fetch.helper.consortium";
+import { supplierFetch } from "@/helpers/fetch.helper.supplier";
 
 // Hooks
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
-import { validateCuit } from "@/helpers/Validations/validate.cuit";
 
 // ---------------
 
 const FormSupplier = () => {
     useAuth();
-    const { token } = useSesion();
+    const { token, data } = useSesion();
     const pathname = useParams();
     const router = useRouter();
     const initialData = {
@@ -33,11 +36,12 @@ const FormSupplier = () => {
         phone_number: "",
         address: "",
         balance: 0,
+        consortium_id: "",
     };
     const [registerSupplier, setRegisterSupplier] =
-        useState<ISuppliers>(initialData);
+        useState<INewSupplier>(initialData);
     const [errorSupplier, setErrorSupplier] =
-        useState<ISuppliersError>(initialData);
+        useState<INewSupplierError>(initialData);
     const [consortiums, setConsortiums] = useState<IConsortium[]>();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -86,7 +90,7 @@ const FormSupplier = () => {
             if (response?.ok) {
                 Swal.fire({
                     title: "Excelente",
-                    text: `El consorcio ${registerSupplier.name} se creó correctamente`,
+                    text: `El proveedor ${registerSupplier.name} se creó correctamente`,
                     icon: "success",
                     confirmButtonColor: "#0b0c0d",
                 }).then(async (res) => {
@@ -112,7 +116,7 @@ const FormSupplier = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await getConsortiums(token);
+                const response = await getConsortiumsByAdminId(data.id, token);
                 if (response) {
                     const data = await response.json();
                     setConsortiums(data);
@@ -135,16 +139,20 @@ const FormSupplier = () => {
     }, [registerSupplier]);
 
     return (
-        <div className="w-[80%] flex flex-col justify-center bg-[#d3d3d3] p-5 rounded-[50px] text-black">
-            <h1 className="mb-4 text-3xl text-center">
-                Este es el formulario para agregar un nuevo proveedor
-            </h1>
-            <form autoComplete="off" onSubmit={handleSubmit}>
-                <div className="flex gap-2">
+        <div className="w-full h-auto p-4 text-white border rounded-[40px]">
+            <div className="my-2 text-center">
+                <h1 className="mb-2 text-2xl font-bold">
+                    Agregar Nuevo Proveedor
+                </h1>
+            </div>
+            <form
+                className="mx-10 my-5"
+                autoComplete="off"
+                onSubmit={handleSubmit}
+            >
+                <div className="flex flex-row gap-4">
                     <div className="flex flex-col w-2/4">
-                        <Label htmlFor="consortium_id">
-                            Consorcio:<span className="text-red-600">*</span>
-                        </Label>
+                        <Label htmlFor="consortium_id">Consorcio:</Label>
                         <Select
                             id="consortium_id"
                             name="consortium_id"
@@ -169,10 +177,7 @@ const FormSupplier = () => {
                         </Select>
                     </div>
                     <div className="flex flex-col w-2/4">
-                        <Label htmlFor="name">
-                            Nombre del proveedor:
-                            <span className="text-red-600">*</span>
-                        </Label>
+                        <Label htmlFor="name">Nombre del proveedor:</Label>
                         <Input
                             id="name"
                             name="name"
@@ -183,12 +188,10 @@ const FormSupplier = () => {
                         />
                     </div>
                 </div>
-                <div className="flex gap-2">
+
+                <div className="flex flex-row gap-4">
                     <div className="flex flex-col w-1/4">
-                        <Label htmlFor="cuit">
-                            CUIT:
-                            <span className="text-red-600">*</span>
-                        </Label>
+                        <Label htmlFor="cuit">CUIT:</Label>
                         <Input
                             id="cuit"
                             name="cuit"
@@ -198,16 +201,13 @@ const FormSupplier = () => {
                             placeholder="11-11111111-1"
                         />
                         {errorSupplier.cuit && registerSupplier.cuit && (
-                            <span className="self-end text-xs text-red-500">
+                            <span className="self-end text-xs text-red">
                                 {errorSupplier.cuit}
                             </span>
                         )}
                     </div>
                     <div className="flex flex-col w-3/4">
-                        <Label htmlFor="email">
-                            Email:
-                            <span className="text-red-600">*</span>
-                        </Label>
+                        <Label htmlFor="email">Email:</Label>
                         <Input
                             id="email"
                             name="email"
@@ -218,12 +218,10 @@ const FormSupplier = () => {
                         />
                     </div>
                 </div>
-                <div className="flex gap-2">
+
+                <div className="flex flex-row gap-4">
                     <div className="flex flex-col w-3/4">
-                        <Label htmlFor="address">
-                            Dirección:
-                            <span className="text-red-600">*</span>
-                        </Label>
+                        <Label htmlFor="address">Dirección:</Label>
                         <Input
                             id="address"
                             name="address"
@@ -234,10 +232,7 @@ const FormSupplier = () => {
                         />
                     </div>
                     <div className="flex flex-col w-1/4">
-                        <Label htmlFor="phone_number">
-                            Teléfono:
-                            <span className="text-red-600">*</span>
-                        </Label>
+                        <Label htmlFor="phone_number">Teléfono:</Label>
                         <Input
                             id="phone_number"
                             name="phone_number"
@@ -248,14 +243,15 @@ const FormSupplier = () => {
                         />
                     </div>
                     <div className="flex flex-col w-1/4">
-                        <Label htmlFor="balance">
-                            Saldo:
-                            <span className="text-red-600">*</span>
-                        </Label>
+                        <Label htmlFor="balance">Saldo:</Label>
                         <Input
                             id="balance"
                             name="balance"
-                            value={registerSupplier.balance}
+                            value={
+                                registerSupplier.balance === 0
+                                    ? ""
+                                    : registerSupplier.balance
+                            }
                             type="number"
                             onChange={handleChange}
                             placeholder="$2.000"
@@ -263,8 +259,8 @@ const FormSupplier = () => {
                     </div>
                 </div>
 
-                <div className="flex justify-center w-full mt-4">
-                    <Button className="w-1/4 rounded-[50px] py-2" type="submit">
+                <div className="flex justify-center w-full mt-5">
+                    <Button className="w-1/3 py-2 rounded-[40px]" type="submit">
                         Guardar proveedor
                     </Button>
                 </div>

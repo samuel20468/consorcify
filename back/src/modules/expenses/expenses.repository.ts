@@ -8,6 +8,7 @@ import { Consortium } from '../consortiums/entities/consortium.entity';
 import { Expenditure } from '../expenditures/entities/expenditure.entity';
 import { FunctionalUnitsExpensesRepository } from '../functional-units-expenses/functional-units-expenses.repository';
 import { FunctionalUnitExpense } from '../functional-units-expenses/entities/functional-units-expense.entity';
+import { MailsService } from '../mails/mails.service';
 
 @Injectable()
 export class ExpensesRepository {
@@ -19,6 +20,7 @@ export class ExpensesRepository {
     private readonly functionalUnitsExpensesRepository: FunctionalUnitsExpensesRepository,
     @InjectRepository(FunctionalUnit)
     private readonly functionalUnitRepository: Repository<FunctionalUnit>,
+    private readonly mailsService: MailsService,
   ) {}
 
   async createExpense(newExpense: Expense) {
@@ -28,19 +30,65 @@ export class ExpensesRepository {
   async findAll(): Promise<Expense[]> {
     return await this.expenseRepository.find({
       where: { active: true },
+
       relations: { consortium: true, expenditures: true },
     });
   }
 
+  async findOpenByConsortium(consortiumId: string): Promise<Expense> {
+    const consortium: Consortium = await this.consortiumRepository.findOne({
+      where: { id: consortiumId },
+    });
+
+    if (!consortium)
+      throw new ConflictException(`El Consorcio id ${consortiumId} no existe`);
+
+    const foundConsortium: Consortium = await this.consortiumRepository.findOne(
+      {
+        where: {
+          id: consortiumId,
+          expenses: { active: true, status: EXPENSE_STATUS.OPEN },
+        },
+        relations: { expenses: true },
+      },
+    );
+    if (!foundConsortium)
+      throw new ConflictException(
+        `El Consorcio "${consortium.name}" no tiene una expensa abierta`,
+      );
+
+    return foundConsortium.expenses[0];
+  }
+
   async findOne(id: string): Promise<Expense> {
     return await this.expenseRepository.findOne({
-      where: { id, active: true },
+      where: { id, active: true, expenditures: { active: true } },
       relations: {
         expenditures: true,
         consortium: true,
         functional_units_expenses: true,
       },
     });
+  }
+
+  async undoExpense(expenseId: string): Promise<void> {
+    const expense: Expense = await this.expenseRepository.findOne({
+      where: { id: expenseId },
+      relations: { functional_units_expenses: { functional_unit: true } },
+    });
+    const functionalUnitsExpenses: FunctionalUnitExpense[] =
+      expense.functional_units_expenses;
+
+    const promises = functionalUnitsExpenses.map(async (ufe) => {
+      const functionalUnit: FunctionalUnit = ufe.functional_unit;
+
+      functionalUnit.balance = ufe.previous_balance;
+      await this.functionalUnitRepository.save(functionalUnit);
+
+      await this.functionalUnitsExpensesRepository.remove(ufe.id);
+    });
+
+    await Promise.all(promises);
   }
 
   async closeExpense(id: string): Promise<void> {
@@ -98,6 +146,14 @@ export class ExpensesRepository {
 
       await this.functionalUnitRepository.save(uf);
 
+      await this.mailsService.sendIndividualExpense(
+        uf.user.first_name,
+        uf.user.email,
+        monthly_expenditure,
+        uf.balance,
+        uf.number,
+      );
+
       await this.functionalUnitsExpensesRepository.create(
         functionalUnitExpense,
       );
@@ -106,10 +162,21 @@ export class ExpensesRepository {
     await Promise.all(promises);
 
     const finalExpense: Expense = await this.expenseRepository.findOne({
-      where: { id: expenseToSettle.id, active: true },
-      relations: { expenditures: { supplier: true }, functional_units_expenses: { functional_unit: true } },
+      where: {
+        id: expenseToSettle.id,
+        active: true,
+        expenditures: { active: true },
+      },
+      relations: {
+        expenditures: { supplier: true },
+        functional_units_expenses: { functional_unit: true },
+      },
     });
 
     return finalExpense;
+  }
+
+  async toggleStatus(id: string, status: boolean): Promise<void> {
+    await this.expenseRepository.update(id, { active: !status });
   }
 }

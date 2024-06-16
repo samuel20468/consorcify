@@ -1,40 +1,43 @@
-'use client';
+"use client";
 
 // Estilos y componentes
-import { Button, ContainerDashboard, Title } from '@/components/ui';
+import { Button, ContainerDashboard, Select, Title } from "@/components/ui";
+import ConsortiumDetails from "@/components/ConsortiumDetails/ConsortiumDetails";
 
 // Endpoints
-import { getConsortiums } from '@/helpers/fetch.helper';
+import { getConsortiumsByAdminId } from "@/helpers/fetch.helper.consortium";
 
 // Interfaces
-import { IConsortium } from '@/Interfaces/Interfaces';
+import { IConsortium } from "@/Interfaces/consortium.interfaces";
 
 // Hooks
-import { useEffect, useState } from 'react';
-import { usePathname } from 'next/navigation';
-import useAuth from '@/helpers/useAuth';
-import useSesion from '@/helpers/useSesion';
-import ConsorCards from '@/components/ConsorCards/ConsorCards';
-import Link from 'next/link';
-import SearchBar from '@/components/SearchBar/SearchBar';
+import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import useAuth from "@/helpers/useAuth";
+import useSesion from "@/helpers/useSesion";
+import Link from "next/link";
 
 // ----------------------
 
 const Consortium = () => {
     useAuth();
-    const [consortiums, setConsortiums] = useState<IConsortium[]>([]);
-    const [result, setResult] = useState<IConsortium[]>([]);
-    const { token } = useSesion();
+    const { token, data } = useSesion();
     const pathname = usePathname();
+    const [consortiums, setConsortiums] = useState<IConsortium[]>([]);
+    const [selectedConsortiumId, setSelectedConsortiumId] = useState<
+        string | null
+    >(null);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await getConsortiums(token);
+                const response = await getConsortiumsByAdminId(data.id, token);
                 if (response) {
                     const data = await response.json();
                     setConsortiums(data);
-                    setResult(data);
+                    if (data.length > 0) {
+                        setSelectedConsortiumId(data[0].id);
+                    }
                 }
             } catch (error) {
                 console.error(error);
@@ -45,114 +48,57 @@ const Consortium = () => {
         }
     }, [token, pathname]);
 
-    const handleSearch = (query: string) => {
-        const trimmedQuery = query.trim().toLocaleLowerCase();
+    // Filtros
 
-        if (!trimmedQuery) {
-            setResult(consortiums || []);
-            return;
-        }
-
-        const filteredData = (consortiums || []).filter(
-            (consortium: IConsortium) => {
-                return Object.values(consortium).some((value) => {
-                    return (
-                        typeof value === 'string' &&
-                        value.toLocaleLowerCase().includes(trimmedQuery)
-                    );
-                });
-            }
-        );
-
-        setResult(filteredData);
+    const handleSelectChange = (
+        event: React.ChangeEvent<HTMLSelectElement>
+    ) => {
+        setSelectedConsortiumId(event.target.value);
     };
 
-    const handleSort = (field: keyof IConsortium, order: 'asc' | 'desc') => {
-        const sortedData = [...result].sort((a, b) => {
-            const valueA = a[field];
-            const valueB = b[field];
-
-            if (typeof valueA === 'string' && typeof valueB === 'string') {
-                return order === 'asc'
-                    ? valueA.localeCompare(valueB)
-                    : valueB.localeCompare(valueA);
-            } else if (
-                typeof valueA === 'number' &&
-                typeof valueB === 'number'
-            ) {
-                return order === 'asc' ? valueA - valueB : valueB - valueA;
-            } else {
-                return 0;
-            }
-        });
-
-        setResult(sortedData);
-    };
+    const selectedConsortium = consortiums.find(
+        (c) => c.id === selectedConsortiumId
+    );
 
     return (
-        <div className="h-screen bg-fondo">
+        <div className="h-screen">
             <ContainerDashboard>
                 <Title>Consorcios</Title>
-                <div className="w-full mb-10">
-                    <SearchBar onSearch={handleSearch} />
-                </div>
-                <div className="w-[90%] h-full flex gap-3 px-10 bg-[#d3d3d3] p-3 items-center">
-                    <div className="flex items-center justify-center w-full gap-3 ">
-                        <p className="text-lg text-black">Filtrar por:</p>
-                        <select
-                            className="h-10 p-2 my-1 text-gray-200 rounded-md shadow-xl bg-input placeholder:font-extralight placeholder:text-gray-500 focus:outline-none no-spinners"
-                            onChange={(e) =>
-                                handleSort(
-                                    e.target.value as keyof IConsortium,
-                                    'asc'
-                                )
-                            }
+                <div className="flex items-center justify-between w-[98%]">
+                    <div className="w-2/3">
+                        <Select
+                            id="consortium_id"
+                            name="consortium_id"
+                            className="w-1/3 h-10 px-2 my-1 text-gray-200 rounded-md shadow-xl cursor-pointer bg-input focus:outline-none no-spinners"
+                            value={selectedConsortiumId || ""}
+                            onChange={handleSelectChange}
                         >
-                            <option value="name">Nombre</option>
-                            <option value="cuit">CUIT</option>
-                            <option value="street_name">Calle</option>
-                            <option value="building_number">
-                                Número de Edificio
-                            </option>
-                            <option value="zip_code">Código Postal</option>
-                            <option value="country">País</option>
-                            <option value="province">Provincia</option>
-                            <option value="city">Ciudad</option>
-                            <option value="floors">Pisos</option>
-                            <option value="ufs">Unidades Funcionales</option>
-                            <option value="category">Categoría</option>
-                            <option value="first_due_day">
-                                Primer Día de Vencimiento
-                            </option>
-                        </select>
+                            {consortiums.length > 0 &&
+                                consortiums.map((consortium) => (
+                                    <option
+                                        value={consortium.id}
+                                        key={consortium.id}
+                                    >
+                                        {consortium.name}
+                                    </option>
+                                ))}
+                        </Select>
                     </div>
-
-                    <select
-                        className="h-10 p-2 my-1 text-gray-200 rounded-md shadow-xl bg-input placeholder:font-extralight placeholder:text-gray-500 focus:outline-none no-spinners"
-                        onChange={(e) =>
-                            handleSort('name', e.target.value as 'asc' | 'desc')
-                        }
-                    >
-                        <option value="asc">Ascendente</option>
-                        <option value="desc">Descendente</option>
-                    </select>
-                    <div className="flex justify-end w-full px-3">
-                        <Link href="/dashboard/superadmin/consorcios">
-                            <Button className="w-20 py-2 rounded-[40px]">
-                                Volver
+                    <div className="flex w-1/3">
+                        <Link
+                            className="flex justify-end w-full mr-5"
+                            href={"/addConsortium"}
+                        >
+                            <Button className="w-1/2 p-2 rounded-[40px]">
+                                Agregar Consorcio
                             </Button>
                         </Link>
                     </div>
                 </div>
-                <div className="w-[90%] border-t border-b border-white flex justify-around p-2 my-5 text-center">
-                    <h1>Nombre</h1>
-                    <h1>CUIT</h1>
-                    <h1>Dirección</h1>
-                    <h1>UFs</h1>
-                    <h1>Deuda</h1>
-                </div>
-                {consortiums.length > 0 ? (
-                    <ConsorCards consortiums={result} />
+                {selectedConsortium ? (
+                    <div className="flex justify-center gap-5 w-[90%]">
+                        <ConsortiumDetails {...selectedConsortium} />
+                    </div>
                 ) : (
                     <div className="p-8">
                         <h1 className="text-2xl">
@@ -160,14 +106,16 @@ const Consortium = () => {
                         </h1>
                     </div>
                 )}
-                <Link
-                    className="flex justify-center w-1/6 mt-4"
-                    href={'/addConsortium'}
-                >
-                    <Button className="w-full p-2 rounded-xl">
-                        Agregar consorcio
-                    </Button>
-                </Link>
+                <div className="flex justify-center w-2/4 mt-5 mb-10">
+                    <Link
+                        href={`/dashboard/admin/consortiums/${selectedConsortiumId}`}
+                        className="w-1/4"
+                    >
+                        <Button className="w-full p-2 rounded-[40px]">
+                            Ver Detalle
+                        </Button>
+                    </Link>
+                </div>
             </ContainerDashboard>
         </div>
     );

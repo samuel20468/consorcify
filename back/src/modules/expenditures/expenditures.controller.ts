@@ -37,8 +37,15 @@ export class ExpendituresController {
   @Get()
   async findAll(
     @Query('page') page: number = 1,
-    @Query('limit') limit: number = 10,
+    @Query('limit') limit: number = 5,
   ): Promise<Expenditure[]> {
+    if (!page || page < 1 || isNaN(page)) {
+      page = 1;
+    }
+
+    if (!limit || limit < 1 || isNaN(limit)) {
+      limit = 5;
+    }
     return await this.expendituresService.findAll(+page, +limit);
   }
 

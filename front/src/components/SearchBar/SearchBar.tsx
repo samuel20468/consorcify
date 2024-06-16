@@ -1,9 +1,15 @@
-import { useState, ChangeEvent } from "react";
-import { Button, Input } from "../ui";
+// Estilos y componentes
+import { Input } from "../ui";
 
+// Interfaces
 interface SearchBarProps {
     onSearch: (query: string) => void;
 }
+
+// Hooks
+import { useState, ChangeEvent } from "react";
+
+// -------------------
 
 const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
     const [query, setQuery] = useState<string>("");
@@ -23,10 +29,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
         }, 500);
     };
 
-    const handleSearch = () => {
-        onSearch(query);
-    };
-
     return (
         <div className="flex items-center justify-center w-full">
             <h1 className="px-4 text-lg">Buscar consorcio: </h1>
@@ -37,14 +39,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
                     onChange={handleInputChange}
                     placeholder="Buscar..."
                 />
-            </div>
-            <div className="w-1/12 px-2">
-                <Button
-                    className="w-20 py-2  rounded-[40px]"
-                    onClick={handleSearch}
-                >
-                    Buscar
-                </Button>
             </div>
         </div>
     );

@@ -1,5 +1,12 @@
 import ColumnNumericTransformer from 'src/helpers/numeric-transformer.helper';
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Consortium } from 'src/modules/consortiums/entities/consortium.entity';
 import { Expenditure } from 'src/modules/expenditures/entities/expenditure.entity';
 
@@ -16,42 +23,48 @@ export class Supplier {
 
   /**
    * El nombre del Proveedor
-   * @example "Limpiezas SRL"
+   * @example "Agua y Saneamientos Argentinos S.A."
    */
-  @Column({ length: 50})
+  @Column({ length: 50 })
   name: string;
 
   /**
    * El CUIT del Proveedor
-   * @example "30567891234"
+   * @example "30709565075"
    */
-  @Column({ type: 'char', length: 11})
+  @Column({ type: 'char', length: 11 })
   cuit: string;
 
   /**
    * El correo electrónico del Proveedor
-   * @example "contacto@limpiezassrl.com"
+   * @example "contacto@aysa.com.ar"
    */
   @Column({ length: 50 })
   email: string;
 
   /**
    * El número de teléfono del Proveedor
-   * @example "+5491145678901"
+   * @example "+5491122334567"
    */
   @Column({ length: 25 })
   phone_number: string;
 
   /**
-   * La dirección del Proveedor
-   * @example "Av. Siempre Viva 123"
+   * La dirección del Proveedor (calle altura, ciudad)
+   * @example "Riobamba 750, CABA"
    */
   @Column()
   address: string;
 
+  @Column({ type: 'double precision', default: -34.6701584 })
+  latitude: number;
+
+  @Column({ type: 'double precision', default: -58.3713336 })
+  longitude: number;
+
   /**
    * El saldo del Consorcio con el Proveedor
-   * @example "-2000.00"
+   * @example "2000.00"
    */
   @Column({
     type: 'numeric',
@@ -72,10 +85,10 @@ export class Supplier {
   @JoinColumn({ name: 'consortium_id' })
   consortium: Consortium;
 
-   /**
+  /**
    * Los gastos del consorcio
-   * @example "1000.50"
+   * @example "50725.50"
    */
-   @OneToMany(() => Expenditure, (expenditure) => expenditure.supplier)
-   expenditures: Expenditure[];
+  @OneToMany(() => Expenditure, (expenditure) => expenditure.supplier)
+  expenditures: Expenditure[];
 }

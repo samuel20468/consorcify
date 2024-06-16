@@ -31,9 +31,32 @@ export class FunctionalUnitsExpensesController {
   @Get()
   async findAll(
     @Query('page') page: number = 1,
-    @Query('limit') limit: number = 10,
+    @Query('limit') limit: number = 5,
   ): Promise<FunctionalUnitExpense[]> {
+    if (!page || page < 1 || isNaN(page)) {
+      page = 1;
+    }
+
+    if (!limit || limit < 1 || isNaN(limit)) {
+      limit = 5;
+    }
     return await this.functionalUnitsExpensesService.findAll(+page, +limit);
+  }
+
+  @Get(':id/user')
+  async findAllByUser(
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 5,
+    @Param('id', ParseUUIDPipe) id: string,
+  ): Promise<FunctionalUnitExpense[]> {
+    page = page ?? 1;
+    limit = limit ?? 5;
+
+    return await this.functionalUnitsExpensesService.findAllByUser(
+      page,
+      limit,
+      id,
+    );
   }
 
   @Get(':id')

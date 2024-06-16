@@ -14,6 +14,17 @@ export type TObjectToken = {
   token: string;
 };
 
+export type TContextMail = {
+  user: string;
+  email?: string;
+  url: string;
+  amount?: number;
+  totalAmount?: number;
+  nameConsortium?: string;
+  nameExpense?: string;
+  uF?: string;
+};
+
 // INTERFACES
 export interface IUser {
   id: string;
@@ -46,11 +57,4 @@ export interface ISupplier {
   phone_number: string;
   address: string;
   balance?: number;
-}
-
-export interface IAuth0User {
-  given_name: string;
-  family_name: string;
-  email: string;
-  picture: string;
 }

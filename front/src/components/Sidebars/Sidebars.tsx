@@ -6,7 +6,7 @@ import SideBarAdmin from "../SidebarAdmin/SideBarAdmin";
 import SidebarSuperAdmin from "../SidebarSuperAdmin/SidebarSuperAdmin";
 
 // Interfaces
-import { IUserData } from "@/Interfaces/Interfaces";
+import { IUserData } from "@/Interfaces/user.interfaces";
 
 // Hooks
 import { useEffect, useState } from "react";

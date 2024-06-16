@@ -2,35 +2,35 @@
 import { Button, Input, Label, Select } from "../ui";
 import Swal from "sweetalert2";
 
+// Validaciones
+import { validateInvoiceNumber } from "@/helpers/Validations/validate.invoice_number";
+
 // Interfaces
 import {
-    IConsortium,
-    IExpenditures,
-    IExpendituresErrors,
-    IExpense,
-    ISuppliers,
-} from "@/Interfaces/Interfaces";
+    INewExpenditure,
+    INewExpenditureError,
+} from "@/Interfaces/expenditures.interfaces";
+import { IConsortium } from "@/Interfaces/consortium.interfaces";
+import { IExpense } from "@/Interfaces/expenses.interfaces";
+import { ISupplier } from "@/Interfaces/suppliers.interfaces";
 
 // Endpoints
-import {
-    expenditureFetch,
-    getConsortiums,
-    getExpenses,
-    getSuppliers,
-} from "@/helpers/fetch.helper";
+import { expenditureFetch } from "@/helpers/fetch.helper.expenditure";
+import { getConsortiumsByAdminId } from "@/helpers/fetch.helper.consortium";
+import { getSuppliers } from "@/helpers/fetch.helper.supplier";
+import { getExpenses } from "@/helpers/fetch.helper.expense";
 
 // Hooks
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
-import { validateInvoiceNumber } from "@/helpers/Validations/validate.invoice_number";
 
 // -------------------
 
 const FormSpent = () => {
     useAuth();
-    const { token } = useSesion();
+    const { token, data } = useSesion();
     const pathname = usePathname();
     const router = useRouter();
     const initialData = {
@@ -44,17 +44,17 @@ const FormSpent = () => {
         consortium_id: "",
     };
     const [registerExpenditure, setRegisterExpenditure] =
-        useState<IExpenditures>(initialData);
+        useState<INewExpenditure>(initialData);
     const [errorRegisterExpenditure, setErrorRegisterExpenditure] =
-        useState<IExpendituresErrors>(initialData);
+        useState<INewExpenditureError>(initialData);
     const [consortiums, setConsortiums] = useState<IConsortium[]>([]);
     const [expenses, setExpenses] = useState<IExpense[]>([]);
-    const [suppliers, setSuppliers] = useState<ISuppliers[]>([]);
+    const [suppliers, setSuppliers] = useState<ISupplier[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await getConsortiums(token);
+                const response = await getConsortiumsByAdminId(data.id, token);
                 if (response) {
                     const data = await response.json();
                     setConsortiums(data);
@@ -136,17 +136,22 @@ const FormSpent = () => {
                     icon: "success",
                     confirmButtonColor: "#0b0c0d",
                 }).then(async (res) => {
-                    const data = await response.json();
-                    router.push("/dashboard/admin/spent");
+                    if (res.isConfirmed) {
+                        const data = await response.json();
+                        setRegisterExpenditure(data);
+                        router.push("/dashboard/admin/spent");
+                    }
+                });
+            } else {
+                Swal.fire({
+                    title: "Error de información",
+                    text: "Los datos que nos proporcionaste son inválidos.",
+                    icon: "error",
+                    confirmButtonColor: "#0b0c0d",
                 });
             }
-        } catch (error) {
-            Swal.fire({
-                title: "Error de información",
-                text: "Los datos que nos proporcionaste son inválidos.",
-                icon: "error",
-                confirmButtonColor: "#0b0c0d",
-            });
+        } catch (error: any) {
+            console.error(error.message);
         }
     };
 
@@ -162,17 +167,19 @@ const FormSpent = () => {
     }, [registerExpenditure]);
 
     return (
-        <div className="w-[80%] flex flex-col justify-center bg-[#d3d3d3] p-5 rounded-[50px] text-black">
-            <h1 className="mb-4 text-3xl text-center">
-                Este es el formulario de gastos
-            </h1>
+        <div className="w-full h-auto p-4 text-white border rounded-[40px]">
+            <div className="text-center my-2">
+                <h1 className="mb-2 text-2xl font-bold">Crear nuevo gasto</h1>
+            </div>
 
-            <form autoComplete="off" onSubmit={handleSubmit}>
-                <div className="flex gap-2">
+            <form
+                className="mx-10 my-5"
+                autoComplete="off"
+                onSubmit={handleSubmit}
+            >
+                <div className="flex flex-row gap-4">
                     <div className="flex flex-col w-1/4">
-                        <Label htmlFor="date">
-                            Fecha:<span className="text-red-600">*</span>
-                        </Label>
+                        <Label htmlFor="date">Fecha:</Label>
                         <Input
                             id="date"
                             name="date"
@@ -182,9 +189,7 @@ const FormSpent = () => {
                         />
                     </div>
                     <div className="flex flex-col w-2/4">
-                        <Label htmlFor="consortium_id">
-                            Consorcio:<span className="text-red-600">*</span>
-                        </Label>
+                        <Label htmlFor="consortium_id">Consorcio:</Label>
                         <Select
                             id="consortium_id"
                             name="consortium_id"
@@ -206,9 +211,7 @@ const FormSpent = () => {
                         </Select>
                     </div>
                     <div className="flex flex-col w-1/4">
-                        <Label htmlFor="expense_id">
-                            Expensa:<span className="text-red-600">*</span>
-                        </Label>
+                        <Label htmlFor="expense_id">Expensa:</Label>
                         <Select
                             id="expense_id"
                             name="expense_id"
@@ -227,11 +230,10 @@ const FormSpent = () => {
                         </Select>
                     </div>
                 </div>
-                <div className="flex gap-2">
+
+                <div className="flex flex-row gap-4">
                     <div className="flex flex-col w-2/4">
-                        <Label htmlFor="category">
-                            Categoria:<span className="text-red-600">*</span>
-                        </Label>
+                        <Label htmlFor="category">Categoria:</Label>
                         <Select
                             id="category"
                             name="category"
@@ -267,7 +269,6 @@ const FormSpent = () => {
                     <div className="flex flex-col w-1/4">
                         <Label htmlFor="invoice_number">
                             Numero de factura:
-                            <span className="text-red-600">*</span>
                         </Label>
                         <Input
                             id="invoice_number"
@@ -279,15 +280,13 @@ const FormSpent = () => {
                         />
                         {errorRegisterExpenditure.invoice_number &&
                             registerExpenditure.invoice_number && (
-                                <span className="self-end text-xs text-red-500">
+                                <span className="self-end text-xs text-red">
                                     {errorRegisterExpenditure.invoice_number}
                                 </span>
                             )}
                     </div>
                     <div className="flex flex-col w-1/4">
-                        <Label htmlFor="total_amount">
-                            Total:<span className="text-red-600">*</span>
-                        </Label>
+                        <Label htmlFor="total_amount">Total:</Label>
                         <Input
                             id="total_amount"
                             name="total_amount"
@@ -298,11 +297,9 @@ const FormSpent = () => {
                         />
                     </div>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex flex-row gap-4">
                     <div className="flex flex-col w-2/4">
-                        <Label htmlFor="supplier_id">
-                            Proveedor:<span className="text-red-600">*</span>
-                        </Label>
+                        <Label htmlFor="supplier_id">Proveedor:</Label>
                         <Select
                             id="supplier_id"
                             name="supplier_id"
@@ -324,9 +321,7 @@ const FormSpent = () => {
                         </Select>
                     </div>
                     <div className="flex flex-col w-2/4">
-                        <Label htmlFor="description">
-                            Descripción:<span className="text-red-600">*</span>
-                        </Label>
+                        <Label htmlFor="description">Descripción:</Label>
                         <Input
                             id="description"
                             name="description"
@@ -337,9 +332,9 @@ const FormSpent = () => {
                         />
                     </div>
                 </div>
-                <div className="flex justify-center w-full mt-4">
-                    <Button className="w-1/4 rounded-[50px] py-2">
-                        Guardar gastos
+                <div className="mt-5 flex justify-center">
+                    <Button type="submit" className="w-1/3 py-2 rounded-[40px]">
+                        Guardar Gasto
                     </Button>
                 </div>
             </form>

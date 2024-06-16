@@ -5,16 +5,19 @@ import { Button, ContainerHeaderDashboard } from "../ui";
 import { CiUser } from "react-icons/ci";
 
 // Interfaces
-import { IAdmin, IUser } from "@/Interfaces/Interfaces";
+import { IUser } from "@/Interfaces/user.interfaces";
+import { IAdmin } from "@/Interfaces/admin.interfaces";
 
 // Endpoints
-import { getAdminById, getUserById } from "@/helpers/fetch.helper";
+import { getUserById } from "@/helpers/fetch.helper.user";
+import { getAdminById } from "@/helpers/fetch.helper.admin";
 
 // Hooks
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import useSesion from "@/helpers/useSesion";
+import { FaUser, FaUserSecret, FaUserTie } from "react-icons/fa6";
 
 // ----------------------------
 
@@ -101,7 +104,7 @@ const NavbarDashboard = () => {
                                 <p>{admin?.name}</p>
                             )}
 
-                            <CiUser size={25} />
+                            <FaUser size={25} />
                         </Button>
                     </Link>
                     <Button

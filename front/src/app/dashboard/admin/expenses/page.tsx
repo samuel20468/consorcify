@@ -1,19 +1,23 @@
 "use client";
 
-import { IExpense } from "@/Interfaces/Interfaces";
-import SearchBar from "@/components/SearchBar/SearchBar";
-import AddExpenses from "@/components/addExpenses/addExpenses";
 // Estilos y componentes
-import { Button, ContainerDashboard, Title } from "@/components/ui";
-import { FaPlus } from "react-icons/fa6";
+import { Button, ContainerDashboard, Select, Title } from "@/components/ui";
+import ExpenseCards from "@/components/ExpenseCards/ExpenseCards";
+
+// Interfaces
+import { IExpense } from "@/Interfaces/expenses.interfaces";
+import { IConsortium } from "@/Interfaces/consortium.interfaces";
+
+// Endpoints
+import { getExpenses } from "@/helpers/fetch.helper.expense";
+import { getConsortiumsByAdminId } from "@/helpers/fetch.helper.consortium";
 
 // Hooks
+import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { getExpenses } from "@/helpers/fetch.helper";
-import { usePathname } from "next/navigation";
 
 // --------------------
 
@@ -21,28 +25,11 @@ const Expense = () => {
     useAuth();
     const { token, data } = useSesion();
     const [expensas, setExpensas] = useState<IExpense[]>([]);
-    const [result, setResult] = useState<IExpense[]>([]);
+    const [consortiums, setConsortiums] = useState<IConsortium[]>([]);
     const pathname = usePathname();
-
-    const handleSearch = (query: string) => {
-        const trimmedQuery = query.trim().toLocaleLowerCase();
-
-        if (!trimmedQuery) {
-            setResult(expensas || []);
-            return;
-        }
-
-        const filteredData = (expensas || []).filter((consortium: IExpense) => {
-            return Object.values(consortium).some((value) => {
-                return (
-                    typeof value === "string" &&
-                    value.toLocaleLowerCase().includes(trimmedQuery)
-                );
-            });
-        });
-
-        setResult(filteredData);
-    };
+    const [selectedConsortiumId, setSelectedConsortiumId] = useState<
+        string | null
+    >(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -51,7 +38,24 @@ const Expense = () => {
                 if (response) {
                     const data = await response.json();
                     setExpensas(data);
-                    setResult(data);
+                    console.log(data);
+                }
+            } catch (error: any) {
+                console.error(error.message);
+            }
+        };
+        if (token) {
+            fetchData();
+        }
+    }, [token, pathname]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await getConsortiumsByAdminId(data.id, token);
+                if (response) {
+                    const data = await response.json();
+                    setConsortiums(data);
                 }
             } catch (error) {}
         };
@@ -60,76 +64,71 @@ const Expense = () => {
         }
     }, [token, pathname]);
 
+    // Filtros
+
+    const handleSelectChange = (
+        event: React.ChangeEvent<HTMLSelectElement>
+    ) => {
+        setSelectedConsortiumId(event.target.value);
+    };
+
+    const selectedConsortium = consortiums.find(
+        (c) => c.id === selectedConsortiumId
+    );
+
     return (
-        <ContainerDashboard className="h-[90vh] text-white w-[90%] gap-3">
-            <Title>Expensas</Title>
-            <div className="w-[90%] flex justify-between">
-                <SearchBar onSearch={handleSearch} />
-                <Link href="/dashboard/admin/expenses/addexpense">
-                    <Button className="w-40 items-center justify-around py-2 rounded-[40px] flex">
-                        Nueva Expensa
-                        <FaPlus />
-                    </Button>
-                </Link>
-            </div>
-
-            <div className="w-[90%] boder rounded">
-                <div className="w-full flex justify-around">
-                    <p className=" w-1/5 flex items-center justify-center border-b border-black">
-                        Fecha de inicio
-                    </p>
-                    <p className=" w-1/5 flex items-center justify-center border-b border-black">
-                        Fecha de Vencimiento
-                    </p>
-                    <p className=" w-1/5 flex items-center justify-center border-b border-black">
-                        Total Expensas
-                    </p>
-                    <p className=" w-1/5 flex items-center justify-center border-b border-black">
-                        Estado
-                    </p>
-                    <p className=" w-1/5 flex items-center justify-center border-b border-black">
-                        Consorcio
-                    </p>
+        <div className="h-screen">
+            <ContainerDashboard>
+                <Title>Expensas</Title>
+                <div className="flex items-center justify-between w-[98%]">
+                    <div className="w-2/3">
+                        <Select
+                            id="consortium_id"
+                            name="consortium_id"
+                            className="w-1/3 h-10 px-2 my-1 text-gray-200 rounded-md shadow-xl cursor-pointer bg-input focus:outline-none no-spinners"
+                            value={selectedConsortiumId || ""}
+                            onChange={handleSelectChange}
+                        >
+                            {consortiums.length > 0 &&
+                                consortiums.map((consortium) => (
+                                    <option
+                                        value={consortium.id}
+                                        key={consortium.id}
+                                    >
+                                        {consortium.name}
+                                    </option>
+                                ))}
+                        </Select>
+                    </div>
+                    <div className="flex w-1/3">
+                        <Link
+                            className="flex justify-end w-full mr-5"
+                            href="/dashboard/admin/expenses/addexpense"
+                        >
+                            <Button className="w-1/2 p-2 rounded-[40px]">
+                                Nueva Expensa
+                            </Button>
+                        </Link>
+                    </div>
                 </div>
-                <div className="flex flex-col w-full h-full gap-3 ">
-                    {result.length > 0 ? (
-                        result.map((expensa) => (
-                            <Link
-                                href={`/dashboard/admin/expenses/${expensa.id}`}
-                                key={expensa.id}
-
-                            >
-                                <div className="w-full flex justify-around my-2 border py-2 rounded-[40px] border-black">
-                                    <p className="flex items-center justify-center w-1/5">
-                                        {expensa.issue_date}
-                                    </p>
-                                    <p className="flex items-center justify-center w-1/5">
-                                        {expensa.expiration_date}
-                                    </p>
-                                    <p className="flex items-center justify-center w-1/5">
-                                        {expensa.total_amount}
-                                    </p>
-                                    <p className="flex items-center justify-center w-1/5">
-                                        {expensa.status}
-                                    </p>
-                                    <p className="flex items-center justify-center w-1/5">
-                                        {expensa.consortium.name}
-                                    </p>
-                                </div>
-                            </Link>
-                        ))
-                    ) : (
-                        <div className="w-full h-[30vh] flex justify-center items-center ">
-                            <p className="flex items-center justify-center w-full text-2xl h-3/4">
-                                {expensas.length === 0
-                                    ? "No hay expensas para visualizar"
-                                    : "No se encontraron coincidencias"}
-                            </p>
-                        </div>
-                    )}
+                <div className="w-[90%] border-t border-b border-white flex justify-between p-2 mt-5 text-center">
+                    <h1 className="w-1/5 text-xl">Expensa</h1>
+                    <h1 className="w-1/5 text-xl">Fecha de inicio</h1>
+                    <h1 className="w-1/5 text-xl">Fecha de Vencimiento</h1>
+                    <h1 className="w-1/5 text-xl">Estado</h1>
+                    <h1 className="w-1/5 text-xl">Total Expensas</h1>
                 </div>
-            </div>
-        </ContainerDashboard>
+                {expensas.length > 0 ? (
+                    <ExpenseCards expenses={expensas} />
+                ) : (
+                    <div className="p-8">
+                        <h1 className="text-2xl">
+                            No hay expensas para visualizar
+                        </h1>
+                    </div>
+                )}
+            </ContainerDashboard>
+        </div>
     );
 };
 

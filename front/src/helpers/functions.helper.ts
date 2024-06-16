@@ -1,5 +1,3 @@
-import { error } from "console";
-
 export function formatearNumero(numero: string) {
     // Eliminar todos los caracteres que no sean dígitos
     const numerosSolo = numero.replace(/\D/g, "");
@@ -9,6 +7,14 @@ export function formatearNumero(numero: string) {
     } else {
         return numero;
     }
+}
+
+export function formatMoney(amount: number): string {
+    return new Intl.NumberFormat("es-AR", {
+        style: "currency",
+        currency: "ARS",
+        minimumFractionDigits: 2,
+    }).format(amount);
 }
 
 export const validateInterestRate = (value: string): string | null => {

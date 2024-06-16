@@ -1,5 +1,5 @@
 import {
-  ConflictException,
+  BadRequestException,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -14,9 +14,13 @@ import { CAdmin } from '../c-admin/entities/c-admin.entity';
 import { CADMIN_PASS, SAT } from 'src/utils/constants';
 import { JwtService } from '@nestjs/jwt';
 import { generateToken, signInHelper } from 'src/helpers/sign-in.helper';
-import { IAuth0User, TObjectToken } from 'src/utils/types';
+import { TObjectToken } from 'src/utils/types';
 import satSetter from 'src/helpers/sat-setter.helper';
 import { checkForDuplicates } from 'src/helpers/check-for-duplicates.helper';
+import { MailsService } from '../mails/mails.service';
+import { EmailDto } from './dto/email.dto';
+import { PassResetTokens } from './entities/reset-token.entity';
+import { ResetPasswordDto } from './dto/reset-password.dto';
 
 @Injectable()
 export class AuthService {
@@ -24,7 +28,10 @@ export class AuthService {
     @InjectRepository(User) private readonly usersRepository: Repository<User>,
     @InjectRepository(CAdmin)
     private readonly cAdminRepository: Repository<CAdmin>,
+    @InjectRepository(PassResetTokens)
+    private readonly passResetTokensRepository: Repository<PassResetTokens>,
     private readonly jwtService: JwtService,
+    private readonly mailsService: MailsService,
   ) {}
 
   async signIn(credentials: CredentialsDto): Promise<TObjectToken> {
@@ -65,6 +72,11 @@ export class AuthService {
     newUser.password = hashedPassword;
 
     const createdUser = await this.usersRepository.save(newUser);
+    await this.mailsService.sendNewAccount(
+      createdUser.first_name,
+      createdUser.email,
+    );
+
     const tokenUser = generateToken(createdUser, this.jwtService);
     return tokenUser;
   }
@@ -97,6 +109,103 @@ export class AuthService {
     newCAdmin.rpa = rpa;
 
     const createdCAdmin = await this.cAdminRepository.save(newCAdmin);
+    await this.mailsService.sendNewCAdmin(
+      createdCAdmin.name,
+      createdCAdmin.email,
+    );
     return createdCAdmin;
+  }
+
+  async requestPasswordReset(emailEntity: EmailDto): Promise<void> {
+    const { email } = emailEntity;
+    const foundCAdmin = await this.cAdminRepository.findOneBy({ email });
+    const foundUser = await this.usersRepository.findOneBy({ email });
+    if (!foundCAdmin && !foundUser) {
+      throw new BadRequestException(
+        'Por favor revisa tu bandeja de entrada en tu correo electrónico',
+      );
+    }
+    if (foundUser) {
+      const tokenUser = generateToken(foundUser, this.jwtService);
+      const { token } = tokenUser;
+      const expires_at = new Date(Date.now() + 900000);
+      const newPassResetToken = new PassResetTokens();
+      newPassResetToken.token = token;
+      newPassResetToken.expires_at = expires_at;
+      newPassResetToken.user = foundUser;
+      console.log(foundUser);
+
+      await this.passResetTokensRepository.save(newPassResetToken);
+
+      await this.mailsService.sendResetPassword(
+        foundUser.first_name,
+        foundUser.email,
+        token,
+      );
+    } else if (foundCAdmin) {
+      const tokenCAdmin = generateToken(foundCAdmin, this.jwtService);
+      const { token } = tokenCAdmin;
+      const expires_at = new Date(Date.now() + 900000);
+      const newPassResetToken = new PassResetTokens();
+      newPassResetToken.token = token;
+      newPassResetToken.expires_at = expires_at;
+      newPassResetToken.c_admin = foundCAdmin;
+
+      await this.passResetTokensRepository.save(newPassResetToken);
+
+      await this.mailsService.sendResetPassword(
+        foundCAdmin.name,
+        foundCAdmin.email,
+        token,
+      );
+    }
+  }
+
+  async resetPassword(resetData: ResetPasswordDto): Promise<void> {
+    const { token, new_password } = resetData;
+    const foundToken = await this.passResetTokensRepository.findOne({
+      where: { token },
+      relations: { user: true, c_admin: true },
+    });
+    const nowDate = new Date().getTime();
+    if (
+      !foundToken ||
+      foundToken.expires_at.getTime() < nowDate ||
+      !foundToken.active
+    ) {
+      throw new UnauthorizedException('Token inválido o expirado');
+    }
+    console.log(foundToken);
+
+    if (foundToken.user) {
+      const user = await this.usersRepository.findOne({
+        where: { id: foundToken.user.id },
+      });
+      if (!user) {
+        throw new BadRequestException('Usuario no encontrado');
+      }
+      const newpassword = await bcrypt.hash(new_password, 10);
+      console.log(newpassword);
+      user.password = newpassword;
+      console.log(user);
+      console.log(user.password);
+
+      await this.usersRepository.save(user);
+
+      foundToken.active = false;
+      await this.passResetTokensRepository.save(foundToken);
+    } else if (foundToken.c_admin) {
+      const cadmin = await this.cAdminRepository.findOne({
+        where: { id: foundToken.c_admin.id },
+      });
+      if (!cadmin) {
+        throw new BadRequestException('Usuario no encontrado');
+      }
+      cadmin.password = await bcrypt.hash(new_password, 10);
+      await this.cAdminRepository.save(cadmin);
+
+      foundToken.active = false;
+      await this.passResetTokensRepository.save(foundToken);
+    }
   }
 }

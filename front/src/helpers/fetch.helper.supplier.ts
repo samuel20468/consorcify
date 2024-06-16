@@ -48,6 +48,7 @@ export const getSuppliers = async (
             {
                 method: "GET",
                 headers: {
+                    "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
                 },
             }
@@ -65,6 +66,34 @@ export const getSuppliers = async (
         }
     } catch (error) {
         console.error("El error está en el getSuppliers", error);
+    }
+};
+
+// Obtener todos los proveedores de un consorcio
+export const getSuppliersByConsortiumId = async (
+    id: string,
+    token: string
+): Promise<ISupplier[] | any> => {
+    try {
+        const response = await fetch(`${apiUrl}/suppliers/consortium/${id}`, {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        if (!response.ok) {
+            return response.json().then((errorInfo) => {
+                throw new Error(
+                    `Error ${response.status}: ${
+                        errorInfo.message || response.statusText
+                    }`
+                );
+            });
+        } else {
+            return response;
+        }
+    } catch (error) {
+        console.error("El error está en el getSuppliersByConsortiumId", error);
     }
 };
 

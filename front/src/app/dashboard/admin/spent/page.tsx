@@ -5,23 +5,23 @@ import { Button, ContainerDashboard, Select, Title } from "@/components/ui";
 import ExpenditureCards from "@/components/ExpenditureCards/ExpenditureCards";
 
 // Endpoints
+import { getExpenditures } from "@/helpers/fetch.helper.expenditure";
 import { getConsortiumsByAdminId } from "@/helpers/fetch.helper.consortium";
-import { getSuppliers } from "@/helpers/fetch.helper.supplier";
+import { getSuppliersByConsortiumId } from "@/helpers/fetch.helper.supplier";
 
 // Interfaces
 import { IExpenditure } from "@/Interfaces/expenditures.interfaces";
-import { ISupplier } from "@/Interfaces/suppliers.interfaces";
 import { IConsortium } from "@/Interfaces/consortium.interfaces";
+import { ISupplier } from "@/Interfaces/suppliers.interfaces";
 
 // Hooks
 import { useEffect, useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
-import { getExpenditures } from "@/helpers/fetch.helper.expenditure";
 import Link from "next/link";
 
-// ------------------
+// ------------------------------------------------------------
 
 const Spent = () => {
     useAuth();
@@ -33,6 +33,12 @@ const Spent = () => {
     const [selectedConsortiumId, setSelectedConsortiumId] = useState<
         string | null
     >(null);
+    const [selectedSupplierId, setSelectedSupplierId] = useState<string | null>(
+        null
+    );
+    const [filteredExpenditures, setFilteredExpenditures] = useState<
+        IExpenditure[]
+    >([]);
     const [sortConfig, setSortConfig] = useState<{
         field: keyof IExpenditure;
         order: "asc" | "desc";
@@ -42,9 +48,10 @@ const Spent = () => {
         const fetchData = async () => {
             try {
                 const response = await getExpenditures(token);
-                if (response) {
+                if (response.ok) {
                     const data = await response.json();
                     setExpenditures(data);
+                    setFilteredExpenditures(data);
                 }
             } catch (error) {
                 console.error(error);
@@ -56,51 +63,96 @@ const Spent = () => {
     }, [token, pathname]);
 
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchConsortiums = async () => {
             try {
                 const response = await getConsortiumsByAdminId(data.id, token);
-                if (response) {
+                if (response.ok) {
                     const data = await response.json();
                     setConsortiums(data);
+                    if (data.length > 0) {
+                        const consortiumExists = data.some(
+                            (c: { id: string | null }) =>
+                                c.id === selectedConsortiumId
+                        );
+                        if (!consortiumExists) {
+                            setSelectedConsortiumId(data[0].id);
+                            setSelectedSupplierId(null);
+                        }
+                    }
                 }
-            } catch (error) {}
+            } catch (error) {
+                console.error(error);
+            }
         };
         if (token) {
-            fetchData();
+            fetchConsortiums();
         }
-    }, [token, pathname]);
+    }, [token, data.id, selectedConsortiumId]);
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await getSuppliers(token);
-                if (response) {
-                    const data = await response.json();
-                    setSuppliers(data);
+        const fetchSuppliers = async () => {
+            if (selectedConsortiumId) {
+                try {
+                    const response = await getSuppliersByConsortiumId(
+                        selectedConsortiumId,
+                        token
+                    );
+                    if (response.ok) {
+                        const data = await response.json();
+                        setSuppliers(data);
+                        if (data.length > 0) {
+                            setSelectedSupplierId(data[0].id);
+                        } else {
+                            setSelectedSupplierId(null);
+                        }
+                    }
+                } catch (error) {
+                    console.error(error);
                 }
-            } catch (error) {}
+            }
         };
-        if (token) {
-            fetchData();
+        if (token && selectedConsortiumId) {
+            fetchSuppliers();
         }
-    }, [token, pathname]);
+    }, [token, selectedConsortiumId]);
 
-    // Filtros
+    useEffect(() => {
+        const filterExpenditures = () => {
+            let filteredData = expenditures;
+
+            if (selectedSupplierId) {
+                filteredData = filteredData.filter(
+                    (expenditure) =>
+                        expenditure.supplier?.id === selectedSupplierId
+                );
+            }
+            if (selectedSupplierId) {
+                filteredData = filteredData.filter(
+                    (expenditure) =>
+                        expenditure.supplier?.id === selectedSupplierId
+                );
+            }
+
+            setFilteredExpenditures(filteredData);
+        };
+
+        filterExpenditures();
+    }, [expenditures, selectedSupplierId]);
 
     const handleSelectChange = (
         event: React.ChangeEvent<HTMLSelectElement>
     ) => {
-        setSelectedConsortiumId(event.target.value);
+        const { name, value } = event.target;
+        if (name === "consortium_id") {
+            setSelectedConsortiumId(value);
+            setSelectedSupplierId(null);
+        } else if (name === "supplier_id") {
+            setSelectedSupplierId(value);
+        }
     };
 
-    const selectedConsortium = consortiums.find(
-        (c) => c.id === selectedConsortiumId
-    );
-
-    // Ordenamientos
-
     const handleSort = (field: keyof IExpenditure, order: "asc" | "desc") => {
-        const sortedData = [...expenditures].sort((a, b) => {
+        const sortedData = [...filteredExpenditures].sort((a, b) => {
             const valueA = a[field];
             const valueB = b[field];
 
@@ -118,7 +170,7 @@ const Spent = () => {
             }
         });
 
-        setExpenditures(sortedData);
+        setFilteredExpenditures(sortedData);
     };
 
     const handleHeaderClick = (field: keyof IExpenditure) => {
@@ -162,22 +214,20 @@ const Spent = () => {
                             id="supplier_id"
                             name="supplier_id"
                             className="w-1/3 h-10 px-2 my-1 text-gray-200 rounded-md shadow-xl cursor-pointer bg-input focus:outline-none no-spinners"
-                            defaultValue=""
-                            // value={adminRegister.sat}
-                            // onChange={handleSelect}
+                            value={selectedSupplierId || ""}
+                            onChange={handleSelectChange}
+                            disabled={!selectedConsortiumId}
                         >
                             <option value="" disabled>
-                                Seleccionar proveedor
+                                {suppliers.length === 0
+                                    ? "Aún no hay proveedores registrados"
+                                    : "Seleccionar proveedor"}
                             </option>
-                            {suppliers.length > 0 &&
-                                suppliers.map((supplier) => (
-                                    <option
-                                        value={supplier.id}
-                                        key={supplier.id}
-                                    >
-                                        {supplier.name}
-                                    </option>
-                                ))}
+                            {suppliers.map((supplier) => (
+                                <option value={supplier.id} key={supplier.id}>
+                                    {supplier.name}
+                                </option>
+                            ))}
                         </Select>
                     </div>
                     <div className="flex w-1/3">
@@ -186,7 +236,7 @@ const Spent = () => {
                             className="flex justify-end w-full mr-5"
                         >
                             <Button className="w-1/2 p-2 rounded-[40px]">
-                                Agregar gasto
+                                Agregar Gasto
                             </Button>
                         </Link>
                     </div>
@@ -228,8 +278,8 @@ const Spent = () => {
                         <h1>Eliminar</h1>
                     </div>
                 </div>
-                {expenditures.length > 0 ? (
-                    <ExpenditureCards expenditures={expenditures} />
+                {suppliers.length > 0 && filteredExpenditures.length > 0 ? (
+                    <ExpenditureCards expenditures={filteredExpenditures} />
                 ) : (
                     <div className="p-8">
                         <h1 className="text-2xl">

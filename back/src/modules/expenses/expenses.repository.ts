@@ -71,6 +71,26 @@ export class ExpensesRepository {
     });
   }
 
+  async undoExpense(expenseId: string): Promise<void> {
+    const expense: Expense = await this.expenseRepository.findOne({
+      where: { id: expenseId },
+      relations: { functional_units_expenses: { functional_unit: true } },
+    });
+    const functionalUnitsExpenses: FunctionalUnitExpense[] =
+      expense.functional_units_expenses;
+
+    const promises = functionalUnitsExpenses.map(async (ufe) => {
+      const functionalUnit: FunctionalUnit = ufe.functional_unit;
+
+      functionalUnit.balance = ufe.previous_balance;
+      await this.functionalUnitRepository.save(functionalUnit);
+
+      await this.functionalUnitsExpensesRepository.remove(ufe.id);
+    });
+
+    await Promise.all(promises);
+  }
+
   async closeExpense(id: string): Promise<void> {
     await this.expenseRepository.update(id, { status: EXPENSE_STATUS.CLOSED });
   }

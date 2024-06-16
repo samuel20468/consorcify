@@ -107,7 +107,7 @@ const Supplies = () => {
                             href={"/addSupplier"}
                         >
                             <Button className="w-1/2 p-2 rounded-[40px]">
-                                Agregar proveedor
+                                Agregar Proveedor
                             </Button>
                         </Link>
                     </div>

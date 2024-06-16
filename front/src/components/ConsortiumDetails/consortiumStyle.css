@@ -14,8 +14,8 @@
         hsl(0, 0%, 54%) 100%
     );
     border-radius: 60px;
-    height: 575px;
-    width: 600px;
+    height: 500px;
+    width: 900px;
     overflow: hidden;
     transition: background-color 0.3s ease;
 }

@@ -55,15 +55,26 @@ export class FunctionalUnitsExpensesRepository {
     });
   }
 
-  async findAllByUser(user: User, page: number = 1, limit: number = 5): Promise<FunctionalUnitExpense[]> {
+  async findAllByUser(
+    user: User,
+    page: number = 1,
+    limit: number = 5,
+  ): Promise<FunctionalUnitExpense[]> {
     return await this.functionalUnitsExpensesRepository
       .createQueryBuilder('functional_unit_expense')
-      .innerJoinAndSelect('functional_unit_expense.functional_unit', 'functional_unit')
+      .innerJoinAndSelect(
+        'functional_unit_expense.functional_unit',
+        'functional_unit',
+      )
       .innerJoinAndSelect('functional_unit.user', 'user')
       .where('user.id = :id', { id: user.id })
       .orderBy('functional_unit_expense.created_at', 'DESC')
       .skip((page - 1) * limit)
       .take(limit)
       .getMany();
+  }
+
+  async remove(id: string) {
+    return await this.functionalUnitsExpensesRepository.delete(id);
   }
 }

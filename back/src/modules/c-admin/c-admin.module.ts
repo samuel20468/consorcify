@@ -9,5 +9,6 @@ import { CAdminsRepository } from './c-admin.repository';
   imports: [TypeOrmModule.forFeature([CAdmin])],
   controllers: [CAdminsController],
   providers: [CAdminsService, CAdminsRepository],
+  exports: [CAdminsRepository],
 })
 export class CAdminModule {}

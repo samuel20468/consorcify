@@ -6,19 +6,28 @@ import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersRepository {
-  
-  constructor(@InjectRepository(User) private usersRepository: Repository<User>) {}
+  constructor(
+    @InjectRepository(User) private usersRepository: Repository<User>,
+  ) {}
+
+  async getAllUsers(): Promise<User[]> {
+    const users = await this.usersRepository.find();
+    return users;
+  }
 
   async findAll(page: number, limit: number): Promise<User[]> {
     const users = this.usersRepository.find({
       skip: (page - 1) * limit,
       take: limit,
-      relations: { functional_units: true }
-    })
+      relations: { functional_units: true },
+    });
     return users;
   }
   async findOne(id: string): Promise<User | undefined> {
-    return await this.usersRepository.findOne({ where: { id } , relations: { functional_units: true } });
+    return await this.usersRepository.findOne({
+      where: { id },
+      relations: { functional_units: true },
+    });
   }
 
   async findOneByEmail(email: string): Promise<User | undefined> {
@@ -32,9 +41,13 @@ export class UsersRepository {
     }
 
     if (updateUserDto.email) {
-      const userWithEmail = await this.usersRepository.findOne({ where: { email: updateUserDto.email } });
+      const userWithEmail = await this.usersRepository.findOne({
+        where: { email: updateUserDto.email },
+      });
       if (userWithEmail && userWithEmail.id !== id) {
-        throw new BadRequestException(`User with email ${updateUserDto.email} already exists`);
+        throw new BadRequestException(
+          `User with email ${updateUserDto.email} already exists`,
+        );
       }
     }
 

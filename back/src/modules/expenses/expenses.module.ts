@@ -11,7 +11,6 @@ import { ConsortiumsRepository } from '../consortiums/consortiums.repository';
 import { FunctionalUnitsExpensesRepository } from '../functional-units-expenses/functional-units-expenses.repository';
 import { FunctionalUnitExpense } from '../functional-units-expenses/entities/functional-units-expense.entity';
 import { FunctionalUnit } from '../functional-units/entities/functional-unit.entity';
-import { MailsModule } from '../mails/mails.module';
 import { MailsService } from '../mails/mails.service';
 import { GoogleMapsService } from '../google-maps/google-maps.service';
 
@@ -24,7 +23,6 @@ import { GoogleMapsService } from '../google-maps/google-maps.service';
       FunctionalUnitExpense,
       FunctionalUnit,
     ]),
-    MailsModule,
   ],
   controllers: [ExpensesController],
   providers: [
@@ -34,7 +32,8 @@ import { GoogleMapsService } from '../google-maps/google-maps.service';
     ConsortiumsRepository,
     FunctionalUnitsExpensesRepository,
     MailsService,
-    GoogleMapsService
+    GoogleMapsService,
   ],
+  exports: [ExpensesRepository],
 })
 export class ExpensesModule {}

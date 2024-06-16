@@ -16,6 +16,8 @@ import { FunctionalUnitsExpensesModule } from './modules/functional-units-expens
 import { PaymentsModule } from './modules/payments/payments.module';
 import { MailsModule } from './modules/mails/mails.module';
 import { GoogleMapsModule } from './modules/google-maps/google-maps.module';
+import { RemindersModule } from './modules/reminders/reminders.module';
+import { MessagesModule } from './modules/messages/messages.module';
 
 @Module({
   imports: [
@@ -48,6 +50,8 @@ import { GoogleMapsModule } from './modules/google-maps/google-maps.module';
     PaymentsModule,
     MailsModule,
     GoogleMapsModule,
+    RemindersModule,
+    MessagesModule,
   ],
 })
 export class AppModule {}

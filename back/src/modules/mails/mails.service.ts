@@ -110,4 +110,22 @@ export class MailsService {
     };
     await this.sendMail(email, subject, template, context);
   }
+
+  async sendPaymentReminder(
+    user: string,
+    email: string,
+    totalAmount: number,
+    expirationDate: Date,
+  ) {
+    const url = MAIL_REDIRECT_URL;
+    const subject: SUBJECT_MAIL = SUBJECT_MAIL.PAYMENT_REMINDER;
+    const template: TEMPLATES_MAIL = TEMPLATES_MAIL.PAYMENT_REMINDER;
+    const context = {
+      user,
+      url,
+      totalAmount,
+      expirationDate,
+    };
+    await this.sendMail(email, subject, template, context);
+  }
 }

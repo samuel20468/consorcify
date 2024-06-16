@@ -1,6 +1,7 @@
 import { FunctionalUnit } from 'src/modules/functional-units/entities/functional-unit.entity';
 import { PassResetTokens } from 'src/modules/auth/entities/reset-token.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Message } from 'src/modules/messages/entities/message.entity';
 
 @Entity({
   name: 'users',
@@ -77,4 +78,7 @@ export class User {
 
   @OneToMany(() => PassResetTokens, (passResetTokens) => passResetTokens.user)
   pass_reset_tokens: PassResetTokens[];
+
+  @OneToMany(() => Message, (message) => message.sender)
+  messages: Message[];
 }

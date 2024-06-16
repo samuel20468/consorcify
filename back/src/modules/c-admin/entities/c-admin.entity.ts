@@ -2,6 +2,7 @@ import { Consortium } from 'src/modules/consortiums/entities/consortium.entity';
 import { PassResetTokens } from 'src/modules/auth/entities/reset-token.entity';
 import { SAT } from 'src/utils/constants';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Message } from 'src/modules/messages/entities/message.entity';
 
 @Entity({
   name: 'consortium_admins',
@@ -95,4 +96,7 @@ export class CAdmin {
     (passResetTokens) => passResetTokens.c_admin,
   )
   pass_reset_tokens: PassResetTokens[];
+
+  @OneToMany(() => Message, (message) => message.receiver)
+  messages: Message[];
 }

@@ -146,13 +146,15 @@ export class ExpensesRepository {
 
       await this.functionalUnitRepository.save(uf);
 
-      await this.mailsService.sendIndividualExpense(
-        uf.user.first_name,
-        uf.user.email,
-        monthly_expenditure,
-        uf.balance,
-        uf.number,
-      );
+      if (uf.user) {
+        await this.mailsService.sendIndividualExpense(
+          uf.user.first_name,
+          uf.user.email,
+          monthly_expenditure,
+          uf.balance,
+          uf.number,
+        );
+      }
 
       await this.functionalUnitsExpensesRepository.create(
         functionalUnitExpense,
@@ -178,5 +180,22 @@ export class ExpensesRepository {
 
   async toggleStatus(id: string, status: boolean): Promise<void> {
     await this.expenseRepository.update(id, { active: !status });
+  }
+
+  async getUpcomingExpenses(): Promise<Expense[]> {
+    const currentDate = new Date();
+    return this.expenseRepository
+      .createQueryBuilder('expense')
+      .leftJoinAndSelect(
+        'expense.functional_units_expenses',
+        'functional_units_expenses',
+      )
+      .leftJoinAndSelect(
+        'functional_units_expenses.functional_unit',
+        'functional_unit',
+      )
+      .leftJoinAndSelect('functional_unit.user', 'user')
+      .where('expense.expiration_date > :currentDate', { currentDate })
+      .getMany();
   }
 }

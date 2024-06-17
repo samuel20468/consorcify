@@ -9,7 +9,6 @@ import {
 } from '@nestjs/common';
 import { MessagesService } from './messages.service';
 import { SendMessageDto } from './dto/send-message.dto';
-import { Message } from './entities/message.entity';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthCustomGuard } from 'src/guards/auth.guard';
 import { ROLE } from 'src/utils/constants';

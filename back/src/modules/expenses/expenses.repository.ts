@@ -35,7 +35,7 @@ export class ExpensesRepository {
     });
   }
 
-  async findOpenByConsortium(consortiumId: string): Promise<Expense> {
+  async findAllByConsortium(consortiumId: string): Promise<Expense> {
     const consortium: Consortium = await this.consortiumRepository.findOne({
       where: { id: consortiumId },
     });
@@ -47,7 +47,7 @@ export class ExpensesRepository {
       {
         where: {
           id: consortiumId,
-          expenses: { active: true, status: EXPENSE_STATUS.OPEN },
+          expenses: { active: true },
         },
         relations: { expenses: true },
       },
@@ -150,6 +150,14 @@ export class ExpensesRepository {
         await this.mailsService.sendIndividualExpense(
           uf.user.first_name,
           uf.user.email,
+          monthly_expenditure,
+          uf.balance,
+          uf.number,
+        );
+      } else {
+        await this.mailsService.sendIndividualExpense(
+          uf.owner,
+          uf.owner_email,
           monthly_expenditure,
           uf.balance,
           uf.number,

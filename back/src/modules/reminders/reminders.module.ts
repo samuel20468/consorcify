@@ -11,6 +11,7 @@ import { FunctionalUnit } from '../functional-units/entities/functional-unit.ent
 import { FunctionalUnitExpense } from '../functional-units-expenses/entities/functional-units-expense.entity';
 import { FunctionalUnitsExpensesRepository } from '../functional-units-expenses/functional-units-expenses.repository';
 import { User } from '../users/entities/user.entity';
+import { Reflector } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { User } from '../users/entities/user.entity';
     ]),
   ],
   providers: [
+    Reflector,
     RemindersService,
     MailsService,
     ExpensesRepository,

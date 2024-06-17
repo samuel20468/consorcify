@@ -21,8 +21,8 @@ import Swal from "sweetalert2";
 const UnidadFuncional = () => {
     useAuth();
     const { token, data } = useSesion();
-    const [user, setUser] = useState<IUser>();
     const { haveUF, isLoading, functional_unit } = useUfSesion();
+    const [user, setUser] = useState<IUser>();
     const router = useRouter();
 
     useEffect(() => {
@@ -30,10 +30,6 @@ const UnidadFuncional = () => {
             router.push("/dashboard/usuario/addfuncionalunit");
         }
     }, [isLoading, haveUF, router]);
-
-    if (isLoading) {
-        return <div>Cargando...</div>;
-    }
 
     useEffect(() => {
         const fetchData = async () => {

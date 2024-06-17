@@ -20,7 +20,12 @@ export class CAdminsRepository {
   }
 
   async findOne(id: string): Promise<CAdmin> {
-    return await this.cAdminRepository.findOneBy({ id });
+    return await this.cAdminRepository.findOne({
+      where: { id, active: true },
+      relations: {
+        consortiums: true,
+      }
+    });
   }
 
   async findOneByEmail(email: string): Promise<CAdmin> {

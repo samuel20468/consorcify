@@ -17,6 +17,7 @@ import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
 import { getConsortiumById } from "@/helpers/fetch.helper.consortium";
 import { IConsortium } from "@/Interfaces/consortium.interfaces";
+import Link from "next/link";
 
 // --------------------
 
@@ -24,10 +25,12 @@ const AllFunctionalUnits = () => {
     useAuth();
     const { cid }: { cid: string } = useParams();
     const { token } = useSesion();
+    const params: { id: string } = useParams();
     const [functionalUnits, setFunctionalUnits] = useState<IFunctionalUnits[]>(
         []
     );
     const [consortiumName, setConsortiumName] = useState<string>("");
+    const [consortiumId, setConsortiumId] = useState<string>("");
 
     useEffect(() => {
         const fetchData = async () => {
@@ -49,6 +52,7 @@ const AllFunctionalUnits = () => {
                     const consortiumData: IConsortium =
                         await consortiumResponse.json();
                     setConsortiumName(consortiumData.name);
+                    setConsortiumId(consortiumData.id);
                 } else {
                     Swal.fire({
                         icon: "error",
@@ -78,12 +82,26 @@ const AllFunctionalUnits = () => {
                         | Unidades Funcionales
                     </span>
                 </Title>
+
+                <div className="flex items-center justify-end w-[98%]">
+                    <div className="flex w-1/3">
+                        <Link
+                            href={`/dashboard/admin/consortiums/${params.id}/${consortiumId}`}
+                            as={`/dashboard/admin/consortiums/${params.id}/addunidad`}
+                            className="flex justify-end w-full mr-5"
+                        >
+                            <Button className="w-1/2 p-2 rounded-[40px]">
+                                Agregar Unidad Funcional
+                            </Button>
+                        </Link>
+                    </div>
+                </div>
+
                 <div className="w-[90%] border-t border-b border-white flex justify-between p-2 mt-5 text-center">
                     <div className="w-1/3 text-xl">Locación</div>
                     <div className="w-1/3 text-xl">Codigo Unidad</div>
                     <div className="w-1/3 text-xl">Propietario</div>
                 </div>
-
                 {functionalUnits.length !== 0 ? (
                     functionalUnits.map((unit) => (
                         <div

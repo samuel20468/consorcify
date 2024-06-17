@@ -1,8 +1,34 @@
+"use client";
 import { AccountBalance, Home } from "@/helpers/icons.helper";
-import { Button, ContainerDashboard } from "../ui";
+import { Button, ContainerDashboard, Select } from "../ui";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import useAuth from "@/helpers/useAuth";
+import useSesion from "@/helpers/useSesion";
+import { useRouter } from "next/navigation";
+import { useUfSesion } from "@/helpers/useUfSesion";
 
 const DashboardU = () => {
+    useAuth();
+    const router = useRouter();
+    const { token, data } = useSesion();
+    const { haveUF, isLoading, functional_unit } = useUfSesion();
+    const [uf, setUf] = useState<string>("");
+
+    useEffect(() => {
+        if (!isLoading && !haveUF) {
+            router.push("/dashboard/usuario/addfuncionalunit");
+        }
+    }, [isLoading, haveUF, router]);
+
+    if (isLoading) {
+        return <div>Cargando...</div>;
+    }
+
+    const handleChange = (e: any) => {
+        setUf(e.target.value);
+    };
+
     return (
         <ContainerDashboard className="w-[90%] h-[90vh] justify-center p-5">
             <div className="flex items-center justify-center w-full gap-2 mt-2 h-1/3">
@@ -32,8 +58,22 @@ const DashboardU = () => {
                         <p className="flex items-center justify-center w-full h-1/4">
                             Unidad Funcional
                         </p>
-                        <p className="flex items-center justify-center w-full h-1/4">
-                            Nombre de la UF
+                        <p className="flex items-center justify-center h-1/4 w-auto">
+                            {functional_unit.length > 0 ? (
+                                <Select
+                                    name="uf"
+                                    id="uf"
+                                    onChange={handleChange}
+                                >
+                                    {functional_unit.map((uf) => (
+                                        <option key={uf.id} value={uf.id}>
+                                            {uf.location}
+                                        </option>
+                                    ))}
+                                </Select>
+                            ) : (
+                                "No hay UF"
+                            )}
                         </p>
                     </div>
                 </div>
@@ -88,9 +128,6 @@ const DashboardU = () => {
                     </div>
                 </div>
             </div>
-            {/* <div className="w-full mt-5">
-                <Footer />
-            </div> */}
         </ContainerDashboard>
     );
 };

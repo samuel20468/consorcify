@@ -62,8 +62,6 @@ const FormRegisterConsortium = ({ update = false }) => {
     const [consortiumRegisterError, setConsortiumRegisterError] =
         useState<INewConsortiumError>(initialData);
 
-    // ---------------------------------------------------------------------------
-
     useEffect(() => {
         const fetchConsortium = async () => {
             if (update) {
@@ -105,56 +103,28 @@ const FormRegisterConsortium = ({ update = false }) => {
         }
     }, [token, params.id]);
 
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         if (token) {
-    //             try {
-    //                 const response = await getAdmins(token);
-    //                 setAdmins(response);
-    //                 if (update) {
-    //                     const consortiumResponse = await getConsortiumById(params.id, token);
-    //                     if (consortiumResponse.c_admin !== null && typeof consortiumResponse.c_admin === "object") {
-    //                         consortiumResponse.c_admin = consortiumResponse.c_admin.id;
-    //                     }
-    //                     setConsortiumRegister(consortiumResponse);
-    //                 }
-    //             } catch (error) {
-    //                 console.error(error);
-    //             }
-    //         }
-    //     };
-    //     fetchData();
-    // }, [token]);
-
-    // ---------------------------------------------------------------------------
-
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
+
+        let parsedValue: string | number = value;
+
         if (name === "interest_rate") {
-            if (value === "") {
-                setConsortiumRegister({
-                    ...consortiumRegister,
-                    [name]: 0,
-                });
-            } else {
-                setConsortiumRegister({
-                    ...consortiumRegister,
-                    [name]: parseFloat(value),
-                });
-            }
-        } else {
-            setConsortiumRegister({
-                ...consortiumRegister,
-                [name]:
-                    name === "building_number" ||
-                    name === "floors" ||
-                    name === "ufs" ||
-                    name === "category" ||
-                    name === "first_due_day"
-                        ? parseInt(value, 10)
-                        : value,
-            });
+            parsedValue = value === "" ? "" : parseFloat(value);
+        } else if (
+            name === "building_number" ||
+            name === "floors" ||
+            name === "ufs" ||
+            name === "category" ||
+            name === "first_due_day" ||
+            name === "interest_rate"
+        ) {
+            parsedValue = value === "" ? 0 : parseInt(value, 10);
         }
+
+        setConsortiumRegister({
+            ...consortiumRegister,
+            [name]: parsedValue,
+        });
     };
 
     const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -165,16 +135,6 @@ const FormRegisterConsortium = ({ update = false }) => {
             [name]: value,
         });
     };
-
-    // const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    //     const { name, value } = e.target;
-    //     setConsortiumRegister((prev) => ({
-    //         ...prev,
-    //         [name]: name === "interest_rate" ? parseFloat(value) || 0 : value,
-    //     }));
-    // };
-
-    // ---------------------------------------------------------------------------
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -190,7 +150,6 @@ const FormRegisterConsortium = ({ update = false }) => {
             !consortiumRegister.name ||
             !consortiumRegister.province ||
             !consortiumRegister.street_name ||
-            !consortiumRegister.suterh_key ||
             !consortiumRegister.ufs ||
             !consortiumRegister.zip_code ||
             !consortiumRegister.interest_rate
@@ -291,39 +250,6 @@ const FormRegisterConsortium = ({ update = false }) => {
         }
     }, [token]);
 
-    // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    //     e.preventDefault();
-
-    //     const requiredFields = ["building_number", "category", "city", "country", "cuit", "first_due_day", "floors", "name", "province", "street_name", "suterh_key", "ufs", "zip_code"];
-    //     const isFormValid = requiredFields.every(field => consortiumRegister[field] !== undefined && consortiumRegister[field] !== "");
-
-    //     if (!isFormValid) {
-    //         alert("Faltan datos en el formulario");
-    //         return;
-    //     }
-
-    //     const consortiumData = {
-    //         ...consortiumRegister,
-    //         c_admin: typeof consortiumRegister.c_admin === "object" ? consortiumRegister.c_admin.id : consortiumRegister.c_admin,
-    //     };
-
-    //     try {
-    //         const response = update ? await updateConsortium(params.id, token, consortiumData) : await consortiumFetch(consortiumData, token);
-    //         if (response?.ok) {
-    //             alert(update ? "Consorcio modificado correctamente" : "Consorcio creado correctamente");
-    //             const data = await response.json();
-    //             const redirectPath = userData?.roles?.[0] == "superadmin"
-    //                 ? `/dashboard/superadmin/consorcios/All/${data.id || params.id}`
-    //                 : `/dashboard/admin/consorcios/All/${data.id || params.id}`;
-    //             router.push(redirectPath);
-    //         }
-    //     } catch (error) {
-    //         console.error(error);
-    //     }
-    // };
-
-    // ---------------------------------------------------------------------------
-
     useEffect(() => {
         const suterhErrors = validateSuterh(consortiumRegister.suterh_key);
         const cuitErrors = validateCuit(consortiumRegister.cuit!);
@@ -334,18 +260,6 @@ const FormRegisterConsortium = ({ update = false }) => {
             ...cuitErrors,
         }));
     }, [consortiumRegister]);
-
-    // useEffect(() => {
-    //     const suterhErrors = validateSuterh(consortiumRegister.suterh_key);
-    //     const cuitErrors = validateCuit(consortiumRegister.cuit!);
-    //     setConsortiumRegisterError((prevErrors) => ({
-    //         ...prevErrors,
-    //         ...suterhErrors,
-    //         ...cuitErrors,
-    //     }));
-    // }, [consortiumRegister]);
-
-    // ---------------------------------------------------------------------------
 
     return (
         <div className="w-full h-auto p-4 text-white border rounded-[40px]">
@@ -541,8 +455,8 @@ const FormRegisterConsortium = ({ update = false }) => {
                             placeholder="00.00"
                             step="0.01"
                             value={
-                                consortiumRegister.interest_rate == 0
-                                    ? ""
+                                consortiumRegister.interest_rate === 0
+                                    ? 0
                                     : consortiumRegister.interest_rate
                             }
                             onChange={handleChange}

@@ -29,7 +29,8 @@ export class PaymentsController {
     @Res() res: Response,
   ) {
     const sessionUrl = await this.paymentsService.checkOut(
-      functionalUnitExpenseId, paymentAmount,
+      functionalUnitExpenseId,
+      paymentAmount,
     );
 
     res.json({ url: sessionUrl });
@@ -48,11 +49,11 @@ export class PaymentsController {
           await this.paymentsService.savePayment(session);
         res.redirect(`${CLIENT_URL}?payment=${payment.id}`);
         // res.redirect(
-        //   `${CLIENT_URL}/payment-success?payment=${payment.id}`,
+        //   `${CLIENT_URL}/payment/success?payment=${payment.id}`,
         // );
       } else {
         res.redirect(
-          `${CLIENT_URL}/payment-failed?customer=${session.customer_email}`,
+          `${CLIENT_URL}/payment/failed?customer=${session.customer_email}`,
         ); // Redirigir a una página de fallo en tu aplicación
       }
     }
@@ -66,7 +67,7 @@ export class PaymentsController {
     if (sessionId) {
       const session = await this.paymentsService.verifyPayment(sessionId);
       res.redirect(
-        `${CLIENT_URL}/payment-failed?customer=${session.customer_email}`,
+        `${CLIENT_URL}/payment/failed?customer=${session.customer_email}`,
       );
     }
   }

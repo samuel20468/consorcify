@@ -169,7 +169,7 @@ export const linkFunctionalUnit = async (
 export const functionalUnitExpensesId = async (
     id: string,
     token: string
-): Promise<IFunctionalUnitExpenses | any> => {
+): Promise<IFunctionalUnitExpenses[] | any> => {
     try {
         const response = await fetch(
             `${apiUrl}/functional-units-expenses/${id}`,

@@ -276,7 +276,7 @@ const FormSpent = () => {
                             value={registerExpenditure.invoice_number}
                             type="number"
                             onChange={handleChange}
-                            placeholder="0000-5678912"
+                            placeholder="00005678912"
                         />
                         {errorRegisterExpenditure.invoice_number &&
                             registerExpenditure.invoice_number && (

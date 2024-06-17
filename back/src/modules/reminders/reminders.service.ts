@@ -34,10 +34,20 @@ export class RemindersService {
         const daysLeft = this.calculateDaysLeft(expense.expiration_date);
         if (daysLeft === 1) {
           for (const fue of expense.functional_units_expenses) {
-            if (fue.functional_unit.user.id === user.id) {
+            if (
+              fue.functional_unit.user &&
+              fue.functional_unit.user.id === user.id
+            ) {
               await this.mailsService.sendPaymentReminder(
                 user.first_name,
                 user.email,
+                fue.total_amount,
+                expense.expiration_date,
+              );
+            } else {
+              await this.mailsService.sendPaymentReminder(
+                fue.functional_unit.owner,
+                fue.functional_unit.owner_email,
                 fue.total_amount,
                 expense.expiration_date,
               );

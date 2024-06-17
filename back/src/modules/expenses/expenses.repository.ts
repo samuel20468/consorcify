@@ -154,6 +154,14 @@ export class ExpensesRepository {
           uf.balance,
           uf.number,
         );
+      } else {
+        await this.mailsService.sendIndividualExpense(
+          uf.owner,
+          uf.owner_email,
+          monthly_expenditure,
+          uf.balance,
+          uf.number,
+        );
       }
 
       await this.functionalUnitsExpensesRepository.create(

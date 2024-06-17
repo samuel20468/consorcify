@@ -126,6 +126,7 @@ export class ExpensesService {
 
   async closeExpense(id: string): Promise<Expense> {
     const foundExpense: Expense = await this.findOne(id);
+    const consortium = foundExpense.consortium;
 
     if (foundExpense.status === EXPENSE_STATUS.CLOSED)
       throw new ConflictException(
@@ -135,10 +136,19 @@ export class ExpensesService {
     await this.expensesRepository.closeExpense(id);
 
     foundExpense.status = EXPENSE_STATUS.CLOSED;
-    const { consortium } = foundExpense;
+    const { c_admin } = await this.consortiumRepository.findOne({
+      where: { id: consortium.id },
+      relations: { c_admin: true },
+    });
+
+    if (!c_admin)
+      throw new NotFoundException(
+        'Administrador no encontrado para enviar mail',
+      );
+
     await this.mailsService.sendNewExpense(
-      consortium.c_admin.name,
-      consortium.c_admin.email,
+      c_admin.name,
+      c_admin.email,
       foundExpense.total_amount,
       consortium.name,
       foundExpense.name,

@@ -126,8 +126,8 @@ export const settleExpense = async (token: string, id: string) => {
 // Cerrar expensa
 export const closeExpense = async (token: string, id: string) => {
     try {
-        const response = await fetch(`${apiUrl}/expenses/${id}/settle`, {
-            method: "POST",
+        const response = await fetch(`${apiUrl}/expenses/${id}/close-expense`, {
+            method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,

@@ -12,6 +12,8 @@ import { HiOutlineInboxArrowDown } from "react-icons/hi2";
 // Hooks
 import Link from "next/link";
 
+// --------------------
+
 const SectionPortal = () => {
     return (
         <div className="flex flex-col items-center w-[90%] gap-4 my-10">
@@ -28,7 +30,7 @@ const SectionPortal = () => {
             <div className="mb-4 text-4xl">
                 <h1>Próximamente</h1>
             </div>
-            <div className="flex w-full gap-4">
+            <div className="flex items-center w-full gap-4">
                 <div className="flex flex-col items-center justify-center w-2/3">
                     <BsFillHousesFill size={35} />
                     <h1 className="mt-1 text-xl">Amenities</h1>

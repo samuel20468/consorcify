@@ -1,7 +1,7 @@
 //TYPES and INTERFACES
 
 import { FunctionalUnit } from 'src/modules/functional-units/entities/functional-unit.entity';
-import { SAT } from './constants';
+import { SAT, SUBJECT_MESSAGE } from './constants';
 import { Consortium } from 'src/modules/consortiums/entities/consortium.entity';
 
 // TYPES
@@ -23,6 +23,7 @@ export type TContextMail = {
   nameConsortium?: string;
   nameExpense?: string;
   uF?: string;
+  expirationDate?: Date;
 };
 
 // INTERFACES
@@ -57,4 +58,16 @@ export interface ISupplier {
   phone_number: string;
   address: string;
   balance?: number;
+}
+
+export interface IMessage {
+  id: string;
+  sender: string;
+  receiver: string;
+  functional_unit: string;
+  consortium: string;
+  subject: SUBJECT_MESSAGE;
+  content: string;
+  timestamp: string;
+  is_read?: boolean;
 }

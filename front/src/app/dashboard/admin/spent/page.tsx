@@ -242,7 +242,7 @@ const Spent = () => {
                     </div>
                 </div>
                 <div className="w-[90%] border-t border-b border-white flex justify-between p-2 mt-5 text-center">
-                    <div className="w-1/5 text-xl">
+                    <div className="w-1/4 text-xl">
                         <h1
                             className="cursor-pointer"
                             onClick={() => handleHeaderClick("description")}
@@ -250,7 +250,7 @@ const Spent = () => {
                             Descripción
                         </h1>
                     </div>
-                    <div className="w-1/5 text-xl">
+                    <div className="w-1/4 text-xl">
                         <h1
                             className="cursor-pointer"
                             onClick={() => handleHeaderClick("category")}
@@ -258,7 +258,7 @@ const Spent = () => {
                             Categoría
                         </h1>
                     </div>
-                    <div className="w-1/5 text-xl">
+                    <div className="w-1/4 text-xl">
                         <h1
                             className="cursor-pointer"
                             onClick={() => handleHeaderClick("supplier")}
@@ -266,16 +266,13 @@ const Spent = () => {
                             Proveedor
                         </h1>
                     </div>
-                    <div className="w-1/5 text-xl">
+                    <div className="w-1/4 text-xl">
                         <h1
                             className="cursor-pointer"
                             onClick={() => handleHeaderClick("total_amount")}
                         >
                             Monto
                         </h1>
-                    </div>
-                    <div className="w-1/5 text-xl">
-                        <h1>Eliminar</h1>
                     </div>
                 </div>
                 {suppliers.length > 0 && filteredExpenditures.length > 0 ? (

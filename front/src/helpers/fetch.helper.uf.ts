@@ -1,3 +1,4 @@
+// Interfaces
 import {
     IFunctionalUnitExpenses,
     IFunctionalUnits,
@@ -9,6 +10,7 @@ export const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 // ------------------
 
+// Crear una nueva unidad funcional
 export const addFuncionalUnit = async (
     token: string,
     funcionalUnit: INewFunctionalUnits
@@ -38,6 +40,7 @@ export const addFuncionalUnit = async (
     }
 };
 
+// Obtener todas las unidades funcionales de un consorcio
 export const getFuncionalUnits = async (
     token: string,
     consortiumId: string,
@@ -71,6 +74,7 @@ export const getFuncionalUnits = async (
     }
 };
 
+// Obtener una unidad funcional por su id
 export const getFuncionalUnitByID = async (
     id: string,
     token: string
@@ -99,6 +103,7 @@ export const getFuncionalUnitByID = async (
     }
 };
 
+// Obtener una unidad funcional por su id y el id del usuario
 export const getFuncionalUnitByUser = async (
     id: string,
     token: string
@@ -127,6 +132,7 @@ export const getFuncionalUnitByUser = async (
     }
 };
 
+// Enlazar una unidad funcional a un usuario
 export const linkFunctionalUnit = async (
     id: string,
     token: string,
@@ -159,6 +165,7 @@ export const linkFunctionalUnit = async (
     }
 };
 
+// Obtener los datos de una unidad funcional por su id
 export const functionalUnitExpensesId = async (
     id: string,
     token: string

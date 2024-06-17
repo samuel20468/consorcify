@@ -1,15 +1,19 @@
-export function formatearNumero(numero: string) {
+export function formatearNumero(numero: string | undefined) {
+    if (!numero) {
+        // Manejo del caso cuando `numero` es undefined
+        return "Número no disponible";
+    }
+
     // Eliminar todos los caracteres que no sean dígitos
     const numerosSolo = numero.replace(/\D/g, "");
     const partes = numerosSolo.match(/^(\d{2})(\d{8})(\d{1})$/);
     if (partes) {
         return partes.slice(1).join("-");
-    } else {
-        return numero;
     }
+    return numero; // Devuelve el número original si no coincide con el patrón esperado
 }
 
-export function formatMoney(amount: number): string {
+export function formatMoney(amount: number | any): string {
     return new Intl.NumberFormat("es-AR", {
         style: "currency",
         currency: "ARS",
@@ -45,4 +49,21 @@ export const getCurrentDate = () => {
     }
 
     return `${year}-${month}-${day}`;
+};
+
+export const formatDate = (dateString: string | undefined): string => {
+    if (!dateString) {
+        return ""; // O cualquier valor por defecto que quieras retornar en caso de fecha inválida
+    }
+
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+        return ""; // O cualquier valor por defecto en caso de que la fecha sea inválida
+    }
+
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+
+    return `${day}/${month}/${year}`;
 };

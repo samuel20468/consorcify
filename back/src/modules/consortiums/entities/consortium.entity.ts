@@ -2,6 +2,7 @@ import ColumnNumericTransformer from 'src/helpers/numeric-transformer.helper';
 import { CAdmin } from 'src/modules/c-admin/entities/c-admin.entity';
 import { Expense } from 'src/modules/expenses/entities/expense.entity';
 import { FunctionalUnit } from 'src/modules/functional-units/entities/functional-unit.entity';
+import { Message } from 'src/modules/messages/entities/message.entity';
 import { Supplier } from 'src/modules/suppliers/entities/supplier.entity';
 import {
   Column,
@@ -159,4 +160,7 @@ export class Consortium {
 
   @OneToMany(() => Supplier, (supplier) => supplier.consortium)
   suppliers: Supplier[];
+
+  @OneToMany(() => Message, (message) => message.consortium)
+  messages: Message[];
 }

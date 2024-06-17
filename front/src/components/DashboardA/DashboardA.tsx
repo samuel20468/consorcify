@@ -89,7 +89,7 @@ const DashboardA = () => {
                 <div className="grid w-full h-auto grid-cols-1 gap-10 p-4 mb-4 text-black md:grid-cols-2">
                     <div className="h-24 bg-[#d3d3d3] rounded-[50px] flex justify-center items-center shadow-[0_3px_10px_rgb(255,255,255,0.8)]">
                         <h1 className="text-2xl">
-                            Detalle sobre la cuenta corriente del consrcio.
+                            Detalle sobre la cuenta corriente del consorcio
                         </h1>
                     </div>
                     <div className="h-24 bg-[#d3d3d3] rounded-[50px] flex justify-center items-center shadow-[0_3px_10px_rgb(255,255,255,0.8)]">

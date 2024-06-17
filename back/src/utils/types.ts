@@ -66,6 +66,7 @@ export interface IMessage {
   receiver: string;
   functional_unit: string;
   consortium: string;
+  consortiumId: string;
   subject: SUBJECT_MESSAGE;
   content: string;
   timestamp: string;

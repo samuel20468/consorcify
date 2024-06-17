@@ -1,64 +1,128 @@
 "use client";
-import { Button, ContainerDashboard, Input, Label } from "@/components/ui";
+import { INewMessage } from "@/Interfaces/messages.interfaces";
+import {
+    Button,
+    ContainerDashboard,
+    Input,
+    Label,
+    Select,
+    Title,
+} from "@/components/ui";
+import { areFieldsNotEmpty } from "@/helpers/Validations/validate.empty";
+import { getUserById } from "@/helpers/fetch.helper.user";
+import { newMessage } from "@/helpers/fetch.messages.user";
+import useAuth from "@/helpers/useAuth";
+import useSesion from "@/helpers/useSesion";
+import { log } from "console";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
 const News: React.FC = () => {
-    const [message, setMessage] = useState<string>("");
+    useAuth();
+    const { token, data } = useSesion();
+    const initialData: INewMessage = {
+        user_id: data.id,
+        functional_unit_id: "",
+        subject: "",
+        content: "",
+    };
+    const [dataMessage, setDataMessage] = useState<INewMessage>(initialData);
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        if (!areFieldsNotEmpty(dataMessage)) {
+            Swal.fire({
+                title: "mensaje vacio",
+                text: "Por favor ingrese un mensaje",
+            });
+            return;
+        }
+
         try {
+            const response = await newMessage(token, dataMessage);
             Swal.fire({
                 title: "mensaje enviado",
-                customClass: {
-                    container: "sweetalert-container",
-                    popup: "sweetalert-popup",
-                    confirmButton: "sweetalert-button",
-                },
-                background: "#f3f4f6",
-                backdrop: `
-                    rgba(0,0,0,0.4)
-                    url('https://sweetalert2.github.io/images/nyan-cat.gif')
-                    center top
-                    no-repeat
-                `,
+                text: "Su mensaje fue enviado correctamente",
             });
-            setMessage("");
+
             return;
         } catch (error) {
             console.error(error);
         }
     };
 
-    const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        const { name, value } = e.target;
-        setMessage(value);
-    };
+    useEffect(() => {
+        const fecthData = async () => {
+            try {
+                const response = await getUserById(data.id, token);
+                console.log(response);
+                if (response) {
+                    const data = await response.json();
+                }
+            } catch (error) {}
+        };
 
+        if (data) {
+            fecthData();
+            setDataMessage((prevData) => ({
+                ...prevData,
+                user_id: data.id,
+            }));
+        }
+    }, [data]);
+
+    const handleChange = (
+        e: React.ChangeEvent<HTMLTextAreaElement | HTMLSelectElement>
+    ) => {
+        const { name, value } = e.target;
+        setDataMessage((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    };
+    console.log(dataMessage);
     return (
-        <ContainerDashboard className="w-[90%] flex gap-2">
-            <div className="w-[90%] border-b pt-8">
-                <h2 className="text-2xl">Nuevo Mensaje</h2>
+        <ContainerDashboard className="w-[90%] h-[90vh] flex gap-2 items-center ">
+            <Title>
+                <p className="text-2xl">Nuevo Mensaje</p>
+            </Title>
+            <div className="w-full h-full flex items-center justify-center">
+                <form
+                    className=" flex flex-col  w-[60%] p-8 border rounded-[40px] justify-center items-center"
+                    onSubmit={handleSubmit}
+                >
+                    <div className="flex flex-col gap-2 w-1/2">
+                        <Label>Asunto</Label>
+                        <Select
+                            name="subject"
+                            value={dataMessage.subject}
+                            onChange={handleChange}
+                        >
+                            <option value="">Nuevo Mensaje</option>
+                            <option value="Reclamo">Reclamo</option>
+                            <option value="Consulta">Consulta</option>
+                            <option value="Sugerencia">Sugerencia</option>
+                            <option value="Solicitud de Mantenimiento">
+                                Solicitud de Mantenimiento
+                            </option>
+                        </Select>
+                        <Label>Mensaje</Label>
+                        <textarea
+                            className="flex w-full p-2 my-1 text-gray-200 rounded-md shadow-xl bg-input placeholder:font-extralight placeholder:text-gray-500 focus:outline-none h-[200px]"
+                            value={dataMessage.content}
+                            name="content"
+                            placeholder="Escribe aquí tu mensaje"
+                            onChange={handleChange}
+                        />
+                    </div>
+                    <div className="flex items-center justify-end w-full">
+                        <Button className="w-32 py-2 rounded-[40px]">
+                            Enviar Mensaje
+                        </Button>
+                    </div>
+                </form>
             </div>
-            <form
-                className=" flex flex-col gap-2 w-[90%] p-8 border"
-                onSubmit={handleSubmit}
-            >
-                <Label>Mensaje</Label>
-                <textarea
-                    className="flex w-full p-2 my-1 text-gray-200 rounded-md shadow-xl bg-input placeholder:font-extralight placeholder:text-gray-500 focus:outline-none h-[200px]"
-                    value={message}
-                    name="mesagge"
-                    onChange={handleChange}
-                />
-                <div className="flex items-center justify-end w-full">
-                    <Button className="w-32 py-2 rounded-[40px]">
-                        Enviar Mensaje
-                    </Button>
-                </div>
-            </form>
         </ContainerDashboard>
     );
 };

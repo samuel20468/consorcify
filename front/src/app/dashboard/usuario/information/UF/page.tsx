@@ -12,6 +12,7 @@ import { linkFunctionalUnit } from "@/helpers/fetch.helper.uf";
 import { getUserById } from "@/helpers/fetch.helper.user";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
+import { useUfSesion } from "@/helpers/useUfSesion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -20,7 +21,15 @@ import Swal from "sweetalert2";
 const UnidadFuncional = () => {
     useAuth();
     const { token, data } = useSesion();
+    const { haveUF, isLoading, functional_unit } = useUfSesion();
     const [user, setUser] = useState<IUser>();
+    const router = useRouter();
+
+    useEffect(() => {
+        if (!isLoading && !haveUF) {
+            router.push("/dashboard/usuario/addfuncionalunit");
+        }
+    }, [isLoading, haveUF, router]);
 
     useEffect(() => {
         const fetchData = async () => {

@@ -26,6 +26,7 @@ const Page = () => {
     const { token } = useSesion();
     const [admin, setAdmin] = useState<IAdmin>();
     const path = usePathname();
+    const restrictedEmail = "sin_administrador_asignado@consorcify.com";
 
     useEffect(() => {
         const fecthData = async () => {
@@ -60,7 +61,7 @@ const Page = () => {
                     const response = await deleteAdmin(params.id, token);
                     Swal.fire({
                         title: "Administración borrada!",
-                        text: `La asministración ${admin?.name} fue borrado correctamente`,
+                        text: `La administración ${admin?.name} fue borrada correctamente`,
                         icon: "success",
                     });
                     router.push("/dashboard/superadmin/administracion/All");
@@ -99,21 +100,23 @@ const Page = () => {
                             TELÉFONO: {admin?.phone_number}
                         </p>
                     </div>
-                    <div className="flex items-center justify-end w-3/4 gap-2">
-                        <Link
-                            href={`/updateAdministrator/${admin?.id}`}
-                            className="border  bg-[#e5e7eb] px-4 py-2 rounded-[50px] hover:bg-black hover:text-white"
-                        >
-                            <button>Modificar Administrador</button>
-                        </Link>
+                    {admin && admin?.email !== restrictedEmail && (      
+                        <div className="flex items-center justify-end w-3/4 gap-2">
+                            <Link
+                                href={`/updateAdministrator/${admin?.id}`}
+                                className="border  bg-[#e5e7eb] px-4 py-2 rounded-[50px] hover:bg-black hover:text-white"
+                                >
+                                <button>Modificar Administrador</button>
+                            </Link>
 
-                        <button
-                            onClick={handleDelete}
-                            className="border  bg-[#e5e7eb] px-4 py-2 rounded-[50px] hover:bg-black hover:text-white"
-                        >
-                            Eliminar
-                        </button>
-                    </div>
+                            <button
+                                onClick={handleDelete}
+                                className="border  bg-[#e5e7eb] px-4 py-2 rounded-[50px] hover:bg-black hover:text-white"
+                                >
+                                Eliminar
+                            </button>
+                        </div>
+                    )}
                 </div>
             </ContainerDashboard>
         </div>

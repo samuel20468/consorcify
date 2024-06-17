@@ -41,6 +41,9 @@ export class AuthService {
     if (!foundCAdmin && !foundUser) {
       throw new UnauthorizedException('Credenciales inválidas');
     }
+    if (foundCAdmin?.active === false) {
+      throw new UnauthorizedException('Cuenta inactiva');
+    }
     if (foundCAdmin) {
       const tokenAdmin: Promise<TObjectToken> = signInHelper(
         foundCAdmin,

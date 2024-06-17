@@ -35,7 +35,7 @@ export class ExpensesRepository {
     });
   }
 
-  async findAllByConsortium(consortiumId: string): Promise<Expense> {
+  async findAllByConsortium(consortiumId: string): Promise<Expense[]> {
     const consortium: Consortium = await this.consortiumRepository.findOne({
       where: { id: consortiumId },
     });
@@ -43,21 +43,18 @@ export class ExpensesRepository {
     if (!consortium)
       throw new ConflictException(`El Consorcio id ${consortiumId} no existe`);
 
-    const foundConsortium: Consortium = await this.consortiumRepository.findOne(
-      {
+    const foundExpensesInConsortium: Expense[] =
+      await this.expenseRepository.find({
         where: {
-          id: consortiumId,
-          expenses: { active: true },
+          consortium: consortium,
         },
-        relations: { expenses: true },
-      },
-    );
-    if (!foundConsortium)
+      });
+    if (!foundExpensesInConsortium)
       throw new ConflictException(
-        `El Consorcio "${consortium.name}" no tiene una expensa abierta`,
+        `El Consorcio "${consortium.name}" no tiene expensas aun`,
       );
 
-    return foundConsortium.expenses[0];
+    return foundExpensesInConsortium;
   }
 
   async findOne(id: string): Promise<Expense> {

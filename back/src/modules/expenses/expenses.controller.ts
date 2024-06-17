@@ -56,7 +56,7 @@ export class ExpensesController {
   })
   async findAllByConsortium(
     @Param('consortiumId', ParseUUIDPipe) consortiumId: string,
-  ): Promise<Expense> {
+  ): Promise<Expense[]> {
     return await this.expensesService.findAllByConsortium(consortiumId);
   }
 

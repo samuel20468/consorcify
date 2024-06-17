@@ -12,6 +12,7 @@ import { FunctionalUnitExpense } from '../functional-units-expenses/entities/fun
 import { FunctionalUnitsExpensesRepository } from '../functional-units-expenses/functional-units-expenses.repository';
 import { User } from '../users/entities/user.entity';
 import { Reflector } from '@nestjs/core';
+import { GoogleMapsService } from '../google-maps/google-maps.service';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { Reflector } from '@nestjs/core';
     ExpensesRepository,
     UsersRepository,
     FunctionalUnitsExpensesRepository,
+    GoogleMapsService,
   ],
 })
 export class RemindersModule {}

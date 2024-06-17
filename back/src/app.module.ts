@@ -19,9 +19,11 @@ import { GoogleMapsModule } from './modules/google-maps/google-maps.module';
 import { RemindersModule } from './modules/reminders/reminders.module';
 import { MessagesModule } from './modules/messages/messages.module';
 import { Reflector } from '@nestjs/core';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
+    ScheduleModule.forRoot(),
     ConfigModule.forRoot({
       isGlobal: true,
       load: [typeormConfig],

@@ -1,7 +1,8 @@
 "use client";
 
 // Estilos y componentes
-import { Button, ContainerDashboard } from "@/components/ui";
+import { ContainerDashboard, Title } from "@/components/ui";
+import Map from "@/components/Map/Map";
 
 // Endpoints
 import { getUserById } from "@/helpers/fetch.helper.user";
@@ -59,72 +60,81 @@ const Profile = () => {
         prevTokenRef.current = token;
     }, [token, data]);
 
+    const renderImage = (src: any) => {
+        const defaultImage = "/images/default-profile.png";
+        return (
+            <Image
+                src={src || defaultImage}
+                alt="Imagen de perfil"
+                className="rounded-[40px]"
+                width={250}
+                height={250}
+            />
+        );
+    };
+
     return (
-        <ContainerDashboard className="w-[90%] h-[90vh]">
-            <div className="flex  w-[90%] h-full m-3 bg-slate-50 p-10 gap-10 rounded-[40px]">
-                <div className="flex flex-col rounded-[40px] w-1/2 p-2  h-full bg-gray-400">
-                    <div className="flex flex-col items-center justify-center w-full h-1/2 bg-white rounded-t-[40px] px-10 pt-2">
-                        <div className="flex items-center justify-center pb-0 mb-2 border rounded-full w-200 h-200">
+        <div className="h-screen">
+            <ContainerDashboard>
+                <Title>
+                    {data.roles?.[0] === "user" ||
+                    data.roles?.[0] === "superadmin"
+                        ? userData?.first_name && userData?.last_name
+                        : adminData?.name}
+                </Title>
+                <div className="flex flex-col items-center gap-4 p-4 mt-5 border grad">
+                    <div className="flex items-center w-full h-3/5">
+                        <div className="w-1/3">
                             {data.roles?.[0] === "user" ||
-                            data.roles?.[0] === "superadmin" ? (
-                                <Image
-                                    src={userData?.picture!}
-                                    alt="Imagen de perfil"
-                                    className="rounded-full order"
-                                    width={200}
-                                    height={200}
-                                />
-                            ) : (
-                                <Image
-                                    src={adminData?.picture!}
-                                    alt="Imagen de perfil"
-                                    className="rounded-full order"
-                                    width={200}
-                                    height={200}
-                                />
-                            )}
+                            data.roles?.[0] === "superadmin"
+                                ? renderImage(userData?.picture)
+                                : renderImage(adminData?.picture)}
                         </div>
-                        <Link href="/addAvatar" className="w-full">
-                            <Button className="w-full py-1 rounded-[40px]">
-                                Cambiar Imagen
-                            </Button>
-                        </Link>
-                    </div>
-                    <div className="flex flex-col text-black w-full justify-between h-1/2 bg-white rounded-b-[40px] p-10 gap-3">
-                        <div>
+                        <div className="flex flex-col justify-center w-2/3 py-2">
                             {data.roles?.[0] === "user" ||
                             data.roles?.[0] === "superadmin" ? (
                                 <div>
-                                    <h3>NOMBRE:{userData?.first_name}</h3>
-                                    <h3>APELLIDO:{userData?.last_name}</h3>
+                                    <h3>NOMBRE: {userData?.first_name}</h3>
+                                    <h3>APELLIDO: {userData?.last_name}</h3>
                                     <h3>EMAIL: {userData?.email}</h3>
                                 </div>
                             ) : (
                                 <div>
-                                    <h3>ADMINISTRADOR:{adminData?.name}</h3>
+                                    <h3>ADMINISTRADOR: {adminData?.name}</h3>
+                                    <h3>CUIT: {adminData?.cuit}</h3>
                                     <h3>EMAIL: {adminData?.email}</h3>
+                                    <h3>DIRECCIÓN: {adminData?.address}</h3>
+                                    <h3>TELÉFONO: {adminData?.phone_number}</h3>
                                 </div>
                             )}
                         </div>
-                        <div className="w-full">
-                            <Link
-                                className="w-full h-full"
-                                href="/dashboard/profile/updateUser"
-                            >
-                                <Button className="w-full rounded-[40px] py-2">
-                                    Editar Informacion
-                                </Button>
-                            </Link>
-                        </div>
+                    </div>
+                    <div className="w-full h-2/5">
+                        <Map />
                     </div>
                 </div>
-                <div className="flex flex-col gap-2 rounded-[40px] w-1/2 h-full bg-gray-400 p-2">
-                    <div className="w-full h-1/3 border rounded-[40px]"></div>
-                    <div className="w-full h-2/3 border rounded-[40px]"></div>
-                </div>
-            </div>
-        </ContainerDashboard>
+            </ContainerDashboard>
+        </div>
     );
 };
 
 export default Profile;
+
+{
+    /* <Link href="/addAvatar" className="w-full">
+                                <Button className="w-full py-1 rounded-[40px]">
+                                    Cambiar Imagen
+                                </Button>
+                            </Link> */
+}
+
+{
+    /* <Link
+                                    className="w-full h-full"
+                                    href="/dashboard/profile/updateUser"
+                                >
+                                    <Button className="w-full rounded-[40px] py-2">
+                                        Editar Informacion
+                                    </Button>
+                                </Link> */
+}

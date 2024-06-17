@@ -126,12 +126,6 @@ const Spent = () => {
                         expenditure.supplier?.id === selectedSupplierId
                 );
             }
-            if (selectedSupplierId) {
-                filteredData = filteredData.filter(
-                    (expenditure) =>
-                        expenditure.supplier?.id === selectedSupplierId
-                );
-            }
 
             setFilteredExpenditures(filteredData);
         };

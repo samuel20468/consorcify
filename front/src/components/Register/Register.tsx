@@ -163,7 +163,7 @@ const Register = () => {
                         <div className="flex items-center justify-between w-full">
                             <Label htmlFor="nombre">Nombre:</Label>
                             {errors.first_name && registerData.first_name && (
-                                <span className="self-end text-xs text-red-500 ">
+                                <span className="self-end text-xs text-redd ">
                                     {errors.first_name}
                                 </span>
                             )}
@@ -180,7 +180,7 @@ const Register = () => {
                         <div className="flex items-center justify-between w-full">
                             <Label htmlFor="apellido">Apellido:</Label>
                             {errors.last_name && registerData.last_name && (
-                                <span className="self-end text-xs text-red-500 ">
+                                <span className="self-end text-xs text-redd ">
                                     {errors.last_name}
                                 </span>
                             )}
@@ -197,7 +197,7 @@ const Register = () => {
                         <div className="flex items-center justify-between w-full">
                             <Label htmlFor="email">E-mail:</Label>
                             {errors.email && registerData.email && (
-                                <span className="self-end text-xs text-red-500">
+                                <span className="self-end text-xs text-redd">
                                     {errors.email}
                                 </span>
                             )}
@@ -214,7 +214,7 @@ const Register = () => {
                         <div className="flex items-center justify-between w-full">
                             <Label htmlFor="pwd">Contraseña:</Label>
                             {errors.password && registerData.password && (
-                                <span className="self-end text-xs text-red-500 ">
+                                <span className="self-end text-xs text-redd ">
                                     {errors.password}
                                 </span>
                             )}
@@ -246,7 +246,7 @@ const Register = () => {
                             {registerData.password &&
                                 pass2 &&
                                 registerData.password !== pass2.trim() && (
-                                    <span className="self-end text-xs text-red-500 ">
+                                    <span className="self-end text-xs text-redd ">
                                         Las contraseñas deben coincidir
                                     </span>
                                 )}

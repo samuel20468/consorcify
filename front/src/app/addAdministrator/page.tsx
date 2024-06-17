@@ -21,7 +21,7 @@ const AddConsortium = () => {
                         | Crear administración
                     </span>
                 </Title>
-                <div className="flex items-center justify-center w-1/2 my-10 rounded-lg h-content bg-[#d3d3d3]">
+                <div className="flex items-center justify-center w-1/2 my-10 rounded-lg h-content bg-[#d3d3d3] ">
                     <FormRegisterAdmin />
                 </div>
             </ContainerDashboard>

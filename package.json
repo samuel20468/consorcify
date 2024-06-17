@@ -1,0 +1,17 @@
+{
+    "name": "consorcify",
+    "version": "1.0.0",
+    "private": true,
+    "workspaces": [
+        "front",
+        "back"
+    ],
+    "scripts": {
+        "dev": "concurrently \"npm run dev:front\" \"npm run dev:back\"",
+        "dev:front": "npm --prefix front run dev",
+        "dev:back": "npm --prefix back run start:dev"
+    },
+    "devDependencies": {
+        "concurrently": "^7.0.0"
+    }
+}

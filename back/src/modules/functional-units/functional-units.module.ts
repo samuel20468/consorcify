@@ -11,5 +11,6 @@ import { User } from '../users/entities/user.entity';
   imports: [TypeOrmModule.forFeature([FunctionalUnit, Consortium, User])],
   controllers: [FunctionalUnitsController],
   providers: [FunctionalUnitsService, FunctionalUnitsRepository],
+  exports: [FunctionalUnitsRepository],
 })
 export class FunctionalUnitsModule {}

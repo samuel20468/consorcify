@@ -80,8 +80,8 @@ export class ExpensesService {
     return expenses.slice(startIndex, endIndex);
   }
 
-  async findOpenByConsortium(consortiumId: string): Promise<Expense> {
-    return await this.expensesRepository.findOpenByConsortium(consortiumId);
+  async findAllByConsortium(consortiumId: string): Promise<Expense> {
+    return await this.expensesRepository.findAllByConsortium(consortiumId);
   }
 
   async findOne(id: string): Promise<Expense> {

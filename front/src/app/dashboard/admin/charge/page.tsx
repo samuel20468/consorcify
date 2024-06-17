@@ -82,9 +82,10 @@ const Charge = () => {
                     </div>
                 </div>
                 <div className="w-[90%] border-t border-b border-white flex justify-between p-2 mt-5 text-center">
-                    <h1 className="w-1/3 text-xl">Piso / Unidad Funcional</h1>
-                    <h1 className="w-1/3 text-xl">Inquilino</h1>
-                    <h1 className="w-1/3 text-xl">Deuda</h1>
+                    <h1 className="w-1/4 text-xl">Piso / Unidad Funcional</h1>
+                    <h1 className="w-1/4 text-xl">Propietario</h1>
+                    <h1 className="w-1/4 text-xl">Inquilino</h1>
+                    <h1 className="w-1/4 text-xl">Deuda</h1>
                 </div>
             </ContainerDashboard>
         </div>

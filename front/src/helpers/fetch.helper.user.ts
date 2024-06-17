@@ -64,7 +64,7 @@ export const loginFetch = async (userData: ILogin) => {
 // Recuperar contraseña
 export const resetPasswordFetch = async (email: string) => {
     try {
-        const response = await fetch(`${apiUrl}/auth/resetPassword`, {
+        const response = await fetch(`${apiUrl}/auth/request-reset-password`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

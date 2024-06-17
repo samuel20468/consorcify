@@ -1,20 +1,17 @@
 "use client";
 import { RxCross1 } from "react-icons/rx";
 import { IoCheckmarkOutline } from "react-icons/io5";
-import { IFunctionalUnits } from "@/Interfaces/functionalUnits.interfaces";
+import {
+    IFunctionalUnitExpenses,
+    IFunctionalUnits,
+} from "@/Interfaces/functionalUnits.interfaces";
 import { IUser } from "@/Interfaces/user.interfaces";
 import { Button, ContainerDashboard, Select } from "@/components/ui";
-import { paymentCheckOut } from "@/helpers/fetch.helper";
-import {
-    functionalUnitExpensesId,
-    getFuncionalUnitByID,
-    getFuncionalUnitByUser,
-} from "@/helpers/fetch.helper.uf";
+import { functionalUnitExpensesId } from "@/helpers/fetch.helper.uf";
 import { getUserById } from "@/helpers/fetch.helper.user";
 import {
     AccountBalance,
     ArrowBack,
-    Cross,
     Home,
     HomeTwo,
     Stroke,
@@ -34,8 +31,9 @@ const Expenses = () => {
     const [functionalUnit, setFunctionalUnit] = useState<IFunctionalUnits[]>(
         []
     );
-    const [expenses, setExpenses] = useState<any[]>();
-    const [id, setId] = useState<string>("");
+    const [totalExpenses, setTotalExpenses] = useState<number>(0);
+    const [expenses, setExpenses] = useState<IFunctionalUnitExpenses>();
+    const [selectetUF, setSelectetUF] = useState<string>("");
 
     useEffect(() => {
         const fecthUser = async () => {
@@ -58,8 +56,14 @@ const Expenses = () => {
 
     useEffect(() => {
         const fechtExpenses = async () => {
+            if (!selectetUF) {
+                return; // No hacer la solicitud si no hay unidad funcional seleccionada
+            }
             try {
-                const response = await functionalUnitExpensesId(id!, token);
+                const response = await functionalUnitExpensesId(
+                    selectetUF,
+                    token
+                );
                 if (response) {
                     setExpenses(response);
                 } else {
@@ -75,14 +79,20 @@ const Expenses = () => {
                 console.error(error);
             }
         };
-        if (token) {
+        if (token && selectetUF !== "") {
             fechtExpenses();
         }
-    }, [token]);
+    }, [token, selectetUF]);
 
     const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const { value } = e.target;
-        setId(value);
+
+        if (value === "") {
+            setSelectetUF("");
+            setExpenses(undefined);
+        } else {
+            setSelectetUF(value);
+        }
     };
 
     return (
@@ -109,12 +119,20 @@ const Expenses = () => {
                             </p>
                             <p className="flex items-center justify-center w-full h-1/4 text-2xl">
                                 $
-                                {expenses?.reduce(
-                                    (acc, expense) =>
-                                        acc + expense.total_amount,
-                                    0
-                                )}
+                                {expenses != undefined
+                                    ? expenses?.total_amount
+                                    : 0}
                             </p>
+                            <Link
+                                href={`/dashboard/usuario/expenses/${selectetUF}`}
+                            >
+                                <Button
+                                    className="w-32 rounded-[40px]"
+                                    disabled={expenses == undefined}
+                                >
+                                    Pagar
+                                </Button>
+                            </Link>
                         </div>
                     </div>
                     <div className="flex items-center justify-center w-1/2 h-full border rounded-[40px] gap-2 bg-gradient-to-r from-neutral-50 via-fondo to-fondo">
@@ -125,18 +143,24 @@ const Expenses = () => {
                             <p className="flex items-center justify-center w-full h-1/4">
                                 Unidad Funcional
                             </p>
-                            <p className="flex items-center justify-center w-full h-1/4">
+                            <p className="flex items-center justify-center w-auto h-1/4">
                                 <Select
                                     onChange={handleChange}
-                                    value={id}
+                                    value={selectetUF}
                                     name="id"
                                     id="id"
                                 >
+                                    <option value="">
+                                        Selecciona tu unidad Funcional
+                                    </option>
                                     {functionalUnit?.map((unit) => (
                                         <option
-                                            value={unit.id}
+                                            value={
+                                                unit
+                                                    .functional_units_expenses?.[0]
+                                                    ?.id
+                                            }
                                             key={unit.id}
-                                            selected={id !== ""}
                                         >
                                             {unit.location}
                                         </option>
@@ -165,51 +189,99 @@ const Expenses = () => {
                                         Monto
                                     </div>
                                 </div>
-                                <div className="w-1/3  flex "></div>
-                            </div>
-                            {expenses?.map((expense, index) => {
-                                return (
-                                    <div
-                                        key={index}
-                                        className="flex  w-full gap-2"
-                                    >
-                                        <div className="w-2/3 border flex py-2">
-                                            <div className="w-1/3 flex justify-center">
-                                                {
-                                                    expense.expense.expiration_date.split(
-                                                        "-"
-                                                    )[0]
-                                                }
-                                            </div>
-                                            <div className="w-1/3 flex justify-center">
-                                                {
-                                                    expense.expense.expiration_date.split(
-                                                        "-"
-                                                    )[1]
-                                                }
-                                            </div>
-                                            <div className="w-1/3 flex justify-center">
-                                                ${expense.total_amount}
-                                            </div>
-                                        </div>
-                                        <div className="w-1/3 border flex ">
-                                            <div className="w-1/2 flex justify-center items-center">
-                                                <RxCross1 className="text-redd" />
-                                                <IoCheckmarkOutline className="text-green-500" />
-                                            </div>
-                                            <div className="w-1/2 flex justify-center items-center p-1">
-                                                <Link
-                                                    href={`/dashboard/usuario/expenses/${expense.id}`}
-                                                >
-                                                    <Button className="w-32 rounded-[40px]">
-                                                        Pagar
-                                                    </Button>
-                                                </Link>
-                                            </div>
-                                        </div>
+                                <div className="w-1/3  flex justify-center ">
+                                    <div className="w-1/2 flex justify-center items-center">
+                                        Estado
                                     </div>
-                                );
-                            })}
+                                    <div className="w-1/2 flex justify-center items-center">
+                                        Detalle
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                {selectetUF !== "" &&
+                                    functionalUnit.map((unit) => (
+                                        <div
+                                            key={unit.id}
+                                            className="flex border w-full items-center justify-center gap-2 py-1 rounded-[40px]"
+                                        >
+                                            <div className="w-2/3 flex justify-center font-bold text-xl">
+                                                <div className="w-1/3 flex justify-center">
+                                                    {/* Mostrar la fecha de vencimiento de la primera expense */}
+                                                    {
+                                                        unit.functional_units_expenses?.[0]?.expense.expiration_date.split(
+                                                            "-"
+                                                        )?.[0]
+                                                    }
+                                                </div>
+                                                <div className="w-1/3 flex justify-center">
+                                                    {
+                                                        unit.functional_units_expenses?.[0]?.expense.expiration_date.split(
+                                                            "-"
+                                                        )?.[1]
+                                                    }
+                                                </div>
+                                                <div className="w-1/3 flex justify-center">
+                                                    {
+                                                        unit
+                                                            .functional_units_expenses?.[0]
+                                                            ?.total_amount
+                                                    }
+                                                </div>
+                                            </div>
+                                            <div className="w-1/3  flex justify-center ">
+                                                <div
+                                                    className={`w-1/2 flex justify-center items-center `}
+                                                >
+                                                    {unit
+                                                        .functional_units_expenses?.[0]
+                                                        ?.payment_status ===
+                                                        "Impago" && (
+                                                        <span className=" text-red-500">
+                                                            {
+                                                                unit
+                                                                    .functional_units_expenses?.[0]
+                                                                    ?.payment_status
+                                                            }
+                                                        </span>
+                                                    )}
+                                                    {unit
+                                                        .functional_units_expenses?.[0]
+                                                        ?.payment_status ===
+                                                        "Pagado" && (
+                                                        <span className="text-green-500">
+                                                            {
+                                                                unit
+                                                                    .functional_units_expenses?.[0]
+                                                                    ?.payment_status
+                                                            }
+                                                        </span>
+                                                    )}
+                                                    {unit
+                                                        .functional_units_expenses?.[0]
+                                                        ?.payment_status ===
+                                                        "Parcial" && (
+                                                        <span className="text-yellow-500">
+                                                            {
+                                                                unit
+                                                                    .functional_units_expenses?.[0]
+                                                                    ?.payment_status
+                                                            }
+                                                        </span>
+                                                    )}
+                                                </div>
+
+                                                <div className="w-1/2 flex justify-center items-center">
+                                                    <Link href="#">
+                                                        <Button className="w-32 rounded-[40px] py-2">
+                                                            Ver Detalle
+                                                        </Button>
+                                                    </Link>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                            </div>
                         </div>
                     </div>
                 </div>

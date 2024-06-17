@@ -26,10 +26,15 @@ export class UsersRepository {
   async findOne(id: string): Promise<User | undefined> {
     return await this.usersRepository.findOne({
       where: { id },
-      relations: { functional_units: true },
+      relations: {
+        functional_units: {
+          functional_units_expenses: {
+            expense: true,
+          },
+        },
+      },
     });
   }
-
   async findOneByEmail(email: string): Promise<User | undefined> {
     return await this.usersRepository.findOne({ where: { email } });
   }

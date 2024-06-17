@@ -30,7 +30,13 @@ export class FunctionalUnitsRepository {
   async findOne(id: string): Promise<FunctionalUnit | undefined> {
     return await this.functionalUnitsRepository.findOne({
       where: { id },
-      relations: { consortium: true, user: true },
+      relations: {
+        consortium: true,
+        user: true,
+        functional_units_expenses: {
+          expense: true,
+        },
+      },
     });
   }
 

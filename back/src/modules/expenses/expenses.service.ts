@@ -14,6 +14,7 @@ import { EXPENSE_STATUS } from 'src/utils/constants';
 import { MailsService } from '../mails/mails.service';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { FunctionalUnitExpense } from '../functional-units-expenses/entities/functional-units-expense.entity';
 
 @Injectable()
 export class ExpensesService {
@@ -79,8 +80,8 @@ export class ExpensesService {
     return expenses.slice(startIndex, endIndex);
   }
 
-  async findOpenByConsortium(consortiumId: string): Promise<Expense> {
-    return await this.expensesRepository.findOpenByConsortium(consortiumId);
+  async findAllByConsortium(consortiumId: string): Promise<Expense> {
+    return await this.expensesRepository.findAllByConsortium(consortiumId);
   }
 
   async findOne(id: string): Promise<Expense> {
@@ -97,8 +98,35 @@ export class ExpensesService {
     return expense;
   }
 
+  async undoExpense(expenseId: string) {
+    if (!expenseId) {
+      throw new BadRequestException('Id is required');
+    }
+
+    const expense: Expense = await checkEntityExistence(
+      this.expensesRepository,
+      expenseId,
+      'la expensa',
+    );
+
+    if (expense.status === EXPENSE_STATUS.CLOSED)
+      throw new ConflictException(
+        'No se puede deshacer una expensa que esta cerrada',
+      );
+
+    if (expense.functional_units_expenses.length <= 0)
+      throw new ConflictException(
+        'No se puede deshacer una expensa que no se ha generado',
+      );
+
+    await this.expensesRepository.undoExpense(expenseId);
+
+    return expense;
+  }
+
   async closeExpense(id: string): Promise<Expense> {
     const foundExpense: Expense = await this.findOne(id);
+    const consortium = foundExpense.consortium;
 
     if (foundExpense.status === EXPENSE_STATUS.CLOSED)
       throw new ConflictException(
@@ -108,10 +136,19 @@ export class ExpensesService {
     await this.expensesRepository.closeExpense(id);
 
     foundExpense.status = EXPENSE_STATUS.CLOSED;
-    const { consortium } = foundExpense;
+    const { c_admin } = await this.consortiumRepository.findOne({
+      where: { id: consortium.id },
+      relations: { c_admin: true },
+    });
+
+    if (!c_admin)
+      throw new NotFoundException(
+        'Administrador no encontrado para enviar mail',
+      );
+
     await this.mailsService.sendNewExpense(
-      consortium.c_admin.name,
-      consortium.c_admin.email,
+      c_admin.name,
+      c_admin.email,
       foundExpense.total_amount,
       consortium.name,
       foundExpense.name,

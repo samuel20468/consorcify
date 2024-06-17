@@ -1,6 +1,7 @@
 import ColumnNumericTransformer from 'src/helpers/numeric-transformer.helper';
 import { Consortium } from 'src/modules/consortiums/entities/consortium.entity';
 import { FunctionalUnitExpense } from 'src/modules/functional-units-expenses/entities/functional-units-expense.entity';
+import { Message } from 'src/modules/messages/entities/message.entity';
 import { User } from 'src/modules/users/entities/user.entity';
 import { FUNCTIONAL_UNIT_TYPE } from 'src/utils/constants';
 import {
@@ -105,4 +106,7 @@ export class FunctionalUnit {
     (functionalUnitsExpense) => functionalUnitsExpense.functional_unit,
   )
   functional_units_expenses: FunctionalUnitExpense[];
+
+  @OneToMany(() => Message, (message) => message.functional_unit)
+  messages: Message[];
 }

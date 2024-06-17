@@ -10,7 +10,6 @@ import {
     INewRegisterAdminError,
 } from "@/Interfaces/admin.interfaces";
 
-
 // Validaciones
 import { validateCuit } from "@/helpers/Validations/validate.cuit";
 import { validateNombre } from "@/helpers/Validations/validate.name";
@@ -139,7 +138,6 @@ const FormRegisterAdmin = ({ update = false }) => {
                             );
                         });
                     }
-
                 }
             } catch (error: any) {
                 Swal.fire({
@@ -191,7 +189,7 @@ const FormRegisterAdmin = ({ update = false }) => {
                 onSubmit={handleSubmit}
             >
                 <Label htmlFor="name">
-                    Nombre Completo:<span className="text-red-600">*</span>
+                    Nombre Completo:<span className="text-redd">*</span>
                 </Label>
                 <Input
                     id="name"
@@ -202,12 +200,12 @@ const FormRegisterAdmin = ({ update = false }) => {
                     onChange={handleChange}
                 />
                 {errorAdminRegister.name && adminRegister.name && (
-                    <span className="self-end text-xs text-red-500">
+                    <span className="self-end text-xs text-redd">
                         {errorAdminRegister.name}
                     </span>
                 )}
                 <Label htmlFor="address">
-                    Dirección:<span className="text-red-600">*</span>
+                    Dirección:<span className="text-redd">*</span>
                 </Label>
                 <Input
                     id="address"
@@ -218,7 +216,7 @@ const FormRegisterAdmin = ({ update = false }) => {
                     onChange={handleChange}
                 />
                 <Label htmlFor="phone_number">
-                    Teléfono:<span className="text-red-600">*</span>
+                    Teléfono:<span className="text-redd">*</span>
                 </Label>
                 <Input
                     id="phone_number"
@@ -229,7 +227,7 @@ const FormRegisterAdmin = ({ update = false }) => {
                     onChange={handleChange}
                 />
                 <Label htmlFor="cuit">
-                    CUIT:<span className="text-red-600">*</span>
+                    CUIT:<span className="text-redd">*</span>
                 </Label>
                 <Input
                     id="cuit"
@@ -241,12 +239,12 @@ const FormRegisterAdmin = ({ update = false }) => {
                     disabled={update}
                 />
                 {errorAdminRegister.cuit && adminRegister.cuit && (
-                    <span className="self-end text-xs text-red-500">
+                    <span className="self-end text-xs text-redd">
                         {errorAdminRegister.cuit}
                     </span>
                 )}
                 <Label htmlFor="sat">
-                    Situación Fiscal:<span className="text-red-600">*</span>
+                    Situación Fiscal:<span className="text-redd">*</span>
                 </Label>
                 <Select
                     name="sat"
@@ -268,7 +266,7 @@ const FormRegisterAdmin = ({ update = false }) => {
                 </Select>
                 <Label htmlFor="rpa">
                     Inscripción RPA:
-                    <span className="text-red-600">*</span>
+                    <span className="text-redd">*</span>
                 </Label>
                 <Input
                     id="rpa"
@@ -280,12 +278,12 @@ const FormRegisterAdmin = ({ update = false }) => {
                     disabled={update}
                 />
                 {errorAdminRegister.rpa && adminRegister.rpa && (
-                    <span className="self-end text-xs text-red-500">
+                    <span className="self-end text-xs text-redd">
                         {errorAdminRegister.rpa}
                     </span>
                 )}
                 <Label htmlFor="email">
-                    Email:<span className="text-red-600">*</span>
+                    Email:<span className="text-redd">*</span>
                 </Label>
                 <Input
                     id="email"
@@ -297,7 +295,7 @@ const FormRegisterAdmin = ({ update = false }) => {
                     disabled={update}
                 />
                 {errorAdminRegister.email && adminRegister.email && (
-                    <span className="self-end text-xs text-red-500">
+                    <span className="self-end text-xs text-redd">
                         {errorAdminRegister.email}
                     </span>
                 )}

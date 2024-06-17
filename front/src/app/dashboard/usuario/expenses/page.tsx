@@ -194,7 +194,7 @@ const Expenses = () => {
                                         </div>
                                         <div className="w-1/3 border flex ">
                                             <div className="w-1/2 flex justify-center items-center">
-                                                <RxCross1 className="text-red-500" />
+                                                <RxCross1 className="text-redd" />
                                                 <IoCheckmarkOutline className="text-green-500" />
                                             </div>
                                             <div className="w-1/2 flex justify-center items-center p-1">

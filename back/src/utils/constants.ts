@@ -96,3 +96,10 @@ export enum TEMPLATES_MAIL {
   SUCCESSFUL_PAYMENT = './successful-payment',
   PAYMENT_REMINDER = './payment-reminder',
 }
+
+export enum SUBJECT_MESSAGE {
+  COMPLAINT = 'Reclamo',
+  INQUIRY = 'Consulta',
+  SUGGESTION = 'Sugerencia',
+  MAINTENANCE_REQUEST = 'Solicitud de Mantenimiento',
+}

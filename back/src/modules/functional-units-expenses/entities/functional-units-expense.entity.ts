@@ -71,7 +71,7 @@ export class FunctionalUnitExpense {
    * El estado del pago de la expensa. Default: "impago"
    * @example "pagado"
    */
-  @Column('enum', { enum: PAYMENT_STATUS , default: PAYMENT_STATUS.UNPAID })
+  @Column('enum', { enum: PAYMENT_STATUS, default: PAYMENT_STATUS.UNPAID })
   payment_status: PAYMENT_STATUS;
 
   /**

@@ -27,5 +27,6 @@ import { GoogleMapsService } from '../google-maps/google-maps.service';
     MailsService,
     GoogleMapsService,
   ],
+  exports: [CAdminsRepository],
 })
 export class CAdminModule {}

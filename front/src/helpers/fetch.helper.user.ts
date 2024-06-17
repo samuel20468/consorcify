@@ -61,6 +61,22 @@ export const loginFetch = async (userData: ILogin) => {
     }
 };
 
+// Recuperar contraseña
+export const resetPasswordFetch = async (email: string) => {
+    try {
+        const response = await fetch(`${apiUrl}/auth/resetPassword`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email }),
+        });
+        return response;
+    } catch (error) {
+        console.error("El error está en el resetPasswordFetch", error);
+    }
+};
+
 // Autenticación Google
 export const googleLogin = async (): Promise<void> => {
     try {

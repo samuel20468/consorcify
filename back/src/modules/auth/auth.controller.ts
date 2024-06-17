@@ -26,6 +26,7 @@ import { TObjectToken } from 'src/utils/types';
 import { AuthGuard } from '@nestjs/passport';
 import { EmailDto } from './dto/email.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
+
 @ApiTags('Auth')
 @Controller('auth')
 @UseInterceptors(ExcludePasswordInterceptor, ExcludeActiveInterceptor)
@@ -56,15 +57,15 @@ export class AuthController {
   }
 
   @Post('register-c-admin')
-  // @Roles(ROLE.SUPERADMIN)
-  // @UseGuards(AuthCustomGuard, RolesGuard)
+  @Roles(ROLE.SUPERADMIN)
+  @UseGuards(AuthCustomGuard, RolesGuard)
   @ApiBearerAuth()
   async signUpCAdmin(@Body() consAdmin: CreateCAdminDto): Promise<CAdmin> {
     return await this.authService.singUpCAdmin(consAdmin);
   }
 
   @Post('request-reset-password')
-  async requestPasswordReset(@Body() emailEntity: EmailDto) {
+  async requestPasswordReset(@Body() emailEntity: EmailDto): Promise<void> {
     return this.authService.requestPasswordReset(emailEntity);
   }
 

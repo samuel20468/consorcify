@@ -16,9 +16,14 @@ import { FunctionalUnitsExpensesModule } from './modules/functional-units-expens
 import { PaymentsModule } from './modules/payments/payments.module';
 import { MailsModule } from './modules/mails/mails.module';
 import { GoogleMapsModule } from './modules/google-maps/google-maps.module';
+import { RemindersModule } from './modules/reminders/reminders.module';
+import { MessagesModule } from './modules/messages/messages.module';
+import { Reflector } from '@nestjs/core';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
+    ScheduleModule.forRoot(),
     ConfigModule.forRoot({
       isGlobal: true,
       load: [typeormConfig],
@@ -48,6 +53,10 @@ import { GoogleMapsModule } from './modules/google-maps/google-maps.module';
     PaymentsModule,
     MailsModule,
     GoogleMapsModule,
+    RemindersModule,
+    MessagesModule,
   ],
+  providers: [Reflector],
+  exports: [Reflector],
 })
 export class AppModule {}

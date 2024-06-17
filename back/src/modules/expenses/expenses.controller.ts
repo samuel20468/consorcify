@@ -43,7 +43,7 @@ export class ExpensesController {
     return await this.expensesService.findAll({ page, limit });
   }
 
-  @Get('open/:consortiumId')
+  @Get('consortium/:consortiumId')
   @ApiResponse({ status: 200, type: Expense })
   @ApiResponse({
     status: 409,
@@ -54,10 +54,10 @@ export class ExpensesController {
     description:
       'El Consorcio "${consortium.name}" no tiene una expensa abierta',
   })
-  async findOpenByConsortium(
+  async findAllByConsortium(
     @Param('consortiumId', ParseUUIDPipe) consortiumId: string,
   ): Promise<Expense> {
-    return await this.expensesService.findOpenByConsortium(consortiumId);
+    return await this.expensesService.findAllByConsortium(consortiumId);
   }
 
   @Get(':id')
@@ -65,9 +65,17 @@ export class ExpensesController {
     return await this.expensesService.findOne(id);
   }
 
+  @Patch(':id/undo')
+  async undoExpense(@Param('id', ParseUUIDPipe) id: string) {
+    const expense: Expense = await this.expensesService.undoExpense(id);
+    return {
+      response: `La expensa con id: ${expense.id} fue exitosamente deshecha`,
+    };
+  }
+
   @Patch(':id/close-expense')
-  closeExpense(@Param('id', ParseUUIDPipe) id: string) {
-    return this.expensesService.closeExpense(id);
+  async closeExpense(@Param('id', ParseUUIDPipe) id: string) {
+    return await this.expensesService.closeExpense(id);
   }
 
   @Patch('toggle-status/:id')

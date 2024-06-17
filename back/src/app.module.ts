@@ -18,6 +18,7 @@ import { MailsModule } from './modules/mails/mails.module';
 import { GoogleMapsModule } from './modules/google-maps/google-maps.module';
 import { RemindersModule } from './modules/reminders/reminders.module';
 import { MessagesModule } from './modules/messages/messages.module';
+import { Reflector } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -53,5 +54,7 @@ import { MessagesModule } from './modules/messages/messages.module';
     RemindersModule,
     MessagesModule,
   ],
+  providers: [Reflector],
+  exports: [Reflector],
 })
 export class AppModule {}

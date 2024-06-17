@@ -4,19 +4,13 @@
 import { Button, Input, Label, Select } from "../ui";
 import Swal from "sweetalert2";
 
-// Validaciones
-import { getCurrentDate } from "@/helpers/functions.helper";
-
 // Endpoints
 import { expenseFetch } from "@/helpers/fetch.helper.expense";
 import { getConsortiumsByAdminId } from "@/helpers/fetch.helper.consortium";
 
 // Interfaces
 import { IConsortium } from "@/Interfaces/consortium.interfaces";
-import {
-    INewExpense,
-    INewExpenseError,
-} from "@/Interfaces/expenses.interfaces";
+import { INewExpense } from "@/Interfaces/expenses.interfaces";
 
 // Hooks
 import { useEffect, useState } from "react";
@@ -32,7 +26,7 @@ const AddExpenses = () => {
     const router = useRouter();
     const { token, data } = useSesion();
     const initialData = {
-        issue_date: getCurrentDate(),
+        issue_date: "",
         expiration_date: "",
         consortium_id: "",
         name: "",
@@ -48,7 +42,9 @@ const AddExpenses = () => {
                     const data = await response.json();
                     setconsortiums(data);
                 }
-            } catch (error) {}
+            } catch (error) {
+                console.error(error);
+            }
         };
         if (token) {
             fetchData();
@@ -110,14 +106,13 @@ const AddExpenses = () => {
                 onSubmit={handleSubmit}
             >
                 <div className="flex flex-row gap-4">
-                    <div className="flex flex-col w-1/2">
-                        <Label htmlFor="name">Nombre de expensa:</Label>
+                    <div className="flex flex-col w-2/4">
+                        <Label htmlFor="issue_date">Fecha de inicio:</Label>
                         <Input
-                            name="name"
-                            id="name"
-                            type="text"
-                            placeholder="Expensa de Junio"
-                            value={expense.name}
+                            type="date"
+                            name="issue_date"
+                            id="issue_date"
+                            value={expense.issue_date}
                             onChange={handleChange}
                         />
                     </div>
@@ -129,37 +124,45 @@ const AddExpenses = () => {
                             type="date"
                             name="expiration_date"
                             id="expiration_date"
-                            min={getCurrentDate()}
+                            min={expense.issue_date}
                             value={expense.expiration_date}
                             onChange={handleChange}
                         />
                     </div>
                 </div>
-
-                <div className="flex items-center w-full gap-2">
-                    <div className="flex w-full">
-                        <div className="flex flex-col w-full">
-                            <Label htmlFor="consortium_id">Consorcio:</Label>
-                            <Select
-                                value={expense.consortium_id}
-                                onChange={handleChange}
-                                name="consortium_id"
-                                id="consortium_id"
-                            >
-                                <option value="" disabled>
-                                    Elija un Consorcio
-                                </option>
-                                {consortiums.length !== 0 &&
-                                    consortiums.map((consortium) => (
-                                        <option
-                                            key={consortium.id}
-                                            value={consortium.id}
-                                        >
-                                            {consortium.name}
-                                        </option>
-                                    ))}
-                            </Select>
-                        </div>
+                <div className="flex flex-row gap-4">
+                    <div className="flex flex-col w-2/4">
+                        <Label htmlFor="name">Nombre de expensa:</Label>
+                        <Input
+                            name="name"
+                            id="name"
+                            type="text"
+                            placeholder="Expensa de Junio"
+                            value={expense.name}
+                            onChange={handleChange}
+                        />
+                    </div>
+                    <div className="flex flex-col w-2/4">
+                        <Label htmlFor="consortium_id">Consorcio:</Label>
+                        <Select
+                            value={expense.consortium_id}
+                            onChange={handleChange}
+                            name="consortium_id"
+                            id="consortium_id"
+                        >
+                            <option value="" disabled>
+                                Elija un Consorcio
+                            </option>
+                            {consortiums.length !== 0 &&
+                                consortiums.map((consortium) => (
+                                    <option
+                                        key={consortium.id}
+                                        value={consortium.id}
+                                    >
+                                        {consortium.name}
+                                    </option>
+                                ))}
+                        </Select>
                     </div>
                 </div>
                 <div className="mt-5 flex justify-center">

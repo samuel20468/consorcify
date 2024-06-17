@@ -56,7 +56,9 @@ const Expense = () => {
                     const data = await response.json();
                     setConsortiums(data);
                 }
-            } catch (error) {}
+            } catch (error: any) {
+                console.error(error.message);
+            }
         };
         if (token) {
             fetchData();

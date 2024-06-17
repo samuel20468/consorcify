@@ -67,3 +67,20 @@ export const formatDate = (dateString: string | undefined): string => {
 
     return `${day}/${month}/${year}`;
 };
+
+// Funcion para numeros de factura
+export const formatFactura = (numberString: string): string => {
+    // Verificar que la entrada tenga 12 caracteres
+    if (numberString.length !== 12) {
+        throw new Error("La cadena debe tener exactamente 12 caracteres.");
+    }
+
+    // Separar la cadena en dos partes
+    const firstPart = numberString.slice(0, 4); // Los primeros 4 caracteres
+    const secondPart = numberString.slice(4); // Los siguientes 8 caracteres
+
+    // Combinar las partes con un guion medio
+    const formattedNumber = `${firstPart}-${secondPart}`;
+
+    return formattedNumber;
+};

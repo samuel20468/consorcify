@@ -27,8 +27,8 @@ export const consortiumFetch = async (
             return response.json().then((errorInfo) => {
                 throw new Error(`
                     Error ${response.status}: ${
-                    errorInfo.message || response.statusText
-                }
+                        errorInfo.message || response.statusText
+                    }
             `);
             });
         } else {
@@ -54,8 +54,8 @@ export const getConsortiums = async (
             return response.json().then((errorInfo) => {
                 throw new Error(`
                     Error ${response.status}: ${
-                    errorInfo.message || response.statusText
-                }
+                        errorInfo.message || response.statusText
+                    }
             `);
             });
         } else {
@@ -83,8 +83,8 @@ export const getConsortiumsByAdminId = async (
             return response.json().then((errorInfo) => {
                 throw new Error(`
                         Error ${response.status}: ${
-                    errorInfo.message || response.statusText
-                }
+                            errorInfo.message || response.statusText
+                        }
                 `);
             });
         } else {
@@ -112,8 +112,8 @@ export const getConsortiumById = async (
             return response.json().then((errorInfo) => {
                 throw new Error(`
                         Error ${response.status}: ${
-                    errorInfo.message || response.statusText
-                }
+                            errorInfo.message || response.statusText
+                        }
                 `);
             });
         } else {

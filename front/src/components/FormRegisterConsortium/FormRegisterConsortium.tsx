@@ -349,7 +349,7 @@ const FormRegisterConsortium = ({ update = false }) => {
 
     return (
         <div className="w-full h-auto p-4 text-white border rounded-[40px]">
-            <div className="text-center my-2">
+            <div className="my-2 text-center">
                 <h1 className="mb-2 text-2xl font-bold">
                     {update ? " Modificar Consorcio" : " Crear Nuevo Consorcio"}
                 </h1>
@@ -360,25 +360,8 @@ const FormRegisterConsortium = ({ update = false }) => {
                 onSubmit={handleSubmit}
             >
                 <div className="flex flex-row gap-4">
-                    <div className="flex flex-col w-1/4">
-                        <Label htmlFor="suterh_key">Clave SUTERH:</Label>
-                        <Input
-                            id="suterh_key"
-                            name="suterh_key"
-                            type="text"
-                            placeholder="12345/01"
-                            value={consortiumRegister.suterh_key}
-                            onChange={handleChange}
-                        />
-                        {consortiumRegisterError.suterh_key &&
-                            consortiumRegister.suterh_key && (
-                                <span className="self-end text-xs text-red">
-                                    {consortiumRegisterError.suterh_key}
-                                </span>
-                            )}
-                    </div>
                     <div className="flex flex-col w-2/4">
-                        <Label htmlFor="name">Razon Social:</Label>
+                        <Label htmlFor="name">Razon social:</Label>
                         <Input
                             id="name"
                             name="name"
@@ -403,6 +386,23 @@ const FormRegisterConsortium = ({ update = false }) => {
                             consortiumRegister.cuit && (
                                 <span className="self-end text-xs text-red">
                                     {consortiumRegisterError.cuit}
+                                </span>
+                            )}
+                    </div>
+                    <div className="flex flex-col w-1/4">
+                        <Label htmlFor="suterh_key">Clave SUTERH:</Label>
+                        <Input
+                            id="suterh_key"
+                            name="suterh_key"
+                            type="text"
+                            placeholder="12345/01"
+                            value={consortiumRegister.suterh_key}
+                            onChange={handleChange}
+                        />
+                        {consortiumRegisterError.suterh_key &&
+                            consortiumRegister.suterh_key && (
+                                <span className="self-end text-xs text-redd">
+                                    {consortiumRegisterError.suterh_key}
                                 </span>
                             )}
                     </div>
@@ -436,7 +436,9 @@ const FormRegisterConsortium = ({ update = false }) => {
                         />
                     </div>
                     <div className="flex flex-col w-1/4">
-                        <Label htmlFor="category">Categoría edificio:</Label>
+                        <Label htmlFor="category">
+                            Categoría del edificio:
+                        </Label>
                         <Input
                             id="category"
                             name="category"
@@ -516,7 +518,7 @@ const FormRegisterConsortium = ({ update = false }) => {
                         />
                     </div>
                     <div className="flex flex-col w-1/4">
-                        <Label htmlFor="ufs">Cantidad UF&apos;s:</Label>
+                        <Label htmlFor="ufs">Cantidad de UF:</Label>
                         <Input
                             id="ufs"
                             name="ufs"
@@ -531,7 +533,7 @@ const FormRegisterConsortium = ({ update = false }) => {
                         />
                     </div>
                     <div className="flex flex-col w-1/4">
-                        <Label htmlFor="interest_rate">Tasa de Interes</Label>
+                        <Label htmlFor="interest_rate">Tasa de interés:</Label>
                         <Input
                             id="interest_rate"
                             name="interest_rate"
@@ -548,7 +550,7 @@ const FormRegisterConsortium = ({ update = false }) => {
                     </div>
                     <div className="flex flex-col w-1/4">
                         <Label htmlFor="first_due_day">
-                            Primer vencimiento:
+                            Vencimiento de expensas:
                         </Label>
                         <Input
                             id="first_due_day"
@@ -568,7 +570,7 @@ const FormRegisterConsortium = ({ update = false }) => {
                     <div className="flex w-full">
                         <div className="flex flex-col w-full">
                             {data?.roles?.[0] === "superadmin" && (
-                                <Label htmlFor="c_admin">Administrador </Label>
+                                <Label htmlFor="c_admin">Administrador:</Label>
                             )}{" "}
                             {data?.roles?.[0] === "superadmin" && (
                                 <Select
@@ -602,7 +604,7 @@ const FormRegisterConsortium = ({ update = false }) => {
                         </div>
                     </div>
                 </div>
-                <div className="mt-5 flex justify-center">
+                <div className="flex justify-center mt-5">
                     <Button type="submit" className="w-1/3 py-2 rounded-[40px]">
                         {update ? "Modificar Consorcio" : "Crear Consorcio"}
                     </Button>

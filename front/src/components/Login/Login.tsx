@@ -201,7 +201,7 @@ const Login = () => {
                             <div className="flex items-center justify-between w-full">
                                 <Label htmlFor="email">E-mail:</Label>
                                 {errors.email && userData.email && (
-                                    <span className="self-end text-xs text-red-500">
+                                    <span className="self-end text-xs text-redd">
                                         {errors.email}
                                     </span>
                                 )}
@@ -303,7 +303,7 @@ const Login = () => {
                                 <div className="flex items-center justify-between w-full">
                                     <Label htmlFor="email">E-mail:</Label>
                                     {errors.email && userData.email && (
-                                        <span className="self-end text-xs text-red-500">
+                                        <span className="self-end text-xs text-redd">
                                             {errors.email}
                                         </span>
                                     )}

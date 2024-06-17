@@ -123,7 +123,7 @@ const AddExpenses = () => {
                     </div>
                     <div className="flex flex-col w-2/4">
                         <Label htmlFor="expiration_date">
-                            Fecha de Vencimiento
+                            Fecha de cierre:
                         </Label>
                         <Input
                             type="date"
@@ -139,13 +139,12 @@ const AddExpenses = () => {
                 <div className="flex items-center w-full gap-2">
                     <div className="flex w-full">
                         <div className="flex flex-col w-full">
-                            <Label htmlFor="consortium_id">Consorcio</Label>
+                            <Label htmlFor="consortium_id">Consorcio:</Label>
                             <Select
                                 value={expense.consortium_id}
                                 onChange={handleChange}
                                 name="consortium_id"
                                 id="consortium_id"
-                                defaultValue=""
                             >
                                 <option value="" disabled>
                                     Elija un Consorcio

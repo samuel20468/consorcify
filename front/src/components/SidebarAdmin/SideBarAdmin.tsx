@@ -23,7 +23,7 @@ const SideBarAdmin = () => {
                             href={item.link}
                             key={item.id}
                             className={`flex flex-col items-center text-xs lg:text-base ${
-                                isActive ? "bg-blue" : ""
+                                isActive ? "bg-bluee" : ""
                             }`}
                         >
                             <div>{item.icon}</div>

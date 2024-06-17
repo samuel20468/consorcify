@@ -158,7 +158,6 @@ const FormSupplier = () => {
                             name="consortium_id"
                             value={registerSupplier.consortium_id}
                             onChange={handleSelect}
-                            defaultValue=""
                         >
                             <option value="" disabled>
                                 Seleccione un consorcio
@@ -198,7 +197,7 @@ const FormSupplier = () => {
                             value={registerSupplier.cuit}
                             type="text"
                             onChange={handleChange}
-                            placeholder="11-11111111-1"
+                            placeholder="30123456789"
                         />
                         {errorSupplier.cuit && registerSupplier.cuit && (
                             <span className="self-end text-xs text-red">
@@ -221,14 +220,14 @@ const FormSupplier = () => {
 
                 <div className="flex flex-row gap-4">
                     <div className="flex flex-col w-3/4">
-                        <Label htmlFor="address">Dirección:</Label>
+                        <Label htmlFor="address">Dirección y localidad:</Label>
                         <Input
                             id="address"
                             name="address"
                             value={registerSupplier.address}
                             type="text"
                             onChange={handleChange}
-                            placeholder="Calle Falsa 123"
+                            placeholder="Bulnes 1789, CABA"
                         />
                     </div>
                     <div className="flex flex-col w-1/4">
@@ -249,12 +248,12 @@ const FormSupplier = () => {
                             name="balance"
                             value={
                                 registerSupplier.balance === 0
-                                    ? ""
+                                    ? 0
                                     : registerSupplier.balance
                             }
                             type="number"
                             onChange={handleChange}
-                            placeholder="$2.000"
+                            placeholder="$0,00"
                         />
                     </div>
                 </div>

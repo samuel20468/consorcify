@@ -38,7 +38,6 @@ const Expense = () => {
                 if (response) {
                     const data = await response.json();
                     setExpensas(data);
-                    console.log(data);
                 }
             } catch (error: any) {
                 console.error(error.message);
@@ -114,9 +113,9 @@ const Expense = () => {
                 <div className="w-[90%] border-t border-b border-white flex justify-between p-2 mt-5 text-center">
                     <h1 className="w-1/5 text-xl">Expensa</h1>
                     <h1 className="w-1/5 text-xl">Fecha de inicio</h1>
-                    <h1 className="w-1/5 text-xl">Fecha de Vencimiento</h1>
+                    <h1 className="w-1/5 text-xl">Fecha de cierre</h1>
                     <h1 className="w-1/5 text-xl">Estado</h1>
-                    <h1 className="w-1/5 text-xl">Total Expensas</h1>
+                    <h1 className="w-1/5 text-xl">Total expensas</h1>
                 </div>
                 {expensas.length > 0 ? (
                     <ExpenseCards expenses={expensas} />

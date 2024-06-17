@@ -2,6 +2,8 @@
 
 // Estilos y contenedores
 import { Button, ContainerDashboard, Title } from "@/components/ui";
+import { formatearNumero } from "@/helpers/functions.helper";
+import Map from "@/components/Map/Map";
 
 // Endpoints
 import {
@@ -55,8 +57,8 @@ const ConsortiumId = () => {
             showCancelButton: true,
             confirmButtonText: "Desactivar",
             cancelButtonText: "Cancelar",
-            cancelButtonColor: "#8b0000",
-            confirmButtonColor: "#008f39",
+            cancelButtonColor: "#c36961",
+            confirmButtonColor: "#609e87",
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
@@ -88,149 +90,122 @@ const ConsortiumId = () => {
     };
 
     return (
-        <ContainerDashboard className="w-[90%] h-[90vh]">
-            <Title>
-                <Link href="/dashboard/admin/consortiums">Consorcios </Link>
-                <span className="text-xl font-thin">| {consortium?.name}</span>
-            </Title>
-
-            <div className="w-[90%] h-full border rounded-[40px] flex justify-center items-center flex-col">
-                <div className="w-full h-[40%]  p-2 flex justify-center items-center">
-                    <img
-                        src={consortium?.picture}
-                        alt={consortium?.name}
-                        className="max-h-[250px] h-auto"
-                    />
-                </div>
-                <div className="w-[90%] h-[10%] border p-2 flex justify-center items-center flex-col text-black bg-gray-50 rounded-[40px]">
-                    <p className="text-2xl font-bold">
-                        {consortium?.street_name} -{" "}
-                        {consortium?.building_number} - CP:{" "}
-                        {consortium?.zip_code}
-                    </p>
-                    <p>
-                        {consortium?.city} - {consortium?.province} -{" "}
-                        {consortium?.country}
-                    </p>
-                </div>
-                <div className="w-full h-[50%] p-2 flex justify-around py-5 items-center flex-col">
-                    <h2>Detalles del Consorcio</h2>
-                    <div className="flex items-center justify-center w-full ">
-                        <div className="flex items-center justify-center w-1/3 gap-1 border rounded-lg">
-                            <p className="flex justify-start w-1/3">
-                                Unidades Funcionales:{" "}
-                            </p>
-                            <p className="flex justify-center w-1/3">
-                                {consortium?.ufs}
-                            </p>
+        <div className="h-screen">
+            <ContainerDashboard>
+                <Title>
+                    Consorcios{" "}
+                    <span className="text-2xl font-thin">
+                        | {consortium?.name}
+                    </span>
+                </Title>
+                <div className="flex flex-col items-center gap-4 p-4 mt-5 border grad">
+                    <div className="flex w-full h-3/5">
+                        <div className="w-1/3">
+                            <img
+                                className="h-full rounded-[40px]"
+                                src={consortium?.picture}
+                                alt={consortium?.name}
+                            />
                         </div>
-                        <div className="flex items-center justify-center w-1/3 gap-1 border rounded-lg">
-                            <p className="flex justify-start w-1/3">
-                                Categoria:{" "}
-                            </p>
-                            <p className="flex justify-center w-1/3">
-                                {consortium?.category}
-                            </p>{" "}
-                        </div>
-                    </div>
-                    <div className="flex items-center justify-center w-full ">
-                        <div className="flex items-center justify-center w-1/3 gap-1 border rounded-lg">
-                            <p className="flex justify-start w-1/3">Pisos: </p>
-                            <p className="flex justify-center w-1/3">
-                                {consortium?.floors}
-                            </p>
-                        </div>
-                        <div className="flex items-center justify-center w-1/3 gap-1 border rounded-lg">
-                            <p className="flex justify-start w-1/3">
-                                Clave Suterh:{" "}
-                            </p>
-                            <p className="flex justify-center w-1/3">
-                                {consortium?.suterh_key}
-                            </p>
-                        </div>
-                    </div>
-                    <div className="flex items-center justify-center w-full ">
-                        <div className="flex items-center justify-center w-1/3 gap-1 border rounded-lg">
-                            <p className="flex justify-start w-1/3">
-                                Vencimiento Expensas:{" "}
-                            </p>
-                            <p className="flex justify-center w-1/3">
-                                {consortium?.first_due_day}
-                            </p>
-                        </div>
-                        <div className="flex items-center justify-center w-1/3 gap-1 border rounded-lg">
-                            <p className="flex justify-start w-1/3">
-                                Interes por Vencimiento:{" "}
-                            </p>
-                            <p className="flex justify-center w-1/3">
-                                {consortium?.interest_rate}%
-                            </p>
-                        </div>
-                    </div>
-                    <div className="flex items-center justify-center w-full ">
-                        <div className="flex items-center justify-center w-1/3 gap-1 border rounded-lg">
-                            <p className="flex justify-start w-1/3">CUIT: </p>
-                            <p className="flex justify-center w-1/3">
-                                {consortium?.cuit}
-                            </p>
-                        </div>
-                        <div className="flex items-center justify-center w-1/3 gap-1 border rounded-lg">
-                            <p className="flex justify-start w-1/3">Activo: </p>
-                            <p className="flex justify-center w-1/3">
-                                {consortium?.active ? "Activo" : "Inactivo"}
-                            </p>
+                        <div className="flex flex-col justify-center w-2/3 py-2">
+                            <div className="mb-5 text-center">
+                                <h1 className="text-4xl font-bold">
+                                    {consortium?.name}
+                                </h1>
+                            </div>
+                            <div className="flex flex-col gap-2 px-2 text-center">
+                                <div>
+                                    <h1 className="text-xl font-extralight">
+                                        <span className="font-bold">CUIT:</span>{" "}
+                                        {formatearNumero(consortium?.cuit!)}
+                                    </h1>
+                                </div>
+                                <div>
+                                    <h1 className="text-xl font-extralight">
+                                        <span className="font-bold">
+                                            Dirección:
+                                        </span>{" "}
+                                        {consortium?.street_name}{" "}
+                                        {consortium?.building_number} (
+                                        {consortium?.city},{" "}
+                                        {consortium?.province},{" "}
+                                        {consortium?.country})
+                                    </h1>
+                                </div>
+                                <div>
+                                    <h1 className="text-xl font-extralight">
+                                        <span className="font-bold">
+                                            Administrador:
+                                        </span>{" "}
+                                        {consortium?.c_admin.name}
+                                    </h1>
+                                </div>
+                                <div className="flex justify-evenly">
+                                    <h1 className="text-xl font-extralight">
+                                        <span className="font-bold">
+                                            Categoría del edificio:
+                                        </span>{" "}
+                                        {consortium?.category}
+                                    </h1>
+                                    <h1 className="text-xl font-extralight">
+                                        <span className="font-bold">
+                                            Clave SUTERH:
+                                        </span>{" "}
+                                        {consortium?.suterh_key}
+                                    </h1>
+                                </div>
+                                <div className="flex justify-evenly">
+                                    <h1 className="text-xl font-extralight">
+                                        <span className="font-bold">
+                                            Cantidad de pisos:
+                                        </span>
+                                        {"  "}
+                                        {consortium?.floors}
+                                    </h1>
+                                    <h1 className="text-xl font-extralight">
+                                        <span className="font-bold">
+                                            Unidades funcionales:
+                                        </span>{" "}
+                                        {consortium?.ufs}
+                                    </h1>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
-                    <div className="flex items-center justify-center w-full ">
-                        <div className="flex items-center justify-center w-1/3 gap-1 border rounded-lg">
-                            <p className="flex justify-start w-1/3">
-                                Nombre del Administrador:{" "}
-                            </p>
-                            <p className="flex justify-center w-1/3">
-                                {consortium?.c_admin.name}
-                            </p>
-                        </div>
-                        <div className="flex items-center justify-center w-1/3 gap-1 border rounded-lg">
-                            <p className="flex justify-start w-1/3">
-                                Email del Administrador:{" "}
-                            </p>
-                            <p className="flex justify-center w-1/3">
-                                {consortium?.c_admin.email}
-                            </p>
-                        </div>
+                    <div className="w-full h-2/5">
+                        <Map />
                     </div>
                 </div>
-            </div>
-            <div className="flex justify-end w-[85%] py-2 gap-2">
-                <Link
-                    href={`/dashboard/admin/consortiums/unidadesFuncionales/${consortium?.id}`}
-                >
-                    <Button className="w-44 py-2 rounded-[40px]">
-                        Unidades Funcionales
+                <div className="flex justify-around w-[70%] my-5 gap-2">
+                    <Link
+                        href={`/dashboard/admin/consortiums/unidadesFuncionales/${consortium?.id}`}
+                    >
+                        <Button className="w-44 py-2 rounded-[40px]">
+                            Ver Unidades Funcionales
+                        </Button>
+                    </Link>
+                    <Link
+                        href={`/dashboard/admin/consortiums/${params.id}/${consortium?.id}`}
+                        as={`/dashboard/admin/consortiums/${params.id}/addunidad`}
+                    >
+                        <Button className="w-44 py-2 rounded-[40px]">
+                            Agregar Unidad Funcional
+                        </Button>
+                    </Link>
+                    <Link href={`/updateConsortium/${consortium?.id}`}>
+                        <Button className="w-44 py-2 rounded-[40px]">
+                            Modificar Consorcio
+                        </Button>
+                    </Link>
+                    <Button
+                        className="w-44 py-2 rounded-[40px]"
+                        onClick={handleDelete}
+                    >
+                        Desactivar Consorcio
                     </Button>
-                </Link>
-                <Link href={`/updateConsortium/${consortium?.id}`}>
-                    <Button className="w-44 py-2 rounded-[40px]">
-                        Modificar Consorcio
-                    </Button>
-                </Link>
-                <Button
-                    className="w-44 py-2 rounded-[40px]"
-                    onClick={handleDelete}
-                >
-                    Desactivar Consorcio
-                </Button>
-                <Link
-                    href={`/dashboard/admin/consortiums/${params.id}/${consortium?.id}`}
-                    as={`/dashboard/admin/consortiums/${params.id}/addunidad`}
-                >
-                    <Button className="w-44 py-2 rounded-[40px]">
-                        Agregar Unidad Funcional
-                    </Button>
-                </Link>
-            </div>
-        </ContainerDashboard>
+                </div>
+            </ContainerDashboard>
+        </div>
     );
 };
 

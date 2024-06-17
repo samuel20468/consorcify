@@ -1,16 +1,27 @@
 "use client";
 
+// Estilos y componentes
+import { ContainerDashboard, Title } from "@/components/ui";
 import FormRegisterConsortium from "@/components/FormRegisterConsortium/FormRegisterConsortium";
-import { ContainerDashboard } from "@/components/ui";
+
+// Hooks
 import useAuth from "@/helpers/useAuth";
+
+// -----------------------
 
 const AddConsortium = () => {
     useAuth();
 
     return (
-        <div className="flex flex-col h-auto">
+        <div className="h-screen">
             <ContainerDashboard>
-                <div className="flex items-center justify-center my-10 rounded-lg h-content bg-slate-200">
+                <Title>
+                    Consorcios{" "}
+                    <span className="text-xl font-thin">
+                        | Modificar Consorcio
+                    </span>
+                </Title>
+                <div className="w-[80%]">
                     <FormRegisterConsortium update={true} />
                 </div>
             </ContainerDashboard>

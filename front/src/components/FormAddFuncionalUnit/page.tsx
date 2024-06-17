@@ -1,21 +1,32 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { Button, Input, Label } from "../ui";
-import { usePathname } from "next/navigation";
-import useAuth from "@/helpers/useAuth";
-import useSesion from "@/helpers/useSesion";
-import { validateEmail } from "@/helpers/Validations/validate.email";
-import { areFieldsNotEmpty } from "@/helpers/Validations/validate.empty";
-import { addFuncionalUnit } from "@/helpers/fetch.helper.uf";
+
+// Estilos y componentes
+import { Button, Input, Label, Select } from "../ui";
 import Swal from "sweetalert2";
+
+// Iterfaces
 import {
     INewFunctionalUnits,
     INewFunctionalUnitsError,
 } from "@/Interfaces/functionalUnits.interfaces";
 
+// Validaciones
+import { validateEmail } from "@/helpers/Validations/validate.email";
+import { areFieldsNotEmpty } from "@/helpers/Validations/validate.empty";
+
+// Endpoints
+import { addFuncionalUnit } from "@/helpers/fetch.helper.uf";
+
+// Hooks
+import { useEffect, useState } from "react";
+import useAuth from "@/helpers/useAuth";
+import useSesion from "@/helpers/useSesion";
+
+// -----------------
+
 const FormAddFuncionalUnit = ({ consortium_id }: { consortium_id: string }) => {
     useAuth();
-    const { token, data } = useSesion();
+    const { token } = useSesion();
     const initialData = {
         type: "",
         location: "",
@@ -26,7 +37,6 @@ const FormAddFuncionalUnit = ({ consortium_id }: { consortium_id: string }) => {
         balance: 0,
         consortium_id: consortium_id,
     };
-    const path = usePathname();
     const [formData, setFormData] = useState<INewFunctionalUnits>(initialData);
     const [errors, setErrors] = useState<INewFunctionalUnitsError>({
         type: "",
@@ -99,22 +109,24 @@ const FormAddFuncionalUnit = ({ consortium_id }: { consortium_id: string }) => {
     }, [formData]);
 
     return (
-        <div className="flex flex-col items-center justify-center w-1/4 h-full">
-            <div className="flex flex-col items-center justify-center my-3 text-xl">
-                <h2>Agregar Unidad Funcional</h2>
+        <div className="w-full h-auto p-4 text-white border rounded-[40px]">
+            <div className="my-2 text-center">
+                <h1 className="mb-2 text-2xl font-bold">
+                    Agregar Unidad Funcional
+                </h1>
             </div>
             <form
                 onSubmit={handleSubmit}
-                className="flex flex-col items-center justify-center w-full gap-2"
+                className="mx-10 my-5"
+                autoComplete="off"
             >
-                <div className="w-full">
-                    <Label>Tipo de Unidad:</Label>
-                    <select
+                <div className="flex flex-col w-full">
+                    <Label htmlFor="type">Tipo de Unidad:</Label>
+                    <Select
+                        id="type"
+                        name="type"
                         value={formData.type}
                         onChange={handleChange}
-                        name="type"
-                        id="type"
-                        className="w-full h-10 p-2 my-1 text-gray-200 rounded-md shadow-xl bg-input placeholder:font-extralight placeholder:text-gray-500 focus:outline-none no-spinners"
                     >
                         <option value="" disabled>
                             Seleccione un tipo de unidad
@@ -126,78 +138,94 @@ const FormAddFuncionalUnit = ({ consortium_id }: { consortium_id: string }) => {
                         </option>
                         <option value="Oficina">Oficina</option>
                         <option value="Otro">Otro</option>
-                    </select>
+                    </Select>
                 </div>
-                <div className="w-full">
-                    <Label>Ubicacion</Label>
-                    <Input
-                        type="text"
-                        name="location"
-                        value={formData.location}
-                        onChange={handleChange}
-                    />
+                <div className="flex flex-row gap-4">
+                    <div className="flex flex-col w-1/3">
+                        <Label htmlFor="location">Ubicación:</Label>
+                        <Input
+                            id="location"
+                            name="location"
+                            type="text"
+                            placeholder="Piso 1, Departamento A"
+                            value={formData.location}
+                            onChange={handleChange}
+                        />
+                    </div>
+                    <div className="flex flex-col w-1/3">
+                        <Label htmlFor="number">Número:</Label>
+                        <Input
+                            id="number"
+                            name="number"
+                            type="text"
+                            placeholder="1A"
+                            value={formData.number}
+                            onChange={handleChange}
+                        />
+                    </div>
+                    <div className="flex flex-col w-1/3">
+                        <Label htmlFor="balance">Saldo:</Label>
+                        <Input
+                            id="balance"
+                            name="balance"
+                            type="number"
+                            step="0.01"
+                            placeholder="1500.5"
+                            value={
+                                formData.balance == 0 ? "" : formData.balance
+                            }
+                            onChange={handleChange}
+                        />
+                    </div>
                 </div>
-                <div className="w-full">
-                    <Label>Numero</Label>
+                <div className="flex flex-col w-full">
+                    <Label htmlFor="owner">Propietario:</Label>
                     <Input
-                        type="text"
-                        name="number"
-                        value={formData.number}
-                        onChange={handleChange}
-                    />
-                </div>
-                <div className="w-full">
-                    <Label>Propietario</Label>
-                    <Input
-                        type="text"
+                        id="owner"
                         name="owner"
+                        type="text"
+                        placeholder="María López"
                         value={formData.owner}
                         onChange={handleChange}
                     />
                 </div>
-                <div className="w-full">
-                    <Label>Teléfono del Propietario</Label>
-                    <Input
-                        type="text"
-                        name="owner_phone_number"
-                        value={formData.owner_phone_number}
-                        onChange={handleChange}
-                    />
-                </div>
-                <div className="w-full">
-                    <div className="flex items-center justify-between">
-                        <Label>Email del Propietario</Label>
+                <div className="flex flex-row gap-4">
+                    <div className="flex flex-col w-1/2">
+                        <Label htmlFor="owner_email">
+                            Email del Propietario:
+                        </Label>
+                        <Input
+                            type="text"
+                            name="owner_email"
+                            placeholder="maria.lopez@example.com"
+                            value={formData.owner_email}
+                            onChange={handleChange}
+                        />
                         {formData.owner_email.trim() !== "" &&
                             errors.owner_email && (
-                                <span className="mt-2 text-sm text-red-500">
+                                <span className="self-end text-xs text-redd">
                                     {errors.owner_email}
                                 </span>
                             )}
                     </div>
-                    <Input
-                        type="text"
-                        name="owner_email"
-                        placeholder="example@example.com"
-                        value={formData.owner_email}
-                        onChange={handleChange}
-                    />
-                </div>
-                <div className="w-full">
-                    <div>
-                        <Label>Saldo</Label>
+                    <div className="flex flex-col w-1/2">
+                        <Label htmlFor="owner_phone_number">
+                            Teléfono del Propietario:
+                        </Label>
+                        <Input
+                            id="owner_phone_number"
+                            name="owner_phone_number"
+                            type="text"
+                            placeholder="+5491145678901"
+                            value={formData.owner_phone_number}
+                            onChange={handleChange}
+                        />
                     </div>
-                    <Input
-                        type="number"
-                        name="balance"
-                        step="0.01"
-                        value={formData.balance == 0 ? "" : formData.balance}
-                        placeholder="Ejemplo: 1000,00"
-                        onChange={handleChange}
-                    />
                 </div>
-                <div className="w-full">
-                    <Button type="submit" className="w-full py-2 rounded-md">
-                        Guardar
+
+                <div className="flex justify-center mt-5">
+                    <Button type="submit" className="w-1/3 py-2 rounded-[40px]">
+                        Guardar Unidad Funcional
                     </Button>
                 </div>
             </form>

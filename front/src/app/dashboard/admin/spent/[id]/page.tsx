@@ -2,6 +2,8 @@
 
 // Estilos y componentes
 import { ContainerDashboard, Title } from "@/components/ui";
+import { IoTrashOutline } from "react-icons/io5";
+import { formatDate, formatMoney } from "@/helpers/functions.helper";
 
 // Endpoints
 import { getExpeditureById } from "@/helpers/fetch.helper.expenditure";
@@ -50,8 +52,61 @@ const ExpenditureId = () => {
                         | Detalle de gasto
                     </span>
                 </Title>
-                <div>
-                    <h1>{expenditure?.description}</h1>
+                <div className="flex flex-col justify-around items-center p-4 mt-5 border w-[900px] h-[400px] rounded-[40px]">
+                    <div>
+                        <h1 className="text-4xl font-bold">
+                            {expenditure?.supplier.name}
+                        </h1>
+                    </div>
+
+                    <div>
+                        <h1 className="text-3xl font-extralight">
+                            Descripción del servicio:{" "}
+                            <span className="font-bold">
+                                {expenditure?.description}
+                            </span>
+                        </h1>
+                    </div>
+                    <div className="flex justify-around w-full">
+                        <div className="flex flex-col">
+                            <h1 className="text-xl text-center">Fecha:</h1>
+                            <h1 className="text-2xl font-extralight">
+                                {formatDate(expenditure?.date)}
+                            </h1>
+                        </div>
+
+                        <div className="flex flex-col">
+                            <h1 className="text-xl text-center">Categoría:</h1>{" "}
+                            <h1 className="text-2xl font-extralight">
+                                {expenditure?.category}
+                            </h1>
+                        </div>
+
+                        <div className="flex flex-col">
+                            <h1 className="text-xl text-center">Total:</h1>{" "}
+                            <h1 className="text-2xl font-extralight">
+                                {formatMoney(expenditure?.total_amount)}
+                            </h1>
+                        </div>
+                    </div>
+
+                    <div className="flex items-center gap-1">
+                        <h1 className="text-xl text-center">
+                            Estado del gasto:
+                        </h1>
+                        <h1
+                            className={`text-2xl font-extralight ${
+                                expenditure?.status === "impago"
+                                    ? "text-redd"
+                                    : "text-greenn"
+                            }`}
+                        >
+                            {expenditure?.status}
+                        </h1>
+                    </div>
+                    <div className="cursor-pointer text-redd">
+                        <IoTrashOutline size={30} />
+                    </div>
                 </div>
             </ContainerDashboard>
         </div>

@@ -2,7 +2,7 @@
 
 // Estilos y componentes
 import { Button, ContainerHeaderDashboard } from "../ui";
-import { CiUser } from "react-icons/ci";
+import RoleIcon from "../Navbar/RoleIcon/roleIcon";
 
 // Interfaces
 import { IUser } from "@/Interfaces/user.interfaces";
@@ -17,7 +17,6 @@ import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import useSesion from "@/helpers/useSesion";
-import { FaUser, FaUserSecret, FaUserTie } from "react-icons/fa6";
 
 // ----------------------------
 
@@ -95,16 +94,11 @@ const NavbarDashboard = () => {
                         href="/dashboard/profile"
                     >
                         <Button className="flex items-center justify-evenly p-1 w-full py-2 rounded-[40px]">
-                            {data.roles?.[0] === "user" ||
-                            data.roles?.[0] === "superadmin" ? (
-                                <p>
-                                    {user?.first_name} {user?.last_name}
-                                </p>
-                            ) : (
-                                <p>{admin?.name}</p>
-                            )}
-
-                            <FaUser size={25} />
+                            {data?.roles?.[0] === "superadmin" ||
+                            data?.roles?.[0] === "user"
+                                ? user?.first_name!
+                                : admin?.name!}
+                            {data.roles && <RoleIcon role={data.roles[0]} />}
                         </Button>
                     </Link>
                     <Button

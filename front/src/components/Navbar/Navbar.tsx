@@ -7,6 +7,7 @@ import { IAdmin } from "@/Interfaces/admin.interfaces";
 import { IUser } from "@/Interfaces/user.interfaces";
 import { getAdminById } from "@/helpers/fetch.helper.admin";
 import { getUserById } from "@/helpers/fetch.helper.user";
+import { Button } from "../ui";
 
 const Navbar = ({ activeSection }: any) => {
     const [showNavbar, setShowNavbar] = useState(true);
@@ -76,9 +77,7 @@ const Navbar = ({ activeSection }: any) => {
 
     return (
         <nav
-            className={` fixed w-full z-20 mt-10 transition-transform duration-[1s] ${
-                showNavbar ? "translate-y-0" : "-translate-y-[130px]"
-            }`}
+            className={` fixed w-full z-20 mt-10 transition-transform duration-[1s] `}
         >
             <div className="flex flex-wrap items-center justify-between w-screen px-10">
                 <div className="flex flex-col space-x-3">
@@ -90,14 +89,18 @@ const Navbar = ({ activeSection }: any) => {
                 <div className="flex lg:order-2  lg:space-x-0 font-[clash-regular]">
                     {token ? (
                         <Link
+                            className=" w-56 h-full rounded-[40px]"
                             href="/dashboard"
-                            className="flex justify-center no-underlin w-[195px] text-black rounded-[50px] px-5 py-3 bg-white font-bold gap-4"
                         >
-                            {data?.roles?.[0] === "superadmin" ||
-                            data?.roles?.[0] === "user"
-                                ? user?.first_name!
-                                : admin?.name!}
-                            {data.roles && <RoleIcon role={data.roles[0]} />}
+                            <Button className="flex items-center justify-evenly w-full py-2 rounded-[40px] font-bold">
+                                {data?.roles?.[0] === "superadmin" ||
+                                data?.roles?.[0] === "user"
+                                    ? user?.first_name!
+                                    : admin?.name!}
+                                {data.roles && (
+                                    <RoleIcon role={data.roles[0]} />
+                                )}
+                            </Button>
                         </Link>
                     ) : (
                         <>

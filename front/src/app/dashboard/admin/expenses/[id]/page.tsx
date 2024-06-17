@@ -20,9 +20,9 @@ import { useParams, usePathname, useRouter } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
 import Link from "next/link";
+import { formatDate, formatMoney } from "@/helpers/functions.helper";
 
 // ------------------
-
 
 const Page = () => {
     useAuth();
@@ -95,84 +95,77 @@ const Page = () => {
     };
 
     return (
-        <ContainerDashboard className="w-[90%] h-[90vh]">
-            {expensa && (
-                <Title>
-                    <p className="w-1/2">
-                        Expensas - {expensa?.consortium.name}
-                    </p>
-                </Title>
-            )}
-
-            {expensa ? (
-                <div className="w-[90%] h-full flex flex-col">
-                    <div className="flex justify-end w-full">
-                        <Link href="/dashboard/admin/expenses">
-                            <Button className="w-32 py-2 rounded-[40px] text-sm">
-                                Volver
-                            </Button>
-                        </Link>
-                    </div>
-
-                    <div className="flex justify-center w-full h-auto py-2">
-                        <p className="flex items-center justify-center w-1/4">
-                            Fecha
-                        </p>
-                        <p className="flex items-center justify-center w-1/4">
-                            Descripción
-                        </p>
-                        <p className="flex items-center justify-center w-1/4">
-                            Categoría
-                        </p>
-                        <p className="flex items-center justify-center w-1/4">
-                            Total
-                        </p>
-                    </div>
-                    <div
-                        className="w-full h-[60vh]
-                    flex flex-col  gap-2"
-                    >
-                        {expensa.expenditures.map((expenditure) => (
-                            <div
-                                key={expenditure.id}
-                                className="text-white w-full border rounded-[40px] flex items-center py-3"
-                            >
-                                <p className="flex items-center justify-center w-1/4">
-                                    {expenditure.date}
-                                </p>
-                                <p className="flex items-center justify-center w-1/4">
-                                    {expenditure.description}
-                                </p>
-                                <p className="flex items-center justify-center w-1/4">
-                                    {expenditure.category}
-                                </p>
-                                <p className="flex items-center justify-center w-1/4">
-                                    {expenditure.total_amount}
-                                </p>
-                            </div>
-                        ))}
-                    </div>
-                    <div className="flex items-center justify-end w-full gap-2 py-2">
-                        <div className="flex items-center justify-end w-1/4">
-                            TOTAL ${expensa.total_amount}
+        <div className="h-screen">
+            <ContainerDashboard>
+                {expensa && (
+                    <Title>
+                        Expensas{" "}
+                        <span className="text-2xl font-light">
+                            | {expensa?.name}
+                        </span>
+                    </Title>
+                )}
+                {expensa ? (
+                    <div className="w-[95%] h-full flex flex-col">
+                        <div className="flex justify-center w-full h-auto py-2">
+                            <p className="flex items-center justify-center w-1/4">
+                                Fecha
+                            </p>
+                            <p className="flex items-center justify-center w-1/4">
+                                Descripción
+                            </p>
+                            <p className="flex items-center justify-center w-1/4">
+                                Categoría
+                            </p>
+                            <p className="flex items-center justify-center w-1/4">
+                                Total
+                            </p>
                         </div>
-                        {expensa.status !== "Cerrada" && (
-                            <Button
-                                onClick={handleSubmit}
-                                className=" w-40 py-2 rounded-[40px]"
-                            >
-                                Cerrar Expensa
-                            </Button>
-                        )}
+                        <div
+                            className="w-full h-[60vh]
+                    flex flex-col  gap-2"
+                        >
+                            {expensa.expenditures.map((expenditure) => (
+                                <div
+                                    key={expenditure.id}
+                                    className="text-white w-full border rounded-[40px] flex items-center py-3"
+                                >
+                                    <p className="flex items-center justify-center w-1/4">
+                                        {formatDate(expenditure.date)}
+                                    </p>
+                                    <p className="flex items-center justify-center w-1/4">
+                                        {expenditure.description}
+                                    </p>
+                                    <p className="flex items-center justify-center w-1/4">
+                                        {expenditure.category}
+                                    </p>
+                                    <p className="flex items-center justify-center w-1/4">
+                                        {formatMoney(expenditure.total_amount)}
+                                    </p>
+                                </div>
+                            ))}
+                        </div>
+                        <div className="flex items-center justify-end w-full gap-2 py-2">
+                            <div className="flex items-center justify-end w-1/4 text-xl">
+                                TOTAL: {formatMoney(expensa.total_amount)}
+                            </div>
+                            {expensa.status !== "Cerrada" && (
+                                <Button
+                                    onClick={handleSubmit}
+                                    className=" w-40 py-2 rounded-[40px]"
+                                >
+                                    Cerrar Expensa
+                                </Button>
+                            )}
+                        </div>
                     </div>
-                </div>
-            ) : (
-                // Renderizar un indicador de carga mientras se carga la información de la expensa
-                <p className="items-center justify-center w-full h-full">
-                    Cargando...
-                </p>
-            )}
-        </ContainerDashboard>
+                ) : (
+                    <p className="items-center justify-center w-full h-full">
+                        Cargando...
+                    </p>
+                )}
+            </ContainerDashboard>
+        </div>
     );
 };
 export default Page;

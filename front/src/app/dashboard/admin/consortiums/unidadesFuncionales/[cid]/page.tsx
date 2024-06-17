@@ -1,33 +1,59 @@
 "use client";
-import { IFunctionalUnits } from "@/Interfaces/functionalUnits.interfaces";
+
+// Estilos y componentes
 import { Button, ContainerDashboard, Title } from "@/components/ui";
+import Swal from "sweetalert2";
+
+// Interfaces
+import { IFunctionalUnits } from "@/Interfaces/functionalUnits.interfaces";
+
+// Endpoints
 import { getFuncionalUnits } from "@/helpers/fetch.helper.uf";
+
+// Hooks
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
-import Link from "next/link";
-import { useParams } from "next/navigation";
-import React, { useEffect } from "react";
-import Swal from "sweetalert2";
+import { getConsortiumById } from "@/helpers/fetch.helper.consortium";
+import { IConsortium } from "@/Interfaces/consortium.interfaces";
+
+// --------------------
 
 const AllFunctionalUnits = () => {
     useAuth();
     const { cid }: { cid: string } = useParams();
-    const { token, data } = useSesion();
-    const [functionalUnits, setFunctionalUnits] = React.useState<
-        IFunctionalUnits[]
-    >([]);
+    const { token } = useSesion();
+    const [functionalUnits, setFunctionalUnits] = useState<IFunctionalUnits[]>(
+        []
+    );
+    const [consortiumName, setConsortiumName] = useState<string>("");
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await getFuncionalUnits(token, cid);
-                if (response) {
-                    setFunctionalUnits(response);
+                const unitsResponse = await getFuncionalUnits(token, cid);
+                if (unitsResponse) {
+                    setFunctionalUnits(unitsResponse);
                 } else {
                     Swal.fire({
                         icon: "error",
                         title: "Error",
-                        text: "No se ha podido obtener los datos",
+                        text: "No se ha podido obtener los datos de las unidades funcionales",
+                        confirmButtonText: "Aceptar",
+                    });
+                }
+
+                const consortiumResponse = await getConsortiumById(cid, token);
+                if (consortiumResponse) {
+                    const consortiumData: IConsortium =
+                        await consortiumResponse.json();
+                    setConsortiumName(consortiumData.name);
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error",
+                        text: "No se ha podido obtener los datos del consorcio",
                         confirmButtonText: "Aceptar",
                     });
                 }
@@ -38,48 +64,50 @@ const AllFunctionalUnits = () => {
         if (token) {
             fetchData();
         }
-    }, [token]);
+    }, [token, cid]);
 
     return (
-        <ContainerDashboard className="w-[90%] h-[85vh]">
-            <Title>All Functional Units</Title>
-            <div className="w-[90%] flex justify-end items-center py-1">
-                <Link href={`/dashboard/admin/consortiums/${cid}`}>
-                    <Button className="w-32 py-2 rounded-[40px]">Volver</Button>
-                </Link>
-            </div>
-            <div className="w-[90%] h-[75vh] border rounded-[40px] flex  items-center flex-col">
-                <div className="h-[10%] w-[90%] border-b flex items-center justify-between">
-                    <div className="w-1/3 flex justify-center">Locación</div>
-                    <div className="w-1/3 flex justify-center">
-                        Codigo Unidad
-                    </div>
-                    <div className="w-1/3 flex justify-center">Propietario</div>
+        <div className="h-screen">
+            <ContainerDashboard>
+                <Title>
+                    Consorcios{" "}
+                    <span className="text-2xl font-thin">
+                        | {consortiumName}{" "}
+                    </span>
+                    <span className="text-xl font-thin">
+                        | Unidades Funcionales
+                    </span>
+                </Title>
+                <div className="w-[90%] border-t border-b border-white flex justify-between p-2 mt-5 text-center">
+                    <div className="w-1/3 text-xl">Locación</div>
+                    <div className="w-1/3 text-xl">Codigo Unidad</div>
+                    <div className="w-1/3 text-xl">Propietario</div>
                 </div>
-                <div className="w-[90%] h-[70%] flex flex-col items-center ">
-                    {functionalUnits.length !== 0 ? (
-                        functionalUnits.map((unit) => (
-                            <div
-                                key={unit.id}
-                                className="h-auto w-full flex items-center py-2"
-                            >
-                                <div className="w-full h-1/3 flex justify-center">
-                                    {unit.location}
-                                </div>
-                                <div className="w-full h-1/3 flex justify-center">
-                                    {unit.code}
-                                </div>
-                                <div className="w-full h-1/3 flex justify-center">
-                                    {unit.owner}
-                                </div>
+
+                {functionalUnits.length !== 0 ? (
+                    functionalUnits.map((unit) => (
+                        <div
+                            key={unit.id}
+                            className="flex justify-between py-5 text-center w-[90%]"
+                        >
+                            <div className="w-1/3">
+                                <h1>{unit.location}</h1>
                             </div>
-                        ))
-                    ) : (
-                        <div>No hay Unidades Fucionales</div>
-                    )}
-                </div>
-            </div>
-        </ContainerDashboard>
+                            <div className="w-1/3">
+                                <h1>{unit.code}</h1>
+                            </div>
+                            <div className="w-1/3">
+                                <h1>{unit.owner}</h1>
+                            </div>
+                        </div>
+                    ))
+                ) : (
+                    <div className="p-8">
+                        <h1 className="text-2xl">No hay Unidades Fucionales</h1>
+                    </div>
+                )}
+            </ContainerDashboard>
+        </div>
     );
 };
 

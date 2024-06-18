@@ -20,7 +20,8 @@ const ExpensesUnitId = () => {
     useEffect(() => {
         const fechtExpenses = async () => {
             try {
-                const response = await functionalUnitExpensesId(id!, token);
+                const response = await functionalUnitExpensesId(id, token);
+                console.log(response);
                 if (response) {
                     setExpense(response);
                     setAmount(response.total_amount);
@@ -40,7 +41,7 @@ const ExpensesUnitId = () => {
         if (token) {
             fechtExpenses();
         }
-    }, [token]);
+    }, [id, token]);
 
     const handlePay = async () => {
         try {
@@ -55,7 +56,7 @@ const ExpensesUnitId = () => {
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
+        const { value } = e.target;
         if (value === "") {
             setAmount(0);
         } else {

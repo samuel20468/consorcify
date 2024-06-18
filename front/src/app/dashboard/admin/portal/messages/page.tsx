@@ -1,35 +1,35 @@
 'use client';
 
 // Estilos y componentes
-import { Button, ContainerDashboard, Select, Title } from '@/components/ui';
-import SuppliersCards from '@/components/SuppliersCards/SuppliersCards';
+import { ContainerDashboard, Select, Title } from '@/components/ui';
 
 // Endpoints
-import { getSuppliersByConsortiumId } from '@/helpers/fetch.helper.supplier'; // Cambiar la función para obtener proveedores por ID de consorcio
 import { getConsortiumsByAdminId } from '@/helpers/fetch.helper.consortium';
 
 // Interfaces
-import { ISupplier } from '@/Interfaces/suppliers.interfaces';
 import { IConsortium } from '@/Interfaces/consortium.interfaces';
 
 // Hooks
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import useAuth from '@/helpers/useAuth';
-import Link from 'next/link';
 import useSesion from '@/helpers/useSesion';
+import { IMessage } from '@/Interfaces/message.interfaces';
+import { getMessagesForCAdminInConsortium } from '@/helpers/fetch.helper.messages';
+import MessagesCards from '@/components/MessagesCards/MessagesCards';
 
 // ------------------
 
-const Supplies = () => {
+const Messages = () => {
     useAuth();
     const { token, data } = useSesion();
     const pathname = usePathname();
-    const [suppliers, setSuppliers] = useState<ISupplier[]>([]);
+    const [messages, setMessages] = useState<IMessage[]>([]);
     const [consortiums, setConsortiums] = useState<IConsortium[]>([]);
     const [selectedConsortiumId, setSelectedConsortiumId] = useState<
         string | null
     >(null);
+    const [deleted, setDeleted] = useState(false);
 
     useEffect(() => {
         const fetchConsortiums = async () => {
@@ -53,16 +53,17 @@ const Supplies = () => {
     }, [token, data.id]);
 
     useEffect(() => {
-        const fetchSuppliers = async () => {
+        const fetchMessages = async () => {
             if (!selectedConsortiumId) return;
             try {
-                const response = await getSuppliersByConsortiumId(
+                const response = await getMessagesForCAdminInConsortium(
+                    data.id,
                     selectedConsortiumId,
                     token
                 );
                 if (response) {
                     const data = await response.json();
-                    setSuppliers(data);
+                    setMessages(data);
                 }
             } catch (error) {
                 console.error(error);
@@ -70,9 +71,13 @@ const Supplies = () => {
         };
 
         if (token && selectedConsortiumId) {
-            fetchSuppliers();
+            fetchMessages();
         }
-    }, [token, selectedConsortiumId]);
+        if (deleted) {
+            fetchMessages(); // Refrescar la lista de mensajes
+            setDeleted(false); // Resetear el estado deleted
+        }
+    }, [token, selectedConsortiumId, data.id, deleted]);
 
     const handleSelectChange = (
         event: React.ChangeEvent<HTMLSelectElement>
@@ -85,7 +90,7 @@ const Supplies = () => {
             <ContainerDashboard>
                 <Title>
                     Portal{' '}
-                    <span className="text-2xl font-thin">| Proveedores</span>
+                    <span className="text-2xl font-thin">| Mensajería</span>
                 </Title>
 
                 <div className="flex items-center justify-between w-[98%]">
@@ -108,30 +113,21 @@ const Supplies = () => {
                                 ))}
                         </Select>
                     </div>
-                    <div className="flex w-1/3">
-                        <Link
-                            className="flex justify-end w-full mr-5"
-                            href={'/addSupplier'}
-                        >
-                            <Button className="w-1/2 p-2 rounded-[40px]">
-                                Agregar Proveedor
-                            </Button>
-                        </Link>
-                    </div>
                 </div>
                 <div className="w-[90%] border-t border-b border-white flex justify-between p-2 mt-5 text-center">
-                    <h1 className="w-1/5 text-xl">Nombre</h1>
-                    <h1 className="w-1/5 text-xl">Cuit</h1>
-                    <h1 className="w-1/5 text-xl">E-mail</h1>
-                    <h1 className="w-1/5 text-xl">Teléfono</h1>
-                    <h1 className="w-1/5 text-xl">Dirección</h1>
+                    <h1 className="w-1/6 text-xl">Unidad Funcional</h1>
+                    <h1 className="w-1/6 text-xl">Remitente</h1>
+                    <h1 className="w-1/6 text-xl">Consorcio</h1>
+                    <h1 className="w-1/6 text-xl">Fecha y hora</h1>
+                    <h1 className="w-1/6 text-xl">Asunto</h1>
+                    <div className="w-1/6"></div>
                 </div>
-                {suppliers.length > 0 ? (
-                    <SuppliersCards suppliers={suppliers} />
+                {messages.length > 0 ? (
+                    <MessagesCards messages={messages} token={token} />
                 ) : (
                     <div className="p-8">
                         <h1 className="text-2xl">
-                            Aún no hay proveedores registrados
+                            No tienes mensajes en este consorcio.
                         </h1>
                     </div>
                 )}
@@ -140,4 +136,4 @@ const Supplies = () => {
     );
 };
 
-export default Supplies;
+export default Messages;

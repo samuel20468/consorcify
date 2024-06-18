@@ -1,7 +1,23 @@
+"use client";
 import { Button, ContainerDashboard } from "@/components/ui";
+import { useUfSesion } from "@/helpers/useUfSesion";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 const News: React.FC = () => {
+    const { haveUF, isLoading, functional_unit } = useUfSesion();
+    const router = useRouter();
+
+    useEffect(() => {
+        if (!isLoading && !haveUF) {
+            router.push("/dashboard/usuario/addfuncionalunit");
+        }
+    }, [isLoading, haveUF, router]);
+
+    if (isLoading) {
+        return <div>Cargando...</div>;
+    }
     return (
         <div>
             <ContainerDashboard className="w-[90%]">

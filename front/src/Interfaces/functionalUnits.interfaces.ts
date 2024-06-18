@@ -44,6 +44,7 @@ export interface IFunctionalUnits {
     consortium: IConsortium;
     expenses: IExpense[];
     user: IUser;
+    functional_units_expenses: IFunctionalUnitExpenses[];
 }
 
 export interface IFunctionalUnitExpenses {
@@ -54,4 +55,6 @@ export interface IFunctionalUnitExpenses {
     total_amount: number;
     functional_unit: IFunctionalUnits;
     expense: IExpense;
+    payment_status: string;
+    created_at: string;
 }

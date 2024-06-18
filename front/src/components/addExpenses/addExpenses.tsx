@@ -92,6 +92,12 @@ const AddExpenses = () => {
             }
         } catch (error) {
             console.error(error);
+            Swal.fire({
+                title: "Error de información",
+                text: (error as Error).message,
+                icon: "error",
+                confirmButtonColor: "#0b0c0d",
+            });
         }
     };
 

@@ -76,7 +76,7 @@ const Expenses = () => {
             }
             try {
                 const response = await functionalUnitExpensesId(
-                    selectetUF,
+                    fUnitExpenses[0].id,
                     token
                 );
                 if (response) {
@@ -162,10 +162,10 @@ const Expenses = () => {
                         </p>
                         <p className="flex items-center justify-center w-full h-1/4 text-2xl">
                             $
-                            {expenses != undefined ? expenses?.total_amount : 0}
+                            {expenses != undefined ? fUnitExpenses[0].total_amount : 0}
                         </p>
                         <Link
-                            href={`/dashboard/usuario/expenses/${selectetUF}`}
+                            href={`/dashboard/usuario/expenses/${fUnitExpenses[0]?.id}`}
                         >
                             <Button
                                 className="w-32 rounded-[40px]"
@@ -234,32 +234,30 @@ const Expenses = () => {
                         </div>
                         <div>
                             {selectetUF !== "" &&
-                                functionalUnit.map((unit) => (
+                                fUnitExpenses.map((fUnitExpense) => (
                                     <div
-                                        key={unit.id}
+                                        key={fUnitExpense.id}
                                         className="flex border w-full items-center justify-center gap-2 py-1 rounded-[40px]"
                                     >
                                         <div className="w-2/3 flex justify-center font-bold text-xl">
                                             <div className="w-1/3 flex justify-center">
                                                 {/* Mostrar la fecha de vencimiento de la primera expense */}
                                                 {
-                                                    unit.functional_units_expenses?.[0]?.expense.expiration_date.split(
+                                                    fUnitExpense?.expense?.expiration_date?.split(
                                                         "-"
                                                     )?.[0]
                                                 }
                                             </div>
                                             <div className="w-1/3 flex justify-center">
                                                 {
-                                                    unit.functional_units_expenses?.[0]?.expense.expiration_date.split(
+                                                    fUnitExpense?.expense?.expiration_date?.split(
                                                         "-"
                                                     )?.[1]
                                                 }
                                             </div>
                                             <div className="w-1/3 flex justify-center">
                                                 {
-                                                    unit
-                                                        .functional_units_expenses?.[0]
-                                                        ?.total_amount
+                                                    fUnitExpense?.total_amount
                                                 }
                                             </div>
                                         </div>
@@ -267,39 +265,27 @@ const Expenses = () => {
                                             <div
                                                 className={`w-1/2 flex justify-center items-center `}
                                             >
-                                                {unit
-                                                    .functional_units_expenses?.[0]
-                                                    ?.payment_status ===
+                                                {fUnitExpense?.payment_status ===
                                                     "Impago" && (
                                                     <span className=" text-red-500">
                                                         {
-                                                            unit
-                                                                .functional_units_expenses?.[0]
-                                                                ?.payment_status
+                                                            fUnitExpense?.payment_status
                                                         }
                                                     </span>
                                                 )}
-                                                {unit
-                                                    .functional_units_expenses?.[0]
-                                                    ?.payment_status ===
+                                                {fUnitExpense?.payment_status ===
                                                     "Pagado" && (
                                                     <span className="text-green-500">
                                                         {
-                                                            unit
-                                                                .functional_units_expenses?.[0]
-                                                                ?.payment_status
+                                                            fUnitExpense?.payment_status
                                                         }
                                                     </span>
                                                 )}
-                                                {unit
-                                                    .functional_units_expenses?.[0]
-                                                    ?.payment_status ===
+                                                {fUnitExpense?.payment_status ===
                                                     "Parcial" && (
                                                     <span className="text-yellow-500">
                                                         {
-                                                            unit
-                                                                .functional_units_expenses?.[0]
-                                                                ?.payment_status
+                                                            fUnitExpense?.payment_status
                                                         }
                                                     </span>
                                                 )}

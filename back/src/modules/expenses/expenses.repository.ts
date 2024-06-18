@@ -144,7 +144,6 @@ export class ExpensesRepository {
       };
 
       await this.functionalUnitRepository.save(uf);
-      console.log(uf.user);
 
       if (uf.user) {
         await this.mailsService.sendIndividualExpense(

@@ -20,10 +20,13 @@ const ConsortiumCard = (props: Props & { consortium: IConsortium }) => {
                         {consortium.name}
                     </h3>
                     <p className="text-black">
-                        {consortium.street_name}, {consortium.building_number}
+                        {consortium.street_name} {consortium.building_number}
                     </p>
                     <p className="text-sm text-black">
-                        {consortium.province}, {consortium.city}
+                        {consortium.province}, {consortium.city} - {consortium.country}
+                    </p>
+                    <p className="text-sm text-black">
+                        {consortium.zip_code}
                     </p>
                 </div>
             </div>

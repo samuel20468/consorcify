@@ -23,7 +23,6 @@ import Link from "next/link";
 
 // ---------------------
 
-
 const Page = () => {
     useAuth();
     const params: { id: string } = useParams();
@@ -106,13 +105,10 @@ const Page = () => {
                         {consorcio?.name}
                     </h3>
                     <p className="px-5 py-4  rounded-[50px] bg-[#e5e7eb] shadow text-fondo border-fondo">
-                        Administrador:{" "}
+                        ADMINISTRADOR:{" "}
                         {typeof consorcio?.c_admin === "object"
                             ? consorcio.c_admin.name
                             : consorcio?.c_admin}
-                    </p>
-                    <p className="px-5 py-4  rounded-[50px] bg-[#e5e7eb] shadow text-fondo border-fondo">
-                        CATEGORIA: {consorcio?.category}
                     </p>
                     <p className="px-5 py-4  rounded-[50px] bg-[#e5e7eb] shadow text-fondo border-fondo">
                         DIRECCIÓN: {consorcio?.street_name}{" "}
@@ -123,8 +119,8 @@ const Page = () => {
                         CUIT: {cuit}
                     </p>
                     <p className="px-5 py-4  rounded-[50px] bg-[#e5e7eb] shadow text-fondo border-fondo">
-                        VENCIMIENTO EXPENSAS(dia del mes):{" "}
-                        {consorcio?.first_due_day}
+                        VENCIMIENTO DE EXPENSAS: Día {consorcio?.first_due_day}{" "}
+                        del mes
                     </p>
                     <p className="px-5 py-4  rounded-[50px] bg-[#e5e7eb] shadow text-fondo border-fondo">
                         PISOS: {consorcio?.floors}

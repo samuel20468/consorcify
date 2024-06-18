@@ -158,7 +158,7 @@ const FormAddFuncionalUnit = ({ consortium_id }: { consortium_id: string }) => {
                             id="number"
                             name="number"
                             type="text"
-                            placeholder="1A"
+                            placeholder="Nro. UF"
                             value={formData.number}
                             onChange={handleChange}
                         />

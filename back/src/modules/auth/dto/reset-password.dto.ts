@@ -31,5 +31,5 @@ export class ResetPasswordDto {
         1 letra minúscula
         1 dígito numérico`,
   })
-  new_password: string;
+  password: string;
 }

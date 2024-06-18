@@ -17,6 +17,10 @@ import { ExcludeActiveInterceptor } from 'src/interceptors/exclude-active.interc
 import { AuthCustomGuard } from 'src/guards/auth.guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { UpdateCAdminDto } from './dto/update-c-admin.dto';
+import { UpdatePassDto } from './dto/udpate-pass.dto';
+import { Roles } from 'src/decorators/role.decorator';
+import { ROLE } from 'src/utils/constants';
+import { RolesGuard } from 'src/guards/roles.guard';
 
 @ApiTags('Consortium Admin')
 @Controller('c-admins')
@@ -38,6 +42,16 @@ export class CAdminsController {
   @UseInterceptors(ExcludeActiveInterceptor)
   async findOne(@Param('id', ParseUUIDPipe) id: string): Promise<CAdmin> {
     return await this.cAdminsService.findOne(id);
+  }
+
+  @Patch('update-password/:id')
+  @Roles(ROLE.CADMIN)
+  @UseGuards(RolesGuard)
+  async updatePassCAdmin(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() passToUpdate: UpdatePassDto,
+  ): Promise<void> {
+    return await this.cAdminsService.updatePassCAdmin(id, passToUpdate);
   }
 
   @Patch(':id')

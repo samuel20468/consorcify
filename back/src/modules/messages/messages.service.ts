@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { MessagesRepository } from './messages.repository';
 import { SendMessageDto } from './dto/send-message.dto';
 import { UsersRepository } from '../users/users.repository';
@@ -22,15 +26,13 @@ export class MessagesService {
     const { user_id, functional_unit_id, subject, content } = sendMessage;
     const sender = await this.usersRepository.findOne(user_id);
     if (!sender) {
-      throw new BadRequestException('Usuario remitente no encontrado');
+      throw new NotFoundException('Usuario remitente no encontrado');
     }
     const functionalUnit =
       await this.functionalUnitsRepository.findOne(functional_unit_id);
 
     if (!functionalUnit || functionalUnit.user.id !== user_id) {
-      throw new BadRequestException(
-        'Unidad Funcional del usuario no encontrada',
-      );
+      throw new NotFoundException('Unidad Funcional del usuario no encontrada');
     }
 
     const consortium = functionalUnit.consortium;
@@ -53,7 +55,7 @@ export class MessagesService {
     const foundUser = await this.usersRepository.findOne(userId);
 
     if (!foundUser) {
-      throw new BadRequestException('Usuario no encontrado');
+      throw new NotFoundException('Usuario no encontrado');
     }
     const messagesForUser: IMessage[] =
       await this.messagesRepository.getMessagesForUser(foundUser);
@@ -69,7 +71,7 @@ export class MessagesService {
       await this.consortiumsRepository.findOne(consortiumId);
 
     if (!foundCAdmin || !foundConsortium) {
-      throw new BadRequestException('Administrador o Consorcio no encontrado');
+      throw new NotFoundException('Administrador o Consorcio no encontrado');
     }
     if (foundConsortium.c_admin.id !== foundCAdmin.id) {
       throw new BadRequestException(
@@ -87,7 +89,7 @@ export class MessagesService {
   async findOne(mensajeId: string): Promise<IMessage> {
     const foundMessage = await this.messagesRepository.findOne(mensajeId);
     if (!foundMessage) {
-      throw new BadRequestException('Mensaje no encontrado');
+      throw new NotFoundException('Mensaje no encontrado');
     }
     return foundMessage;
   }
@@ -101,7 +103,7 @@ export class MessagesService {
     const foundMessage = await this.messagesRepository.findOneById(messageId);
 
     if (!foundUser || !foundMessage) {
-      throw new BadRequestException('Mensaje o Usuario no encontrado');
+      throw new NotFoundException('Mensaje o Usuario no encontrado');
     }
     if (foundMessage.sender.id !== foundUser.id) {
       throw new BadRequestException(
@@ -116,7 +118,7 @@ export class MessagesService {
     const foundMessage = await this.messagesRepository.findOneById(messageId);
 
     if (!foundCAdmin || !foundMessage) {
-      throw new BadRequestException('Mensaje o Administrador no encontrado');
+      throw new NotFoundException('Mensaje o Administrador no encontrado');
     }
     if (foundMessage.receiver.id !== foundCAdmin.id) {
       throw new BadRequestException(

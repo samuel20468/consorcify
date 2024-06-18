@@ -57,7 +57,8 @@ const Profile = () => {
     }, [token, data]);
 
     const renderImage = (src: any) => {
-        const defaultImage = '/images/default-profile.png';
+        const defaultImage =
+            'https://res.cloudinary.com/consorcify/image/upload/v1717986798/xhieldioaw4r59gfxqmp.jpg';
         return (
             <Image
                 src={src || defaultImage}

@@ -4,13 +4,10 @@ import {
   Body,
   Patch,
   Param,
-  Delete,
   ParseUUIDPipe,
   Query,
   UseInterceptors,
   UseGuards,
-  Post,
-  UploadedFile,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -23,7 +20,7 @@ import { Roles } from 'src/decorators/role.decorator';
 import { ROLE } from 'src/utils/constants';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { UpdatePassDto } from '../c-admin/dto/udpate-pass.dto';
 
 @ApiTags('User')
 @Controller('users')
@@ -44,18 +41,22 @@ export class UsersController {
     return await this.usersService.findAll(+page, +limit);
   }
 
-  // @Post('uploadPicture')
-  // @UseInterceptors(FileInterceptor('file'))
-  // async uploadPicture(@UploadedFile() file: Express.Multer.File) {
-  //   return file;
-  // }
-
   @Get(':id')
   @UseInterceptors(ExcludeActiveInterceptor, ExcludeSuperAdminInterceptor)
   async findOne(
     @Param('id', ParseUUIDPipe) id: string,
   ): Promise<User | undefined> {
     return await this.usersService.findOne(id);
+  }
+
+  @Patch('update-password/:id')
+  @Roles(ROLE.USER)
+  @UseGuards(RolesGuard)
+  async updatePassCAdmin(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() passToUpdate: UpdatePassDto,
+  ): Promise<void> {
+    return await this.usersService.updatePassUser(id, passToUpdate);
   }
 
   @Patch(':id')

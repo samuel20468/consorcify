@@ -24,7 +24,7 @@ export class CAdminsRepository {
       where: { id, active: true },
       relations: {
         consortiums: true,
-      }
+      },
     });
   }
 
@@ -32,11 +32,14 @@ export class CAdminsRepository {
     return await this.cAdminRepository.findOneBy({ email });
   }
 
+  async saveNewPassword(cadminWithNewPassword: CAdmin): Promise<void> {
+    await this.cAdminRepository.save(cadminWithNewPassword);
+  }
+
   async updateCAdmin(
     existingCAdmin: CAdmin,
     cAdminToUpdate: UpdateCAdminDto,
   ): Promise<CAdmin> {
-
     const mergedCAdmin: CAdmin = this.cAdminRepository.merge(
       existingCAdmin,
       cAdminToUpdate,

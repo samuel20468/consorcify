@@ -79,7 +79,7 @@ const Profile = () => {
                         ? userData?.first_name && userData?.last_name
                         : adminData?.name}
                 </Title>
-                <div className="flex justify-center items-center gap-4 p-4 mt-5 h-[300px] w-[700px] rounded-[40px] text-neutral-50 bg-bluee">
+                <div className="flex justify-center items-center gap-4 p-4 mt-5 h-[300px] w-[700px] rounded-[40px] text-blackk bg-neutral-50">
                     <div className="w-1/3 mx-10">
                         {data.roles?.[0] === 'user' ||
                         data.roles?.[0] === 'superadmin'
@@ -102,10 +102,18 @@ const Profile = () => {
                             </div>
                         ) : (
                             <div>
-                                <h3>ADMINISTRADOR: {adminData?.name}</h3>
-                                <h3>CUIT: {adminData?.cuit}</h3>
-                                <h3>EMAIL: {adminData?.email}</h3>
-                                <h3>DIRECCIÓN: {adminData?.address}</h3>
+                                <h3 className="mb-2">
+                                    ADMINISTRADOR: {adminData?.name}
+                                </h3>
+                                <h3 className="mb-2">
+                                    CUIT: {adminData?.cuit}
+                                </h3>
+                                <h3 className="mb-2">
+                                    EMAIL: {adminData?.email}
+                                </h3>
+                                <h3 className="mb-2">
+                                    DIRECCIÓN: {adminData?.address}
+                                </h3>
                                 <h3>TELÉFONO: {adminData?.phone_number}</h3>
                             </div>
                         )}
@@ -124,6 +132,11 @@ const Profile = () => {
                                 Editar Informacion
                             </Button>
                         </Link>
+                        <Link href="/dashboard/profile/updatePassword">
+                            <Button className="w-44 py-2 rounded-[40px]">
+                                Cambiar Contraseña
+                            </Button>
+                        </Link>
                     </div>
                 ) : (
                     <div className="flex justify-evenly w-[70%] my-5 gap-2">
@@ -135,6 +148,11 @@ const Profile = () => {
                         <Link href={`/updateAdministrator/${adminData?.id}`}>
                             <Button className="w-44 py-2 rounded-[40px]">
                                 Editar Información
+                            </Button>
+                        </Link>
+                        <Link href="/dashboard/profile/updatePassword">
+                            <Button className="w-44 py-2 rounded-[40px]">
+                                Cambiar Contraseña
                             </Button>
                         </Link>
                     </div>

@@ -31,8 +31,8 @@ export class PicturesController {
       new ParseFilePipe({
         validators: [
           new MaxFileSizeValidator({
-            maxSize: 200000,
-            message: 'El archivo debe pesar menos de 200 Kb',
+            maxSize: 1000000,
+            message: 'El archivo debe pesar menos de 1 Mb',
           }),
           new FileTypeValidator({
             fileType: /(jpg|jpeg|png|webp|svg)/,
@@ -46,14 +46,14 @@ export class PicturesController {
   }
   @Post('update-cadmin/:id')
   @UseInterceptors(FileInterceptor('image'))
-  async uploadCAdminicture(
+  async uploadCAdminPicture(
     @Param('id', ParseUUIDPipe) id: string,
     @UploadedFile(
       new ParseFilePipe({
         validators: [
           new MaxFileSizeValidator({
-            maxSize: 200000,
-            message: 'El archivo debe pesar menos de 200 Kb',
+            maxSize: 1000000,
+            message: 'El archivo debe pesar menos de 1 Mb',
           }),
           new FileTypeValidator({
             fileType: /(jpg|jpeg|png|webp|svg)/,
@@ -74,8 +74,8 @@ export class PicturesController {
       new ParseFilePipe({
         validators: [
           new MaxFileSizeValidator({
-            maxSize: 200000,
-            message: 'El archivo debe pesar menos de 200 Kb',
+            maxSize: 1000000,
+            message: 'El archivo debe pesar menos de 1 Mb',
           }),
           new FileTypeValidator({
             fileType: /(jpg|jpeg|png|webp|svg)/,

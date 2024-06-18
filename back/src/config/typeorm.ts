@@ -16,9 +16,9 @@ const config = {
   logging: false,
   synchronize: true,
   // dropSchema: true,
-  // ssl: {
-  //   rejectUnauthorized: false,
-  // },
+  ssl: {
+    rejectUnauthorized: false,
+  },
 };
 
 export default registerAs('typeorm', () => config);

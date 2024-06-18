@@ -17,7 +17,6 @@ import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
 import Link from "next/link";
 
-
 // -------------------
 
 const Page = () => {
@@ -110,12 +109,8 @@ const Page = () => {
                         >
                             <option value="name">Nombre</option>
                             <option value="cuit">CUIT</option>
-                            <option value="address">Dirección</option>
-                            <option value="phone_numer">
-                                Número de teléfono
-                            </option>
-                            <option value="rpa">Mátrícula RPA</option>
-                            <option value="sat">Situación Fiscal</option>
+                            <option value="phone_numer">Teléfono</option>
+                            <option value="email">Email</option>
                         </select>
                     </div>
 
@@ -146,13 +141,16 @@ const Page = () => {
                                     className="text-black flex w-3/4 rounded border border-black mx-2 p-3 bg-[#dadada] hover:scale-110 hover:transition hover:duration-700"
                                 >
                                     <div className="flex justify-between w-full text-center">
-                                        <p className="w-[33.33%]">
+                                        <p className="w-[25%]">
                                             {elemento.name}
                                         </p>
-                                        <p className="w-[33.33%]">
+                                        <p className="w-[25%]">
                                             {elemento.cuit}
                                         </p>
-                                        <p className="w-[33.33%]">
+                                        <p className="w-[25%]">
+                                            {elemento.phone_number}
+                                        </p>
+                                        <p className="w-[25%]">
                                             {elemento.email}
                                         </p>
                                     </div>

@@ -143,6 +143,8 @@ export class ExpensesRepository {
         functional_unit: uf,
       };
 
+      uf.balance = total_amount;
+      
       await this.functionalUnitRepository.save(uf);
 
       if (uf.user) {

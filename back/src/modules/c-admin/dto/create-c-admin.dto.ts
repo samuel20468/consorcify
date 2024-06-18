@@ -75,11 +75,11 @@ export class CreateCAdminDto {
   sat: SAT;
 
   /**
-   * El Registro de la Propiedad Automotor (RPA) del administrador del consorcio
-   * @example "ABCDE"
+   * La matrícula del Registro Público de Administradores (RPA) del administrador del consorcio
+   * @example "12345"
    */
   @IsNotEmpty({ message: 'El RPA es requerido' })
   @IsString({ message: 'El RPA debe ser una cadena de texto' })
-  @Length(5, 5, { message: 'El RPA debe tener exactamente 5 caracteres' })
+  @Length(1, 5, { message: 'El RPA debe tener como máximo 5 caracteres' })
   rpa: string;
 }

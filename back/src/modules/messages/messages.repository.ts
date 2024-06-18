@@ -106,6 +106,7 @@ export class MessagesRepository {
         subject,
         content,
         timestamp,
+        is_read,
       }) => ({
         id,
         sender: sender.first_name,
@@ -116,6 +117,7 @@ export class MessagesRepository {
         subject,
         content,
         timestamp: timestamp.toLocaleString(),
+        is_read,
       }),
     );
     return formattedMessages;
@@ -144,6 +146,7 @@ export class MessagesRepository {
   async findOneById(menssageId: string): Promise<Message> {
     const foundMessage = await this.messagesRepository.findOne({
       where: { id: menssageId },
+      relations: ['sender', 'receiver', 'functional_unit', 'consortium'],
     });
     return foundMessage;
   }

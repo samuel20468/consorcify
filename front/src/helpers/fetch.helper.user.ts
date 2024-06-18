@@ -1,5 +1,5 @@
 // Interfaces
-import { ILogin, IRegister, IUser } from "@/Interfaces/user.interfaces";
+import { ILogin, IRegister, IUser } from '@/Interfaces/user.interfaces';
 
 // Rutas
 export const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -12,9 +12,9 @@ export const registerFetch = async (
 ): Promise<IUser | any> => {
     try {
         const response = await fetch(`${apiUrl}/auth/signup`, {
-            method: "POST",
+            method: 'POST',
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify(registerData),
         });
@@ -30,7 +30,7 @@ export const registerFetch = async (
             return response;
         }
     } catch (error) {
-        console.error("El error está en el registerFetch", error);
+        console.error('El error está en el registerFetch', error);
     }
 };
 
@@ -38,9 +38,9 @@ export const registerFetch = async (
 export const loginFetch = async (userData: ILogin) => {
     try {
         const response = await fetch(`${apiUrl}/auth/signin`, {
-            method: "POST",
+            method: 'POST',
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify(userData),
         });
@@ -57,7 +57,7 @@ export const loginFetch = async (userData: ILogin) => {
             return data;
         }
     } catch (error) {
-        console.error("El error está en el loginFetch", error);
+        console.error('El error está en el loginFetch', error);
     }
 };
 
@@ -65,15 +65,16 @@ export const loginFetch = async (userData: ILogin) => {
 export const resetPasswordFetch = async (email: string) => {
     try {
         const response = await fetch(`${apiUrl}/auth/request-reset-password`, {
-            method: "POST",
+            method: 'POST',
+
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify({ email }),
         });
         return response;
     } catch (error) {
-        console.error("El error está en el resetPasswordFetch", error);
+        console.error('El error está en el resetPasswordFetch', error);
     }
 };
 
@@ -81,7 +82,7 @@ export const resetPasswordFetch = async (email: string) => {
 export const googleLogin = async (): Promise<void> => {
     try {
         const response = await fetch(`${apiUrl}/auth/auth0`, {
-            method: "GET",
+            method: 'GET',
         });
         if (!response.ok) {
             return response.json().then((errorInfo) => {
@@ -96,7 +97,7 @@ export const googleLogin = async (): Promise<void> => {
             return data;
         }
     } catch (error) {
-        console.error("El error está en el googleLogin", error);
+        console.error('El error está en el googleLogin', error);
     }
 };
 
@@ -104,7 +105,7 @@ export const googleLogin = async (): Promise<void> => {
 export const getUsers = async (token: string): Promise<IUser[] | any> => {
     try {
         const response = await fetch(`${apiUrl}/users`, {
-            method: "GET",
+            method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -121,7 +122,7 @@ export const getUsers = async (token: string): Promise<IUser[] | any> => {
             return response;
         }
     } catch (error) {
-        console.log("El error está en el getUsers", error);
+        console.log('El error está en el getUsers', error);
     }
 };
 
@@ -132,9 +133,9 @@ export const getUserById = async (
 ): Promise<IUser | any> => {
     try {
         const response = await fetch(`${apiUrl}/users/${id}`, {
-            method: "GET",
+            method: 'GET',
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
             },
         });
@@ -150,7 +151,7 @@ export const getUserById = async (
             return response;
         }
     } catch (error) {
-        console.error("El error está en el getUserById", error);
+        console.error('El error está en el getUserById', error);
     }
 };
 
@@ -162,9 +163,9 @@ export const updateUser = async (
 ): Promise<IUser | any> => {
     try {
         const response = await fetch(`${apiUrl}/users/${id}`, {
-            method: "PATCH",
+            method: 'PATCH',
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify(data),
@@ -181,7 +182,7 @@ export const updateUser = async (
             return response;
         }
     } catch (error) {
-        console.error("El error está en el updateUser", error);
+        console.error('El error está en el updateUser', error);
     }
 };
 
@@ -189,7 +190,7 @@ export const updateUser = async (
 export const deleteUser = async (id: string, token: string): Promise<void> => {
     try {
         const response = await fetch(`${apiUrl}/users/toggle-status/${id}`, {
-            method: "PATCH",
+            method: 'PATCH',
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -207,6 +208,6 @@ export const deleteUser = async (id: string, token: string): Promise<void> => {
             return data;
         }
     } catch (error) {
-        console.error("El error está en el deleteUser", error);
+        console.error('El error está en el deleteUser', error);
     }
 };

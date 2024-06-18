@@ -80,7 +80,7 @@ export class ExpensesService {
     return expenses.slice(startIndex, endIndex);
   }
 
-  async findAllByConsortium(consortiumId: string): Promise<Expense> {
+  async findAllByConsortium(consortiumId: string): Promise<Expense[]> {
     return await this.expensesRepository.findAllByConsortium(consortiumId);
   }
 

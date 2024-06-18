@@ -1,8 +1,7 @@
 "use client";
 
 // Estilos y componentes
-import { ContainerDashboard, Title } from "@/components/ui";
-import Map from "@/components/Map/Map";
+import { Button, ContainerDashboard, Title } from "@/components/ui";
 
 // Endpoints
 import { getUserById } from "@/helpers/fetch.helper.user";
@@ -14,8 +13,6 @@ import { IAdmin } from "@/Interfaces/admin.interfaces";
 
 // Hooks
 import { useEffect, useRef, useState } from "react";
-import { usePathname } from "next/navigation";
-
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
 import Image from "next/image";
@@ -24,7 +21,6 @@ import Link from "next/link";
 // ----------------------
 
 const Profile = () => {
-    const path = usePathname();
     useAuth();
     const [userData, setUserData] = useState<IUser>();
     const [adminData, setAdminData] = useState<IAdmin>();
@@ -82,59 +78,63 @@ const Profile = () => {
                         ? userData?.first_name && userData?.last_name
                         : adminData?.name}
                 </Title>
-                <div className="flex flex-col items-center gap-4 p-4 mt-5 border grad">
-                    <div className="flex items-center w-full h-3/5">
-                        <div className="w-1/3">
-                            {data.roles?.[0] === "user" ||
-                            data.roles?.[0] === "superadmin"
-                                ? renderImage(userData?.picture)
-                                : renderImage(adminData?.picture)}
-                        </div>
-                        <div className="flex flex-col justify-center w-2/3 py-2">
-                            {data.roles?.[0] === "user" ||
-                            data.roles?.[0] === "superadmin" ? (
-                                <div>
-                                    <h3>NOMBRE: {userData?.first_name}</h3>
-                                    <h3>APELLIDO: {userData?.last_name}</h3>
-                                    <h3>EMAIL: {userData?.email}</h3>
-                                </div>
-                            ) : (
-                                <div>
-                                    <h3>ADMINISTRADOR: {adminData?.name}</h3>
-                                    <h3>CUIT: {adminData?.cuit}</h3>
-                                    <h3>EMAIL: {adminData?.email}</h3>
-                                    <h3>DIRECCIÓN: {adminData?.address}</h3>
-                                    <h3>TELÉFONO: {adminData?.phone_number}</h3>
-                                </div>
-                            )}
-                        </div>
+                <div className="flex justify-center items-center gap-4 p-4 mt-5 border h-[300px] w-[700px] rounded-[40px]">
+                    <div className="w-1/3">
+                        {data.roles?.[0] === "user" ||
+                        data.roles?.[0] === "superadmin"
+                            ? renderImage(userData?.picture)
+                            : renderImage(adminData?.picture)}
                     </div>
-                    <div className="w-full h-2/5">
-                        <Map />
+                    <div className="flex flex-col justify-center w-2/3">
+                        {data.roles?.[0] === "user" ||
+                        data.roles?.[0] === "superadmin" ? (
+                            <div>
+                                <h3>NOMBRE: {userData?.first_name}</h3>
+                                <h3>APELLIDO: {userData?.last_name}</h3>
+                                <h3>EMAIL: {userData?.email}</h3>
+                            </div>
+                        ) : (
+                            <div>
+                                <h3>ADMINISTRADOR: {adminData?.name}</h3>
+                                <h3>CUIT: {adminData?.cuit}</h3>
+                                <h3>EMAIL: {adminData?.email}</h3>
+                                <h3>DIRECCIÓN: {adminData?.address}</h3>
+                                <h3>TELÉFONO: {adminData?.phone_number}</h3>
+                            </div>
+                        )}
                     </div>
                 </div>
+                {data.roles?.[0] === "user" ||
+                data.roles?.[0] === "superadmin" ? (
+                    <div className="flex justify-evenly w-[70%] my-5 gap-2">
+                        <Link href="/addAvatar">
+                            <Button className="w-44 py-2 rounded-[40px]">
+                                Cambiar Imagen
+                            </Button>
+                        </Link>
+                        <Link href="/dashboard/profile/updateUser">
+                            <Button className="w-44 py-2 rounded-[40px]">
+                                Editar Informacion
+                            </Button>
+                        </Link>
+                    </div>
+                ) : (
+                    <div className="flex justify-evenly w-[70%] my-5 gap-2">
+                        <Link href="/addAvatar">
+                            <Button className="w-44 py-2 rounded-[40px]">
+                                Cambiar Imagen
+                            </Button>
+                        </Link>
+                        <Link href={`/updateAdministrator/${adminData?.id}`}>
+                            <Button className="w-44 py-2 rounded-[40px]">
+                                Editar Información
+                            </Button>
+                        </Link>
+                    </div>
+                )}
             </ContainerDashboard>
         </div>
     );
 };
 
 export default Profile;
-
-{
-    /* <Link href="/addAvatar" className="w-full">
-                                <Button className="w-full py-1 rounded-[40px]">
-                                    Cambiar Imagen
-                                </Button>
-                            </Link> */
-}
-
-{
-    /* <Link
-                                    className="w-full h-full"
-                                    href="/dashboard/profile/updateUser"
-                                >
-                                    <Button className="w-full rounded-[40px] py-2">
-                                        Editar Informacion
-                                    </Button>
-                                </Link> */
-}

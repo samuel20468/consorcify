@@ -5,7 +5,6 @@ import { Button, ContainerDashboard, Title } from '@/components/ui';
 
 // Endpoints
 import {
-    deleteMessageFromCAdmin,
     deleteMessageFromUser,
     getMessageById,
 } from '@/helpers/fetch.helper.messages';
@@ -144,13 +143,13 @@ const MessageUser = () => {
                     <div className="flex w-full justify-evenly mt-10">
                         <Button
                             onClick={handleClick}
-                            className="w-[20%] my-0 mx-auto rounded-lg border bg-blackk border-black text-white hover:border-none"
+                            className="w-[20%] my-0 mx-auto rounded-lg border border-blackk text-black hover:border-none"
                         >
                             Volver atras
                         </Button>
                         <Button
                             onClick={handleDelete}
-                            className="w-[20%] my-0 mx-auto rounded-lg border bg-blackk border-black text-white hover:border-none"
+                            className="w-[20%] my-0 mx-auto rounded-lg border border-blackk text-blackk hover:border-none"
                         >
                             Eliminar Mensaje
                         </Button>

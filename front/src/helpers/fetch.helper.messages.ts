@@ -1,32 +1,5 @@
-import { IMessage } from "@/Interfaces/message.interfaces";
-import { apiUrl } from "./fetch.helper.admin";
-
-export const getMessagesForUser = async (
-    userId: string,
-    token: string
-): Promise<IMessage[] | any> => {
-    try {
-        const response = await fetch(`${apiUrl}/messages/user/${userId}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-            },
-        });
-        if (!response.ok) {
-            return response.json().then((errorInfo) => {
-                throw new Error(`
-                    Error ${response.status}: ${
-                    errorInfo.message || response.statusText
-                }`);
-            });
-        } else {
-            return response;
-        }
-    } catch (error) {
-        console.error(error, "Error de la petición getMessagesForUser");
-    }
-};
+import { IMessage } from '@/Interfaces/message.interfaces';
+import { apiUrl } from './fetch.helper.admin';
 
 export const getMessagesForUser = async (
     userId: string,
@@ -43,7 +16,9 @@ export const getMessagesForUser = async (
         if (!response.ok) {
             return response.json().then((errorInfo) => {
                 throw new Error(`
-                    Error ${response.status}: ${errorInfo.message || response.statusText}`);
+                    Error ${response.status}: ${
+                        errorInfo.message || response.statusText
+                    }`);
             });
         } else {
             return response;
@@ -62,9 +37,9 @@ export const getMessagesForCAdminInConsortium = async (
         const response = await fetch(
             `${apiUrl}/messages/cadmin/${cadminId}/consortium/${consortiumId}`,
             {
-                method: "GET",
+                method: 'GET',
                 headers: {
-                    "Content-Type": "application/json",
+                    'Content-Type': 'application/json',
                     Authorization: `Bearer ${token}`,
                 },
             }
@@ -73,8 +48,8 @@ export const getMessagesForCAdminInConsortium = async (
             return response.json().then((errorInfo) => {
                 throw new Error(`
                     Error ${response.status}: ${
-                    errorInfo.message || response.statusText
-                }`);
+                        errorInfo.message || response.statusText
+                    }`);
             });
         } else {
             return response;
@@ -82,7 +57,7 @@ export const getMessagesForCAdminInConsortium = async (
     } catch (error) {
         console.error(
             error,
-            "Error de la petición getMessagesForCAdminInConsortium"
+            'Error de la petición getMessagesForCAdminInConsortium'
         );
     }
 };
@@ -93,9 +68,9 @@ export const getMessageById = async (
 ): Promise<IMessage[] | any> => {
     try {
         const response = await fetch(`${apiUrl}/messages/${messageId}`, {
-            method: "GET",
+            method: 'GET',
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
             },
         });
@@ -103,14 +78,14 @@ export const getMessageById = async (
             return response.json().then((errorInfo) => {
                 throw new Error(`
                     Error ${response.status}: ${
-                    errorInfo.message || response.statusText
-                }`);
+                        errorInfo.message || response.statusText
+                    }`);
             });
         } else {
             return response;
         }
     } catch (error) {
-        console.error(error, "Error de la petición getMessageById");
+        console.error(error, 'Error de la petición getMessageById');
     }
 };
 
@@ -120,9 +95,9 @@ export const markAsRead = async (
 ): Promise<IMessage[] | any> => {
     try {
         const response = await fetch(`${apiUrl}/messages/${messageId}/read`, {
-            method: "PATCH",
+            method: 'PATCH',
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
             },
         });
@@ -130,14 +105,14 @@ export const markAsRead = async (
             return response.json().then((errorInfo) => {
                 throw new Error(`
                     Error ${response.status}: ${
-                    errorInfo.message || response.statusText
-                }`);
+                        errorInfo.message || response.statusText
+                    }`);
             });
         } else {
             return response;
         }
     } catch (error) {
-        console.error(error, "Error de la petición markAsRead");
+        console.error(error, 'Error de la petición markAsRead');
     }
 };
 
@@ -150,9 +125,9 @@ export const deleteMessageFromCAdmin = async (
         const response = await fetch(
             `${apiUrl}/messages/cadmin/${cadminId}/toggle-status/${messageId}`,
             {
-                method: "PATCH",
+                method: 'PATCH',
                 headers: {
-                    "Content-Type": "application/json",
+                    'Content-Type': 'application/json',
                     Authorization: `Bearer ${token}`,
                 },
             }
@@ -161,45 +136,14 @@ export const deleteMessageFromCAdmin = async (
             return response.json().then((errorInfo) => {
                 throw new Error(`
                     Error ${response.status}: ${
-                    errorInfo.message || response.statusText
-                }`);
+                        errorInfo.message || response.statusText
+                    }`);
             });
         } else {
             return response;
         }
     } catch (error) {
-        console.error(error, "Error de la petición deleteMessageFromCAdmin");
-    }
-};
-
-export const deleteMessageFromUser = async (
-    userId: string,
-    messageId: string,
-    token: string
-): Promise<IMessage[] | any> => {
-    try {
-        const response = await fetch(
-            `${apiUrl}/messages/user/${userId}/toggle-status/${messageId}`,
-            {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-            }
-        );
-        if (!response.ok) {
-            return response.json().then((errorInfo) => {
-                throw new Error(`
-                    Error ${response.status}: ${
-                    errorInfo.message || response.statusText
-                }`);
-            });
-        } else {
-            return response;
-        }
-    } catch (error) {
-        console.error(error, "Error de la petición deleteMessageFromUser");
+        console.error(error, 'Error de la petición deleteMessageFromCAdmin');
     }
 };
 
@@ -222,7 +166,9 @@ export const deleteMessageFromUser = async (
         if (!response.ok) {
             return response.json().then((errorInfo) => {
                 throw new Error(`
-                    Error ${response.status}: ${errorInfo.message || response.statusText}`);
+                    Error ${response.status}: ${
+                        errorInfo.message || response.statusText
+                    }`);
             });
         } else {
             return response;

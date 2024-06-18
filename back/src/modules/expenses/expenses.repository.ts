@@ -97,7 +97,11 @@ export class ExpensesRepository {
     const foundConsortium: Consortium = await this.consortiumRepository.findOne(
       {
         where: { id: consortium.id },
-        relations: { functional_units: true },
+        relations: {
+          functional_units: {
+            user: true,
+          },
+        },
       },
     );
 
@@ -139,9 +143,8 @@ export class ExpensesRepository {
         functional_unit: uf,
       };
 
-      uf.balance = total_amount;
-
       await this.functionalUnitRepository.save(uf);
+      console.log(uf.user);
 
       if (uf.user) {
         await this.mailsService.sendIndividualExpense(

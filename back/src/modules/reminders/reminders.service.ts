@@ -3,13 +3,21 @@ import { MailsService } from '../mails/mails.service';
 import { ExpensesRepository } from '../expenses/expenses.repository';
 import { UsersRepository } from '../users/users.repository';
 import { Cron } from '@nestjs/schedule';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { User } from '../users/entities/user.entity';
+import { Expense } from '../expenses/entities/expense.entity';
+import { FunctionalUnitExpense } from '../functional-units-expenses/entities/functional-units-expense.entity';
 
 @Injectable()
 export class RemindersService {
   constructor(
+    @InjectRepository(User) private readonly usersRepository: Repository<User>,
+    @InjectRepository(Expense)
+    private readonly expensesRepository: Repository<Expense>,
+    @InjectRepository(FunctionalUnitExpense)
+    private readonly functionalUnitExpensesRepository: Repository<FunctionalUnitExpense>,
     private readonly mailsService: MailsService,
-    private readonly expensesRepository: ExpensesRepository,
-    private readonly usersRepository: UsersRepository,
   ) {}
 
   private calculateDaysLeft(expirationDate: Date): number {
@@ -18,41 +26,31 @@ export class RemindersService {
     return Math.ceil(timeDiff / (1000 * 3600 * 24));
   }
 
-  @Cron('1 0 * * *')
+  @Cron('* 10 * * *')
   async sendPaymentReminders() {
-    const users = await this.usersRepository.getAllUsers();
-    const upcomingExpenses =
-      await this.expensesRepository.getUpcomingExpenses();
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
 
-    for (const user of users) {
-      const userExpenses = upcomingExpenses.filter((expense) =>
-        expense.functional_units_expenses.some(
-          (fue) => fue.functional_unit.user.id === user.id,
-        ),
-      );
-      for (const expense of userExpenses) {
-        const daysLeft = this.calculateDaysLeft(expense.expiration_date);
-        if (daysLeft === 1) {
-          for (const fue of expense.functional_units_expenses) {
-            if (
-              fue.functional_unit.user &&
-              fue.functional_unit.user.id === user.id
-            ) {
-              await this.mailsService.sendPaymentReminder(
-                user.first_name,
-                user.email,
-                fue.total_amount,
-                expense.expiration_date,
-              );
-            } else {
-              await this.mailsService.sendPaymentReminder(
-                fue.functional_unit.owner,
-                fue.functional_unit.owner_email,
-                fue.total_amount,
-                expense.expiration_date,
-              );
-            }
-          }
+    const expensesDueTomorrow = await this.expensesRepository.find({
+      where: { expiration_date: tomorrow },
+      relations: [
+        'functional_units_expenses',
+        'functional_units_expenses.functional_unit',
+        'functional_units_expenses.functional_unit.user',
+      ],
+    });
+    console.log(expensesDueTomorrow);
+
+    for (const expense of expensesDueTomorrow) {
+      for (const functionalUnitExpense of expense.functional_units_expenses) {
+        const user = functionalUnitExpense.functional_unit.user;
+        if (user && user.email) {
+          await this.mailsService.sendPaymentReminder(
+            user.first_name,
+            user.email,
+            functionalUnitExpense.total_amount,
+            expense.expiration_date,
+          );
         }
       }
     }

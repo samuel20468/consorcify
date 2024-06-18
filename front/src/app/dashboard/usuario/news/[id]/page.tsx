@@ -1,13 +1,25 @@
-import { Button, ContainerDashboard } from "@/components/ui";
+"use client";
+import { Button, ContainerDashboard, Title } from "@/components/ui";
+import useAuth from "@/helpers/useAuth";
+import useSesion from "@/helpers/useSesion";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect } from "react";
 
 const NewsId: React.FC = () => {
+    useAuth();
+    const path = usePathname();
+    const { token, data } = useSesion();
+
+    useEffect(() => {
+        if (token) {
+        }
+    }, [path]);
+
     return (
         <div>
             <ContainerDashboard className="w-[90%] gap-3">
-                <div className=" flex w-[90%] border-b pt-8">
-                    <h2 className="text-2xl">Nombre de la noticia</h2>
-                </div>
+                <Title></Title>
                 <div className="flex w-[90%] p-10  min-h-96">
                     <p>
                         Lorem ipsum dolor sit amet, consectetur adipisicing

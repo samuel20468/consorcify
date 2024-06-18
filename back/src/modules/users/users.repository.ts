@@ -31,6 +31,7 @@ export class UsersRepository {
           functional_units_expenses: {
             expense: true,
           },
+          consortium: true,
         },
       },
     });

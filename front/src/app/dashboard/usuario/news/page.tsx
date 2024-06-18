@@ -1,4 +1,5 @@
 "use client";
+import BandejaMensajes from "@/components/BandejaMensajes/BandejaMensajes";
 import { Button, ContainerDashboard } from "@/components/ui";
 import { useUfSesion } from "@/helpers/useUfSesion";
 import Link from "next/link";
@@ -29,6 +30,9 @@ const News: React.FC = () => {
                         <Button className="w-32 py-2 rounded-[40px]">
                             Votaciones
                         </Button>
+                        <Button className="w-36 py-2 rounded-[40px]">
+                            Historial de Mensajes
+                        </Button>
                     </div>
                     <div>
                         <Link href="/newmessage" className="w-full">
@@ -38,7 +42,9 @@ const News: React.FC = () => {
                         </Link>
                     </div>
                 </div>
-                <div></div>
+                <div className="w-[90%] p-8 ">
+                    <BandejaMensajes />
+                </div>
             </ContainerDashboard>
         </div>
     );

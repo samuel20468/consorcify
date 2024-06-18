@@ -7,7 +7,10 @@ import {
 } from "@/Interfaces/functionalUnits.interfaces";
 import { IUser } from "@/Interfaces/user.interfaces";
 import { Button, ContainerDashboard, Select } from "@/components/ui";
-import { functionalUnitExpensesId } from "@/helpers/fetch.helper.uf";
+import {
+    expensesIdFu,
+    functionalUnitExpensesId,
+} from "@/helpers/fetch.helper.uf";
 import { getUserById } from "@/helpers/fetch.helper.user";
 import {
     AccountBalance,
@@ -34,11 +37,13 @@ const Expenses = () => {
     );
     const [totalExpenses, setTotalExpenses] = useState<number>(0);
     const [expenses, setExpenses] = useState<IFunctionalUnitExpenses>();
+    const [fUnitExpenses, setfUnitExpenses] = useState<
+        IFunctionalUnitExpenses[]
+    >([]);
     const [selectetUF, setSelectetUF] = useState<string>("");
-
     const { haveUF, isLoading, functional_unit } = useUfSesion();
     const router = useRouter();
-
+    console.log(functionalUnit);
     useEffect(() => {
         if (!isLoading && !haveUF) {
             router.push("/dashboard/usuario/addfuncionalunit");
@@ -94,6 +99,35 @@ const Expenses = () => {
         }
     }, [token, selectetUF]);
 
+    useEffect(() => {
+        const fechtExpenses = async () => {
+            if (!selectetUF) {
+                return;
+            }
+            try {
+                const response = await expensesIdFu(selectetUF, token);
+                if (response) {
+                    console.log(response);
+                    setfUnitExpenses(response);
+                } else {
+                    Swal.fire({
+                        title: "Error",
+                        text: "Error al obtener las expensas",
+                        icon: "error",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        if (token && selectetUF !== "") {
+            fechtExpenses();
+        }
+    }, [selectetUF, token]);
+
+    console.log(fUnitExpenses);
     const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const { value } = e.target;
 
@@ -161,13 +195,7 @@ const Expenses = () => {
                                     Selecciona tu unidad Funcional
                                 </option>
                                 {functionalUnit?.map((unit) => (
-                                    <option
-                                        value={
-                                            unit.functional_units_expenses?.[0]
-                                                ?.id
-                                        }
-                                        key={unit.id}
-                                    >
+                                    <option value={unit.id} key={unit.id}>
                                         {unit.location}
                                     </option>
                                 ))}

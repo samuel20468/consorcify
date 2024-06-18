@@ -1,4 +1,5 @@
 "use client";
+import { IFunctionalUnits } from "@/Interfaces/functionalUnits.interfaces";
 import { INewMessage } from "@/Interfaces/messages.interfaces";
 import {
     Button,
@@ -28,6 +29,9 @@ const News: React.FC = () => {
         content: "",
     };
     const [dataMessage, setDataMessage] = useState<INewMessage>(initialData);
+    const [functionalUnit, setFunctionalUnit] = useState<IFunctionalUnits[]>(
+        []
+    );
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -45,7 +49,7 @@ const News: React.FC = () => {
                 title: "mensaje enviado",
                 text: "Su mensaje fue enviado correctamente",
             });
-
+            setDataMessage(initialData);
             return;
         } catch (error) {
             console.error(error);
@@ -56,9 +60,9 @@ const News: React.FC = () => {
         const fecthData = async () => {
             try {
                 const response = await getUserById(data.id, token);
-                console.log(response);
                 if (response) {
-                    const data = await response.json();
+                    const datos = await response.json();
+                    setFunctionalUnit(datos.functional_units);
                 }
             } catch (error) {}
         };
@@ -81,7 +85,9 @@ const News: React.FC = () => {
             [name]: value,
         }));
     };
+
     console.log(dataMessage);
+
     return (
         <ContainerDashboard className="w-[90%] h-[90vh] flex gap-2 items-center ">
             <Title>
@@ -93,13 +99,30 @@ const News: React.FC = () => {
                     onSubmit={handleSubmit}
                 >
                     <div className="flex flex-col gap-2 w-1/2">
+                        <Label>Unidad Funcional</Label>
+                        <Select
+                            name="functional_unit_id"
+                            value={dataMessage.functional_unit_id}
+                            onChange={handleChange}
+                        >
+                            <option value="">
+                                Seleccione la unidad funcional
+                            </option>
+                            {functionalUnit &&
+                                functionalUnit.map((item) => (
+                                    <option key={item.id} value={item.id}>
+                                        {item.location}
+                                    </option>
+                                ))}
+                        </Select>
+
                         <Label>Asunto</Label>
                         <Select
                             name="subject"
                             value={dataMessage.subject}
                             onChange={handleChange}
                         >
-                            <option value="">Nuevo Mensaje</option>
+                            <option value="">Seleccione el Asunto</option>
                             <option value="Reclamo">Reclamo</option>
                             <option value="Consulta">Consulta</option>
                             <option value="Sugerencia">Sugerencia</option>

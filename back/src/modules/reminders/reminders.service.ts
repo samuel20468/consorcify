@@ -11,11 +11,10 @@ export class RemindersService {
   constructor(
     @InjectRepository(Expense)
     private readonly expensesRepository: Repository<Expense>,
-    @InjectRepository(FunctionalUnitExpense)
     private readonly mailsService: MailsService,
   ) {}
 
-  @Cron('* 17 * * *')
+  @Cron('* 18 * * *')
   async sendPaymentReminders() {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);

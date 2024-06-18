@@ -23,6 +23,16 @@ export class FunctionalUnitsExpensesService {
     return await this.functionalUnitsExpensesRepository.findAll(page, limit);
   }
 
+  async findAllByFunctionalUnit(
+    functionalUnitId: string,
+    page: number,
+    limit: number,
+  ): Promise<FunctionalUnitExpense[]> {
+    return await this.functionalUnitsExpensesRepository.findAllByFunctionalUnit(
+      functionalUnitId, page, limit
+    )
+  }
+
   async findAllByUser(
     page: number,
     limit: number,

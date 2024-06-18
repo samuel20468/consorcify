@@ -83,7 +83,7 @@ const AllFunctionalUnits = () => {
                     </span>
                 </Title>
 
-                <div className="flex items-center justify-end w-[98%]">
+                {/* <div className="flex items-center justify-end w-[98%]">
                     <div className="flex w-1/3">
                         <Link
                             href={`/dashboard/admin/consortiums/${params.id}/${consortiumId}`}
@@ -95,7 +95,7 @@ const AllFunctionalUnits = () => {
                             </Button>
                         </Link>
                     </div>
-                </div>
+                </div> */}
 
                 <div className="w-[90%] border-t border-b border-white flex justify-between p-2 mt-5 text-center">
                     <div className="w-1/3 text-xl">Locación</div>

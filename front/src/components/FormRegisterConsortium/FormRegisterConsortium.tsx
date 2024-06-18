@@ -152,8 +152,8 @@ const FormRegisterConsortium = ({ update = false }) => {
             !consortiumRegister.street_name ||
             !consortiumRegister.ufs ||
             !consortiumRegister.zip_code ||
-            !consortiumRegister.interest_rate
-        ) {
+            (consortiumRegister.interest_rate !== 0 && !consortiumRegister.interest_rate)
+        ) {         
             Swal.fire({
                 title: "Formulario incompleto",
                 text: "Asegúrate de completar todos los campos del formulario.",

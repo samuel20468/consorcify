@@ -49,8 +49,7 @@ export class MailsService {
   }
 
   async sendResetPassword(user: string, email: string, token: string) {
-    // const url = `${MAIL_REDIRECT_URL}/reset-password?token=${token}`;
-    const url = `http://localhost:3000/resetPassword?token=${token}`;
+    const url = `${MAIL_REDIRECT_URL}/resetPassword?token=${token}`;
     const subject: SUBJECT_MAIL = SUBJECT_MAIL.NEW_PASSWORD;
     const template: TEMPLATES_MAIL = TEMPLATES_MAIL.NEW_PASSWORD;
     const context = {

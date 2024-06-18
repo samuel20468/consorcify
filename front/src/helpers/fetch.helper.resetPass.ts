@@ -22,6 +22,6 @@ export const resetPassFetch = async (dataReset: IDataReset) => {
             return response;
         }
     } catch (error) {
-        console.error('El error está en el loginFetch', error);
+        console.error('El error está en el resetPassFetch', error);
     }
 };

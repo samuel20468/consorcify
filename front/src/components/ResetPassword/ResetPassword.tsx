@@ -29,7 +29,7 @@ export const ResetPassword = () => {
     }, [token]);
 
     useEffect(() => {
-        const pwdErrors = validatePwd(newPassword.password);
+        const pwdErrors = validatePwd('password', newPassword.password);
 
         SetErrors((prevErrors) => ({
             ...prevErrors,
@@ -49,7 +49,7 @@ export const ResetPassword = () => {
 
         if (!newPassword.password || !pass2) {
             Swal.fire({
-                title: 'Error al iniciar sesión',
+                title: 'Error al reestablecer contraseña',
                 text: 'Asegúrate de completar todos los campos del formulario.',
                 icon: 'error',
                 confirmButtonColor: '#0b0c0d',
@@ -61,7 +61,7 @@ export const ResetPassword = () => {
                 const response = await resetPassFetch(dataReset);
                 if (response) {
                     Swal.fire({
-                        title: 'Contraseña resstablecida',
+                        title: 'Contraseña reestablecida',
                         text: 'Por favor inicia sesión',
                         icon: 'success',
                         confirmButtonColor: '#0b0c0d',
@@ -73,7 +73,7 @@ export const ResetPassword = () => {
                 }
             } catch (error) {
                 Swal.fire({
-                    title: 'Error de información',
+                    title: 'Error al reestablecer contraseña',
                     text: (error as Error).message,
                     icon: 'error',
                     confirmButtonColor: '#0b0c0d',

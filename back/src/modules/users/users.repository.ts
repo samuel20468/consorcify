@@ -39,6 +39,10 @@ export class UsersRepository {
     return await this.usersRepository.findOne({ where: { email } });
   }
 
+  async saveNewPassword(userWithNewPassword: User): Promise<void> {
+    await this.usersRepository.save(userWithNewPassword);
+  }
+
   async update(id: string, updateUserDto: UpdateUserDto) {
     const user = await this.usersRepository.findOne({ where: { id } });
     if (!user) {

@@ -72,7 +72,7 @@ export class ConsortiumsRepository {
     consortium.building_number = buildingNumberComponent ? Number(buildingNumberComponent.short_name) : consortium.building_number;
     consortium.zip_code = zipCodeComponent ? zipCodeComponent.short_name : consortium.zip_code;
     consortium.country = countryComponent ? countryComponent.long_name : consortium.country;
-    consortium.province = provinceComponent ? provinceComponent.long_name : consortium.province;
+    consortium.province = provinceComponent ? provinceComponent.short_name : consortium.province;
     consortium.city = cityComponent ? cityComponent.short_name : consortium.city;
 
     const newConsortium: Consortium =

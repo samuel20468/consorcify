@@ -115,12 +115,12 @@ const Page = () => {
                             <option value="cuit">CUIT</option>
                             <option value="street_name">Calle</option>
                             <option value="building_number">
-                                Número de Edificio
+                                Altura
                             </option>
-                            <option value="zip_code">Código Postal</option>
-                            <option value="country">País</option>
-                            <option value="province">Provincia</option>
                             <option value="city">Ciudad</option>
+                            <option value="province">Provincia</option>
+                            <option value="country">País</option>
+                            <option value="zip_code">Código Postal</option>
                             <option value="floors">Pisos</option>
                             <option value="ufs">Unidades Funcionales</option>
                             <option value="category">Categoría</option>

@@ -96,7 +96,7 @@ const NavbarDashboard = () => {
                         <Button className="flex items-center justify-evenly p-1 w-full py-2 rounded-[40px]">
                             {data?.roles?.[0] === "superadmin" ||
                             data?.roles?.[0] === "user"
-                                ? user?.first_name!
+                                ? user?.first_name! + " " + user?.last_name!
                                 : admin?.name!}
                             {data.roles && <RoleIcon role={data.roles[0]} />}
                         </Button>

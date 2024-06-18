@@ -9,7 +9,7 @@ import { IExpense } from "@/Interfaces/expenses.interfaces";
 import { IConsortium } from "@/Interfaces/consortium.interfaces";
 
 // Endpoints
-import { getExpenses } from "@/helpers/fetch.helper.expense";
+import { getExpensesByConsorcioId } from "@/helpers/fetch.helper.expense";
 import { getConsortiumsByAdminId } from "@/helpers/fetch.helper.consortium";
 
 // Hooks
@@ -34,10 +34,13 @@ const Expense = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await getExpenses(token);
+                const response = await getConsortiumsByAdminId(data.id, token);
                 if (response) {
                     const data = await response.json();
-                    setExpensas(data);
+                    setConsortiums(data);
+                    if (data.length > 0) {
+                        setSelectedConsortiumId(data[0].id);
+                    }
                 }
             } catch (error: any) {
                 console.error(error.message);
@@ -51,10 +54,13 @@ const Expense = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await getConsortiumsByAdminId(data.id, token);
+                const response = await getExpensesByConsorcioId(
+                    token,
+                    selectedConsortiumId!
+                );
                 if (response) {
                     const data = await response.json();
-                    setConsortiums(data);
+                    setExpensas(data);
                 }
             } catch (error: any) {
                 console.error(error.message);
@@ -63,7 +69,7 @@ const Expense = () => {
         if (token) {
             fetchData();
         }
-    }, [token, pathname]);
+    }, [selectedConsortiumId]);
 
     // Filtros
 

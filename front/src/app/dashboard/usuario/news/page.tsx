@@ -47,6 +47,7 @@ const News: React.FC = () => {
     return (
         <div>
             <ContainerDashboard className="w-[90%]">
+
                 <Title>Mensajes</Title>
                 <div className="w-[90%] border-t border-b border-white flex justify-between p-2 mt-5 text-center">
                     <h1 className="w-1/5 text-xl">Unidad Funcional</h1>
@@ -62,6 +63,7 @@ const News: React.FC = () => {
                         <h1 className="text-2xl">
                             No tienes mensajes enviados.
                         </h1>
+
                     </div>
                 )}
                 <div className="flex justify-end w-[90%] p-8">
@@ -73,6 +75,7 @@ const News: React.FC = () => {
                         </Link>
                     </div>
                 </div>
+
             </ContainerDashboard>
         </div>
     );

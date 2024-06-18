@@ -23,7 +23,7 @@ import { useRouter } from 'next/navigation';
 
 // -------------------
 
-const Supplier = () => {
+const Message = () => {
     useAuth();
     const { token, data } = useSesion();
     const params: { id: string } = useParams();
@@ -161,4 +161,4 @@ const Supplier = () => {
     );
 };
 
-export default Supplier;
+export default Message;

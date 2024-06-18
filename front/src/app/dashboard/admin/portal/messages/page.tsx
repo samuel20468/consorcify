@@ -74,8 +74,8 @@ const Messages = () => {
             fetchMessages();
         }
         if (deleted) {
-            fetchMessages(); // Refrescar la lista de mensajes
-            setDeleted(false); // Resetear el estado deleted
+            fetchMessages();
+            setDeleted(false);
         }
     }, [token, selectedConsortiumId, data.id, deleted]);
 

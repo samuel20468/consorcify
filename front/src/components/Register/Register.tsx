@@ -73,15 +73,17 @@ const Register = () => {
                         confirmButtonColor: "#0b0c0d",
                     }).then((res) => {
                         if (res.isConfirmed) {
-                            const decodeData = jwtDecode(response.token);
-                            localStorage.setItem(
-                                "userData",
-                                JSON.stringify({
-                                    user: decodeData,
-                                    token: response.token,
-                                })
-                            );
-                            router.push("/dashboard");
+                            router.push("/login");
+                            // A revisar. El response no tiene token
+                            // const decodeData = jwtDecode(response.token);
+                            // localStorage.setItem(
+                            //     "userData",
+                            //     JSON.stringify({
+                            //         user: decodeData,
+                            //         token: response.token,
+                            //     })
+                            // );
+                            // router.push("/dashboard");
                         }
                     });
                 }

@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Param,
+  ParseUUIDPipe,
   Patch,
   Post,
   UseGuards,
@@ -34,7 +35,7 @@ export class MessagesController {
   @Roles(ROLE.USER)
   @UseGuards(RolesGuard)
   async getMessagesForUserInConsortium(
-    @Param('userId') userId: string,
+    @Param('userId', ParseUUIDPipe) userId: string,
   ): Promise<IMessage[]> {
     return await this.messagesService.getMessagesForUser(userId);
   }
@@ -43,8 +44,8 @@ export class MessagesController {
   @Roles(ROLE.CADMIN)
   @UseGuards(RolesGuard)
   async getMessagesForCAdminInConsortium(
-    @Param('cadminId') cadminId: string,
-    @Param('consortiumId') consortiumId: string,
+    @Param('cadminId', ParseUUIDPipe) cadminId: string,
+    @Param('consortiumId', ParseUUIDPipe) consortiumId: string,
   ): Promise<IMessage[]> {
     return await this.messagesService.getMessagesForCAdminInConsortium(
       cadminId,
@@ -55,14 +56,18 @@ export class MessagesController {
   @Get(':messageId')
   @Roles(ROLE.CADMIN, ROLE.USER)
   @UseGuards(RolesGuard)
-  async findOne(@Param('messageId') messageId: string): Promise<IMessage> {
+  async findOne(
+    @Param('messageId', ParseUUIDPipe) messageId: string,
+  ): Promise<IMessage> {
     return await this.messagesService.findOne(messageId);
   }
 
   @Patch(':messageId/read')
   @Roles(ROLE.CADMIN)
   @UseGuards(RolesGuard)
-  async markAsRead(@Param('messageId') messageId: string): Promise<void> {
+  async markAsRead(
+    @Param('messageId', ParseUUIDPipe) messageId: string,
+  ): Promise<void> {
     return await this.messagesService.markAsRead(messageId);
   }
 
@@ -70,8 +75,8 @@ export class MessagesController {
   @Roles(ROLE.USER)
   @UseGuards(RolesGuard)
   async toggleStatusUser(
-    @Param('userId') userId: string,
-    @Param('messageId') messageId: string,
+    @Param('userId', ParseUUIDPipe) userId: string,
+    @Param('messageId', ParseUUIDPipe) messageId: string,
   ): Promise<void> {
     return await this.messagesService.toggleStatusUser(userId, messageId);
   }
@@ -80,8 +85,8 @@ export class MessagesController {
   @Roles(ROLE.CADMIN)
   @UseGuards(RolesGuard)
   async toggleStatusCAdmin(
-    @Param('cadminId') cadminId: string,
-    @Param('messageId') messageId: string,
+    @Param('cadminId', ParseUUIDPipe) cadminId: string,
+    @Param('messageId', ParseUUIDPipe) messageId: string,
   ): Promise<void> {
     return await this.messagesService.toggleStatusCAdmin(cadminId, messageId);
   }

@@ -66,7 +66,7 @@ const ExpensesUnitId = () => {
 
     return (
         <ContainerDashboard className="w-[90%] h-[90vh]">
-            <Title>Pagar - </Title>
+            <Title>Pagar expensa</Title>
             <div className="w-[90%] flex justify-end my-2 mt-0">
                 <Link href="/dashboard/usuario/expenses">
                     <Button className="w-32 py-2 rounded-[40px]">Volver</Button>

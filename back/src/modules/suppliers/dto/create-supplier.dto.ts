@@ -65,7 +65,7 @@ export class CreateSupplierDto {
    */
   @IsNotEmpty({ message: 'La dirección es requerida' })
   @IsString({ message: 'La dirección debe ser una cadena de texto' })
-  @Matches(/^[a-zA-Z0-9\s.'-]+,\s*[a-zA-Z\s.'-]+$/, { message: 'La dirección debe estar en el formato "calle altura, ciudad"' })
+  @Matches(/^[a-zA-ZÀ-ÿ0-9\s.'-]+,\s*[a-zA-ZÀ-ÿ\s.'-]+$/, { message: 'La dirección debe estar en el formato "calle altura, ciudad"' })
   address: string;
 
   /**

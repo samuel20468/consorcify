@@ -16,7 +16,7 @@ export const MAIL_HOST: string = process.env.MAIL_HOST;
 export const MAIL_USER: string = process.env.MAIL_USER;
 export const MAIL_PASSWORD: string = process.env.MAIL_PASSWORD;
 export const MAIL_FROM: string = process.env.MAIL_FROM;
-export const MAIL_REDIRECT_URL: string = process.env.MAIL_REDIRECT_URL;
+export const MAIL_REDIRECT_URL: string = process.env.CLIENT_BASE_URL;
 
 export enum SAT {
   MONOTAX = 'Monotributo',

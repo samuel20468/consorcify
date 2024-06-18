@@ -1,28 +1,28 @@
-"use client";
+'use client';
 
 // Estilos y componentes
-import "./style.css";
-import { Button, Input, Label } from "../ui";
-import { PiEyeClosed, PiEye } from "react-icons/pi";
-import { FcGoogle } from "react-icons/fc";
-import Swal from "sweetalert2";
-import { jwtDecode } from "jwt-decode";
+import './style.css';
+import { Button, Input, Label } from '../ui';
+import { PiEyeClosed, PiEye } from 'react-icons/pi';
+import { FcGoogle } from 'react-icons/fc';
+import Swal from 'sweetalert2';
+import { jwtDecode } from 'jwt-decode';
 
 // Validaciones
-import { validateNombreCompleto } from "@/helpers/Validations/validate.nombre";
-import { validateEmail } from "@/helpers/Validations/validate.email";
-import { validatePwd } from "@/helpers/Validations/validate.password";
+import { validateNombreCompleto } from '@/helpers/Validations/validate.nombre';
+import { validateEmail } from '@/helpers/Validations/validate.email';
+import { validatePwd } from '@/helpers/Validations/validate.password';
 
 // Endpoint
-import { registerFetch } from "@/helpers/fetch.helper.user";
-import { apiUrl } from "@/helpers/fetch.helper";
+import { registerFetch } from '@/helpers/fetch.helper.user';
+import { apiUrl } from '@/helpers/fetch.helper';
 
 // Hooks
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import useSesion from "@/helpers/useSesion";
-import Contact from "../Contact/Contact";
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import useSesion from '@/helpers/useSesion';
+import Contact from '../Contact/Contact';
 
 // ----------------------------
 
@@ -30,13 +30,13 @@ const Register = () => {
     const router = useRouter();
     const { token } = useSesion();
     const initialData = {
-        first_name: "",
-        last_name: "",
-        email: "",
-        password: "",
+        first_name: '',
+        last_name: '',
+        email: '',
+        password: '',
     };
     const [registerData, setRegisterData] = useState(initialData);
-    const [pass2, setPass2] = useState("");
+    const [pass2, setPass2] = useState('');
     const [lock, setLock] = useState<boolean>(true);
     const [errors, SetErrors] = useState(initialData);
 
@@ -50,17 +50,17 @@ const Register = () => {
             !registerData.password
         ) {
             Swal.fire({
-                title: "Error al iniciar sesión",
-                text: "Asegúrate de completar todos los campos del formulario.",
-                icon: "error",
-                confirmButtonColor: "#0b0c0d",
+                title: 'Error al iniciar sesión',
+                text: 'Asegúrate de completar todos los campos del formulario.',
+                icon: 'error',
+                confirmButtonColor: '#0b0c0d',
             });
         } else if (registerData.password !== pass2) {
             Swal.fire({
-                title: "Error al iniciar sesión",
-                text: "Las contraseñas deben coincidir.",
-                icon: "error",
-                confirmButtonColor: "#0b0c0d",
+                title: 'Error al iniciar sesión',
+                text: 'Las contraseñas deben coincidir.',
+                icon: 'error',
+                confirmButtonColor: '#0b0c0d',
             });
         } else {
             try {
@@ -68,29 +68,31 @@ const Register = () => {
                 if (response?.ok) {
                     Swal.fire({
                         title: `Bienvenid@, ${registerData.first_name}`,
-                        text: "Logueate para poder continuar.",
-                        icon: "success",
-                        confirmButtonColor: "#0b0c0d",
+                        text: 'Logueate para poder continuar.',
+                        icon: 'success',
+                        confirmButtonColor: '#0b0c0d',
                     }).then((res) => {
                         if (res.isConfirmed) {
-                            const decodeData = jwtDecode(response.token);
-                            localStorage.setItem(
-                                "userData",
-                                JSON.stringify({
-                                    user: decodeData,
-                                    token: response.token,
-                                })
-                            );
-                            router.push("/dashboard");
+                            router.push("/login");
+                            // A revisar. El response no tiene token
+                            // const decodeData = jwtDecode(response.token);
+                            // localStorage.setItem(
+                            //     "userData",
+                            //     JSON.stringify({
+                            //         user: decodeData,
+                            //         token: response.token,
+                            //     })
+                            // );
+                            // router.push("/dashboard");
                         }
                     });
                 }
             } catch (error: any) {
                 Swal.fire({
-                    title: "Error de información",
+                    title: 'Error de información',
                     text: (error as Error).message,
-                    icon: "error",
-                    confirmButtonColor: "#0b0c0d",
+                    icon: 'error',
+                    confirmButtonColor: '#0b0c0d',
                 });
             }
         }
@@ -102,7 +104,7 @@ const Register = () => {
             registerData.last_name
         );
         const emailErrors = validateEmail(registerData.email);
-        const pwdErrors = validatePwd(registerData.password);
+        const pwdErrors = validatePwd('password', registerData.password);
 
         SetErrors((prevErrors) => ({
             ...prevErrors,
@@ -132,7 +134,7 @@ const Register = () => {
     };
 
     if (token) {
-        router.push("/dashboard");
+        router.push('/dashboard');
     }
 
     return (
@@ -223,7 +225,7 @@ const Register = () => {
                             <Input
                                 id="pwd"
                                 name="password"
-                                type={lock ? "password" : "text"}
+                                type={lock ? 'password' : 'text'}
                                 placeholder="**********"
                                 onChange={handlerChange}
                                 value={registerData.password}
@@ -237,7 +239,7 @@ const Register = () => {
                                     <PiEyeClosed size={25} />
                                 ) : (
                                     <PiEye size={25} />
-                                )}{" "}
+                                )}{' '}
                             </button>
                         </div>
 
@@ -256,7 +258,7 @@ const Register = () => {
                             <Input
                                 id="pwd2"
                                 name="password2"
-                                type={lock ? "password" : "text"}
+                                type={lock ? 'password' : 'text'}
                                 placeholder="**********"
                                 onChange={handlePass2}
                                 value={pass2}
@@ -270,7 +272,7 @@ const Register = () => {
                                     <PiEyeClosed size={25} />
                                 ) : (
                                     <PiEye size={25} />
-                                )}{" "}
+                                )}{' '}
                             </button>
                         </div>
                         <div className="mt-10">

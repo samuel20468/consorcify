@@ -197,3 +197,36 @@ export const functionalUnitExpensesId = async (
         console.error(error);
     }
 };
+
+//Obtener las expensas por unidad funcional
+export const expensesIdFu = async (
+    id: string,
+    token: string
+): Promise<IFunctionalUnitExpenses[] | any> => {
+    try {
+        const response = await fetch(
+            `${apiUrl}/functional-units-expenses/functional-unit/${id}`,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
+        if (response.ok) {
+            const datos = await response.json();
+            return datos;
+        } else {
+            return response.json().then((errorInfo) => {
+                throw new Error(
+                    `Error ${response.status}: ${
+                        errorInfo.message || response.statusText
+                    }`
+                );
+            });
+        }
+    } catch (error) {
+        console.error(error);
+    }
+};

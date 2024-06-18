@@ -11,8 +11,15 @@ export class UsersRepository {
   ) {}
 
   async getAllUsers(): Promise<User[]> {
-    const users = await this.usersRepository.find();
-    return users;
+    return this.usersRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.functional_units', 'functional_units')
+      .leftJoinAndSelect(
+        'functional_units.functional_units_expenses',
+        'functional_units_expenses',
+      )
+      .leftJoinAndSelect('functional_units_expenses.expense', 'expense')
+      .getMany();
   }
 
   async findAll(page: number, limit: number): Promise<User[]> {
@@ -37,6 +44,10 @@ export class UsersRepository {
   }
   async findOneByEmail(email: string): Promise<User | undefined> {
     return await this.usersRepository.findOne({ where: { email } });
+  }
+
+  async saveNewPassword(userWithNewPassword: User): Promise<void> {
+    await this.usersRepository.save(userWithNewPassword);
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {

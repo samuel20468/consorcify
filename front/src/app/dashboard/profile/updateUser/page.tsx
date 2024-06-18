@@ -4,7 +4,7 @@
 import { Button, ContainerDashboard, Input, Label } from "@/components/ui";
 
 // Endpoints
-import { getUserById } from "@/helpers/fetch.helper.user";
+import { getUserById, updateUser } from "@/helpers/fetch.helper.user";
 
 // Interfaces
 import { IRegister, IRegisterError } from "@/Interfaces/user.interfaces";
@@ -14,6 +14,8 @@ import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
+import { areFieldsNotEmpty } from "@/helpers/Validations/validate.empty";
+import Swal from "sweetalert2";
 
 // -------------------------
 
@@ -46,9 +48,45 @@ const UpdateUser = () => {
         };
         fetchData();
     }, [token, path, data.id]);
+    console.log(userData);
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        if (!areFieldsNotEmpty(userData)) {
+            Swal.fire({
+                title: "Error",
+                text: "Por favor, complete todos los campos.",
+                icon: "error",
+                showCancelButton: false,
+                confirmButtonText: "Ok",
+            });
+        }
+
+        try {
+            const response = await updateUser(userData, data.id, token);
+            if (response?.ok) {
+                Swal.fire({
+                    title: "Cambios guardados",
+                    text: "Tu perfil ha sido actualizado correctamente",
+                    icon: "success",
+                    confirmButtonColor: "#0b0c0d",
+                }).then((res) => {
+                    if (res.isConfirmed) {
+                        router.push("/dashboard/profile");
+                    }
+                });
+            } else {
+                Swal.fire({
+                    title: "Error",
+                    text: "Ocurrió un error al actualizar tu perfil",
+                    icon: "error",
+                    confirmButtonColor: "#0b0c0d",
+                });
+            }
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,7 +98,8 @@ const UpdateUser = () => {
         }));
     };
 
-    const handleBack = () => {
+    const handleBack = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
         setUserData(initialData);
         setErrors(initialData);
         router.push("/dashboard/profile");
@@ -72,7 +111,7 @@ const UpdateUser = () => {
             <div className="flex flex-col items-center justify-center w-full h-full p-8">
                 <form
                     onSubmit={handleSubmit}
-                    className=" flex flex-col w-1/2 h-[60%] border justify-between rounded-[40px] p-8 gap-3"
+                    className=" flex flex-col w-1/2 h-[70%] border justify-between rounded-[40px] p-8 gap-3"
                 >
                     <div className="flex justify-end w-full">
                         <Button
@@ -112,7 +151,10 @@ const UpdateUser = () => {
                     </div>
 
                     <div className="w-full">
-                        <Button className="w-full py-2 rounded-[40px]">
+                        <Button
+                            type="submit"
+                            className="w-full py-2 rounded-[40px]"
+                        >
                             Confirmar Cambios
                         </Button>
                     </div>
@@ -123,4 +165,3 @@ const UpdateUser = () => {
 };
 
 export default UpdateUser;
-

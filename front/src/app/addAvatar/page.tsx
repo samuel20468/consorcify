@@ -1,10 +1,10 @@
-"use client";
-import React, { useEffect, useRef, useState } from "react";
-import { Button, ContainerDashboard } from "../../components/ui";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import useSesion from "@/helpers/useSesion";
-import Image from "next/image";
+'use client';
+import React, { useEffect, useRef, useState } from 'react';
+import { Button, ContainerDashboard } from '../../components/ui';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import useSesion from '@/helpers/useSesion';
+import Image from 'next/image';
 
 import {
     handleDrop,
@@ -13,8 +13,7 @@ import {
     handleSuccessResponse,
     preventDefaults,
     uploadImage,
-} from "@/helpers/toUpdateImage/updateImage.helper";
-
+} from '@/helpers/toUpdateImage/updateImage.helper';
 
 const AddAvatar: React.FC = () => {
     const [image, setImage] = useState<string | null>(null);
@@ -26,7 +25,7 @@ const AddAvatar: React.FC = () => {
     const role = userData?.user.roles[0];
 
     useEffect(() => {
-        const storedUserData = localStorage.getItem("userData");
+        const storedUserData = localStorage.getItem('userData');
         if (storedUserData) {
             setUserData(JSON.parse(storedUserData));
             console.log(storedUserData);
@@ -41,20 +40,21 @@ const AddAvatar: React.FC = () => {
             fileInputRef.current.files.length > 0
         ) {
             const formData = new FormData();
-            formData.append("image", fileInputRef.current.files[0]);
+            formData.append('image', fileInputRef.current.files[0]);
             try {
+                console.log(role);
+                
                 const endpoint =
-                    role === "user"
-
-                        ? `update-user/${id}`
-                        : `update-cadmin/${id}`;
+                role == 'cadmin'
+                ? `update-cadmin/${id}`
+                : `update-user/${id}`;
+                console.log(endpoint);
                 const response = await uploadImage(formData, endpoint, token);
                 if (response.ok) {
                     handleSuccessResponse(router);
                 } else {
                     throw new Error(
-                        "Hubo un error al actualizar tu imagen de perfil."
-
+                        'Hubo un error al actualizar tu imagen de perfil.'
                     );
                 }
             } catch (error: any) {
@@ -65,9 +65,9 @@ const AddAvatar: React.FC = () => {
 
     return (
         <ContainerDashboard className="w-[90%] h-[90vh] justify-center">
-            <div>
-                <Link href="/dashboard/profile" className="flex w-1/2 mb-2">
-                    <Button className="w-32 py-2 rounded-[40px">Volver</Button>
+            <div className="flex w-1/2 my-2 justify-center">
+                <Link href="/dashboard/profile">
+                    <Button className="py-2 w-36 rounded-[40px]">Volver</Button>
                 </Link>
             </div>
             <form
@@ -87,7 +87,6 @@ const AddAvatar: React.FC = () => {
                             src={image}
                             alt="Preview"
                             className="object-cover w-full h-full"
-
                             width={300}
                             height={300}
                         />

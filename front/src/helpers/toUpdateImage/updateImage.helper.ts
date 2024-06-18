@@ -48,8 +48,6 @@ export const uploadImage = async (
   token: string
 ) => {
   try {
-    console.log(formData);
-
     const response = await fetch(`${apiUrl}/pictures/${endpoint}`, {
       method: "POST",
       headers: {

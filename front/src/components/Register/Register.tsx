@@ -278,7 +278,7 @@ const Register = () => {
                                 type="submit"
                                 className="w-full py-2 text-black rounded-[50px] shadow-md bg-neutral-50 hover:bg-input hover:text-white disabled:pointer-events-none duration-500"
                             >
-                                Registrase
+                                Registrarse
                             </Button>
                         </div>
 

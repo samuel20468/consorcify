@@ -95,7 +95,7 @@ const Navbar = ({ activeSection }: any) => {
                             <Button className="flex items-center justify-evenly w-full py-2 rounded-[40px] font-bold">
                                 {data?.roles?.[0] === "superadmin" ||
                                 data?.roles?.[0] === "user"
-                                    ? user?.first_name!
+                                    ? user?.first_name! + " " + user?.last_name!
                                     : admin?.name!}
                                 {data.roles && (
                                     <RoleIcon role={data.roles[0]} />

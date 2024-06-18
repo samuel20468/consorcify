@@ -178,6 +178,11 @@ const ConsortiumId = () => {
               Modificar Consorcio
             </Button>
           </Link>
+          <Link href={`#`}>
+            <Button className="w-44 py-2 rounded-[40px]">
+              Modificar Imagen
+            </Button>
+          </Link>
           <Button className="w-44 py-2 rounded-[40px]" onClick={handleDelete}>
             Desactivar Consorcio
           </Button>

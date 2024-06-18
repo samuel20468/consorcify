@@ -178,3 +178,34 @@ export const deleteExpense = async (
         console.error("El error está en el deleteExpense", error);
     }
 };
+
+// Obtener expensas por consorcio
+export const getExpensesByConsorcioId = async (
+    token: string,
+    consortiumId: string
+): Promise<IExpense | any> => {
+    try {
+        const response = await fetch(
+            `${apiUrl}/expenses/consortium/${consortiumId}`,
+            {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
+        if (!response.ok) {
+            return response.json().then((errorInfo) => {
+                throw new Error(
+                    `Error ${response.status}: ${
+                        errorInfo.message || response.statusText
+                    }`
+                );
+            });
+        } else {
+            return response;
+        }
+    } catch (error) {
+        console.error("El error está en el getExpensesByConsorcioId", error);
+    }
+};

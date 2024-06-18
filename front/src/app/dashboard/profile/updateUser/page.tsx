@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
 // Estilos y componentes
-import { Button, ContainerDashboard, Input, Label } from "@/components/ui";
+import { Button, ContainerDashboard, Input, Label } from '@/components/ui';
 
 // Endpoints
-import { getUserById } from "@/helpers/fetch.helper.user";
+import { getUserById } from '@/helpers/fetch.helper.user';
 
 // Interfaces
-import { IRegister, IRegisterError } from "@/Interfaces/user.interfaces";
+import { IRegister, IRegisterError } from '@/Interfaces/user.interfaces';
 
 // Hooks
-import { useEffect, useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
-import useAuth from "@/helpers/useAuth";
-import useSesion from "@/helpers/useSesion";
+import { useEffect, useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import useAuth from '@/helpers/useAuth';
+import useSesion from '@/helpers/useSesion';
 
 // -------------------------
 
@@ -24,10 +24,10 @@ const UpdateUser = () => {
     const router = useRouter();
 
     const initialData = {
-        first_name: "",
-        last_name: "",
-        email: "",
-        password: "",
+        first_name: '',
+        last_name: '',
+        email: '',
+        password: '',
     };
     const [userData, setUserData] = useState<IRegister>(initialData);
     const [errors, setErrors] = useState<IRegisterError>(initialData);
@@ -63,7 +63,7 @@ const UpdateUser = () => {
     const handleBack = () => {
         setUserData(initialData);
         setErrors(initialData);
-        router.push("/dashboard/profile");
+        router.push('/dashboard/profile');
     };
 
     return (
@@ -72,7 +72,7 @@ const UpdateUser = () => {
             <div className="flex flex-col items-center justify-center w-full h-full p-8">
                 <form
                     onSubmit={handleSubmit}
-                    className=" flex flex-col w-1/2 h-[60%] border justify-between rounded-[40px] p-8 gap-3"
+                    className=" flex flex-col w-1/2 h-[70%] border justify-between rounded-[40px] p-8 gap-3"
                 >
                     <div className="flex justify-end w-full">
                         <Button
@@ -123,4 +123,3 @@ const UpdateUser = () => {
 };
 
 export default UpdateUser;
-

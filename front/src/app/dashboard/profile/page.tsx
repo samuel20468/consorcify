@@ -62,7 +62,7 @@ const Profile = () => {
             <Image
                 src={src || defaultImage}
                 alt="Imagen de perfil"
-                className="rounded-[40px]"
+                className="rounded-[40px] shadow-xl shadow-blackk"
                 width={250}
                 height={250}
             />
@@ -78,8 +78,8 @@ const Profile = () => {
                         ? userData?.first_name && userData?.last_name
                         : adminData?.name}
                 </Title>
-                <div className="flex justify-center items-center gap-4 p-4 mt-5 border h-[300px] w-[700px] rounded-[40px]">
-                    <div className="w-1/3">
+                <div className="flex justify-center items-center gap-4 p-4 mt-5 h-[300px] w-[700px] rounded-[40px] text-neutral-50 bg-bluee">
+                    <div className="w-1/3 mx-10">
                         {data.roles?.[0] === 'user' ||
                         data.roles?.[0] === 'superadmin'
                             ? renderImage(userData?.picture)
@@ -89,9 +89,15 @@ const Profile = () => {
                         {data.roles?.[0] === 'user' ||
                         data.roles?.[0] === 'superadmin' ? (
                             <div>
-                                <h3>NOMBRE: {userData?.first_name}</h3>
-                                <h3>APELLIDO: {userData?.last_name}</h3>
-                                <h3>EMAIL: {userData?.email}</h3>
+                                <h3 className="mb-2">
+                                    NOMBRE: {userData?.first_name}
+                                </h3>
+                                <h3 className="mb-2">
+                                    APELLIDO: {userData?.last_name}
+                                </h3>
+                                <h3 className="mb-2">
+                                    EMAIL: {userData?.email}
+                                </h3>
                             </div>
                         ) : (
                             <div>

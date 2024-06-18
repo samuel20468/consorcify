@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { usePathname } from "next/navigation";
+import { usePathname } from 'next/navigation';
 
 export const Ocultar = ({ children }: any) => {
     const pathname = usePathname();
@@ -8,11 +8,12 @@ export const Ocultar = ({ children }: any) => {
     return (
         <div
             className={
-                pathname === "/" ||
-                pathname === "/login" ||
-                pathname === "/register"
-                    ? "hidden"
-                    : ""
+                pathname === '/' ||
+                pathname === '/resetPassword' ||
+                pathname === '/login' ||
+                pathname === '/register'
+                    ? 'hidden'
+                    : ''
             }
         >
             {children}

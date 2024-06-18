@@ -136,7 +136,7 @@ export class AuthService {
   }
 
   async resetPassword(resetData: ResetPasswordDto): Promise<void> {
-    const { token, new_password } = resetData;
+    const { token, password } = resetData;
     const foundToken = await this.passResetTokensRepository.findOne({
       where: { token },
       relations: { user: true, c_admin: true },
@@ -156,7 +156,7 @@ export class AuthService {
       if (!user) {
         throw new BadRequestException('Usuario no encontrado');
       }
-      const newpassword = await bcrypt.hash(new_password, 10);
+      const newpassword = await bcrypt.hash(password, 10);
       user.password = newpassword;
       await this.usersRepository.save(user);
     } else if (foundToken.c_admin) {
@@ -166,7 +166,7 @@ export class AuthService {
       if (!cadmin) {
         throw new BadRequestException('Usuario no encontrado');
       }
-      cadmin.password = await bcrypt.hash(new_password, 10);
+      cadmin.password = await bcrypt.hash(password, 10);
       await this.cAdminRepository.save(cadmin);
     }
     foundToken.active = false;

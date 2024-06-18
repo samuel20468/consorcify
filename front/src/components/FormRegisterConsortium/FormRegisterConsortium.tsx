@@ -152,7 +152,7 @@ const FormRegisterConsortium = ({ update = false }) => {
             !consortiumRegister.street_name ||
             !consortiumRegister.ufs ||
             !consortiumRegister.zip_code ||
-            !consortiumRegister.interest_rate
+            (consortiumRegister.interest_rate !== 0 && !consortiumRegister.interest_rate)
         ) {
             Swal.fire({
                 title: "Formulario incompleto",
@@ -251,12 +251,10 @@ const FormRegisterConsortium = ({ update = false }) => {
     }, [token]);
 
     useEffect(() => {
-        const suterhErrors = validateSuterh(consortiumRegister.suterh_key);
         const cuitErrors = validateCuit(consortiumRegister.cuit!);
 
         setConsortiumRegisterError((prevErrors) => ({
             ...prevErrors,
-            ...suterhErrors,
             ...cuitErrors,
         }));
     }, [consortiumRegister]);

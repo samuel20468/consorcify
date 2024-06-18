@@ -3,9 +3,14 @@
 // Estilos y componentes
 import { ContainerDashboard, Select, Title } from "@/components/ui";
 import { getConsortiumsByAdminId } from "@/helpers/fetch.helper.consortium";
+import { formatMoney } from "@/helpers/functions.helper";
+
+// Endpoints
+import { getFuncionalUnits } from "@/helpers/fetch.helper.uf";
 
 // Interfaces
 import { IConsortium } from "@/Interfaces/consortium.interfaces";
+import { IFunctionalUnits } from "@/Interfaces/functionalUnits.interfaces";
 
 // Hooks
 import { useEffect, useState } from "react";
@@ -23,9 +28,12 @@ const Charge = () => {
     const [selectedConsortiumId, setSelectedConsortiumId] = useState<
         string | null
     >(null);
+    const [functionalUnits, setFunctionalUnits] = useState<IFunctionalUnits[]>(
+        []
+    );
 
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchConsortiums = async () => {
             try {
                 const response = await getConsortiumsByAdminId(data.id, token);
                 if (response) {
@@ -40,21 +48,37 @@ const Charge = () => {
             }
         };
         if (token) {
-            fetchData();
+            fetchConsortiums();
         }
     }, [token, pathname]);
 
-    // Filtros
+    useEffect(() => {
+        const fetchFunctionalUnits = async () => {
+            try {
+                if (selectedConsortiumId) {
+                    const response = await getFuncionalUnits(
+                        token,
+                        selectedConsortiumId
+                    );
+                    if (response) {
+                        setFunctionalUnits(response);
+                    }
+                }
+            } catch (error: any) {
+                console.error(error.message);
+            }
+        };
+        if (token && selectedConsortiumId) {
+            fetchFunctionalUnits();
+        }
+    }, [token, selectedConsortiumId]);
 
     const handleSelectChange = (
         event: React.ChangeEvent<HTMLSelectElement>
     ) => {
         setSelectedConsortiumId(event.target.value);
+        setFunctionalUnits([]);
     };
-
-    const selectedConsortium = consortiums.find(
-        (c) => c.id === selectedConsortiumId
-    );
 
     return (
         <div className="h-screen">
@@ -86,6 +110,29 @@ const Charge = () => {
                     <h1 className="w-1/4 text-xl">Propietario</h1>
                     <h1 className="w-1/4 text-xl">Inquilino</h1>
                     <h1 className="w-1/4 text-xl">Deuda</h1>
+                </div>
+                <div className="flex flex-col justify-center gap-5 py-5 w-[90%]">
+                    {functionalUnits.length > 0 ? (
+                        functionalUnits.map((unit) => (
+                            <div
+                                key={unit.id}
+                                className="flex justify-between py-2 text-center text-black bg-gray-200 rounded-lg"
+                            >
+                                <div className="w-1/4">{unit.location}</div>
+                                <div className="w-1/4">{unit.owner}</div>
+                                <div className="w-1/4">{unit.owner}</div>
+                                <div className="w-1/4">
+                                    {formatMoney(unit.balance)}
+                                </div>
+                            </div>
+                        ))
+                    ) : (
+                        <div className="flex justify-center p-8">
+                            <h1 className="text-2xl">
+                                No hay unidades funcionales para visualizar
+                            </h1>
+                        </div>
+                    )}
                 </div>
             </ContainerDashboard>
         </div>

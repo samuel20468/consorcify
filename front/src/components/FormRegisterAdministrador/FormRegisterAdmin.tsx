@@ -196,7 +196,7 @@ const FormRegisterAdmin = ({ update = false }) => {
                     name="name"
                     value={adminRegister.name}
                     type="text"
-                    placeholder="Nombre"
+                    placeholder="Nombre y Apellido"
                     onChange={handleChange}
                 />
                 {errorAdminRegister.name && adminRegister.name && (
@@ -223,7 +223,7 @@ const FormRegisterAdmin = ({ update = false }) => {
                     name="phone_number"
                     value={adminRegister.phone_number}
                     type="text"
-                    placeholder="example: +541144332211"
+                    placeholder="+541144332211"
                     onChange={handleChange}
                 />
                 <Label htmlFor="cuit">
@@ -234,7 +234,7 @@ const FormRegisterAdmin = ({ update = false }) => {
                     name="cuit"
                     value={adminRegister.cuit}
                     type="text"
-                    placeholder="CUIT sin guiones"
+                    placeholder="CUIT (sin guiones)"
                     onChange={handleChange}
                     disabled={update}
                 />
@@ -265,7 +265,7 @@ const FormRegisterAdmin = ({ update = false }) => {
                     <option value="Exento">Exento</option>
                 </Select>
                 <Label htmlFor="rpa">
-                    Inscripción RPA:
+                    Matrícula RPA:
                     <span className="text-redd">*</span>
                 </Label>
                 <Input
@@ -273,7 +273,7 @@ const FormRegisterAdmin = ({ update = false }) => {
                     name="rpa"
                     value={adminRegister.rpa}
                     type="text"
-                    placeholder="example: 12345"
+                    placeholder="12345"
                     onChange={handleChange}
                     disabled={update}
                 />

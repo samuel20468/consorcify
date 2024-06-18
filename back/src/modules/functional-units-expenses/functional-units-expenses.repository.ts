@@ -59,6 +59,7 @@ export class FunctionalUnitsExpensesRepository {
         'functional_unit_expense.functional_unit',
         'functional_unit',
       )
+      .leftJoinAndSelect('functional_unit_expense.expense', 'expense')
       .where('functional_unit.id = :id', { id: functionalUnitId })
       .orderBy('functional_unit_expense.created_at', 'DESC')
       .skip((page - 1) * limit)

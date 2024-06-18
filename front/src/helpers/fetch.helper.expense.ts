@@ -40,7 +40,7 @@ export const expenseFetch = async (
 export const getExpenses = async (
     token: string,
     page: number = 1,
-    limit: number = 5
+    limit: number = 10
 ): Promise<IExpense[] | any> => {
     try {
         const response = await fetch(

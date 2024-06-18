@@ -42,10 +42,13 @@ const AddAvatar: React.FC = () => {
             const formData = new FormData();
             formData.append('image', fileInputRef.current.files[0]);
             try {
+                console.log(role);
+                
                 const endpoint =
-                    role === 'user'
-                        ? `update-user/${id}`
-                        : `update-cadmin/${id}`;
+                role == 'cadmin'
+                ? `update-cadmin/${id}`
+                : `update-user/${id}`;
+                console.log(endpoint);
                 const response = await uploadImage(formData, endpoint, token);
                 if (response.ok) {
                     handleSuccessResponse(router);

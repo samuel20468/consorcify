@@ -43,7 +43,7 @@ const Expenses = () => {
     const [selectetUF, setSelectetUF] = useState<string>("");
     const { haveUF, isLoading, functional_unit } = useUfSesion();
     const router = useRouter();
-    console.log(functionalUnit);
+
     useEffect(() => {
         if (!isLoading && !haveUF) {
             router.push("/dashboard/usuario/addfuncionalunit");
@@ -70,45 +70,27 @@ const Expenses = () => {
     }, [token, path]);
 
     useEffect(() => {
-        const fechtExpenses = async () => {
-            if (!selectetUF) {
-                return; // No hacer la solicitud si no hay unidad funcional seleccionada
-            }
+        const fetchData = async () => {
+            if (!selectetUF) return;
             try {
-                const response = await functionalUnitExpensesId(
-                    fUnitExpenses[0].id,
-                    token
-                );
-                if (response) {
-                    setExpenses(response);
-                } else {
-                    Swal.fire({
-                        title: "Error",
-                        text: "Error al obtener la unidad funcional",
-                        icon: "error",
-                        showConfirmButton: false,
-                        timer: 1500,
-                    });
-                }
-            } catch (error) {
-                console.error(error);
-            }
-        };
-        if (token && selectetUF !== "") {
-            fechtExpenses();
-        }
-    }, [token, selectetUF]);
-
-    useEffect(() => {
-        const fechtExpenses = async () => {
-            if (!selectetUF) {
-                return;
-            }
-            try {
-                const response = await expensesIdFu(selectetUF, token);
-                if (response) {
-                    console.log(response);
-                    setfUnitExpenses(response);
+                const responseExpenses = await expensesIdFu(selectetUF, token);
+                if (responseExpenses) {
+                    setfUnitExpenses(responseExpenses);
+                    const firstExpenseId = responseExpenses[0]?.id;
+                    if (firstExpenseId) {
+                        const responseDetails = await functionalUnitExpensesId(firstExpenseId, token);
+                        if (responseDetails) {
+                            setExpenses(responseDetails);
+                        } else {
+                            Swal.fire({
+                                title: "Error",
+                                text: "Error al obtener la unidad funcional",
+                                icon: "error",
+                                showConfirmButton: false,
+                                timer: 1500,
+                            });
+                        }
+                    }
                 } else {
                     Swal.fire({
                         title: "Error",
@@ -123,11 +105,11 @@ const Expenses = () => {
             }
         };
         if (token && selectetUF !== "") {
-            fechtExpenses();
+            fetchData();
         }
     }, [selectetUF, token]);
-
-    console.log(fUnitExpenses);
+    
+    
     const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const { value } = e.target;
 
@@ -162,18 +144,24 @@ const Expenses = () => {
                         </p>
                         <p className="flex items-center justify-center w-full h-1/4 text-2xl">
                             $
-                            {expenses != undefined ? fUnitExpenses[0].total_amount : 0}
+                            {expenses != undefined ? fUnitExpenses[0]?.functional_unit?.balance : 0}
                         </p>
-                        <Link
-                            href={`/dashboard/usuario/expenses/${fUnitExpenses[0]?.id}`}
-                        >
-                            <Button
-                                className="w-32 rounded-[40px]"
-                                disabled={expenses == undefined}
-                            >
-                                Pagar
-                            </Button>
-                        </Link>
+                        {fUnitExpenses.length > 0 && (
+                            fUnitExpenses[0]?.functional_unit?.balance > 0 ? (
+                                <Link href={`/dashboard/usuario/expenses/${fUnitExpenses[0]?.id}`}>
+                                    <Button className="w-32 rounded-[40px]">
+                                        Pagar
+                                    </Button>
+                                </Link>
+                            ) : (
+                                <Button
+                                    className="w-32 rounded-[40px] bg-gray-400 cursor-not-allowed"
+                                    disabled
+                                >
+                                    Pagar
+                                </Button>
+                            )
+                        )}
                     </div>
                 </div>
                 <div className="flex items-center justify-center w-1/2 h-full border rounded-[40px] gap-2 bg-gradient-to-r from-neutral-50 via-fondo to-fondo">

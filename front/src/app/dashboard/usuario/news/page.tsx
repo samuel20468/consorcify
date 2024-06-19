@@ -7,6 +7,7 @@ import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
 import { useUfSesion } from "@/helpers/useUfSesion";
 import Link from "next/link";
+
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
@@ -51,14 +52,14 @@ const News: React.FC = () => {
             }
         };
 
-        if (token) {
-            fetchMessages();
-        }
+ if (token) {
+      fetchMessages();
+    }
+  
+
     }, [token, data.id, path]);
 
-    if (isLoading) {
-        return <div>Cargando...</div>;
-    }
+   
     return (
         <div>
             <ContainerDashboard className="w-[90%]">
@@ -89,7 +90,10 @@ const News: React.FC = () => {
                     </div>
                 </div>
             </ContainerDashboard>
+
         </div>
-    );
+      </ContainerDashboard>
+    </div>
+  );
 };
 export default News;

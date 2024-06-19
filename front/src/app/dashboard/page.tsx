@@ -9,13 +9,13 @@ import useAuth from "@/helpers/useAuth";
 // ------------
 
 const Dashboard = () => {
-    useAuth();
+  useAuth();
 
-    return (
-        <div className="h-full text-white">
-            <Dashboards />
-        </div>
-    );
+  return (
+    <div className="h-screen">
+      <Dashboards />
+    </div>
+  );
 };
 
 export default Dashboard;

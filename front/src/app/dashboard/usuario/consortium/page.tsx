@@ -14,6 +14,7 @@ import { formatearNumero } from "@/helpers/functions.helper";
 import "./consortiumstyle.css";
 
 const Consortium = () => {
+
     useAuth();
     const { token, data } = useSesion();
     const { haveUF, isLoading, functional_unit } = useUfSesion();
@@ -39,31 +40,32 @@ const Consortium = () => {
                         timer: 1000,
                     });
                 }
-            } catch (error) {
-                console.log("Error al cargar el usuario", error);
-                Swal.fire({
-                    title: "Error",
-                    text: (error as Error).message,
-                    icon: "error",
-                    showConfirmButton: false,
-                    timer: 1000,
-                });
-            }
-        };
-        if (token && data?.id) {
-            fetchUser();
-        }
-    }, [token]);
-
-    useEffect(() => {
-        if (!isLoading && !haveUF) {
-            router.push("/dashboard/usuario/addfuncionalunit");
-        }
-    }, [isLoading, haveUF, router]);
-
-    if (isLoading) {
-        return <div>Cargando...</div>;
+      } catch (error) {
+        console.log("Error al cargar el usuario", error);
+        Swal.fire({
+          title: "Error",
+          text: (error as Error).message,
+          icon: "error",
+          showConfirmButton: false,
+          timer: 1000,
+        });
+      }
+    };
+    if (token && data?.id) {
+      fetchUser();
     }
+  }, [token]);
+
+  useEffect(() => {
+    if (!isLoading && !haveUF) {
+      router.push("/dashboard/usuario/addfuncionalunit");
+    }
+  }, [isLoading, haveUF, router]);
+
+  if (isLoading) {
+    return <div>Cargando...</div>;
+  }
+
 
     return (
         <div className="">
@@ -159,5 +161,6 @@ const Consortium = () => {
             </ContainerDashboard>
         </div>
     );
+
 };
 export default Consortium;

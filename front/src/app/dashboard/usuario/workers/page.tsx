@@ -140,9 +140,16 @@ const Workers = () => {
         setResult(sortedData);
     }, [sortBy, sortOrder]);
 
-    if (isLoading) {
-        return <div>Cargando...</div>;
+
+  useEffect(() => {
+    if (!isLoading && !haveUF) {
+      router.push("/dashboard/usuario/addfuncionalunit");
     }
+  }, [isLoading, haveUF, router]);
+
+  if (isLoading) {
+    return <div>Cargando...</div>;
+  }
 
     return (
         <div>
@@ -256,8 +263,8 @@ const Workers = () => {
                     </div>
                 )}
             </ContainerDashboard>
-        </div>
-    );
+    </div>
+  );
 };
 
 export default Workers;

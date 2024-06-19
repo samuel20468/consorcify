@@ -7,7 +7,7 @@ import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
 const ExpensesUnitId = () => {
@@ -65,6 +65,7 @@ const ExpensesUnitId = () => {
     };
 
     return (
+        <div className="h-screen">
         <ContainerDashboard className="w-[90%] h-[90vh]">
             <Title>Pagar expensa</Title>
             <div className="w-[90%] flex justify-end my-2 mt-0">
@@ -73,28 +74,28 @@ const ExpensesUnitId = () => {
                 </Link>
             </div>
             <div className="w-full h-[50%] border rounded-[40px] flex flex-col items-center justify-center p-3">
-                <div className="font-bold text-2xl my-3">Resumen</div>
+                <div className="my-3 text-2xl font-bold">Resumen</div>
                 <div className="flex flex-col border w-[50%] p-5 gap-2 rounded-[40px] px-10">
-                    <div className="w-full flex justify-evenly">
+                    <div className="flex w-full justify-evenly">
                         <p className="flex justify-start w-full">
                             Saldo anterior:
                         </p>
                         <p>${expense?.previous_balance}</p>
                     </div>
-                    <div className="w-full flex justify-evenly">
+                    <div className="flex w-full justify-evenly">
                         <p className="flex justify-start w-full">
                             Intereses totales:
                         </p>
                         <p>${expense?.interests}</p>
                     </div>
-                    <div className="w-full flex justify-evenly">
+                    <div className="flex w-full justify-evenly">
                         <p className="flex justify-start w-full">
                             Gastos del mes:
                         </p>
                         <p>${expense?.monthly_expenditure}</p>
                     </div>
                     <div className="w-full border-b"></div>
-                    <div className="w-full flex justify-evenly">
+                    <div className="flex w-full justify-evenly">
                         <p className="flex justify-start w-full">Total:</p>
                         <p>${expense?.total_amount}</p>
                     </div>
@@ -122,6 +123,7 @@ const ExpensesUnitId = () => {
                 </div>
             </div>
         </ContainerDashboard>
+        </div>
     );
 };
 

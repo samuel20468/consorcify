@@ -14,7 +14,6 @@ import { EXPENSE_STATUS } from 'src/utils/constants';
 import { MailsService } from '../mails/mails.service';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { FunctionalUnitExpense } from '../functional-units-expenses/entities/functional-units-expense.entity';
 
 @Injectable()
 export class ExpensesService {

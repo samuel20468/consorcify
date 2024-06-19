@@ -21,6 +21,7 @@ import useAuth from '@/helpers/useAuth';
 import useSesion from '@/helpers/useSesion';
 import Link from 'next/link';
 import { formatDate, formatMoney } from '@/helpers/functions.helper';
+import ExpenseDetailAdmin from '@/components/ExpenseDetailAdmin/ExpenseDetailAdmin';
 
 // ------------------
 
@@ -75,6 +76,7 @@ const Page = () => {
                                 icon: 'success',
                                 title: 'Expensa ejecutada correctamente',
                             });
+                            router.push('/dashboard/admin/expenses');
                         } else {
                             Swal.fire({
                                 icon: 'error',
@@ -106,7 +108,7 @@ const Page = () => {
                         </span>
                     </Title>
                 )}
-                {expensa ? (
+                {expensa?.status === 'Abierta' ? (
                     <div className="w-[95%] h-full flex flex-col">
                         <div className="flex justify-center w-full h-auto py-2">
                             <p className="flex items-center justify-center w-1/4">
@@ -150,20 +152,23 @@ const Page = () => {
                             <div className="flex items-center justify-end w-1/4 text-xl">
                                 TOTAL: {formatMoney(expensa.total_amount)}
                             </div>
-                            {expensa.status !== 'Cerrada' && (
-                                <Button
-                                    onClick={handleSubmit}
-                                    className=" w-40 py-2 rounded-[40px]"
-                                >
-                                    Cerrar Expensa
-                                </Button>
-                            )}
+                            <Button
+                                onClick={handleSubmit}
+                                className=" w-40 py-2 rounded-[40px]"
+                            >
+                                Cerrar Expensa
+                            </Button>
                         </div>
                     </div>
+                ) : expensa ? (
+                    <ExpenseDetailAdmin {...expensa} />
                 ) : (
-                    <p className="items-center justify-center w-full h-full">
-                        Cargando...
-                    </p>
+                    <div className="flex flex-col items-center justify-center w-full">
+                        <Title>Gastos de la Expensa</Title>
+                        <p className="text-light text-2xl  pt-[10%]">
+                            Aun no tienes gastos cargados para esta expensa...
+                        </p>
+                    </div>
                 )}
             </ContainerDashboard>
         </div>

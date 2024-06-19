@@ -150,7 +150,7 @@ const Expenses = () => {
                                 </Link>
                             ) : (
                                 <Button
-                                    className="w-24 py-2 rounded-[40px] bg-gray-400 cursor-not-allowed"
+                                    className="w-24 py-2 rounded-[40px] opacity-50 cursor-not-allowed"
                                     disabled
                                 >
                                     Pagar
@@ -176,7 +176,7 @@ const Expenses = () => {
                   name="id"
                   id="id"
                 >
-                  <option value="">Selecciona tu unidad Funcional</option>
+                  <option value="" disabled>Selecciona tu unidad Funcional</option>
                   {functionalUnit?.map((unit) => (
                     <option value={unit.id} key={unit.id}>
                       {unit.location}

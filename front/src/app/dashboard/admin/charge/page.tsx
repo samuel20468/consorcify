@@ -1,22 +1,22 @@
-"use client";
+'use client';
 
 // Estilos y componentes
-import { ContainerDashboard, Select, Title } from "@/components/ui";
-import { getConsortiumsByAdminId } from "@/helpers/fetch.helper.consortium";
-import { formatMoney } from "@/helpers/functions.helper";
+import { ContainerDashboard, Select, Title } from '@/components/ui';
+import { getConsortiumsByAdminId } from '@/helpers/fetch.helper.consortium';
+import { formatMoney } from '@/helpers/functions.helper';
 
 // Endpoints
-import { getFuncionalUnits } from "@/helpers/fetch.helper.uf";
+import { getFuncionalUnits } from '@/helpers/fetch.helper.uf';
 
 // Interfaces
-import { IConsortium } from "@/Interfaces/consortium.interfaces";
-import { IFunctionalUnits } from "@/Interfaces/functionalUnits.interfaces";
+import { IConsortium } from '@/Interfaces/consortium.interfaces';
+import { IFunctionalUnits } from '@/Interfaces/functionalUnits.interfaces';
 
 // Hooks
-import { useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
-import useAuth from "@/helpers/useAuth";
-import useSesion from "@/helpers/useSesion";
+import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
+import useAuth from '@/helpers/useAuth';
+import useSesion from '@/helpers/useSesion';
 
 // ------------------
 
@@ -50,7 +50,7 @@ const Charge = () => {
         if (token) {
             fetchConsortiums();
         }
-    }, [token, pathname]);
+    }, [token, pathname, data]);
 
     useEffect(() => {
         const fetchFunctionalUnits = async () => {
@@ -90,7 +90,7 @@ const Charge = () => {
                             id="consortium_id"
                             name="consortium_id"
                             className="w-1/3 h-10 px-2 my-1 text-gray-200 rounded-md shadow-xl cursor-pointer bg-input focus:outline-none no-spinners"
-                            value={selectedConsortiumId || ""}
+                            value={selectedConsortiumId || ''}
                             onChange={handleSelectChange}
                         >
                             {consortiums.length > 0 &&
@@ -106,10 +106,11 @@ const Charge = () => {
                     </div>
                 </div>
                 <div className="w-[90%] border-t border-b border-white flex justify-between p-2 mt-5 text-center">
-                    <h1 className="w-1/4 text-xl">Piso / Unidad Funcional</h1>
-                    <h1 className="w-1/4 text-xl">Propietario</h1>
-                    <h1 className="w-1/4 text-xl">Inquilino</h1>
-                    <h1 className="w-1/4 text-xl">Deuda</h1>
+                    <h1 className="w-1/5 text-xl">Número de UF</h1>
+                    <h1 className="w-1/5 text-xl">Ubicación</h1>
+                    <h1 className="w-1/5 text-xl">Propietario</h1>
+                    <h1 className="w-1/5 text-xl">Inquilino</h1>
+                    <h1 className="w-1/5 text-xl">Deuda</h1>
                 </div>
                 <div className="flex flex-col justify-center gap-5 py-5 w-[90%]">
                     {functionalUnits.length > 0 ? (
@@ -118,12 +119,26 @@ const Charge = () => {
                                 key={unit.id}
                                 className="flex justify-between py-2 text-center text-black bg-gray-200 rounded-lg"
                             >
-                                <div className="w-1/4">{unit.location}</div>
-                                <div className="w-1/4">{unit.owner}</div>
-                                <div className="w-1/4">{unit.owner}</div>
-                                <div className="w-1/4">
-                                    {formatMoney(unit.balance)}
-                                </div>
+                                <div className="w-1/5">{unit.number}</div>
+                                <div className="w-1/5">{unit.location}</div>
+                                <div className="w-1/5">{unit.owner}</div>
+                                {unit.user ? (
+                                    <div className="w-1/5">
+                                        {unit.user?.first_name}{' '}
+                                        {unit.user?.last_name}
+                                    </div>
+                                ) : (
+                                    <div className="w-1/5"></div>
+                                )}
+                                {unit.balance > 0 ? (
+                                    <div className="w-1/5 text-red-600">
+                                        {formatMoney(unit.balance)}
+                                    </div>
+                                ) : (
+                                    <div className="w-1/5">
+                                        {formatMoney(unit.balance)}
+                                    </div>
+                                )}
                             </div>
                         ))
                     ) : (

@@ -3,7 +3,7 @@ import {
     IFunctionalUnitExpenses,
     IFunctionalUnits,
     INewFunctionalUnits,
-} from "@/Interfaces/functionalUnits.interfaces";
+} from '@/Interfaces/functionalUnits.interfaces';
 
 // Rutas
 export const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -17,9 +17,9 @@ export const addFuncionalUnit = async (
 ): Promise<IFunctionalUnits | any> => {
     try {
         const response = await fetch(`${apiUrl}/functional-units`, {
-            method: "POST",
+            method: 'POST',
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify(funcionalUnit),
@@ -45,15 +45,15 @@ export const getFuncionalUnits = async (
     token: string,
     consortiumId: string,
     page: number = 1,
-    limit: number = 10
+    limit: number = 20
 ): Promise<IFunctionalUnits[] | any> => {
     try {
         const respose = await fetch(
             `${apiUrl}/functional-units/consortium/${consortiumId}?page=${page}&limit=${limit}`,
             {
-                method: "GET",
+                method: 'GET',
                 headers: {
-                    "Content-Type": "application/json",
+                    'Content-Type': 'application/json',
                     Authorization: `Bearer ${token}`,
                 },
             }
@@ -81,9 +81,9 @@ export const getFuncionalUnitByID = async (
 ): Promise<IFunctionalUnits | any> => {
     try {
         const response = await fetch(`${apiUrl}/functional-units/${id}`, {
-            method: "GET",
+            method: 'GET',
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
             },
         });
@@ -110,9 +110,9 @@ export const getFuncionalUnitByUser = async (
 ): Promise<IFunctionalUnits | any> => {
     try {
         const response = await fetch(`${apiUrl}/functional-units/${id}/user`, {
-            method: "GET",
+            method: 'GET',
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
             },
         });
@@ -142,9 +142,9 @@ export const linkFunctionalUnit = async (
         const response = await fetch(
             `${apiUrl}/functional-units/${code}/users/${id}`,
             {
-                method: "PATCH",
+                method: 'PATCH',
                 headers: {
-                    "Content-Type": "application/json",
+                    'Content-Type': 'application/json',
                     Authorization: `Bearer ${token}`,
                 },
             }
@@ -174,9 +174,9 @@ export const functionalUnitExpensesId = async (
         const response = await fetch(
             `${apiUrl}/functional-units-expenses/${id}`,
             {
-                method: "GET",
+                method: 'GET',
                 headers: {
-                    "Content-Type": "application/json",
+                    'Content-Type': 'application/json',
                     Authorization: `Bearer ${token}`,
                 },
             }
@@ -207,9 +207,9 @@ export const expensesIdFu = async (
         const response = await fetch(
             `${apiUrl}/functional-units-expenses/functional-unit/${id}`,
             {
-                method: "GET",
+                method: 'GET',
                 headers: {
-                    "Content-Type": "application/json",
+                    'Content-Type': 'application/json',
                     Authorization: `Bearer ${token}`,
                 },
             }

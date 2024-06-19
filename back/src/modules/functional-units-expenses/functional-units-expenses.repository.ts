@@ -70,7 +70,14 @@ export class FunctionalUnitsExpensesRepository {
   async findOne(id: string): Promise<FunctionalUnitExpense> {
     return await this.functionalUnitsExpensesRepository.findOne({
       where: { id },
-      relations: ['expense', 'functional_unit', 'functional_unit.user'],
+      relations: [
+        'expense',
+        'functional_unit',
+        'functional_unit.user',
+        'expense.expenditures',
+        'expense.consortium',
+        'expense.consortium.c_admin',
+      ],
     });
   }
 

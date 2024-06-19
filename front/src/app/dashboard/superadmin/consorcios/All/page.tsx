@@ -97,7 +97,10 @@ const Page = () => {
                     </span>
                 </Title>
                 <div className="w-full mb-10">
-                    <SearchBar onSearch={handleSearch} />
+                    <SearchBar
+                        onSearch={handleSearch}
+                        searchString="Consorcio"
+                    />
                 </div>
                 <div className="w-[90%] h-full flex gap-3 px-10 bg-[#d3d3d3] p-3 items-center">
                     <div className="flex items-center justify-center w-full gap-3 ">
@@ -114,9 +117,7 @@ const Page = () => {
                             <option value="name">Nombre</option>
                             <option value="cuit">CUIT</option>
                             <option value="street_name">Calle</option>
-                            <option value="building_number">
-                                Altura
-                            </option>
+                            <option value="building_number">Altura</option>
                             <option value="city">Ciudad</option>
                             <option value="province">Provincia</option>
                             <option value="country">País</option>

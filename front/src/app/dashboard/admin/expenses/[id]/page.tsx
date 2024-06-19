@@ -116,7 +116,7 @@ const Page = () => {
                         </span>
                     </Title>
                 )}
-                {expensa ? (
+                {expensa && expensa.status === 'Activa' ? (
                     <div className="w-[95%] h-full flex flex-col">
                         <div className="w-full p-3 border-b text-center font-thin text-xl ">
                             <h2>REGISTRO DE GASTOS</h2>
@@ -165,19 +165,17 @@ const Page = () => {
                                 </div>
                             ))}
                         </div>
-                        {expensa && <ExpenseDetailAdmin {...expensa} />}
+                        <ExpenseDetailAdmin {...expensa} />
                         <div className="flex items-center justify-end w-full gap-2 py-2">
                             <div className="flex items-center justify-end w-1/4 text-xl">
                                 TOTAL: {formatMoney(expensa.total_amount)}
                             </div>
-                            {expensa.status !== 'Cerrada' && (
-                                <Button
-                                    onClick={handleSubmit}
-                                    className=" w-40 py-2 rounded-[40px]"
-                                >
-                                    Cerrar Expensa
-                                </Button>
-                            )}
+                            <Button
+                                onClick={handleSubmit}
+                                className=" w-40 py-2 rounded-[40px]"
+                            >
+                                Cerrar Expensa
+                            </Button>
                         </div>
                     </div>
                 ) : (

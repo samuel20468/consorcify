@@ -88,9 +88,19 @@ const ExpenseDetailAdmin = (expense: IExpense) => {
                     ))}
                 </div>
                 <div className="mt-5 border-t-2 border-blackk py-5">
-                    <div className="flex text-blackk justify-between">
-                        <h3 className="">Total de Gastos</h3>
-                        <p>{expense.total_amount}</p>
+                    <div className="flex text-blackk justify-between font-semibold text-xl py-5">
+                        <h3 className="font-light">TOTAL EXPENSA</h3>
+                        <p>{formatMoney(expense.total_amount)}</p>
+                    </div>
+                    <div className="flex text-blackk justify-between text-lg font-semibold">
+                        <h3 className="font-light">
+                            MONTO POR UNIDAD FUNCIONAL
+                        </h3>
+                        <p>
+                            {formatMoney(
+                                expense.total_amount / expense.consortium.ufs
+                            )}
+                        </p>
                     </div>
                 </div>
             </div>

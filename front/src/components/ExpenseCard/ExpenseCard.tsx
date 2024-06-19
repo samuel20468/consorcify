@@ -1,8 +1,8 @@
 // Funciones
-import { formatMoney } from "@/helpers/functions.helper";
+import { formatMoney } from '@/helpers/functions.helper';
 
 // Interfaces
-import { IExpense } from "@/Interfaces/expenses.interfaces";
+import { IExpense } from '@/Interfaces/expenses.interfaces';
 
 // ----------------
 
@@ -28,7 +28,13 @@ const ExpenseCard: React.FC<IExpense> = ({
                 <h1>{expiration_date}</h1>
             </div>
             <div className="w-1/5">
-                <h1>{status}</h1>
+                {status === 'Abierta' ? (
+                    <h1 className="text-green-700 font-semibold hover:text-white">
+                        {status}
+                    </h1>
+                ) : (
+                    <h1>{status}</h1>
+                )}
             </div>
             <div className="w-1/5">
                 <h1>{formatMoney(total_amount)}</h1>

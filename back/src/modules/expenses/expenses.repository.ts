@@ -30,7 +30,6 @@ export class ExpensesRepository {
   async findAll(): Promise<Expense[]> {
     return await this.expenseRepository.find({
       where: { active: true },
-
       relations: { consortium: true, expenditures: true },
     });
   }
@@ -47,6 +46,7 @@ export class ExpensesRepository {
       await this.expenseRepository.find({
         where: {
           consortium: consortium,
+          active: true,
         },
       });
     if (!foundExpensesInConsortium)
@@ -60,11 +60,12 @@ export class ExpensesRepository {
   async findOne(id: string): Promise<Expense> {
     return await this.expenseRepository.findOne({
       where: { id, active: true, expenditures: { active: true } },
-      relations: {
-        expenditures: true,
-        consortium: true,
-        functional_units_expenses: true,
-      },
+      relations: [
+        'expenditures',
+        'consortium',
+        'functional_units_expenses',
+        'expenditures.supplier',
+      ],
     });
   }
 
@@ -144,7 +145,7 @@ export class ExpensesRepository {
       };
 
       uf.balance = total_amount;
-      
+
       await this.functionalUnitRepository.save(uf);
 
       if (uf.user) {

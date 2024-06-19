@@ -1,9 +1,10 @@
 // Interfaces
 import {
-  IFunctionalUnitExpenses,
-  IFunctionalUnits,
-  INewFunctionalUnits,
-} from "@/Interfaces/functionalUnits.interfaces";
+    IFunctionalUnitExpenses,
+    IFunctionalUnits,
+    INewFunctionalUnits,
+} from '@/Interfaces/functionalUnits.interfaces';
+
 
 // Rutas
 export const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -15,28 +16,28 @@ export const addFuncionalUnit = async (
   token: string,
   funcionalUnit: INewFunctionalUnits
 ): Promise<IFunctionalUnits | any> => {
-  try {
-    const response = await fetch(`${apiUrl}/functional-units`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(funcionalUnit),
-    });
-    if (response.ok) {
-      return response.json();
-    } else {
-      return response.json().then((errorInfo) => {
-        throw new Error(
-          `Error ${response.status}: ${
-            errorInfo.message || response.statusText
-          }`
-        );
-      });
-    }
-  } catch (error) {
-    console.error(error);
+    try {
+        const response = await fetch(`${apiUrl}/functional-units`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(funcionalUnit),
+        });
+        if (response.ok) {
+            return response.json();
+        } else {
+            return response.json().then((errorInfo) => {
+                throw new Error(
+                    `Error ${response.status}: ${
+                        errorInfo.message || response.statusText
+                    }`
+                );
+            });
+        }
+    } catch (error) {
+        console.error(error);
   }
 };
 
@@ -77,27 +78,28 @@ export const getFuncionalUnitByID = async (
   id: string,
   token: string
 ): Promise<IFunctionalUnits | any> => {
-  try {
-    const response = await fetch(`${apiUrl}/functional-units/${id}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    if (response.ok) {
-      return response.json();
-    } else {
-      return response.json().then((errorInfo) => {
-        throw new Error(
-          `Error ${response.status}: ${
-            errorInfo.message || response.statusText
-          }`
-        );
-      });
-    }
-  } catch (error) {
-    console.error(error);
+
+    try {
+        const response = await fetch(`${apiUrl}/functional-units/${id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        if (response.ok) {
+            return response.json();
+        } else {
+            return response.json().then((errorInfo) => {
+                throw new Error(
+                    `Error ${response.status}: ${
+                        errorInfo.message || response.statusText
+                    }`
+                );
+            });
+        }
+    } catch (error) {
+        console.error(error);
   }
 };
 
@@ -106,27 +108,27 @@ export const getFuncionalUnitByUser = async (
   id: string,
   token: string
 ): Promise<IFunctionalUnits | any> => {
-  try {
-    const response = await fetch(`${apiUrl}/functional-units/${id}/user`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    if (response.ok) {
-      return response.json();
-    } else {
-      return response.json().then((errorInfo) => {
-        throw new Error(
-          `Error ${response.status}: ${
-            errorInfo.message || response.statusText
-          }`
-        );
-      });
-    }
-  } catch (error) {
-    console.error(error);
+    try {
+        const response = await fetch(`${apiUrl}/functional-units/${id}/user`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        if (response.ok) {
+            return response.json();
+        } else {
+            return response.json().then((errorInfo) => {
+                throw new Error(
+                    `Error ${response.status}: ${
+                        errorInfo.message || response.statusText
+                    }`
+                );
+            });
+        }
+    } catch (error) {
+        console.error(error);
   }
 };
 

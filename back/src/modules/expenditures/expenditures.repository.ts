@@ -44,7 +44,9 @@ export class ExpendituresRepository {
     });
 
     if (foundExpenditure) {
-      throw new ConflictException(`La factura ${createExpenditureDto.invoice_number} del proveedor ${createExpenditureDto.supplier_id} ya existe`);
+      throw new ConflictException(
+        `La factura ${createExpenditureDto.invoice_number} del proveedor ${createExpenditureDto.supplier_id} ya existe`,
+      );
     }
 
     const expense: Expense = await this.expenseRepository.findOneBy({
@@ -53,7 +55,9 @@ export class ExpendituresRepository {
     });
 
     if (!expense) {
-      throw new NotFoundException(`La expensa id ${createExpenditureDto.expense_id} del consorcio id ${createExpenditureDto.consortium_id} no existe`);
+      throw new NotFoundException(
+        `La expensa id ${createExpenditureDto.expense_id} del consorcio id ${createExpenditureDto.consortium_id} no existe`,
+      );
     }
 
     if (expense.status === EXPENSE_STATUS.CLOSED)
@@ -81,7 +85,7 @@ export class ExpendituresRepository {
       return this.expenditureRepository.findOne({
         where: { id: newExpenditure.id },
         relations: ['supplier', 'expense'],
-      })
+      });
     } catch (error) {
       throw new Error(error);
     }
@@ -174,15 +178,16 @@ export class ExpendituresRepository {
       expenditure.supplier.balance - expenditure.total_amount;
     expenditure.supplier.balance = newSupplierBalance;
     await this.supplierRepository.save(expenditure.supplier);
-    const newExpenseTotalAmount = expenditure.expense.total_amount - expenditure.total_amount;
+    const newExpenseTotalAmount =
+      expenditure.expense.total_amount - expenditure.total_amount;
     await this.expenseRepository.update(expenditure.expense, {
       total_amount: newExpenseTotalAmount,
-    })
+    });
     expenditure.active = false;
     await this.expenditureRepository.save(expenditure);
     return this.expenditureRepository.findOne({
       where: { id },
       relations: ['supplier', 'expense'],
-    })
+    });
   }
 }

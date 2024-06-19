@@ -5,16 +5,13 @@ import {
   Body,
   Patch,
   Param,
-  Delete,
   UseGuards,
   ParseUUIDPipe,
   Query,
 } from '@nestjs/common';
 import { ExpensesService } from './expenses.service';
 import { CreateExpenseDto } from './dto/create-expense.dto';
-import { UpdateExpenseDto } from './dto/update-expense.dto';
 import { ApiBearerAuth, ApiTags, ApiResponse } from '@nestjs/swagger';
-import { AuthCustomGuard } from 'src/guards/auth.guard';
 import { Expense } from './entities/expense.entity';
 import { STATUS_MESSAGE } from 'src/utils/constants';
 
@@ -38,7 +35,7 @@ export class ExpensesController {
   @Get()
   async findAll(
     @Query('page') page: number = 1,
-    @Query('limit') limit: number = 5,
+    @Query('limit') limit: number = 20,
   ): Promise<Expense[]> {
     return await this.expensesService.findAll({ page, limit });
   }

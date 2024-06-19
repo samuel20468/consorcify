@@ -1,9 +1,7 @@
 // Estilos y componentes
-import "./style.css";
-import { CiMail, CiInstagram, CiFacebook } from "react-icons/ci";
-
-// Hooks
-import Link from "next/link";
+import './style.css';
+import { CiMail, CiInstagram } from 'react-icons/ci';
+import { VscGithubAlt } from 'react-icons/vsc';
 
 // -------------------------
 
@@ -20,40 +18,17 @@ export const Footer = () => {
                             </h1>
                         </div>
                         <div className="flex justify-center gap-[16px] w-1/3 my-4">
-                            <CiMail size={35} />
+                            <a href="mailTo: consorcify@gmail.com">
+                                <CiMail size={35} />
+                            </a>
 
-                            <CiInstagram size={35} />
+                            <a href="https://www.instagram.com/consorcify.latam?igsh=ZGw2ZDl4d24yaDRt">
+                                <CiInstagram size={35} />
+                            </a>
 
-                            <CiFacebook size={35} />
-                        </div>
-                        <div className="flex justify-end w-1/3">
-                            <ul className="flex flex-wrap items-center mb-6 text-sm font-medium sm:mb-0">
-                                <li className="list-none ">
-                                    <Link
-                                        href=""
-                                        className="text-white no-underline duration-500 delay-100 hover:text-Principal me-4 lg:me-6"
-                                    >
-                                        ABOUT
-                                    </Link>
-                                </li>
-                                <li className="list-none">
-                                    <Link
-                                        href=""
-                                        className="text-white no-underline duration-500 delay-100 hover:text-Principal me-4 lg:me-6"
-                                    >
-                                        PRIVACY POLICY
-                                    </Link>
-                                </li>
-
-                                <li className="list-none">
-                                    <Link
-                                        href=""
-                                        className="text-white no-underline duration-500 delay-100 hover:text-Principal"
-                                    >
-                                        CONTACT
-                                    </Link>
-                                </li>
-                            </ul>
+                            <a href="https://github.com/samuel20468/consorcify">
+                                <VscGithubAlt size={33} />
+                            </a>
                         </div>
                     </div>
                     <hr className="my-6 border-white sm:mx-auto lg:my-8" />

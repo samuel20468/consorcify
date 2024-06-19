@@ -4,7 +4,6 @@ import { Cron } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Expense } from '../expenses/entities/expense.entity';
-import { FunctionalUnitExpense } from '../functional-units-expenses/entities/functional-units-expense.entity';
 
 @Injectable()
 export class RemindersService {
@@ -14,7 +13,7 @@ export class RemindersService {
     private readonly mailsService: MailsService,
   ) {}
 
-  @Cron('* 18 * * *')
+  @Cron('10 19 * * *')
   async sendPaymentReminders() {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);

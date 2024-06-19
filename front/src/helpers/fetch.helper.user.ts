@@ -1,5 +1,5 @@
 // Interfaces
-import { ILogin, IRegister, IUser } from '@/Interfaces/user.interfaces';
+import { ILogin, IRegister, IToken, IUser } from '@/Interfaces/user.interfaces';
 
 // Rutas
 export const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -9,7 +9,7 @@ export const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 // Creación de usuario
 export const registerFetch = async (
     registerData: IRegister
-): Promise<IUser | any> => {
+): Promise<IToken | any> => {
     try {
         const response = await fetch(`${apiUrl}/auth/signup`, {
             method: 'POST',
@@ -27,7 +27,8 @@ export const registerFetch = async (
                 );
             });
         } else {
-            return response;
+            const data = await response.json();
+            return { token: data.token };
         }
     } catch (error) {
         console.error('El error está en el registerFetch', error);

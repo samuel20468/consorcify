@@ -1,6 +1,6 @@
-"use client";
-import { IFunctionalUnits } from "@/Interfaces/functionalUnits.interfaces";
-import { INewMessage } from "@/Interfaces/messages.interfaces";
+'use client';
+import { IFunctionalUnits } from '@/Interfaces/functionalUnits.interfaces';
+import { INewMessage } from '@/Interfaces/messages.interfaces';
 import {
     Button,
     ContainerDashboard,
@@ -8,26 +8,28 @@ import {
     Label,
     Select,
     Title,
-} from "@/components/ui";
-import { areFieldsNotEmpty } from "@/helpers/Validations/validate.empty";
-import { getUserById } from "@/helpers/fetch.helper.user";
-import { newMessage } from "@/helpers/fetch.messages.user";
-import useAuth from "@/helpers/useAuth";
-import useSesion from "@/helpers/useSesion";
-import { log } from "console";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import Swal from "sweetalert2";
+} from '@/components/ui';
+import { areFieldsNotEmpty } from '@/helpers/Validations/validate.empty';
+import { getUserById } from '@/helpers/fetch.helper.user';
+import { newMessage } from '@/helpers/fetch.messages.user';
+import useAuth from '@/helpers/useAuth';
+import useSesion from '@/helpers/useSesion';
+import { log } from 'console';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
 
 const News: React.FC = () => {
     useAuth();
     const { token, data } = useSesion();
     const initialData: INewMessage = {
         user_id: data.id,
-        functional_unit_id: "",
-        subject: "",
-        content: "",
+        functional_unit_id: '',
+        subject: '',
+        content: '',
     };
+    const router = useRouter();
     const [dataMessage, setDataMessage] = useState<INewMessage>(initialData);
     const [functionalUnit, setFunctionalUnit] = useState<IFunctionalUnits[]>(
         []
@@ -37,20 +39,22 @@ const News: React.FC = () => {
         e.preventDefault();
         if (!areFieldsNotEmpty(dataMessage)) {
             Swal.fire({
-                title: "mensaje vacio",
-                text: "Por favor ingrese un mensaje",
+                title: 'mensaje vacio',
+                text: 'Por favor ingrese un mensaje',
             });
             return;
         }
 
         try {
             const response = await newMessage(token, dataMessage);
-            Swal.fire({
-                title: "mensaje enviado",
-                text: "Su mensaje fue enviado correctamente",
-            });
-            setDataMessage(initialData);
-            return;
+            if (response) {
+                Swal.fire({
+                    title: 'mensaje enviado',
+                    text: 'Su mensaje fue enviado correctamente',
+                });
+                setDataMessage(initialData);
+                router.push('/dashboard/usuario/news');
+            }
         } catch (error) {
             console.error(error);
         }

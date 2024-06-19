@@ -1,19 +1,19 @@
 export const validateNombreCompleto = (nombre: string, apellido: string) => {
     const reGeNombres = /^[A-Za-zÀ-ÿ\s]+$/;
     const errors = {
-        name: "",
-        lastName: "",
+        first_name: '',
+        last_name: '',
     };
 
     if (!reGeNombres.test(nombre)) {
-        errors.name = "El nombre debe contener solo letras y espacios";
+        errors.first_name = 'El nombre debe contener solo letras y espacios';
     } else {
-        errors.name = "";
+        errors.first_name = '';
     }
     if (!reGeNombres.test(apellido)) {
-        errors.lastName = "El apellido debe contener solo letras y espacios";
+        errors.last_name = 'El apellido debe contener solo letras y espacios';
     } else {
-        errors.lastName = "";
+        errors.last_name = '';
     }
 
     return errors;

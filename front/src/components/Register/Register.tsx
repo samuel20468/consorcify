@@ -65,25 +65,23 @@ const Register = () => {
         } else {
             try {
                 const response = await registerFetch(registerData);
-                if (response?.ok) {
+                if (response) {
                     Swal.fire({
                         title: `Bienvenid@, ${registerData.first_name}`,
-                        text: 'Logueate para poder continuar.',
+                        text: 'Es un placer que formes parte de nuestra comunidad',
                         icon: 'success',
                         confirmButtonColor: '#0b0c0d',
                     }).then((res) => {
                         if (res.isConfirmed) {
-                            router.push("/login");
-                            // A revisar. El response no tiene token
-                            // const decodeData = jwtDecode(response.token);
-                            // localStorage.setItem(
-                            //     "userData",
-                            //     JSON.stringify({
-                            //         user: decodeData,
-                            //         token: response.token,
-                            //     })
-                            // );
-                            // router.push("/dashboard");
+                            const decodeData = jwtDecode(response.token);
+                            localStorage.setItem(
+                                'userData',
+                                JSON.stringify({
+                                    user: decodeData,
+                                    token: response.token,
+                                })
+                            );
+                            router.push('/dashboard');
                         }
                     });
                 }

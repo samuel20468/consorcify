@@ -1,5 +1,5 @@
 // Interfaces
-import { IFunctionalUnits } from "./functionalUnits.interfaces";
+import { IFunctionalUnits } from './functionalUnits.interfaces';
 
 // Interfaz de registro de usuario
 export interface IRegister {
@@ -7,6 +7,10 @@ export interface IRegister {
     last_name: string;
     email: string;
     password: string;
+}
+
+export interface IToken {
+    token: string;
 }
 
 // Interfaz de error de registro de usuario

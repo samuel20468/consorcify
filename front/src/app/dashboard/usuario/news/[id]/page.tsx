@@ -145,7 +145,7 @@ const MessageUser = () => {
                             onClick={handleClick}
                             className="w-[20%] my-0 mx-auto rounded-lg border border-blackk text-black hover:border-none"
                         >
-                            Volver atras
+                            Volver
                         </Button>
                         <Button
                             onClick={handleDelete}

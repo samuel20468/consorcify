@@ -58,7 +58,12 @@ const UnidadFuncional = () => {
         <div>
             <ContainerDashboard className="w-[90%] h-[90vh]">
                 <Title>Unidad Funcional</Title>
-                <div className="flex justify-end my-2 w-[90%]">
+                <div className="flex justify-end my-2 w-[90%] gap-1">
+                    <Link href="/dashboard/usuario/addfuncionalunit">
+                        <Button className="w-44 py-2 rounded-[40px]">
+                            Agregar unidad Funcional
+                        </Button>
+                    </Link>
                     <Link href="/dashboard">
                         <Button className="w-32 py-2 rounded-[40px]">
                             Volver

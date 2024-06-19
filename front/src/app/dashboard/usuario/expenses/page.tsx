@@ -1,31 +1,33 @@
 "use client";
-import { RxCross1 } from "react-icons/rx";
-import { IoCheckmarkOutline } from "react-icons/io5";
+
+// Estilos y componentes
+import { Button, ContainerDashboard, Select, Title } from "@/components/ui";
+import { GiTakeMyMoney } from "react-icons/gi";
+import { MdHomeWork } from "react-icons/md";
+import { formatDate, formatMoney } from "@/helpers/functions.helper";
+import Swal from "sweetalert2";
+
+// Endpoints
+import "./expenseDetail.css";
+import { expensesIdFu } from "@/helpers/fetch.helper.uf";
+import { getUserById } from "@/helpers/fetch.helper.user";
+import { useUfSesion } from "@/helpers/useUfSesion";
+
+// Interfaces
 import {
   IFunctionalUnitExpenses,
   IFunctionalUnits,
 } from "@/Interfaces/functionalUnits.interfaces";
 import { IUser } from "@/Interfaces/user.interfaces";
-import { Button, ContainerDashboard, Select, Title } from "@/components/ui";
-import {
-  expensesIdFu,
-  functionalUnitExpensesId,
-} from "@/helpers/fetch.helper.uf";
-import { getUserById } from "@/helpers/fetch.helper.user";
-import {
-  AccountBalance,
-  ArrowBack,
-  Home,
-  HomeTwo,
-  Stroke,
-} from "@/helpers/icons.helper";
+
+// Hooks
+import { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import Swal from "sweetalert2";
-import { useUfSesion } from "@/helpers/useUfSesion";
+
+// ------------------------------------
 
 const Expenses = () => {
   useAuth();
@@ -33,15 +35,14 @@ const Expenses = () => {
   const { token, data } = useSesion();
   const [user, setUser] = useState<IUser>();
   const [functionalUnit, setFunctionalUnit] = useState<IFunctionalUnits[]>([]);
-  const [totalExpenses, setTotalExpenses] = useState<number>(0);
   const [expenses, setExpenses] = useState<IFunctionalUnitExpenses>();
   const [fUnitExpenses, setfUnitExpenses] = useState<IFunctionalUnitExpenses[]>(
     []
   );
   const [selectetUF, setSelectetUF] = useState<string>("");
-  const { haveUF, isLoading, functional_unit } = useUfSesion();
+  const { haveUF, isLoading } = useUfSesion();
   const router = useRouter();
-  console.log(functionalUnit);
+
   useEffect(() => {
     if (!isLoading && !haveUF) {
       router.push("/dashboard/usuario/addfuncionalunit");
@@ -102,7 +103,6 @@ const Expenses = () => {
       try {
         const response = await expensesIdFu(selectetUF, token);
         if (response) {
-          console.log(response);
           setfUnitExpenses(response);
         } else {
           Swal.fire({
@@ -122,7 +122,6 @@ const Expenses = () => {
     }
   }, [selectetUF, token]);
 
-  console.log(fUnitExpenses);
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = e.target;
 
@@ -138,27 +137,29 @@ const Expenses = () => {
     <div className="h-screen">
       <ContainerDashboard>
         <Title>Expensas</Title>
-        <div className="flex items-center justify-around  rounded-[40px] h-[15%] w-full gap-5 mt-5">
+        <div className="flex justify-around w-[95%] h-[70px] gap-5 mt-5">
           {/* Seleccionar unidad funcional */}
-          <div className="flex items-center justify-center w-1/2 h-[80px] border rounded-[40px] bg-gradient-to-r from-neutral-50 via-fondo to-fondo">
-            <div className="flex items-center justify-center w-full h-full">
-              <AccountBalance className="w-10 text-black" />
+          <div className="flex items-center w-1/2 border gradExpense">
+            <div className="flex justify-center w-1/3">
+              <GiTakeMyMoney size={50} />
             </div>
-            <div className="flex">
-              <div className="flex flex-col items-center justify-center w-full h-full itc">
-                <p className="flex items-center justify-center w-full h-1/4">
-                  Saldo
-                </p>
-                <p className="flex items-center justify-center w-full text-2xl h-1/4">
-                  ${expenses != undefined ? fUnitExpenses[0].total_amount : 0}
-                </p>
-              </div>
+
+            <div className="flex flex-col items-center justify-center w-1/3">
+              <p className="flex items-center justify-center">Saldo</p>
+              <p className="flex items-center justify-center w-full text-2xl">
+                {expenses !== undefined
+                  ? formatMoney(fUnitExpenses[0].total_amount)
+                  : 0}
+              </p>
+            </div>
+
+            <div className="flex justify-center w-1/3">
               <Link
                 href={`/dashboard/usuario/expenses/${fUnitExpenses[0]?.id}`}
               >
                 <Button
-                  className="w-32 rounded-[40px]"
-                  disabled={expenses == undefined}
+                  className="w-24 py-2 rounded-[40px] disabled:pointer-events-none"
+                  disabled={expenses === undefined}
                 >
                   Pagar
                 </Button>
@@ -167,15 +168,15 @@ const Expenses = () => {
           </div>
 
           {/* Unidad Funcional */}
-          <div className="flex items-center justify-center w-1/2 h-full border rounded-[40px] gap-2 bg-gradient-to-r from-neutral-50 via-fondo to-fondo">
-            <div className="flex items-center justify-center w-full h-full itc">
-              <HomeTwo className="" />
+          <div className="flex items-center w-1/2 border gradExpense">
+            <div className="flex justify-center w-1/3">
+              <MdHomeWork size={50} />
             </div>
-            <div className="flex flex-col items-center justify-center w-full h-full gap-2">
-              <p className="flex items-center justify-center w-full h-1/4">
-                Unidad Funcional
+            <div className="flex items-center justify-center w-2/3 gap-3">
+              <p className="flex items-center justify-center">
+                Unidad Funcional:
               </p>
-              <p className="flex items-center justify-center w-auto h-1/4">
+              <p className="flex items-center justify-center">
                 <Select
                   onChange={handleChange}
                   value={selectetUF}
@@ -195,89 +196,72 @@ const Expenses = () => {
         </div>
 
         {/* Historial de expensas */}
-        <div className="flex flex-col border rounded-[40px] h-[500px] w-[90%] mt-5">
-          <div className="flex items-center px-10 w-[98%] h-[10%] border-b-2 self-center">
-            <p>Historial de expensas</p>
+        <div className="flex flex-col border rounded-[40px] h-auto min-h-[400px] w-[90%] mt-5">
+          <div className="flex items-center px-10 w-[98%] py-4 border-b-2 self-center">
+            <p className="text-2xl">Historial de expensas</p>
           </div>
 
-          <div className="flex flex-col w-full h-[75%] p-5 gap-2">
-            <div className="flex flex-col w-full gap-2">
-              <div className="flex items-center justify-center w-full gap-2 border-b">
-                <div className="flex justify-center w-2/3 text-xl font-bold">
-                  <div className="flex justify-center w-1/3">Año</div>
-                  <div className="flex justify-center w-1/3">Mes</div>
-                  <div className="flex justify-center w-1/3">Monto</div>
-                </div>
-                <div className="flex justify-center w-1/3 ">
-                  <div className="flex items-center justify-center w-1/2">
-                    Estado
-                  </div>
-                  <div className="flex items-center justify-center w-1/2">
-                    Detalle
-                  </div>
-                </div>
+          <div className="flex flex-col w-full p-5">
+            <div className="flex justify-center w-full pb-1 mb-5 border-b">
+              <div className="flex justify-center w-1/5 text-xl">Período</div>
+              <div className="flex justify-center w-1/5 text-xl">
+                Vencimiento
               </div>
-              <div>
-                {selectetUF !== "" &&
-                  fUnitExpenses.map((fUnitExpense) => (
-                    <div
-                      key={fUnitExpense.id}
-                      className="flex border w-full items-center justify-center gap-2 py-1 rounded-[40px]"
-                    >
-                      <div className="flex justify-center w-2/3 text-xl font-bold">
-                        <div className="flex justify-center w-1/3">
-                          {/* Mostrar la fecha de vencimiento de la primera expense */}
-                          {
-                            fUnitExpense?.expense?.expiration_date?.split(
-                              "-"
-                            )?.[0]
-                          }
-                        </div>
-                        <div className="flex justify-center w-1/3">
-                          {
-                            fUnitExpense?.expense?.expiration_date?.split(
-                              "-"
-                            )?.[1]
-                          }
-                        </div>
-                        <div className="flex justify-center w-1/3">
-                          {fUnitExpense?.total_amount}
-                        </div>
-                      </div>
-                      <div className="flex justify-center w-1/3 ">
-                        <div
-                          className={`w-1/2 flex justify-center items-center `}
-                        >
-                          {fUnitExpense?.payment_status === "Impago" && (
-                            <span className="text-red-500 ">
-                              {fUnitExpense?.payment_status}
-                            </span>
-                          )}
-                          {fUnitExpense?.payment_status === "Pagado" && (
-                            <span className="text-green-500">
-                              {fUnitExpense?.payment_status}
-                            </span>
-                          )}
-                          {fUnitExpense?.payment_status === "Parcial" && (
-                            <span className="text-yellow-500">
-                              {fUnitExpense?.payment_status}
-                            </span>
-                          )}
-                        </div>
-
-                        <div className="flex items-center justify-center w-1/2">
-                          <Link
-                            href={`/dashboard/usuario/expenses/expenseDetail/${fUnitExpense?.id}`}
-                          >
-                            <Button className="w-32 rounded-[40px] py-2">
-                              Ver Detalle
-                            </Button>
-                          </Link>
-                        </div>
-                      </div>
+              <div className="flex justify-center w-1/5 text-xl">Monto</div>
+              <div className="flex justify-center w-1/5 text-xl">Estado</div>
+              <div className="flex justify-center w-1/5 text-xl">Detalle</div>
+            </div>
+            <div className="flex flex-col gap-3">
+              {selectetUF !== "" &&
+                fUnitExpenses.map((fUnitExpense) => (
+                  <div
+                    key={fUnitExpense.id}
+                    className="flex border items-center py-2 rounded-[40px]"
+                  >
+                    {/* Período */}
+                    <div className="flex justify-center w-1/5">
+                      {fUnitExpense?.expense?.expiration_date?.split("-")?.[1]}{" "}
+                      /{" "}
+                      {fUnitExpense?.expense?.expiration_date?.split("-")?.[0]}
                     </div>
-                  ))}
-              </div>
+                    {/* Vencimiento */}
+                    <div className="flex justify-center w-1/5">
+                      {formatDate(fUnitExpense.expense.expiration_date)}
+                    </div>
+                    {/* Monto */}
+                    <div className="flex justify-center w-1/5">
+                      {formatMoney(fUnitExpense?.total_amount)}
+                    </div>
+                    {/* Estado */}
+                    <div className="flex items-center justify-center w-1/5">
+                      {fUnitExpense?.payment_status === "Impago" && (
+                        <span className="text-redd ">
+                          {fUnitExpense?.payment_status}
+                        </span>
+                      )}
+                      {fUnitExpense?.payment_status === "Pagado" && (
+                        <span className="text-greenn">
+                          {fUnitExpense?.payment_status}
+                        </span>
+                      )}
+                      {fUnitExpense?.payment_status === "Parcial" && (
+                        <span className="text-yelloww">
+                          {fUnitExpense?.payment_status}
+                        </span>
+                      )}
+                    </div>
+                    {/* Detalle */}
+                    <div className="flex items-center justify-center w-1/5">
+                      <Link
+                        href={`/dashboard/usuario/expenses/expenseDetail/${fUnitExpense?.id}`}
+                      >
+                        <Button className="w-32 rounded-[40px] py-2">
+                          Ver Detalle
+                        </Button>
+                      </Link>
+                    </div>
+                  </div>
+                ))}
             </div>
           </div>
         </div>

@@ -56,55 +56,47 @@ const Page = () => {
         };
         if (token) {
             fecthData();
+    }
+  }, [path, token, id, router]);
+
+  const handleSubmit = () => {
+    Swal.fire({
+      icon: "warning",
+      title: "Estas seguro que quieres cerrarla?",
+      text: "Una vez completado no podras volver atras",
+      showCancelButton: true,
+      cancelButtonColor: "red",
+      confirmButtonColor: "green",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const response = await settleExpense(token, expensa?.id!);
+          if (response) {
+            const res = await closeExpense(token, expensa?.id!);
+            if (res) {
+              Swal.fire({
+                icon: "success",
+                title: "Expensa ejecutada correctamente",
+              });
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "hubo un error el en proceso",
+                text: "Intentalo mas tarde",
+              });
+          }
+        } catch (error: any) {
+          error.message;
+          Swal.fire({
+            title: "Error de información",
+            text: (error as Error).message,
+            icon: "error",
+            confirmButtonColor: "#0b0c0d",
+          });
         }
-    }, [path, token, id, router]);
-
-    const handleSubmit = () => {
-        Swal.fire({
-            icon: 'warning',
-            title: 'Estas seguro que quieres cerrarla?',
-            text: 'Una vez completado no podras volver atras',
-            showCancelButton: true,
-            cancelButtonColor: 'red',
-            confirmButtonColor: 'green',
-        }).then(async (result) => {
-            if (result.isConfirmed) {
-                try {
-                    const response = await settleExpense(token, expensa?.id!);
-                    if (response) {
-                        const res = await closeExpense(token, expensa?.id!);
-                        if (res) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Expensa ejecutada correctamente',
-                            });
-                        } else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'hubo un error el en proceso',
-                                text: 'Intentalo mas tarde',
-                            });
-                        }
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Hubo un error al procesar la expensa',
-                            text: 'Intentalo mas tarde',
-                        });
-                    }
-                } catch (error: any) {
-                    error.message;
-                    Swal.fire({
-                        title: 'Error de información',
-                        text: (error as Error).message,
-                        icon: 'error',
-                        confirmButtonColor: '#0b0c0d',
-                    });
-                }
-            }
-        });
-    };
-
+      }
+    });
+  };
     return (
         <div className="h-screen">
             <ContainerDashboard>

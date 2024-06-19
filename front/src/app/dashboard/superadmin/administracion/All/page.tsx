@@ -93,7 +93,10 @@ const Page = () => {
                     </span>
                 </Title>
                 <div className="w-full mb-10">
-                    <SearchBar onSearch={handleSearch} />
+                    <SearchBar
+                        onSearch={handleSearch}
+                        searchString="Administrador"
+                    />
                 </div>
                 <div className="w-[90%] h-full flex gap-3 px-10 bg-[#d3d3d3] p-3 items-center">
                     <div className="flex items-center justify-center w-full gap-3 ">

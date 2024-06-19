@@ -76,6 +76,7 @@ export class FunctionalUnitsExpensesRepository {
         'functional_unit.user',
         'expense.expenditures',
         'expense.consortium',
+        'expense.consortium.c_admin',
       ],
     });
   }

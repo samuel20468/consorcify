@@ -4,6 +4,7 @@ import { Input } from "../ui";
 // Interfaces
 interface SearchBarProps {
     onSearch: (query: string) => void;
+    searchString: string;
 }
 
 // Hooks
@@ -11,7 +12,7 @@ import { useState, ChangeEvent } from "react";
 
 // -------------------
 
-const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
+const SearchBar: React.FC<SearchBarProps> = ({ onSearch, searchString }) => {
     const [query, setQuery] = useState<string>("");
 
     let timeout: NodeJS.Timeout | null = null;
@@ -31,7 +32,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
 
     return (
         <div className="flex items-center justify-center w-full">
-            <h1 className="px-4 text-lg">Buscar consorcio: </h1>
+            <h1 className="px-4 text-lg">{`Buscar ${searchString}: `}</h1>
             <div className="w-1/4">
                 <Input
                     type="text"

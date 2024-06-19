@@ -13,7 +13,7 @@ export class RemindersService {
     private readonly mailsService: MailsService,
   ) {}
 
-  @Cron('* 18 * * *')
+  @Cron('10 19 * * *')
   async sendPaymentReminders() {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);

@@ -144,13 +144,13 @@ const Message = () => {
                     <div className="flex w-full justify-evenly mt-10">
                         <Button
                             onClick={handleClick}
-                            className="w-[20%] my-0 mx-auto rounded-lg bg-black border border-black text-white hover:border-none"
+                            className="w-[20%] my-0 mx-auto rounded-lg border border-black text-blackk hover:border-none"
                         >
-                            Volver atras
+                            Volver
                         </Button>
                         <Button
                             onClick={handleDelete}
-                            className="w-[20%] my-0 mx-auto rounded-lg bg-inherit border border-black bg-black text-white hover:border-none"
+                            className="w-[20%] my-0 mx-auto rounded-lg border border-black text-blackk hover:border-none"
                         >
                             Eliminar Mensaje
                         </Button>

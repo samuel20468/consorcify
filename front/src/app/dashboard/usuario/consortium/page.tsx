@@ -66,7 +66,7 @@ const Consortium = () => {
     }
 
     return (
-        <div className="h-screen">
+        <div className="">
             <ContainerDashboard>
                 <Title>
                     Consorcios{" "}

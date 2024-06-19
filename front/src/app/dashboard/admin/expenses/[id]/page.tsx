@@ -1,26 +1,26 @@
-"use client";
+'use client';
 
 // Estilos y componentes
-import { Button, ContainerDashboard, Title } from "@/components/ui";
-import Swal from "sweetalert2";
+import { Button, ContainerDashboard, Title } from '@/components/ui';
+import Swal from 'sweetalert2';
 
 // Endpoints
 import {
     closeExpense,
     getExpenseById,
     settleExpense,
-} from "@/helpers/fetch.helper.expense";
+} from '@/helpers/fetch.helper.expense';
 
 // Interfaces
-import { IExpense } from "@/Interfaces/expenses.interfaces";
+import { IExpense } from '@/Interfaces/expenses.interfaces';
 
 // Hooks
-import { useEffect, useState } from "react";
-import { useParams, usePathname, useRouter } from "next/navigation";
-import useAuth from "@/helpers/useAuth";
-import useSesion from "@/helpers/useSesion";
-import Link from "next/link";
-import { formatDate, formatMoney } from "@/helpers/functions.helper";
+import { useEffect, useState } from 'react';
+import { useParams, usePathname, useRouter } from 'next/navigation';
+import useAuth from '@/helpers/useAuth';
+import useSesion from '@/helpers/useSesion';
+import Link from 'next/link';
+import { formatDate, formatMoney } from '@/helpers/functions.helper';
 
 // ------------------
 
@@ -41,11 +41,11 @@ const Page = () => {
                     setExpensa(data);
                 } else {
                     Swal.fire({
-                        icon: "error",
-                        title: "Error",
-                        text: "No se encontró la expensa",
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'No se encontró la expensa',
                     });
-                    router.push("/dashboard/admin/expenses");
+                    router.push('/dashboard/admin/expenses');
                 }
             } catch (error) {
                 console.log(error);
@@ -58,12 +58,12 @@ const Page = () => {
 
     const handleSubmit = () => {
         Swal.fire({
-            icon: "warning",
-            title: "Estas seguro que quieres cerrarla?",
-            text: "Una vez completado no podras volver atras",
+            icon: 'warning',
+            title: 'Estas seguro que quieres cerrarla?',
+            text: 'Una vez completado no podras volver atras',
             showCancelButton: true,
-            cancelButtonColor: "red",
-            confirmButtonColor: "green",
+            cancelButtonColor: 'red',
+            confirmButtonColor: 'green',
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
@@ -72,42 +72,35 @@ const Page = () => {
                         const res = await closeExpense(token, expensa?.id!);
                         if (res) {
                             Swal.fire({
-                            icon: "success",
-                            title: "Expensa ejecutada correctamente",
-                        });
+                                icon: 'success',
+                                title: 'Expensa ejecutada correctamente',
+                            });
                         } else {
-                        Swal.fire({
-                            icon: "error",
-                            title: "hubo un error el en proceso",
-                            text: "Intentalo mas tarde",
-                        });
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'hubo un error el en proceso',
+                                text: 'Intentalo mas tarde',
+                            });
                         }
-                    } else {
-                        Swal.fire({
-                        icon: "error",
-                        title: "Hubo un error al procesar la expensa",
-                        text: "Intentalo mas tarde",
-                        });
                     }
                 } catch (error: any) {
                     error.message;
                     Swal.fire({
-                        title: "Error de información",
+                        title: 'Error de información',
                         text: (error as Error).message,
-                        icon: "error",
-                        confirmButtonColor: "#0b0c0d",
+                        icon: 'error',
+                        confirmButtonColor: '#0b0c0d',
                     });
                 }
             }
         });
     };
-
     return (
         <div className="h-screen">
             <ContainerDashboard>
                 {expensa && (
                     <Title>
-                        Expensas{" "}
+                        Expensas{' '}
                         <span className="text-2xl font-light">
                             | {expensa?.name}
                         </span>
@@ -157,7 +150,7 @@ const Page = () => {
                             <div className="flex items-center justify-end w-1/4 text-xl">
                                 TOTAL: {formatMoney(expensa.total_amount)}
                             </div>
-                            {expensa.status !== "Cerrada" && (
+                            {expensa.status !== 'Cerrada' && (
                                 <Button
                                     onClick={handleSubmit}
                                     className=" w-40 py-2 rounded-[40px]"

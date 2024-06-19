@@ -127,7 +127,7 @@ const Supplies = () => {
                     <h1 className="w-1/5 text-xl">Dirección</h1>
                 </div>
                 {suppliers.length > 0 ? (
-                    <SuppliersCards suppliers={suppliers} />
+                    <SuppliersCards suppliers={suppliers} roles={data?.roles} />
                 ) : (
                     <div className="p-8">
                         <h1 className="text-2xl">

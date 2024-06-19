@@ -1,21 +1,21 @@
-'use client';
+"use client";
 
 // Estilos y componentes
-import { ContainerDashboard, Title } from '@/components/ui';
-import { formatMoney, formatearNumero } from '@/helpers/functions.helper';
-import Map from '@/components/Map/Map';
+import { ContainerDashboard, Title } from "@/components/ui";
+import { formatMoney, formatearNumero } from "@/helpers/functions.helper";
+import Map from "@/components/Map/Map";
 
 // Endpoints
-import { getSupplierById } from '@/helpers/fetch.helper.supplier';
+import { getSupplierById } from "@/helpers/fetch.helper.supplier";
 
 // Interfaces
-import { ISupplier } from '@/Interfaces/suppliers.interfaces';
+import { ISupplier } from "@/Interfaces/suppliers.interfaces";
 
 // Hooks
-import { useEffect, useState } from 'react';
-import { useParams, usePathname } from 'next/navigation';
-import useAuth from '@/helpers/useAuth';
-import useSesion from '@/helpers/useSesion';
+import { useEffect, useState } from "react";
+import { useParams, usePathname } from "next/navigation";
+import useAuth from "@/helpers/useAuth";
+import useSesion from "@/helpers/useSesion";
 
 // -------------------
 
@@ -47,9 +47,9 @@ const Supplier = () => {
         <div className="h-screen">
             <ContainerDashboard>
                 <Title>
-                    Portal{' '}
+                    Portal{" "}
                     <span className="text-2xl font-thin">
-                        | Proveedores |{' '}
+                        | Proveedores |{" "}
                         <span className="text-xl font-thin">
                             {suppliers?.name}
                         </span>
@@ -65,26 +65,28 @@ const Supplier = () => {
                         )}
                     </div>
                     <div className="flex flex-col justify-around items-center w-2/3">
-                        <div className="w-[80%] px-5 pb-3 border-b text-center">
+                        <div>
                             <h1 className="text-4xl font-bold">
                                 {suppliers?.name}
                             </h1>
                         </div>
                         <div>
                             <h1 className="text-2xl font-extralight">
-                                CUIT:{' '}
+                                CUIT:{" "}
                                 <span className="font-bold">
                                     {formatearNumero(suppliers?.cuit)}
                                 </span>
                             </h1>
                         </div>
-                        <div className="flex flex-col">
-                            <h1 className="text-xl text-center">Dirección:</h1>
-                            <h1 className="text-2xl font-extralight">
-                                {suppliers?.address}
-                            </h1>
-                        </div>
                         <div className="flex justify-evenly w-full">
+                            <div className="flex flex-col">
+                                <h1 className="text-xl text-center">
+                                    Dirección:
+                                </h1>
+                                <h1 className="text-2xl font-extralight">
+                                    {suppliers?.address}
+                                </h1>
+                            </div>
                             <div className="flex flex-col">
                                 <h1 className="text-xl text-center">Email:</h1>
                                 <h1 className="text-2xl font-extralight">
@@ -94,29 +96,11 @@ const Supplier = () => {
                             <div className="flex flex-col">
                                 <h1 className="text-xl text-center">
                                     Teléfono:
-                                </h1>{' '}
+                                </h1>{" "}
                                 <h1 className="text-2xl font-extralight">
                                     {suppliers?.phone_number}
                                 </h1>
                             </div>
-                        </div>
-                        <div>
-                            {suppliers &&
-                                (suppliers?.balance > 0 ? (
-                                    <h1 className="text-2xl font-extralight">
-                                        Saldo:{' '}
-                                        <span className="font-bold text-redd">
-                                            {formatMoney(suppliers?.balance)}
-                                        </span>
-                                    </h1>
-                                ) : (
-                                    <h1 className="text-2xl font-extralight">
-                                        Saldo:{' '}
-                                        <span className="font-bold">
-                                            {formatMoney(suppliers?.balance)}
-                                        </span>
-                                    </h1>
-                                ))}
                         </div>
                     </div>
                 </div>

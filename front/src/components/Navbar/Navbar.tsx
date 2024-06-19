@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
-import "./style.css";
-import Link from "next/link";
-import RoleIcon from "./RoleIcon/roleIcon";
-import useSesion from "@/helpers/useSesion";
-import { IAdmin } from "@/Interfaces/admin.interfaces";
-import { IUser } from "@/Interfaces/user.interfaces";
-import { getAdminById } from "@/helpers/fetch.helper.admin";
-import { getUserById } from "@/helpers/fetch.helper.user";
-import { Button } from "../ui";
+import React, { useEffect, useState } from 'react';
+import './style.css';
+import Link from 'next/link';
+import RoleIcon from './RoleIcon/roleIcon';
+import useSesion from '@/helpers/useSesion';
+import { IAdmin } from '@/Interfaces/admin.interfaces';
+import { IUser } from '@/Interfaces/user.interfaces';
+import { getAdminById } from '@/helpers/fetch.helper.admin';
+import { getUserById } from '@/helpers/fetch.helper.user';
+import { Button } from '../ui';
 
 const Navbar = ({ activeSection }: any) => {
     const [showNavbar, setShowNavbar] = useState(true);
@@ -28,7 +28,7 @@ const Navbar = ({ activeSection }: any) => {
                 console.error(error);
             }
         };
-        if (data.roles?.[0] === "user" || data.roles?.[0] === "superadmin") {
+        if (data.roles?.[0] === 'user' || data.roles?.[0] === 'superadmin') {
             fetchData();
         }
     }, [token, data.id, data.roles]);
@@ -45,14 +45,14 @@ const Navbar = ({ activeSection }: any) => {
                 console.error(error);
             }
         };
-        if (data.roles?.[0] === "cadmin") {
+        if (data.roles?.[0] === 'cadmin') {
             fecthData();
         }
     }, [token, data.id, data.roles]);
 
     useEffect(() => {
         const controlNavbar = () => {
-            if (typeof window !== "undefined") {
+            if (typeof window !== 'undefined') {
                 if (window.scrollY > lastScrollY) {
                     // Scrolling down
                     setShowNavbar(false);
@@ -64,11 +64,11 @@ const Navbar = ({ activeSection }: any) => {
             }
         };
 
-        if (typeof window !== "undefined") {
-            window.addEventListener("scroll", controlNavbar);
+        if (typeof window !== 'undefined') {
+            window.addEventListener('scroll', controlNavbar);
 
             return () => {
-                window.removeEventListener("scroll", controlNavbar);
+                window.removeEventListener('scroll', controlNavbar);
             };
         }
     }, [lastScrollY]);
@@ -93,9 +93,9 @@ const Navbar = ({ activeSection }: any) => {
                             href="/dashboard"
                         >
                             <Button className="flex items-center justify-evenly w-full py-2 rounded-[40px] font-bold">
-                                {data?.roles?.[0] === "superadmin" ||
-                                data?.roles?.[0] === "user"
-                                    ? user?.first_name! + " " + user?.last_name!
+                                {data?.roles?.[0] === 'superadmin' ||
+                                data?.roles?.[0] === 'user'
+                                    ? user?.first_name! + ' ' + user?.last_name!
                                     : admin?.name!}
                                 {data.roles && (
                                     <RoleIcon role={data.roles[0]} />
@@ -107,7 +107,7 @@ const Navbar = ({ activeSection }: any) => {
                             <Link
                                 href="/login"
                                 type="button"
-                                className="button-log text-white rounded-[50px] px-5 py-3 border backdrop-blur-sm"
+                                className="button-log text-white rounded-[50px] px-5 py-3 border backdrop-blur-sm mr-3"
                             >
                                 Entrar
                             </Link>
@@ -172,9 +172,9 @@ const Navbar = ({ activeSection }: any) => {
                             <a
                                 href="#inicio"
                                 className={`py-3 px-5 text-white${
-                                    activeSection === "inicio"
-                                        ? "  bg-white rounded-[50px] !text-[#000000]"
-                                        : ""
+                                    activeSection === 'inicio'
+                                        ? '  bg-white rounded-[50px] !text-[#000000]'
+                                        : ''
                                 }`}
                             >
                                 INICIO
@@ -184,9 +184,9 @@ const Navbar = ({ activeSection }: any) => {
                             <a
                                 href="#nosotros"
                                 className={`py-3 px-5 text-white ${
-                                    activeSection === "nosotros"
-                                        ? " !text-[#000000] bg-white rounded-[50px] "
-                                        : ""
+                                    activeSection === 'nosotros'
+                                        ? ' !text-[#000000] bg-white rounded-[50px] '
+                                        : ''
                                 }`}
                             >
                                 NOSOTROS
@@ -196,9 +196,9 @@ const Navbar = ({ activeSection }: any) => {
                             <a
                                 href="#preguntas"
                                 className={`py-3 px-5 text-white ${
-                                    activeSection === "preguntas"
-                                        ? " !text-[#000000] bg-white rounded-[50px] "
-                                        : ""
+                                    activeSection === 'preguntas'
+                                        ? ' !text-[#000000] bg-white rounded-[50px] '
+                                        : ''
                                 }`}
                             >
                                 OPINIONES

@@ -1,23 +1,23 @@
-"use client";
+'use client';
 
 // Estilos y componentes
-import { Button, ContainerDashboard, Select, Title } from "@/components/ui";
-import ExpenseCards from "@/components/ExpenseCards/ExpenseCards";
+import { Button, ContainerDashboard, Select, Title } from '@/components/ui';
+import ExpenseCards from '@/components/ExpenseCards/ExpenseCards';
 
 // Interfaces
-import { IExpense } from "@/Interfaces/expenses.interfaces";
-import { IConsortium } from "@/Interfaces/consortium.interfaces";
+import { IExpense } from '@/Interfaces/expenses.interfaces';
+import { IConsortium } from '@/Interfaces/consortium.interfaces';
 
 // Endpoints
-import { getExpensesByConsorcioId } from "@/helpers/fetch.helper.expense";
-import { getConsortiumsByAdminId } from "@/helpers/fetch.helper.consortium";
+import { getExpensesByConsorcioId } from '@/helpers/fetch.helper.expense';
+import { getConsortiumsByAdminId } from '@/helpers/fetch.helper.consortium';
 
 // Hooks
-import { useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
-import useAuth from "@/helpers/useAuth";
-import useSesion from "@/helpers/useSesion";
-import Link from "next/link";
+import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
+import useAuth from '@/helpers/useAuth';
+import useSesion from '@/helpers/useSesion';
+import Link from 'next/link';
 
 // --------------------
 
@@ -49,7 +49,7 @@ const Expense = () => {
         if (token) {
             fetchData();
         }
-    }, [token, pathname]);
+    }, [token, pathname, data]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -69,7 +69,7 @@ const Expense = () => {
         if (token) {
             fetchData();
         }
-    }, [selectedConsortiumId]);
+    }, [selectedConsortiumId, token]);
 
     // Filtros
 
@@ -93,7 +93,7 @@ const Expense = () => {
                             id="consortium_id"
                             name="consortium_id"
                             className="w-1/3 h-10 px-2 my-1 text-gray-200 rounded-md shadow-xl cursor-pointer bg-input focus:outline-none no-spinners"
-                            value={selectedConsortiumId || ""}
+                            value={selectedConsortiumId || ''}
                             onChange={handleSelectChange}
                         >
                             {consortiums.length > 0 &&

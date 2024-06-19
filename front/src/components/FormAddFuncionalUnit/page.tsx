@@ -12,7 +12,6 @@ import {
 
 // Validaciones
 import { validateEmail } from "@/helpers/Validations/validate.email";
-import { areFieldsNotEmpty } from "@/helpers/Validations/validate.empty";
 
 // Endpoints
 import { addFuncionalUnit } from "@/helpers/fetch.helper.uf";
@@ -38,20 +37,18 @@ const FormAddFuncionalUnit = ({ consortium_id }: { consortium_id: string }) => {
         consortium_id: consortium_id,
     };
     const [formData, setFormData] = useState<INewFunctionalUnits>(initialData);
-    const [errors, setErrors] = useState<INewFunctionalUnitsError>({
-        type: "",
-        location: "",
-        number: "",
-        owner: "",
-        owner_phone_number: "",
-        owner_email: "",
-        balance: "",
-    });
+    const [errors, setErrors] = useState<INewFunctionalUnitsError>(initialData);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        if (!areFieldsNotEmpty(formData)) {
+        if (!formData.type ||
+            !formData.location ||
+            !formData.number ||
+            !formData.owner ||
+            !formData.owner_phone_number ||
+            !formData.owner_email ||
+            formData.balance < 0 && !formData.balance) {
             Swal.fire({
                 title: "Error",
                 text: "Por favor, complete todos los campos",
@@ -63,7 +60,6 @@ const FormAddFuncionalUnit = ({ consortium_id }: { consortium_id: string }) => {
 
         try {
             const response = await addFuncionalUnit(token, formData);
-            console.log(response);
             if (response) {
                 Swal.fire({
                     title: " Unidad Funcional agregada",
@@ -92,14 +88,10 @@ const FormAddFuncionalUnit = ({ consortium_id }: { consortium_id: string }) => {
         e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
     ) => {
         const { name, value } = e.target;
+        
         setFormData({
             ...formData,
-            [name]:
-                name === "balance"
-                    ? value === ""
-                        ? 0
-                        : parseFloat(value)
-                    : value,
+            [name]: name === "balance" && value !== "" ? parseFloat(value) : value,
         });
     };
 
@@ -169,11 +161,8 @@ const FormAddFuncionalUnit = ({ consortium_id }: { consortium_id: string }) => {
                             id="balance"
                             name="balance"
                             type="number"
-                            step="0.01"
                             placeholder="1500.5"
-                            value={
-                                formData.balance == 0 ? "" : formData.balance
-                            }
+                            value={formData.balance}
                             onChange={handleChange}
                         />
                     </div>

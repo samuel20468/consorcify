@@ -11,8 +11,15 @@ export class UsersRepository {
   ) {}
 
   async getAllUsers(): Promise<User[]> {
-    const users = await this.usersRepository.find();
-    return users;
+    return this.usersRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.functional_units', 'functional_units')
+      .leftJoinAndSelect(
+        'functional_units.functional_units_expenses',
+        'functional_units_expenses',
+      )
+      .leftJoinAndSelect('functional_units_expenses.expense', 'expense')
+      .getMany();
   }
 
   async findAll(page: number, limit: number): Promise<User[]> {
@@ -31,6 +38,7 @@ export class UsersRepository {
           functional_units_expenses: {
             expense: true,
           },
+          consortium: true,
         },
       },
     });

@@ -1,6 +1,6 @@
 // Interfaces
-import { IConsortium } from "./consortium.interfaces";
-import { IExpenditure } from "./expenditures.interfaces";
+import { IConsortium } from './consortium.interfaces';
+import { IExpenditure } from './expenditures.interfaces';
 
 // Interfaz de creación de una nueva expensa
 export interface INewExpense {

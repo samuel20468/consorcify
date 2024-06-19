@@ -1,23 +1,22 @@
-"use client";
+'use client';
 
 // Estilos y componentes
-import { Button, ContainerDashboard, Title } from "@/components/ui";
-import Swal from "sweetalert2";
+import { ContainerDashboard, Title } from '@/components/ui';
+import Swal from 'sweetalert2';
 
 // Interfaces
-import { IFunctionalUnits } from "@/Interfaces/functionalUnits.interfaces";
+import { IFunctionalUnits } from '@/Interfaces/functionalUnits.interfaces';
 
 // Endpoints
-import { getFuncionalUnits } from "@/helpers/fetch.helper.uf";
+import { getFuncionalUnits } from '@/helpers/fetch.helper.uf';
 
 // Hooks
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
-import useAuth from "@/helpers/useAuth";
-import useSesion from "@/helpers/useSesion";
-import { getConsortiumById } from "@/helpers/fetch.helper.consortium";
-import { IConsortium } from "@/Interfaces/consortium.interfaces";
-import Link from "next/link";
+import { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
+import useAuth from '@/helpers/useAuth';
+import useSesion from '@/helpers/useSesion';
+import { getConsortiumById } from '@/helpers/fetch.helper.consortium';
+import { IConsortium } from '@/Interfaces/consortium.interfaces';
 
 // --------------------
 
@@ -29,8 +28,8 @@ const AllFunctionalUnits = () => {
     const [functionalUnits, setFunctionalUnits] = useState<IFunctionalUnits[]>(
         []
     );
-    const [consortiumName, setConsortiumName] = useState<string>("");
-    const [consortiumId, setConsortiumId] = useState<string>("");
+    const [consortiumName, setConsortiumName] = useState<string>('');
+    const [consortiumId, setConsortiumId] = useState<string>('');
 
     useEffect(() => {
         const fetchData = async () => {
@@ -40,10 +39,10 @@ const AllFunctionalUnits = () => {
                     setFunctionalUnits(unitsResponse);
                 } else {
                     Swal.fire({
-                        icon: "error",
-                        title: "Error",
-                        text: "No se ha podido obtener los datos de las unidades funcionales",
-                        confirmButtonText: "Aceptar",
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'No se ha podido obtener los datos de las unidades funcionales',
+                        confirmButtonText: 'Aceptar',
                     });
                 }
 
@@ -55,10 +54,10 @@ const AllFunctionalUnits = () => {
                     setConsortiumId(consortiumData.id);
                 } else {
                     Swal.fire({
-                        icon: "error",
-                        title: "Error",
-                        text: "No se ha podido obtener los datos del consorcio",
-                        confirmButtonText: "Aceptar",
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'No se ha podido obtener los datos del consorcio',
+                        confirmButtonText: 'Aceptar',
                     });
                 }
             } catch (error) {
@@ -74,16 +73,16 @@ const AllFunctionalUnits = () => {
         <div className="h-screen">
             <ContainerDashboard>
                 <Title>
-                    Consorcios{" "}
+                    Consorcios{' '}
                     <span className="text-2xl font-thin">
-                        | {consortiumName}{" "}
+                        | {consortiumName}{' '}
                     </span>
                     <span className="text-xl font-thin">
                         | Unidades Funcionales
                     </span>
                 </Title>
 
-                <div className="flex items-center justify-end w-[98%]">
+                {/* <div className="flex items-center justify-end w-[98%]">
                     <div className="flex w-1/3">
                         <Link
                             href={`/dashboard/admin/consortiums/${params.id}/${consortiumId}`}
@@ -95,27 +94,39 @@ const AllFunctionalUnits = () => {
                             </Button>
                         </Link>
                     </div>
-                </div>
+                </div> */}
 
-                <div className="w-[90%] border-t border-b border-white flex justify-between p-2 mt-5 text-center">
-                    <div className="w-1/3 text-xl">Locación</div>
-                    <div className="w-1/3 text-xl">Codigo Unidad</div>
-                    <div className="w-1/3 text-xl">Propietario</div>
+                <div className="w-[90%] border-t border-b border-white flex justify-between p-2 my-5 text-center">
+                    <div className="w-1/6 text-xl">Número de UF</div>
+                    <div className="w-1/6 text-xl">Tipo de UF</div>
+                    <div className="w-1/6 text-xl">Locación</div>
+                    <div className="w-1/6 text-xl">Codigo Unidad</div>
+                    <div className="w-1/6 text-xl">Propietario</div>
+                    <div className="w-1/6 text-xl">Email</div>
                 </div>
                 {functionalUnits.length !== 0 ? (
                     functionalUnits.map((unit) => (
                         <div
                             key={unit.id}
-                            className="flex justify-between py-5 text-center w-[90%]"
+                            className="flex justify-between py-2 text-center w-[90%] bg-neutral-50 rounded-lg text-blackk mb-5"
                         >
-                            <div className="w-1/3">
+                            <div className="w-1/6">
+                                <h1>{unit.number}</h1>
+                            </div>
+                            <div className="w-1/6">
+                                <h1>{unit.type}</h1>
+                            </div>
+                            <div className="w-1/6">
                                 <h1>{unit.location}</h1>
                             </div>
-                            <div className="w-1/3">
+                            <div className="w-1/6">
                                 <h1>{unit.code}</h1>
                             </div>
-                            <div className="w-1/3">
+                            <div className="w-1/6">
                                 <h1>{unit.owner}</h1>
+                            </div>
+                            <div className="w-1/6">
+                                <h1>{unit.owner_email}</h1>
                             </div>
                         </div>
                     ))

@@ -68,11 +68,6 @@ const ExpensesUnitId = () => {
         <div className="h-screen">
         <ContainerDashboard className="w-[90%] h-[90vh]">
             <Title>Pagar expensa</Title>
-            <div className="w-[90%] flex justify-end my-2 mt-0">
-                <Link href="/dashboard/usuario/expenses">
-                    <Button className="w-32 py-2 rounded-[40px]">Volver</Button>
-                </Link>
-            </div>
             <div className="w-full h-[50%] border rounded-[40px] flex flex-col items-center justify-center p-3">
                 <div className="my-3 text-2xl font-bold">Resumen</div>
                 <div className="flex flex-col border w-[50%] p-5 gap-2 rounded-[40px] px-10">

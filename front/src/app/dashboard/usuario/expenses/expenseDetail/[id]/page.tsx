@@ -1,18 +1,28 @@
 "use client";
-import { IFunctionalUnitExpenses } from "@/Interfaces/functionalUnits.interfaces";
+
+// Estilos y componentes
 import { ContainerDashboard, Title } from "@/components/ui";
+import Swal from "sweetalert2";
+
+// Endpoints
 import { fUEById } from "@/helpers/fetch.helper.uf";
 import {
   formatDate,
   formatMoney,
   formatearNumero,
 } from "@/helpers/functions.helper";
-import useAuth from "@/helpers/useAuth";
-import useSesion from "@/helpers/useSesion";
+
+// Interfaces
+import { IFunctionalUnitExpenses } from "@/Interfaces/functionalUnits.interfaces";
+
+// Hooks
+import { useEffect, useState } from "react";
 import { useParams, usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import Swal from "sweetalert2";
+import useAuth from "@/helpers/useAuth";
+import useSesion from "@/helpers/useSesion";
+
+// ------------------
 
 const ExpenseDetail = () => {
   useAuth();

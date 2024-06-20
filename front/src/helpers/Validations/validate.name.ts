@@ -1,13 +1,13 @@
-export const validateNombre = (nombre: string) => {
-    const reGeNombres = /^[A-Za-z\u00C0-\u017F\s]+$/;
+export const validateNombre = (field: string, nombre: string) => {
+    const reGexNombres = /^[A-Za-z\u00C0-\u017F\s]+$/;
     const errors = {
-        name: "",
+        [field]: '',
     };
 
-    if (!reGeNombres.test(nombre)) {
-        errors.name = "El nombre debe contener solo letras y espacios";
+    if (!reGexNombres.test(nombre)) {
+        errors[field] = 'El nombre debe contener solo letras y espacios';
     } else {
-        errors.name = "";
+        errors[field] = '';
     }
 
     return errors;

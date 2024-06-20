@@ -40,11 +40,12 @@ export const supplierFetch = async (
 export const getSuppliers = async (
     token: string,
     page: number = 1,
-    limit: number = 20
+    limit: number = 20,
+    consortiumId: string,
 ): Promise<ISupplier[] | any> => {
     try {
         const response = await fetch(
-            `${apiUrl}/suppliers?page=${page}&limit=${limit}`,
+            `${apiUrl}/suppliers/consortium/${consortiumId}?page=${page}&limit=${limit}`,
             {
                 method: "GET",
                 headers: {

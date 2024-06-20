@@ -17,7 +17,7 @@ import { ISupplier } from "@/Interfaces/suppliers.interfaces";
 // Endpoints
 import { expenditureFetch } from "@/helpers/fetch.helper.expenditure";
 import { getConsortiumsByAdminId } from "@/helpers/fetch.helper.consortium";
-import { getSuppliers } from "@/helpers/fetch.helper.supplier";
+import { getSuppliersByConsortiumId } from "@/helpers/fetch.helper.supplier";
 import { getExpenses } from "@/helpers/fetch.helper.expense";
 
 // Hooks
@@ -67,34 +67,38 @@ const FormSpent = () => {
     }, [token, pathname]);
 
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchExpenses = async () => {
             try {
-                const response = await getExpenses(token);
-                if (response) {
-                    const data = await response.json();
-                    setExpenses(data);
+                if (registerExpenditure.consortium_id) {
+                    const response = await getExpenses(token, registerExpenditure.consortium_id);
+                    if (response) {
+                        const data = await response.json();
+                        setExpenses(data);
+                    }
                 }
             } catch (error) {}
         };
         if (token) {
-            fetchData();
+            fetchExpenses();
         }
-    }, [token, pathname]);
+    }, [token, registerExpenditure.consortium_id]);
 
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchSuppliers = async () => {
             try {
-                const response = await getSuppliers(token);
-                if (response) {
-                    const data = await response.json();
-                    setSuppliers(data);
+                if (registerExpenditure.consortium_id) {
+                    const response = await getSuppliersByConsortiumId(registerExpenditure.consortium_id, token);
+                    if (response) {
+                        const data = await response.json();
+                        setSuppliers(data);
+                    }
                 }
             } catch (error) {}
         };
         if (token) {
-            fetchData();
+            fetchSuppliers();
         }
-    }, [token, pathname]);
+    }, [token, registerExpenditure.consortium_id]);
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -220,11 +224,16 @@ const FormSpent = () => {
                         >
                             <option value="" disabled>
                                 Seleccionar la expensa
-                            </option>
-                            {expenses.length > 0 &&
-                                expenses.map((expense) => (
-                                    <option value={expense.id} key={expense.id}>
-                                        {expense.name}
+                            </option>{registerExpenditure.consortium_id &&
+                                (expenses.length > 0 ? (
+                                    expenses.map((expense) => (
+                                        <option value={expense.id} key={expense.id}>
+                                            {expense.name}
+                                        </option>
+                                    ))
+                                ) : (
+                                    <option value="" disabled>
+                                        No tiene expensas
                                     </option>
                                 ))}
                         </Select>
@@ -309,13 +318,16 @@ const FormSpent = () => {
                             <option value="" disabled>
                                 Seleccionar el proveedor
                             </option>
-                            {suppliers.length > 0 &&
-                                suppliers.map((supplier) => (
-                                    <option
-                                        value={supplier.id}
-                                        key={supplier.id}
-                                    >
-                                        {supplier.name}
+                            {registerExpenditure.consortium_id &&
+                                (suppliers.length > 0 ? (
+                                    suppliers.map((supplier) => (
+                                        <option value={supplier.id} key={supplier.id}>
+                                            {supplier.name}
+                                        </option>
+                                    ))
+                                ) : (
+                                    <option value="" disabled>
+                                        No tiene proveedores
                                     </option>
                                 ))}
                         </Select>

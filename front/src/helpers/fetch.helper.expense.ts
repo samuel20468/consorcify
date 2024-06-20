@@ -39,12 +39,13 @@ export const expenseFetch = async (
 // Obtener todas las expensas
 export const getExpenses = async (
     token: string,
+    consortiumId: string,
     page: number = 1,
-    limit: number = 10
+    limit: number = 10,
 ): Promise<IExpense[] | any> => {
     try {
         const response = await fetch(
-            `${apiUrl}/expenses?page=${page}&limit=${limit}`,
+            `${apiUrl}/expenses/consortium/${consortiumId}?page=${page}&limit=${limit}`,
             {
                 method: "GET",
                 headers: {

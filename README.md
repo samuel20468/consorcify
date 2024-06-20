@@ -174,7 +174,7 @@ Consorcify leverages various tools and libraries to enhance functionality:
 
 ## Collaborators
 
-<div style="display: flex; justify-content: space-between;">
+<div style="display: flex;">
 
 <!-- Collaborator 1 -->
 <div style="text-align: center;">

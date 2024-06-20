@@ -1,25 +1,27 @@
-"use client";
+'use client';
 
 // Estilos y componentes
-import { Button, Input, Label, Select } from "../ui";
-import Swal from "sweetalert2";
+import { Button, Input, Label, Select } from '../ui';
+import Swal from 'sweetalert2';
 
 // Iterfaces
 import {
     INewFunctionalUnits,
     INewFunctionalUnitsError,
-} from "@/Interfaces/functionalUnits.interfaces";
+} from '@/Interfaces/functionalUnits.interfaces';
 
 // Validaciones
-import { validateEmail } from "@/helpers/Validations/validate.email";
+import { validateEmail } from '@/helpers/Validations/validate.email';
 
 // Endpoints
-import { addFuncionalUnit } from "@/helpers/fetch.helper.uf";
+import { addFuncionalUnit } from '@/helpers/fetch.helper.uf';
 
 // Hooks
-import { useEffect, useState } from "react";
-import useAuth from "@/helpers/useAuth";
-import useSesion from "@/helpers/useSesion";
+import { useEffect, useState } from 'react';
+import useAuth from '@/helpers/useAuth';
+import useSesion from '@/helpers/useSesion';
+import { validatePhoneNumber } from '@/helpers/Validations/validate.telephone';
+import { validateNombre } from '@/helpers/Validations/validate.name';
 
 // -----------------
 
@@ -27,12 +29,12 @@ const FormAddFuncionalUnit = ({ consortium_id }: { consortium_id: string }) => {
     useAuth();
     const { token } = useSesion();
     const initialData = {
-        type: "",
-        location: "",
-        number: "",
-        owner: "",
-        owner_phone_number: "",
-        owner_email: "",
+        type: '',
+        location: '',
+        number: '',
+        owner: '',
+        owner_phone_number: '',
+        owner_email: '',
         balance: 0,
         consortium_id: consortium_id,
     };
@@ -42,18 +44,20 @@ const FormAddFuncionalUnit = ({ consortium_id }: { consortium_id: string }) => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        if (!formData.type ||
+        if (
+            !formData.type ||
             !formData.location ||
             !formData.number ||
             !formData.owner ||
             !formData.owner_phone_number ||
             !formData.owner_email ||
-            formData.balance < 0 && !formData.balance) {
+            (formData.balance < 0 && !formData.balance)
+        ) {
             Swal.fire({
-                title: "Error",
-                text: "Por favor, complete todos los campos",
-                icon: "error",
-                confirmButtonText: "Aceptar",
+                title: 'Error',
+                text: 'Por favor, complete todos los campos',
+                icon: 'error',
+                confirmButtonText: 'Aceptar',
             });
             return;
         }
@@ -62,23 +66,23 @@ const FormAddFuncionalUnit = ({ consortium_id }: { consortium_id: string }) => {
             const response = await addFuncionalUnit(token, formData);
             if (response) {
                 Swal.fire({
-                    title: " Unidad Funcional agregada",
-                    text: "Unidad Funcional agregada con éxito",
-                    icon: "success",
-                    confirmButtonText: "Ok",
+                    title: ' Unidad Funcional agregada',
+                    text: 'Unidad Funcional agregada con éxito',
+                    icon: 'success',
+                    confirmButtonText: 'Ok',
                 });
                 setFormData(initialData);
             } else {
                 Swal.fire({
-                    title: "Error al agregar la unidad",
-                    text: "Intentalo nuevamente o contacta con el administrador",
-                    icon: "error",
-                    confirmButtonText: "Ok",
+                    title: 'Error al agregar la unidad',
+                    text: 'Intentalo nuevamente o contacta con el administrador',
+                    icon: 'error',
+                    confirmButtonText: 'Ok',
                 });
             }
         } catch (error) {
             Swal.fire({
-                title: "Error de Información",
+                title: 'Error de Información',
                 text: (error as Error).message,
             });
         }
@@ -88,16 +92,24 @@ const FormAddFuncionalUnit = ({ consortium_id }: { consortium_id: string }) => {
         e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
     ) => {
         const { name, value } = e.target;
-        
+
         setFormData({
             ...formData,
-            [name]: name === "balance" && value !== "" ? parseFloat(value) : value,
+            [name]:
+                name === 'balance' && value !== '' ? parseFloat(value) : value,
         });
     };
 
     useEffect(() => {
         const validateMail = validateEmail(formData.owner_email);
-        setErrors({ ...errors, owner_email: validateMail.email });
+        const validateName = validateNombre('owner', formData.owner);
+        const validatePhone = validatePhoneNumber(formData.owner_phone_number);
+        setErrors({
+            ...errors,
+            owner_email: validateMail.email,
+            owner_phone_number: validatePhone.phone_number,
+            owner: validateName.owner,
+        });
     }, [formData]);
 
     return (
@@ -177,6 +189,11 @@ const FormAddFuncionalUnit = ({ consortium_id }: { consortium_id: string }) => {
                         value={formData.owner}
                         onChange={handleChange}
                     />
+                    {formData.owner.trim() !== '' && errors.owner && (
+                        <span className="self-end text-xs text-redd">
+                            {errors.owner}
+                        </span>
+                    )}
                 </div>
                 <div className="flex flex-row gap-4">
                     <div className="flex flex-col w-1/2">
@@ -190,7 +207,7 @@ const FormAddFuncionalUnit = ({ consortium_id }: { consortium_id: string }) => {
                             value={formData.owner_email}
                             onChange={handleChange}
                         />
-                        {formData.owner_email.trim() !== "" &&
+                        {formData.owner_email.trim() !== '' &&
                             errors.owner_email && (
                                 <span className="self-end text-xs text-redd">
                                     {errors.owner_email}
@@ -209,6 +226,12 @@ const FormAddFuncionalUnit = ({ consortium_id }: { consortium_id: string }) => {
                             value={formData.owner_phone_number}
                             onChange={handleChange}
                         />
+                        {formData.owner_phone_number.trim() !== '' &&
+                            errors.owner_phone_number && (
+                                <span className="self-end text-xs text-redd">
+                                    {errors.owner_phone_number}
+                                </span>
+                            )}
                     </div>
                 </div>
 

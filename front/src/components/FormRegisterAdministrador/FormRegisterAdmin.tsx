@@ -28,6 +28,7 @@ import { useEffect, useState } from "react";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
+import { validatePhoneNumber } from "@/helpers/Validations/validate.telephone";
 
 // -----------------
 
@@ -112,9 +113,7 @@ const FormRegisterAdmin = ({ update = false }) => {
             }).then(async (res) => {
               if (res.isConfirmed) {
                 const data = await response.json();
-                router.push(
-                  `/dashboard/superadmin/administracion/All/${params.id}`
-                );
+                router.back();
               }
             });
           }
@@ -147,10 +146,11 @@ const FormRegisterAdmin = ({ update = false }) => {
   };
 
   useEffect(() => {
-    const nameErrors = validateNombre(adminRegister.name);
+    const nameErrors = validateNombre("name", adminRegister.name);
     const cuitErrors = validateCuit(adminRegister.cuit!);
     const rpaErrors = validateRPA(adminRegister.rpa);
     const emailErrors = validateEmail(adminRegister.email);
+    const phoneErrors = validatePhoneNumber(adminRegister.phone_number);
 
     setErrorAdminRegister((prevErrors) => ({
       ...prevErrors,
@@ -158,6 +158,7 @@ const FormRegisterAdmin = ({ update = false }) => {
       ...cuitErrors,
       ...rpaErrors,
       ...emailErrors,
+      ...phoneErrors,
     }));
   }, [adminRegister]);
 
@@ -179,117 +180,128 @@ const FormRegisterAdmin = ({ update = false }) => {
         </h1>
       </div>
 
-      <form className="mx-10 my-5" autoComplete="off" onSubmit={handleSubmit}>
-        <div className="flex flex-col w-full">
-          <Label htmlFor="name">Nombre Completo:</Label>
-          <Input
-            id="name"
-            name="name"
-            value={adminRegister.name}
-            type="text"
-            placeholder="Nombre y Apellido"
-            onChange={handleChange}
-          />
-          {errorAdminRegister.name && adminRegister.name && (
-            <span className="self-end text-xs text-redd">
-              {errorAdminRegister.name}
-            </span>
-          )}
-        </div>
-        <div className="flex flex-col w-full">
-          <Label htmlFor="address">Dirección:</Label>
-          <Input
-            id="address"
-            name="address"
-            value={adminRegister.address}
-            type="text"
-            placeholder="Dirección"
-            onChange={handleChange}
-          />
-        </div>
-        <div className="flex flex-col w-full">
-          <Label htmlFor="phone_number">Teléfono:</Label>
-          <Input
-            id="phone_number"
-            name="phone_number"
-            value={adminRegister.phone_number}
-            type="text"
-            placeholder="+541144332211"
-            onChange={handleChange}
-          />
-        </div>
-        <div className="flex flex-col w-full">
-          <Label htmlFor="cuit">CUIT:</Label>
-          <Input
-            id="cuit"
-            name="cuit"
-            value={adminRegister.cuit}
-            type="text"
-            placeholder="20353335697"
-            onChange={handleChange}
-            disabled={update}
-          />
-          {errorAdminRegister.cuit && adminRegister.cuit && (
-            <span className="self-end text-xs text-redd">
-              {errorAdminRegister.cuit}
-            </span>
-          )}
-        </div>
-        <div className="flex flex-col w-full">
-          <Label htmlFor="sat">Situación Fiscal:</Label>
-          <Select
-            name="sat"
-            id="sat"
-            value={adminRegister.sat}
-            onChange={handleSelect}
-          >
-            <option value="" disabled>
-              Seleccionar la situación tributaria
-            </option>
-            <option value="Monotributo">Monotributo</option>
-            <option value="Responsable Inscripto">Responsable Inscripto</option>
-            <option value="Responsable No Inscripto">
-              Responsable No Inscripto
-            </option>
-            <option value="Exento">Exento</option>
-          </Select>
-        </div>
-        <div className="flex flex-col w-full">
-          <Label htmlFor="rpa">Matrícula RPA:</Label>
-          <Input
-            id="rpa"
-            name="rpa"
-            value={adminRegister.rpa}
-            type="text"
-            placeholder="12345"
-            onChange={handleChange}
-            disabled={update}
-          />
-          {errorAdminRegister.rpa && adminRegister.rpa && (
-            <span className="self-end text-xs text-redd">
-              {errorAdminRegister.rpa}
-            </span>
-          )}
-        </div>
-        <div className="flex flex-col w-full">
-          <Label htmlFor="email">Email:</Label>
-          <Input
-            id="email"
-            name="email"
-            value={adminRegister.email}
-            type="email"
-            placeholder="Correo electrónico"
-            onChange={handleChange}
-            disabled={update}
-          />
-          {errorAdminRegister.email && adminRegister.email && (
-            <span className="self-end text-xs text-redd">
-              {errorAdminRegister.email}
-            </span>
-          )}
-        </div>
-        <div className="flex justify-center mt-5">
-          <Button type="submit" className="w-1/3 py-2 rounded-[40px]">
+      <form
+        className="flex flex-col w-full max-w-xl"
+        autoComplete="off"
+        onSubmit={handleSubmit}
+      >
+        <Label htmlFor="name">
+          Nombre Completo:<span className="text-redd">*</span>
+        </Label>
+        <Input
+          id="name"
+          name="name"
+          value={adminRegister.name}
+          type="text"
+          placeholder="Nombre y Apellido"
+          onChange={handleChange}
+        />
+        {errorAdminRegister.name && adminRegister.name && (
+          <span className="self-end text-xs text-redd">
+            {errorAdminRegister.name}
+          </span>
+        )}
+        <Label htmlFor="address">
+          Dirección:<span className="text-redd">*</span>
+        </Label>
+        <Input
+          id="address"
+          name="address"
+          value={adminRegister.address}
+          type="text"
+          placeholder="Dirección"
+          onChange={handleChange}
+        />
+        <Label htmlFor="phone_number">
+          Teléfono:<span className="text-redd">*</span>
+        </Label>
+        <Input
+          id="phone_number"
+          name="phone_number"
+          value={adminRegister.phone_number}
+          type="text"
+          placeholder="+541144332211"
+          onChange={handleChange}
+        />
+        {errorAdminRegister.phone_number && adminRegister.phone_number && (
+          <span className="self-end text-xs text-redd">
+            {errorAdminRegister.phone_number}
+          </span>
+        )}
+        <Label htmlFor="cuit">
+          CUIT:<span className="text-redd">*</span>
+        </Label>
+        <Input
+          id="cuit"
+          name="cuit"
+          value={adminRegister.cuit}
+          type="text"
+          placeholder="CUIT (sin guiones)"
+          onChange={handleChange}
+          disabled={update}
+        />
+        {errorAdminRegister.cuit && adminRegister.cuit && (
+          <span className="self-end text-xs text-redd">
+            {errorAdminRegister.cuit}
+          </span>
+        )}
+        <Label htmlFor="sat">
+          Situación Fiscal:<span className="text-redd">*</span>
+        </Label>
+        <Select
+          name="sat"
+          id="sat"
+          value={adminRegister.sat}
+          onChange={handleSelect}
+        >
+          <option value="" disabled>
+            Seleccionar la situación tributaria
+          </option>
+          <option value="Monotributo">Monotributo</option>
+          <option value="Responsable Inscripto">Responsable Inscripto</option>
+          <option value="Responsable No Inscripto">
+            Responsable No Inscripto
+          </option>
+          <option value="Exento">Exento</option>
+        </Select>
+        <Label htmlFor="rpa">
+          Matrícula RPA:
+          <span className="text-redd">*</span>
+        </Label>
+        <Input
+          id="rpa"
+          name="rpa"
+          value={adminRegister.rpa}
+          type="text"
+          placeholder="12345"
+          onChange={handleChange}
+          disabled={update}
+        />
+        {errorAdminRegister.rpa && adminRegister.rpa && (
+          <span className="self-end text-xs text-redd">
+            {errorAdminRegister.rpa}
+          </span>
+        )}
+        <Label htmlFor="email">
+          Email:<span className="text-redd">*</span>
+        </Label>
+        <Input
+          id="email"
+          name="email"
+          value={adminRegister.email}
+          type="email"
+          placeholder="Correo electrónico"
+          onChange={handleChange}
+          disabled={update}
+        />
+        {errorAdminRegister.email && adminRegister.email && (
+          <span className="self-end text-xs text-redd">
+            {errorAdminRegister.email}
+          </span>
+        )}
+
+        <div className="mt-4">
+          <Button type="submit" className="w-full py-2 rounded-[40px]">
             {update ? "Modificar Administrador" : "Registrar Administrador"}
           </Button>
         </div>

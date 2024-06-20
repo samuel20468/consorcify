@@ -1,6 +1,4 @@
 "use client";
-
-// Estilos y componentes
 import {
   Button,
   ContainerDashboard,
@@ -8,16 +6,13 @@ import {
   Label,
   Title,
 } from "@/components/ui";
-import Swal from "sweetalert2";
-
-// Endpoints
+import { validateCode } from "@/helpers/Validations/validate.code";
 import { linkFunctionalUnit } from "@/helpers/fetch.helper.uf";
-
-// Hooks
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 // -------------------------
 
@@ -27,6 +22,7 @@ const AddFU = () => {
   const { token, data } = useSesion();
 
   const [code, setCode] = useState<string>();
+  const [error, setError] = useState<string>();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -73,6 +69,13 @@ const AddFU = () => {
     setCode(e.target.value);
   };
 
+  useEffect(() => {
+    if (code) {
+      const codeError = validateCode(code);
+      setError(codeError);
+    }
+  }, [code]);
+
   return (
     <div className="h-screen">
       <ContainerDashboard>
@@ -103,6 +106,11 @@ const AddFU = () => {
                 placeholder="Codigo de la unidad funcional"
                 onChange={handleChange}
               />
+              {error && code && (
+                <div className="text-xs text-end text-redd font-normal">
+                  {error}
+                </div>
+              )}
             </div>
             <div className="flex justify-center mt-5">
               <Button type="submit" className="w-1/3 py-2 rounded-[40px]">

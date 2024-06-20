@@ -17,6 +17,7 @@ import { useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import useAuth from '@/helpers/useAuth';
 import useSesion from '@/helpers/useSesion';
+import { validateIssue } from '@/helpers/Validations/validate.dates';
 
 // ------------------------
 
@@ -33,6 +34,12 @@ const AddExpenses = () => {
     };
     const [expense, setExpense] = useState<INewExpense>(initialData);
     const [consortiums, setconsortiums] = useState<IConsortium[]>([]);
+    const [errorExpense, setErrorExpense] = useState<INewExpense>(initialData);
+    const firstDayOfMonth = new Date();
+    firstDayOfMonth.setDate(1);
+    const maxDate = new Date(firstDayOfMonth);
+    maxDate.setMonth(maxDate.getMonth() + 2);
+    maxDate.setDate(0);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -63,12 +70,31 @@ const AddExpenses = () => {
         }));
     };
 
+    useEffect(() => {
+        const dateErrors = validateIssue(
+            expense.issue_date,
+            expense.expiration_date
+        );
+
+        setErrorExpense((prevErrors) => ({
+            ...prevErrors,
+            ...dateErrors,
+        }));
+    }, [expense]);
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (!expense.expiration_date || !expense.consortium_id) {
             Swal.fire({
                 icon: 'error',
                 title: 'Por favor completa todos los campos',
+            });
+            return;
+        }
+        if (Object.keys(errorExpense).length > 0) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Corrige los campos por favor',
             });
             return;
         }
@@ -120,9 +146,16 @@ const AddExpenses = () => {
                             type="date"
                             name="issue_date"
                             id="issue_date"
+                            min={firstDayOfMonth.toISOString().split('T')[0]}
+                            max={maxDate.toISOString().split('T')[0]}
                             value={expense.issue_date}
                             onChange={handleChange}
                         />
+                        {errorExpense.issue_date && expense.issue_date && (
+                            <span className="self-end text-xs text-redd">
+                                {errorExpense.issue_date}
+                            </span>
+                        )}
                     </div>
                     <div className="flex flex-col w-2/4">
                         <Label htmlFor="expiration_date">
@@ -133,9 +166,16 @@ const AddExpenses = () => {
                             name="expiration_date"
                             id="expiration_date"
                             min={expense.issue_date}
+                            max={maxDate.toISOString().split('T')[0]}
                             value={expense.expiration_date}
                             onChange={handleChange}
                         />
+                        {errorExpense.expiration_date &&
+                            expense.expiration_date && (
+                                <span className="self-end text-xs text-redd">
+                                    {errorExpense.expiration_date}
+                                </span>
+                            )}
                     </div>
                 </div>
                 <div className="flex flex-row gap-4">

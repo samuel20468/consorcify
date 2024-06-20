@@ -1,17 +1,17 @@
-"use client";
-import { IConsortium } from "@/Interfaces/consortium.interfaces";
-import { IUser } from "@/Interfaces/user.interfaces";
-import { ContainerDashboard, Title } from "@/components/ui";
-import { getUserById } from "@/helpers/fetch.helper.user";
-import useAuth from "@/helpers/useAuth";
-import useSesion from "@/helpers/useSesion";
-import { useUfSesion } from "@/helpers/useUfSesion";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import Swal from "sweetalert2";
-import Map from "@/components/Map/Map";
-import { formatearNumero } from "@/helpers/functions.helper";
-import "./consortiumstyle.css";
+'use client';
+import { IConsortium } from '@/Interfaces/consortium.interfaces';
+import { IUser } from '@/Interfaces/user.interfaces';
+import { ContainerDashboard, Title } from '@/components/ui';
+import { getUserById } from '@/helpers/fetch.helper.user';
+import useAuth from '@/helpers/useAuth';
+import useSesion from '@/helpers/useSesion';
+import { useUfSesion } from '@/helpers/useUfSesion';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
+import Map from '@/components/Map/Map';
+import { formatearNumero } from '@/helpers/functions.helper';
+import './consortiumstyle.css';
 
 const Consortium = () => {
     useAuth();
@@ -32,19 +32,19 @@ const Consortium = () => {
                     setConsortium(user?.functional_units?.[0].consortium);
                 } else {
                     Swal.fire({
-                        title: "Error",
-                        text: "No se pudo cargar el usuario",
-                        icon: "error",
+                        title: 'Error',
+                        text: 'No se pudo cargar el usuario',
+                        icon: 'error',
                         showConfirmButton: false,
                         timer: 1000,
                     });
                 }
             } catch (error) {
-                console.log("Error al cargar el usuario", error);
+                console.log('Error al cargar el usuario', error);
                 Swal.fire({
-                    title: "Error",
+                    title: 'Error',
                     text: (error as Error).message,
-                    icon: "error",
+                    icon: 'error',
                     showConfirmButton: false,
                     timer: 1000,
                 });
@@ -57,7 +57,7 @@ const Consortium = () => {
 
     useEffect(() => {
         if (!isLoading && !haveUF) {
-            router.push("/dashboard/usuario/addfuncionalunit");
+            router.push('/dashboard/usuario/addfuncionalunit');
         }
     }, [isLoading, haveUF, router]);
 
@@ -69,7 +69,7 @@ const Consortium = () => {
         <div className="">
             <ContainerDashboard>
                 <Title>
-                    Consorcios{" "}
+                    Consorcios{' '}
                     <span className="text-2xl font-thin">
                         | {consortium?.name}
                     </span>
@@ -92,7 +92,7 @@ const Consortium = () => {
                             <div className="flex flex-col gap-2 px-2 text-center">
                                 <div>
                                     <h1 className="text-xl font-extralight">
-                                        <span className="font-bold">CUIT:</span>{" "}
+                                        <span className="font-bold">CUIT:</span>{' '}
                                         {formatearNumero(consortium?.cuit!)}
                                     </h1>
                                 </div>
@@ -100,11 +100,11 @@ const Consortium = () => {
                                     <h1 className="text-xl font-extralight">
                                         <span className="font-bold">
                                             Dirección:
-                                        </span>{" "}
-                                        {consortium?.street_name}{" "}
+                                        </span>{' '}
+                                        {consortium?.street_name}{' '}
                                         {consortium?.building_number} (
-                                        {consortium?.city},{" "}
-                                        {consortium?.province},{" "}
+                                        {consortium?.city},{' '}
+                                        {consortium?.province},{' '}
                                         {consortium?.country})
                                     </h1>
                                 </div>
@@ -112,20 +112,21 @@ const Consortium = () => {
                                     <h1 className="text-xl font-extralight">
                                         <span className="font-bold">
                                             Administrador:
-                                        </span>{" "}
+                                        </span>{' '}
+                                        {consortium?.c_admin.name}
                                     </h1>
                                 </div>
                                 <div className="flex justify-evenly">
                                     <h1 className="text-xl font-extralight">
                                         <span className="font-bold">
                                             Categoría del edificio:
-                                        </span>{" "}
+                                        </span>{' '}
                                         {consortium?.category}
                                     </h1>
                                     <h1 className="text-xl font-extralight">
                                         <span className="font-bold">
                                             Clave SUTERH:
-                                        </span>{" "}
+                                        </span>{' '}
                                         {consortium?.suterh_key}
                                     </h1>
                                 </div>
@@ -134,13 +135,13 @@ const Consortium = () => {
                                         <span className="font-bold">
                                             Cantidad de pisos:
                                         </span>
-                                        {"  "}
+                                        {'  '}
                                         {consortium?.floors}
                                     </h1>
                                     <h1 className="text-xl font-extralight">
                                         <span className="font-bold">
                                             Unidades funcionales:
-                                        </span>{" "}
+                                        </span>{' '}
                                         {consortium?.ufs}
                                     </h1>
                                 </div>

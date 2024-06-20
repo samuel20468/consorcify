@@ -174,7 +174,7 @@ Consorcify leverages various tools and libraries to enhance functionality:
 
 ## Collaborators
 
-[![Juan Pérez](https://github.com/juanperez.png?size=100)](https://github.com/juanperez)&nbsp;
+[![Samuel Rivera](https://github.com/samuel20468.png?size=100)](https://github.com/samuel20468)&nbsp;
 [![María García](https://github.com/mariagarcia.png?size=100)](https://github.com/mariagarcia)&nbsp;
 [![Carlos López](https://github.com/carloslopez.png?size=100)](https://github.com/carloslopez)&nbsp;
 [![Ana Martínez](https://github.com/anamartinez.png?size=100)](https://github.com/anamartinez)&nbsp;

@@ -174,29 +174,72 @@ Consorcify leverages various tools and libraries to enhance functionality:
 
 ## Collaborators
 
-Here are the GitHub profiles of the development Consorcify Team:
+<div style="display: flex; justify-content: space-between;">
 
-1. **Juan Pérez**
-   - [![Juan Pérez](https://github.com/juanperez.png?size=100)](https://github.com/juanperez)
+<!-- Collaborator 1 -->
+<div style="text-align: center;">
+    <a href="https://github.com/juanperez">
+        <img src="https://github.com/juanperez.png?size=100" alt="Juan Pérez" style="width: 100px; height: 100px; border-radius: 50%;">
+        <br>
+        Juan Pérez
+    </a>
+</div>
 
-2. **María García**
-   - [![María García](https://github.com/mariagarcia.png?size=100)](https://github.com/mariagarcia)
+<!-- Collaborator 2 -->
+<div style="text-align: center;">
+    <a href="https://github.com/mariagarcia">
+        <img src="https://github.com/mariagarcia.png?size=100" alt="María García" style="width: 100px; height: 100px; border-radius: 50%;">
+        <br>
+        María García
+    </a>
+</div>
 
-3. **Carlos López**
-   - [![Carlos López](https://github.com/carloslopez.png?size=100)](https://github.com/carloslopez)
+<!-- Collaborator 3 -->
+<div style="text-align: center;">
+    <a href="https://github.com/carloslopez">
+        <img src="https://github.com/carloslopez.png?size=100" alt="Carlos López" style="width: 100px; height: 100px; border-radius: 50%;">
+        <br>
+        Carlos López
+    </a>
+</div>
 
-4. **Ana Martínez**
-   - [![Ana Martínez](https://github.com/anamartinez.png?size=100)](https://github.com/anamartinez)
+<!-- Collaborator 4 -->
+<div style="text-align: center;">
+    <a href="https://github.com/anamartinez">
+        <img src="https://github.com/anamartinez.png?size=100" alt="Ana Martínez" style="width: 100px; height: 100px; border-radius: 50%;">
+        <br>
+        Ana Martínez
+    </a>
+</div>
 
-5. **Pedro Rodríguez**
-   - [![Pedro Rodríguez](https://github.com/pedrorodriguez.png?size=100)](https://github.com/pedrorodriguez)
+<!-- Collaborator 5 -->
+<div style="text-align: center;">
+    <a href="https://github.com/pedrorodriguez">
+        <img src="https://github.com/pedrorodriguez.png?size=100" alt="Pedro Rodríguez" style="width: 100px; height: 100px; border-radius: 50%;">
+        <br>
+        Pedro Rodríguez
+    </a>
+</div>
 
-6. **Sofía Hernández**
-   - [![Sofía Hernández](https://github.com/sofiahernandez.png?size=100)](https://github.com/sofiahernandez)
+<!-- Collaborator 6 -->
+<div style="text-align: center;">
+    <a href="https://github.com/sofiahernandez">
+        <img src="https://github.com/sofiahernandez.png?size=100" alt="Sofía Hernández" style="width: 100px; height: 100px; border-radius: 50%;">
+        <br>
+        Sofía Hernández
+    </a>
+</div>
 
-7. **Luis Torres**
-   - [![Luis Torres](https://github.com/luistorres.png?size=100)](https://github.com/luistorres)
+<!-- Collaborator 7 -->
+<div style="text-align: center;">
+    <a href="https://github.com/luistorres">
+        <img src="https://github.com/luistorres.png?size=100" alt="Luis Torres" style="width: 100px; height: 100px; border-radius: 50%;">
+        <br>
+        Luis Torres
+    </a>
+</div>
 
+</div>
 
 ## Branching Strategy 🌿
 

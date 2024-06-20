@@ -149,10 +149,10 @@ const Workers = () => {
   }
 
   return (
-    <div>
+    <div className="h-screen">
       <ContainerDashboard>
         <Title>Proveedores</Title>
-        <div className="w-[90%]">
+        <div className="w-2/3">
           <SearchBar onSearch={handleSearch} searchString="Proveedores" />
         </div>
         <div className="w-[90%] border-t border-b border-white flex justify-between p-2 mt-5 text-center">
@@ -178,7 +178,7 @@ const Workers = () => {
             className="flex items-center justify-center w-1/5 text-xl cursor-pointer"
             onClick={() => handleSortChange("cuit")}
           >
-            Cuit{" "}
+            CUIT{" "}
             {sortBy === "cuit" && (
               <>
                 {sortOrder === "asc" ? (
@@ -196,7 +196,7 @@ const Workers = () => {
             className="flex items-center justify-center w-1/5 text-xl cursor-pointer"
             onClick={() => handleSortChange("email")}
           >
-            E-mail{" "}
+            Email{" "}
             {sortBy === "email" && (
               <>
                 {sortOrder === "asc" ? (

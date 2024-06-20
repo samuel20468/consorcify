@@ -1,127 +1,173 @@
-Welcome to Consorcify
+## Consorcify
 
-Consorcify is a comprehensive solution to manage your expenses as a user and your buildings as an administrator. It's designed to simplify your operations and provide seamless management capabilities.
+Consorcify is a comprehensive solution designed to simplify expense management for users and building administration for administrators. It provides seamless management capabilities to streamline your operations.
 
-Getting Started
-Follow these instructions to set up the project locally. Note that the backend and frontend are separate applications within the same repository, so they have distinct configurations.
+## Getting Started
 
-Prerequisites
-Ensure you have the following installed on your machine:
+This guide will walk you through setting up the project locally. The backend and frontend are separate applications within the same repository, so they have distinct configurations.
 
-Backend:
+### Prerequisites
 
-Node.js (v14 or above)
-npm (v6 or above)
-PostgreSQL
-Frontend:
+Before we begin, ensure you have the following installed on your machine:
 
-Node.js (v14 or above)
-npm (v6 or above)
-Cloning the Repository
-Clone the repository:
+**Backend:**
 
-bash
-Copiar código
+* Node.js (v14 or above)
+* npm (v6 or above)
+* PostgreSQL
+
+**Frontend:**
+
+* Node.js (v14 or above)
+* npm (v6 or above)
+
+### Cloning the Repository
+
+1. Clone the repository using the following command:
+
+```bash
 git clone https://github.com/yourusername/consorcify.git
 cd consorcify
-Checkout to the develop branch:
+```
 
-bash
-Copiar código
+2. Checkout to the develop branch:
+
+```bash
 git checkout develop
-Installation
-Backend
-Navigate to the backend directory:
+```
 
-bash
-Copiar código
+### Installation
+
+#### Backend
+
+1. Navigate to the backend directory:
+
+```bash
 cd back
-Install the dependencies:
+```
 
-bash
-Copiar código
+2. Install the dependencies:
+
+```bash
 npm install
-Set up the environment variables:
+```
 
-Create a .env file in the back directory and add your configuration. Here's an example:
+3. Set up the environment variables:
 
-plaintext
-Copiar código
+   Create a file named `.env` in the back directory and add your configuration details. Here's an example:
+
+```
 DATABASE_URL=postgres://username:password@localhost:5432/consorcify
 JWT_SECRET=your_jwt_secret
 CLOUDINARY_URL=your_cloudinary_url
 NODEMAILER_EMAIL=your_email@example.com
 NODEMAILER_PASSWORD=your_email_password
-Run the database migrations:
+```
 
-bash
-Copiar código
+4. Run the database migrations:
+
+```bash
 npm run typeorm migration:run
-Frontend
-Navigate to the frontend directory:
+```
 
-bash
-Copiar código
+#### Frontend
+
+1. Navigate to the frontend directory:
+
+```bash
 cd front
-Install the dependencies:
+```
 
-bash
-Copiar código
+2. Install the dependencies:
+
+```bash
 npm install
-Set up the environment variables:
+```
 
-Create a .env file in the front directory and add your configuration. Here's an example:
+3. Set up the environment variables:
 
-plaintext
-Copiar código
+   Create a file named `.env` in the front directory and add your configuration details. Here's an example:
+
+```
 NEXT_PUBLIC_API_URL=your_api_url
-Running the Application
-Using Workspaces
-For ease of development, you can start both applications simultaneously using the workspace configuration in the develop branch.
+```
 
-From the root directory of the repository:
+### Running the Application
 
-bash
-Copiar código
+There are two options for running the application: using workspaces or running them individually.
+
+#### Using Workspaces (Recommended for Development)
+
+For a more convenient development experience, you can use the workspace configuration in the develop branch to start both applications simultaneously.
+
+1. Navigate to the root directory of the repository:
+
+```bash
+cd consorcify
+```
+
+2. Run the following command:
+
+```bash
 npm run render
-Running Individually
+```
+
+#### Running Individually
+
 If you prefer to run the applications separately, follow these steps:
 
-Start the backend server:
+**Start the Backend Server:**
 
-Open a terminal and navigate to the back directory:
+1. Open a terminal window and navigate to the back directory:
 
-bash
-Copiar código
+```bash
 cd back
+```
+
+2. Start the server using the following command:
+
+```bash
 npm run start
-Start the frontend development server:
+```
 
-Open another terminal and navigate to the front directory:
+**Start the Frontend Development Server:**
 
-bash
-Copiar código
+1. Open another terminal window and navigate to the front directory:
+
+```bash
 cd front
+```
+
+2. Start the development server using the following command:
+
+```bash
 npm run dev
-Tools and Libraries
-Consorcify utilizes various tools and libraries to enhance functionality:
+```
 
-Backend:
+## Tools and Libraries
 
-NestJS
-TypeORM
-PostgreSQL
-JWT
-Bcrypt
-NodeMailer
-Cloudinary
-Cron Jobs
-Frontend:
+Consorcify leverages various tools and libraries to enhance functionality:
 
-Next.js
-React
-Branching Strategy
-Please note that the main branch is reserved for deployment. For development purposes, always use the develop branch. Any new features or bug fixes should be branched off from develop and merged back into develop upon completion.
+**Backend:**
 
-Contact Us
-If you have any questions or need assistance, feel free to reach out to us at consorcify@gmail.com.
+* NestJS
+* TypeORM
+* PostgreSQL
+* JWT
+* Bcrypt
+* Nodemailer
+* Cloudinary
+* Cron Jobs
+
+**Frontend:**
+
+* Next.js
+* React
+
+## Branching Strategy
+
+The main branch (`main`) is strictly for deployment purposes. Always use the develop branch for development activities. Create new branches for features or bug fixes from `develop` and merge them back into `develop` upon completion.
+
+## Contact Us
+
+If you have any questions or require assistance, feel free to contact us at [email address removed].

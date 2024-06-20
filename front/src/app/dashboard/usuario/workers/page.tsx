@@ -1,14 +1,24 @@
 "use client";
-import { ISupplier } from "@/Interfaces/suppliers.interfaces";
-import SuppliersCards from "@/components/SuppliersCards/SuppliersCards";
+
+// Estilos y componentes
 import { ContainerDashboard, Title } from "@/components/ui";
+import SuppliersCards from "@/components/SuppliersCards/SuppliersCards";
+import Swal from "sweetalert2";
+
+// Endpoints
 import { getSuppliersByConsortiumId } from "@/helpers/fetch.helper.supplier";
+import { useUfSesion } from "@/helpers/useUfSesion";
+
+// Interfaces
+import { ISupplier } from "@/Interfaces/suppliers.interfaces";
+
+// Hooks
+import { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
-import { useUfSesion } from "@/helpers/useUfSesion";
-import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import Swal from "sweetalert2";
+
+// ----------------------------------------------------------------------
 
 const Workers = () => {
   useAuth();

@@ -183,7 +183,9 @@ const Expenses = () => {
                   name="id"
                   id="id"
                 >
-                  <option value="">Selecciona tu unidad Funcional</option>
+                  <option value="" disabled>
+                    Selecciona tu unidad Funcional
+                  </option>
                   {functionalUnit?.map((unit) => (
                     <option value={unit.id} key={unit.id}>
                       {unit.location}

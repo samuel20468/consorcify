@@ -1,14 +1,24 @@
 "use client";
-import { IMessage } from "@/Interfaces/message.interfaces";
-import MessagesUserCards from "@/components/MessagesUserCards/MessagesUserCards";
+
+// Estilos y componentes
 import { Button, ContainerDashboard, Title } from "@/components/ui";
+import MessagesUserCards from "@/components/MessagesUserCards/MessagesUserCards";
+
+// Endpoints
 import { getMessagesForUser } from "@/helpers/fetch.helper.messages";
+import { useUfSesion } from "@/helpers/useUfSesion";
+
+// Interfaces
+import { IMessage } from "@/Interfaces/message.interfaces";
+
+// Hooks
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
-import { useUfSesion } from "@/helpers/useUfSesion";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+
+// --------------------
 
 const News: React.FC = () => {
   useAuth();

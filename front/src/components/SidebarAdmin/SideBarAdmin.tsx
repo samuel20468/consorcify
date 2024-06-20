@@ -22,7 +22,7 @@ const SideBarAdmin = () => {
             <Link
               href={item.link}
               key={item.id}
-              className={`flex flex-col items-center text-xs lg:text-base ${
+              className={`flex flex-col items-center text-xs lg:text-base py-2 ${
                 isActive
                   ? "bg-gradient-to-r from-bluee via-slate-200 to-slate-200"
                   : ""

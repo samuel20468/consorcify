@@ -18,6 +18,7 @@ import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
 import Image from "next/image";
 import Link from "next/link";
+import { formatearNumero } from "@/helpers/functions.helper";
 
 // ----------------------
 
@@ -101,12 +102,27 @@ const Profile = () => {
                 </h3>
               </div>
             ) : (
-              <div>
-                <h3 className="mb-2">ADMINISTRADOR: {adminData?.name}</h3>
-                <h3 className="mb-2">CUIT: {adminData?.cuit}</h3>
-                <h3 className="mb-2">EMAIL: {adminData?.email}</h3>
-                <h3 className="mb-2">DIRECCIÓN: {adminData?.address}</h3>
-                <h3>TELÉFONO: {adminData?.phone_number}</h3>
+              <div key={adminData?.id} className="flex flex-col gap-2">
+                <h3 className="text-2xl font-thin">
+                  <span className="font-bold">Administrador: </span>
+                  {adminData?.name}
+                </h3>
+                <h3 className="text-2xl font-thin">
+                  <span className="font-bold">CUIT: </span>
+                  {formatearNumero(adminData?.cuit)}
+                </h3>
+                <h3 className="text-2xl font-thin">
+                  <span className="font-bold">DIRECCIÓN: </span>
+                  {adminData?.address}
+                </h3>
+                <h3 className="text-2xl font-thin">
+                  <span className="font-bold">EMAIL: </span>
+                  {adminData?.email}
+                </h3>
+                <h3 className="text-2xl font-thin">
+                  <span className="font-bold">TELÉFONO: </span>
+                  {adminData?.phone_number}
+                </h3>
               </div>
             )}
           </div>

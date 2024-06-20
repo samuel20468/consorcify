@@ -157,7 +157,7 @@ const ConsortiumId = () => {
             )}
           </div>
         </div>
-        <div className="flex justify-around w-[70%] my-5 gap-2">
+        <div className="flex justify-center w-[70%] my-5 gap-8">
           <Link
             href={`/dashboard/admin/consortiums/unidadesFuncionales/${consortium?.id}`}
           >

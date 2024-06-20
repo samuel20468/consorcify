@@ -22,12 +22,14 @@ import useAuth from '@/helpers/useAuth';
 import useSesion from '@/helpers/useSesion';
 import { validatePhoneNumber } from '@/helpers/Validations/validate.telephone';
 import { validateNombre } from '@/helpers/Validations/validate.name';
+import { useRouter } from 'next/navigation';
 
 // -----------------
 
 const FormAddFuncionalUnit = ({ consortium_id }: { consortium_id: string }) => {
     useAuth();
     const { token } = useSesion();
+    const router = useRouter();
     const initialData = {
         type: '',
         location: '',

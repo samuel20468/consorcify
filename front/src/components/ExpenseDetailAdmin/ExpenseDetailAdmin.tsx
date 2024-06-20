@@ -13,12 +13,12 @@ const ExpenseDetailAdmin = (expense: IExpense) => {
                     </h3>
                     <h3 className="py-3 text-xl">
                         <span className="font-semibold">Emisión: </span>
-                        {''} {expense.issue_date}
+                        {''} {formatDate(expense.issue_date)}
                     </h3>
                     <h3 className="py-3 text-xl">
                         <span className="font-semibold">Expiración: </span>
                         {''}
-                        {expense.expiration_date}
+                        {formatDate(expense.expiration_date)}
                     </h3>
                 </div>
                 <div className="w-1/2 flex flex-col mx-2 uppercase font-light">

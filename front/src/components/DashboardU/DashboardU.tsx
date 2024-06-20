@@ -1,135 +1,118 @@
 "use client";
-import { AccountBalance, Home } from "@/helpers/icons.helper";
-import { Button, ContainerDashboard, Select } from "../ui";
-import Link from "next/link";
+
+// Estilos y componentes
+import "./userStyles.css";
+import { ContainerDashboard, Title } from "../ui";
+import { LuMessagesSquare } from "react-icons/lu";
+import { HiOutlineClipboardDocumentCheck } from "react-icons/hi2";
+import { MdOutlineMapsHomeWork } from "react-icons/md";
+
+// Endpoints
+import { useUfSesion } from "@/helpers/useUfSesion";
+import { getUserById } from "@/helpers/fetch.helper.user";
+
+// Interfaces
+import { IFunctionalUnits } from "@/Interfaces/functionalUnits.interfaces";
+import { IUser } from "@/Interfaces/user.interfaces";
+
+// Hooks
 import { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
-import { useRouter } from "next/navigation";
-import { useUfSesion } from "@/helpers/useUfSesion";
+import Link from "next/link";
+
+// ----------------
 
 const DashboardU = () => {
-    useAuth();
-    const router = useRouter();
-    const { token, data } = useSesion();
-    const { haveUF, isLoading, functional_unit } = useUfSesion();
-    const [uf, setUf] = useState<string>("");
+  useAuth();
+  const router = useRouter();
+  const { token, data } = useSesion();
+  const { haveUF, isLoading, functional_unit } = useUfSesion();
+  const path = usePathname();
+  const [user, setUser] = useState<IUser>();
+  const [functionalUnit, setFunctionalUnit] = useState<IFunctionalUnits[]>([]);
 
-    useEffect(() => {
-        if (!isLoading && !haveUF) {
-            router.push("/dashboard/usuario/addfuncionalunit");
+  useEffect(() => {
+    const fecthUser = async () => {
+      try {
+        const response = await getUserById(data.id, token);
+
+        if (response?.ok) {
+          const datos = await response.json();
+          setUser(datos);
+          setFunctionalUnit(datos?.functional_units);
         }
-    }, [isLoading, haveUF, router]);
-
-    if (isLoading) {
-        return <div>Cargando...</div>;
-    }
-
-    const handleChange = (e: any) => {
-        setUf(e.target.value);
+      } catch (error) {
+        console.error(error);
+      }
     };
+    if (token) {
+      fecthUser();
+    }
+  }, [token, path]);
 
-    return (
-        <ContainerDashboard className="w-[90%] h-[90vh] justify-center p-5">
-            <div className="flex items-center justify-center w-full gap-2 mt-2 h-1/3">
-                <div className="flex items-center justify-center  w-full h-full border rounded-[40px] bg-gradient-to-r from-neutral-50 via-fondo to-fondo">
-                    <div className="flex items-center justify-center w-full h-full">
-                        <AccountBalance className="w-10 text-black" />
-                    </div>
-                    <div className="flex flex-col items-center justify-center w-full h-full text-xl text-white">
-                        <p className="flex items-center justify-center w-full h-1/4">
-                            Saldo
-                        </p>
-                        <p className="flex items-center justify-center w-full h-1/4">
-                            Acá va el saldo del inquilino
-                        </p>
-                    </div>
-                </div>
-                <div className="flex items-center justify-center  w-full h-full border rounded-[40px] bg-gradient-to-r from-neutral-50 via-fondo to-fondo">
-                    <div className="flex items-center justify-center w-full h-full">
-                        <Link
-                            className="flex items-center justify-center w-full h-full"
-                            href="/dashboard/usuario/information/UF"
-                        >
-                            <Home className="w-10 text-black" />
-                        </Link>
-                    </div>
-                    <div className="flex flex-col items-center justify-center w-full h-full text-xl text-white">
-                        <p className="flex items-center justify-center w-full h-1/4">
-                            Unidad Funcional
-                        </p>
-                        <p className="flex items-center justify-center h-1/4 w-auto">
-                            {functional_unit.length > 0 ? (
-                                <Select
-                                    name="uf"
-                                    id="uf"
-                                    onChange={handleChange}
-                                >
-                                    {functional_unit.map((uf) => (
-                                        <option key={uf.id} value={uf.id}>
-                                            {uf.location}
-                                        </option>
-                                    ))}
-                                </Select>
-                            ) : (
-                                "No hay UF"
-                            )}
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div className="flex justify-center   rounded-[40px] mt-2 w-full h-1/3 items-center">
-                <div className="flex border rounded-[40px] w-3/4 h-1/3 items-center justify-between p-5">
-                    <Button className=" w-32 rounded-[40px] py-2">Pagar</Button>
-                    <Button className=" w-32 rounded-[40px] py-2">
-                        <Link
-                            className="w-full"
-                            href={"/dashboard/usuario/expenses"}
-                        >
-                            Expensas
-                        </Link>
-                    </Button>
-                    <Button className=" w-32 rounded-[40px] py-2">
-                        Amenities
-                    </Button>
-                </div>
-            </div>
-            <div className="flex items-center justify-center w-full gap-2 mt-2 h-1/3">
-                <div className="flex flex-col p-5 w-full h-full justify-around gap-2 border rounded-[40px]">
-                    <div className="flex items-center justify-center rounded-[40px] w-full h-16 text-black bg-neutral-50">
-                        Mora Total Unidades
-                    </div>
-                    <div className="flex items-center justify-center h-full border rounded-[40px]">
-                        Acá va la información pertinente
-                    </div>
-                </div>
-                <div className="flex flex-col p-5 w-full h-full justify-around gap-2 border rounded-[40px]">
-                    <div className="flex items-center justify-center rounded-[40px] w-full h-16 text-black bg-neutral-50">
-                        Dinero en Cuenta
-                    </div>
-                    <div className="flex items-center justify-center h-full border rounded-[40px]">
-                        Acá va la información pertinente
-                    </div>
-                </div>
-                <div className="flex flex-col p-5 w-full h-full justify-around gap-2 border rounded-[40px]">
-                    <div className="flex items-center justify-center rounded-[40px] w-full h-16 text-black bg-neutral-50">
-                        Gastos Expensas
-                    </div>
-                    <div className="flex items-center justify-center h-full border rounded-[40px]">
-                        Acá va la información pertinente
-                    </div>
-                </div>
-                <div className="flex flex-col p-5 w-full h-full justify-around gap-2 border rounded-[40px]">
-                    <div className="flex items-center justify-center rounded-[40px] w-full h-16 text-black bg-neutral-50">
-                        C/C Consorcio
-                    </div>
-                    <div className="flex items-center justify-center h-full border rounded-[40px]">
-                        Acá va la información pertinente
-                    </div>
-                </div>
-            </div>
-        </ContainerDashboard>
-    );
+  useEffect(() => {
+    if (!isLoading && !haveUF) {
+      router.push("/dashboard/usuario/addfuncionalunit");
+    }
+  }, [isLoading, haveUF, router]);
+
+  if (isLoading) {
+    return <div>Cargando...</div>;
+  }
+
+  return (
+    <div className="h-screen text-white">
+      <ContainerDashboard>
+        <Title>{user?.first_name + " " + user?.last_name}</Title>
+        {/* ---------------- */}
+        <div className="grid w-full h-auto grid-cols-1 gap-10 px-4 pb-10 text-black md:grid-cols-2 lg:grid-cols-3 mt-5">
+          <Link
+            href="/dashboard/usuario/expenses"
+            className="flex flex-col items-center justify-center text-3xl text-white border rounded-[40px] pb-2 gradiente shadow-[0_3px_10px_rgb(255,255,255,0.8)]"
+          >
+            <HiOutlineClipboardDocumentCheck size={100} />
+            <h3 className="mt-4 mb-1 text-2xl font-bold">Pagar expensa </h3>
+            <p className="w-2/3 text-base text-center ">
+              Pagar tus expensas nunca fue tan fácil. Ahora es a un click de
+              distancia.
+            </p>
+          </Link>
+          <Link
+            href="/dashboard/usuario/information/UF"
+            className="flex flex-col items-center justify-center text-3xl text-white border rounded-[40px] pb-2 gradiente shadow-[0_3px_10px_rgb(255,255,255,0.8)]"
+          >
+            <MdOutlineMapsHomeWork size={100} />
+            <h3 className="mt-4 mb-1 text-2xl font-bold">
+              Ver unidades funcionales
+            </h3>
+            <p className="w-2/3 text-base text-center ">
+              Puedes ver en detalle tus unidades funcionales y agregar nuevas.
+            </p>
+          </Link>
+          <Link
+            href="/newmessage"
+            className="flex flex-col items-center justify-center text-3xl text-white border rounded-[40px] pb-2 gradiente shadow-[0_3px_10px_rgb(255,255,255,0.8)]"
+          >
+            <LuMessagesSquare size={100} />
+            <h3 className="mt-4 mb-1 text-2xl font-bold">Iniciar un reclamo</h3>
+            <p className="w-2/3 text-base text-center ">
+              Hazle llegar cualquier reclamo a la administración de tu
+              consorcio.
+            </p>
+          </Link>
+        </div>
+        <div className="w-full h-auto gap-10 p-4 mb-4 text-white md:grid-cols-2">
+          <div className="flex items-center justify-center h-24 border-t">
+            <h1 className="text-2xl font-thin">
+              Trabajar con nosotros fomenta una comunidad unida y organizada.
+            </h1>
+          </div>
+        </div>
+      </ContainerDashboard>
+    </div>
+  );
 };
 
 export default DashboardU;

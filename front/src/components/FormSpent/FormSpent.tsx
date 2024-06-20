@@ -17,7 +17,10 @@ import { ISupplier } from '@/Interfaces/suppliers.interfaces';
 // Endpoints
 import { expenditureFetch } from '@/helpers/fetch.helper.expenditure';
 import { getConsortiumsByAdminId } from '@/helpers/fetch.helper.consortium';
-import { getSuppliers } from '@/helpers/fetch.helper.supplier';
+import {
+    getSuppliers,
+    getSuppliersByConsortiumId,
+} from '@/helpers/fetch.helper.supplier';
 import { getExpenses } from '@/helpers/fetch.helper.expense';
 
 // Hooks
@@ -70,7 +73,10 @@ const FormSpent = () => {
         const fetchExpenses = async () => {
             try {
                 if (registerExpenditure.consortium_id) {
-                    const response = await getExpenses(token, registerExpenditure.consortium_id);
+                    const response = await getExpenses(
+                        token,
+                        registerExpenditure.consortium_id
+                    );
                     if (response) {
                         const data = await response.json();
                         setExpenses(data);
@@ -87,7 +93,10 @@ const FormSpent = () => {
         const fetchSuppliers = async () => {
             try {
                 if (registerExpenditure.consortium_id) {
-                    const response = await getSuppliersByConsortiumId(registerExpenditure.consortium_id, token);
+                    const response = await getSuppliersByConsortiumId(
+                        registerExpenditure.consortium_id,
+                        token
+                    );
                     if (response) {
                         const data = await response.json();
                         setSuppliers(data);
@@ -229,10 +238,14 @@ const FormSpent = () => {
                         >
                             <option value="" disabled>
                                 Seleccionar la expensa
-                            </option>{registerExpenditure.consortium_id &&
+                            </option>
+                            {registerExpenditure.consortium_id &&
                                 (expenses.length > 0 ? (
                                     expenses.map((expense) => (
-                                        <option value={expense.id} key={expense.id}>
+                                        <option
+                                            value={expense.id}
+                                            key={expense.id}
+                                        >
                                             {expense.name}
                                         </option>
                                     ))
@@ -326,7 +339,10 @@ const FormSpent = () => {
                             {registerExpenditure.consortium_id &&
                                 (suppliers.length > 0 ? (
                                     suppliers.map((supplier) => (
-                                        <option value={supplier.id} key={supplier.id}>
+                                        <option
+                                            value={supplier.id}
+                                            key={supplier.id}
+                                        >
                                             {supplier.name}
                                         </option>
                                     ))

@@ -1,5 +1,5 @@
 // Funciones
-import { formatMoney } from '@/helpers/functions.helper';
+import { formatMoney, formatDate } from '@/helpers/functions.helper';
 
 // Interfaces
 import { IExpense } from '@/Interfaces/expenses.interfaces';
@@ -22,10 +22,10 @@ const ExpenseCard: React.FC<IExpense> = ({
         <div className="flex justify-between py-2 text-center text-black bg-gray-200 rounded-lg hover:bg-slate-400 hover:text-white">
             <div className="w-1/5">{name}</div>
             <div className="w-1/5">
-                <h1>{issue_date}</h1>
+                <h1>{formatDate(issue_date)}</h1>
             </div>
             <div className="w-1/5">
-                <h1>{expiration_date}</h1>
+                <h1>{formatDate(expiration_date)}</h1>
             </div>
             <div className="w-1/5">
                 {status === 'Abierta' ? (

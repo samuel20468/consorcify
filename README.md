@@ -177,11 +177,10 @@ Here are the GitHub profiles of the development Consorcify Team:
 
 [![Samuel Rivera](https://github.com/samuel20468.png?size=100)](https://github.com/samuel20468)&nbsp;
 [![Juan Molina](https://github.com/JuaniMolina.png?size=100)](https://github.com/JuaniMolina)&nbsp;
-[![Adriana Cuellar](https://github.com/cuellaradriana.png?size=100)](https://github.com/cuellaradriana)&nbsp;
+[![Angel Vázquez](https://github.com/iLxgh.png?size=100)](https://github.com/iLxgh)
 [![Marcos Lombardo](https://github.com/MarcosLombardo.png?size=100)](https://github.com/MarcosLombardo)&nbsp;
 [![Marcos Anselmo Portillo](https://github.com/MarcosAnselmoPortillo.png?size=100)](https://github.com/MarcosAnselmoPortillo)&nbsp;
 [![Leonel Nusdeo](https://github.com/LeonelNusdeo.png?size=100)](https://github.com/LeonelNusdeo)&nbsp;
-[![Angel Vázquez](https://github.com/iLxgh.png?size=100)](https://github.com/iLxgh)
 
 
 ## Branching Strategy 🌿

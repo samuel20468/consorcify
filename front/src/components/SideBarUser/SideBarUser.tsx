@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 // Esilos y componentes
 import { itemsNavbarUser } from "@/utils/data";
@@ -36,6 +36,7 @@ const SideBarUser = () => {
       </nav>
     </ContainerSideBar>
   );
+
 };
 
 export default SideBarUser;

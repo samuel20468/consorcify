@@ -1,22 +1,22 @@
-"use client";
+'use client';
 
 // Estilos y componentes
-import { Button, Input, Label, Select } from "../ui";
-import Swal from "sweetalert2";
+import { Button, Input, Label, Select } from '../ui';
+import Swal from 'sweetalert2';
 
 // Endpoints
-import { expenseFetch } from "@/helpers/fetch.helper.expense";
-import { getConsortiumsByAdminId } from "@/helpers/fetch.helper.consortium";
+import { expenseFetch } from '@/helpers/fetch.helper.expense';
+import { getConsortiumsByAdminId } from '@/helpers/fetch.helper.consortium';
 
 // Interfaces
-import { IConsortium } from "@/Interfaces/consortium.interfaces";
-import { INewExpense } from "@/Interfaces/expenses.interfaces";
+import { IConsortium } from '@/Interfaces/consortium.interfaces';
+import { INewExpense } from '@/Interfaces/expenses.interfaces';
 
 // Hooks
-import { useEffect, useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
-import useAuth from "@/helpers/useAuth";
-import useSesion from "@/helpers/useSesion";
+import { useEffect, useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import useAuth from '@/helpers/useAuth';
+import useSesion from '@/helpers/useSesion';
 
 // ------------------------
 
@@ -26,10 +26,10 @@ const AddExpenses = () => {
     const router = useRouter();
     const { token, data } = useSesion();
     const initialData = {
-        issue_date: "",
-        expiration_date: "",
-        consortium_id: "",
-        name: "",
+        issue_date: '',
+        expiration_date: '',
+        consortium_id: '',
+        name: '',
     };
     const [expense, setExpense] = useState<INewExpense>(initialData);
     const [consortiums, setconsortiums] = useState<IConsortium[]>([]);
@@ -55,6 +55,8 @@ const AddExpenses = () => {
         e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
     ) => {
         const { name, value } = e.target;
+        console.log(value);
+
         setExpense((prevExpense) => ({
             ...prevExpense,
             [name]: value,
@@ -65,8 +67,8 @@ const AddExpenses = () => {
         e.preventDefault();
         if (!expense.expiration_date || !expense.consortium_id) {
             Swal.fire({
-                icon: "error",
-                title: "Por favor completa todos los campos",
+                icon: 'error',
+                title: 'Por favor completa todos los campos',
             });
             return;
         }
@@ -75,16 +77,16 @@ const AddExpenses = () => {
             const response = await expenseFetch(token, expense);
             if (response) {
                 Swal.fire({
-                    icon: "success",
-                    title: "Expensa creada correctamente",
+                    icon: 'success',
+                    title: 'Expensa creada correctamente',
                 }).then((resp) => {
                     if (resp.isConfirmed) {
-                        router.push("/dashboard/admin/expenses");
+                        router.push('/dashboard/admin/expenses');
                     } else {
                         Swal.fire({
-                            icon: "warning",
-                            title: "Hubo error al crear la Expensa",
-                            text: "Intentato mas trade",
+                            icon: 'warning',
+                            title: 'Hubo error al crear la Expensa',
+                            text: 'Intentato mas trade',
                         });
                         return;
                     }
@@ -93,10 +95,10 @@ const AddExpenses = () => {
         } catch (error) {
             console.error(error);
             Swal.fire({
-                title: "Error de información",
+                title: 'Error de información',
                 text: (error as Error).message,
-                icon: "error",
-                confirmButtonColor: "#0b0c0d",
+                icon: 'error',
+                confirmButtonColor: '#0b0c0d',
             });
         }
     };

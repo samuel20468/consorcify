@@ -201,7 +201,7 @@ const FormRegisterConsortium = ({ update = false }) => {
             } catch (error) {
                 Swal.fire({
                     title: "Error de información",
-                    text: "Los datos que nos proporcionaste son inválidos.",
+                    text: (error as Error).message,
                     icon: "error",
                     confirmButtonColor: "#0b0c0d",
                 });
@@ -233,7 +233,7 @@ const FormRegisterConsortium = ({ update = false }) => {
             } catch (error) {
                 Swal.fire({
                     title: "Error de información",
-                    text: "Los datos que nos proporcionaste son inválidos.",
+                    text: (error as Error).message,
                     icon: "error",
                     confirmButtonColor: "#0b0c0d",
                 });

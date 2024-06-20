@@ -1,6 +1,6 @@
 // Interfaces
-import { IExpense } from "./expenses.interfaces";
-import { ISupplier } from "./suppliers.interfaces";
+import { IExpense } from './expenses.interfaces';
+import { ISupplier } from './suppliers.interfaces';
 
 // ------------------
 

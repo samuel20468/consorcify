@@ -47,6 +47,7 @@ export class FunctionalUnitsRepository {
   ): Promise<FunctionalUnit[]> {
     return await this.functionalUnitsRepository.find({
       where: { consortium: { id: consortiumId } },
+      relations: { user: true },
       skip: (page - 1) * limit,
       take: limit,
     });

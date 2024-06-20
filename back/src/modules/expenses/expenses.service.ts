@@ -14,7 +14,6 @@ import { EXPENSE_STATUS } from 'src/utils/constants';
 import { MailsService } from '../mails/mails.service';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { FunctionalUnitExpense } from '../functional-units-expenses/entities/functional-units-expense.entity';
 
 @Injectable()
 export class ExpensesService {
@@ -68,7 +67,8 @@ export class ExpensesService {
   async findAll({ page, limit }: TPagination): Promise<Expense[]> {
     const expenses: Expense[] = await this.expensesRepository.findAll();
 
-    if (expenses.length == 0) throw new NotFoundException('No expenses found');
+    if (expenses.length == 0)
+      throw new NotFoundException('Expensas no encontradas');
 
     page = Math.max(1, page);
 
@@ -86,21 +86,20 @@ export class ExpensesService {
 
   async findOne(id: string): Promise<Expense> {
     if (!id) {
-      throw new BadRequestException('id is required');
+      throw new BadRequestException('El Id es requerido');
     }
 
-    const expense: Expense = await checkEntityExistence(
-      this.expensesRepository,
-      id,
-      'la expensa',
-    );
+    const expense: Expense = await this.expensesRepository.findOne(id);
+    if (!expense) {
+      throw new NotFoundException('Expensa no encontrada');
+    }
 
     return expense;
   }
 
   async undoExpense(expenseId: string) {
     if (!expenseId) {
-      throw new BadRequestException('Id is required');
+      throw new BadRequestException('El Id es requeridox');
     }
 
     const expense: Expense = await checkEntityExistence(

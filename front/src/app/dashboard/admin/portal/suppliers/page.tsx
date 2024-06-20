@@ -1,23 +1,23 @@
-"use client";
+'use client';
 
 // Estilos y componentes
-import { Button, ContainerDashboard, Select, Title } from "@/components/ui";
-import SuppliersCards from "@/components/SuppliersCards/SuppliersCards";
+import { Button, ContainerDashboard, Select, Title } from '@/components/ui';
+import SuppliersCards from '@/components/SuppliersCards/SuppliersCards';
 
 // Endpoints
-import { getSuppliersByConsortiumId } from "@/helpers/fetch.helper.supplier"; // Cambiar la función para obtener proveedores por ID de consorcio
-import { getConsortiumsByAdminId } from "@/helpers/fetch.helper.consortium";
+import { getSuppliersByConsortiumId } from '@/helpers/fetch.helper.supplier'; // Cambiar la función para obtener proveedores por ID de consorcio
+import { getConsortiumsByAdminId } from '@/helpers/fetch.helper.consortium';
 
 // Interfaces
-import { ISupplier } from "@/Interfaces/suppliers.interfaces";
-import { IConsortium } from "@/Interfaces/consortium.interfaces";
+import { ISupplier } from '@/Interfaces/suppliers.interfaces';
+import { IConsortium } from '@/Interfaces/consortium.interfaces';
 
 // Hooks
-import { useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
-import useAuth from "@/helpers/useAuth";
-import Link from "next/link";
-import useSesion from "@/helpers/useSesion";
+import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
+import useAuth from '@/helpers/useAuth';
+import Link from 'next/link';
+import useSesion from '@/helpers/useSesion';
 
 // ------------------
 
@@ -84,7 +84,7 @@ const Supplies = () => {
         <div className="h-screen">
             <ContainerDashboard>
                 <Title>
-                    Portal{" "}
+                    Portal{' '}
                     <span className="text-2xl font-thin">| Proveedores</span>
                 </Title>
 
@@ -94,7 +94,7 @@ const Supplies = () => {
                             id="consortium_id"
                             name="consortium_id"
                             className="w-1/3 h-10 px-2 my-1 text-gray-200 rounded-md shadow-xl cursor-pointer bg-input focus:outline-none no-spinners"
-                            value={selectedConsortiumId || ""}
+                            value={selectedConsortiumId || ''}
                             onChange={handleSelectChange}
                         >
                             {consortiums.length > 0 &&
@@ -111,7 +111,7 @@ const Supplies = () => {
                     <div className="flex w-1/3">
                         <Link
                             className="flex justify-end w-full mr-5"
-                            href={"/addSupplier"}
+                            href={'/addSupplier'}
                         >
                             <Button className="w-1/2 p-2 rounded-[40px]">
                                 Agregar Proveedor

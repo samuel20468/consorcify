@@ -58,11 +58,17 @@ export class ExpensesService {
 
     const newExpense: Expense = new Expense();
     newExpense.name = name;
-    newExpense.issue_date = issue_date;
-    newExpense.expiration_date = expiration_date;
+    newExpense.issue_date = this.addDays(issue_date, 1);
+    newExpense.expiration_date = this.addDays(expiration_date, 1);
     newExpense.consortium = consortium;
 
     return await this.expensesRepository.createExpense(newExpense);
+  }
+
+  private addDays(date: Date, days: number): Date {
+    const result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
   }
   async findAll({ page, limit }: TPagination): Promise<Expense[]> {
     const expenses: Expense[] = await this.expensesRepository.findAll();

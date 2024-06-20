@@ -10,21 +10,23 @@ import useAuth from "@/helpers/useAuth";
 // -------------
 
 const AddConsortium = () => {
-  useAuth();
+    useAuth();
 
-  return (
-    <div className="h-screen">
-      <ContainerDashboard>
-        <Title>
-          Administración{" "}
-          <span className="text-2xl font-thin">| Crear administración</span>
-        </Title>
-        <div className="w-[60%] my-5">
-          <FormRegisterAdmin />
+    return (
+        <div className="flex flex-col h-screen text-white">
+            <ContainerDashboard>
+                <Title>
+                    Administración{" "}
+                    <span className="text-2xl font-thin">
+                        | Crear administración
+                    </span>
+                </Title>
+                <div className="flex items-center justify-center w-1/2 my-10 rounded-lg h-content bg-[#d3d3d3] ">
+                    <FormRegisterAdmin />
+                </div>
+            </ContainerDashboard>
         </div>
-      </ContainerDashboard>
-    </div>
-  );
+    );
 };
 
 export default AddConsortium;

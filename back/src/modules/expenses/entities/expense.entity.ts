@@ -35,14 +35,14 @@ export class Expense {
    * La fecha de emisión de la expensa
    * @example "2024-06-02"
    */
-  @Column('date')
+  @Column({type: 'timestamp', default: () => 'CURRENT_TIMESTAMP'})
   issue_date: Date;
 
   /**
    * La fecha de vencimiento de la expensa
    * @example "2024-07-02"
    */
-  @Column('date')
+  @Column({type: 'timestamp', default: () => 'CURRENT_TIMESTAMP'})
   expiration_date: Date;
 
   /**

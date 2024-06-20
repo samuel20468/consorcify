@@ -10,21 +10,23 @@ import useAuth from "@/helpers/useAuth";
 // -----------------------
 
 const AddConsortium = () => {
-  useAuth();
+    useAuth();
 
-  return (
-    <div className="h-screen">
-      <ContainerDashboard>
-        <Title>
-          Consorcios{" "}
-          <span className="text-2xl font-thin">| Crear Consorcio</span>
-        </Title>
-        <div className="w-[80%] my-5">
-          <FormRegisterConsortium />
+    return (
+        <div className="h-screen">
+            <ContainerDashboard>
+                <Title>
+                    Consorcios{" "}
+                    <span className="text-2xl font-thin">
+                        | Crear Consorcio
+                    </span>
+                </Title>
+                <div className="w-[80%]">
+                    <FormRegisterConsortium />
+                </div>
+            </ContainerDashboard>
         </div>
-      </ContainerDashboard>
-    </div>
-  );
+    );
 };
 
 export default AddConsortium;

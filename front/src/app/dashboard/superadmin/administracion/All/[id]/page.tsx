@@ -3,6 +3,7 @@
 // Estilos y componentes
 import "./adminStyle.css";
 import { Button, ContainerDashboard, Title } from "@/components/ui";
+import { formatearNumero } from "@/helpers/functions.helper";
 import Swal from "sweetalert2";
 
 // Interfaces
@@ -17,7 +18,6 @@ import { useParams, usePathname, useRouter } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
 import Link from "next/link";
-import { formatearNumero } from "@/helpers/functions.helper";
 
 // -----------------------
 

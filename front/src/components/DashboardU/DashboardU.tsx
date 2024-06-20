@@ -1,34 +1,37 @@
 "use client";
-import { ContainerDashboard, Select, Title } from "../ui";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import useAuth from "@/helpers/useAuth";
-import useSesion from "@/helpers/useSesion";
-import { usePathname, useRouter } from "next/navigation";
-import { useUfSesion } from "@/helpers/useUfSesion";
-import { getUserById } from "@/helpers/fetch.helper.user";
-import { IUser } from "@/Interfaces/user.interfaces";
-import {
-  IFunctionalUnitExpenses,
-  IFunctionalUnits,
-} from "@/Interfaces/functionalUnits.interfaces";
+
+// Estilos y componentes
 import "./userStyles.css";
+import { ContainerDashboard, Title } from "../ui";
 import { LuMessagesSquare } from "react-icons/lu";
 import { HiOutlineClipboardDocumentCheck } from "react-icons/hi2";
 import { MdOutlineMapsHomeWork } from "react-icons/md";
-import { IoHomeOutline } from "react-icons/io5";
-import { PiMoneyWavy } from "react-icons/pi";
+
+// Endpoints
+import { useUfSesion } from "@/helpers/useUfSesion";
+import { getUserById } from "@/helpers/fetch.helper.user";
+
+// Interfaces
+import { IFunctionalUnits } from "@/Interfaces/functionalUnits.interfaces";
+import { IUser } from "@/Interfaces/user.interfaces";
+
+// Hooks
+import { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import useAuth from "@/helpers/useAuth";
+import useSesion from "@/helpers/useSesion";
+import Link from "next/link";
+
+// ----------------
 
 const DashboardU = () => {
   useAuth();
   const router = useRouter();
   const { token, data } = useSesion();
   const { haveUF, isLoading, functional_unit } = useUfSesion();
-  const [uf, setUf] = useState<string>("");
   const path = usePathname();
   const [user, setUser] = useState<IUser>();
   const [functionalUnit, setFunctionalUnit] = useState<IFunctionalUnits[]>([]);
-  const [expenses, setExpenses] = useState<IFunctionalUnitExpenses>();
 
   useEffect(() => {
     const fecthUser = async () => {
@@ -59,51 +62,12 @@ const DashboardU = () => {
     return <div>Cargando...</div>;
   }
 
-  const handleChange = (e: any) => {
-    setUf(e.target.value);
-  };
-
   return (
     <div className="h-screen text-white">
       <ContainerDashboard>
         <Title>{user?.first_name + " " + user?.last_name}</Title>
-        <div className="flex justify-around w-[95%] h-[70px] gap-5 mt-5">
-          <div className="flex items-center w-1/2 border gradUSerr">
-            <div className="flex justify-center w-1/2">
-              <PiMoneyWavy size={40} />
-            </div>
-            <div className="flex items-center justify-center w-1/3 gap-2">
-              <p className="flex items-center justify-center">Saldo:</p>
-              <p>Acá debería traerse lo que debe el usuario</p>
-            </div>
-          </div>
-          <div className="flex items-center w-1/2 border gradUSerr">
-            <div className="flex justify-center w-1/3">
-              <IoHomeOutline size={40} />
-            </div>
-            <div className="flex items-center justify-center w-2/3 gap-3">
-              <p className="flex items-center justify-center">
-                Unidad Funcional:
-              </p>
-              <p className="flex items-center justify-center">
-                {functional_unit.length > 0 ? (
-                  <Select name="uf" id="uf" onChange={handleChange}>
-                    {functional_unit.map((uf) => (
-                      <option key={uf.id} value={uf.id}>
-                        {uf.location}
-                      </option>
-                    ))}
-                  </Select>
-                ) : (
-                  "No hay UF"
-                )}
-              </p>
-            </div>
-          </div>
-        </div>
-
         {/* ---------------- */}
-        <div className="grid w-full h-auto grid-cols-1 gap-10 px-4 py-10 text-black md:grid-cols-2 lg:grid-cols-3 ">
+        <div className="grid w-full h-auto grid-cols-1 gap-10 px-4 pb-10 text-black md:grid-cols-2 lg:grid-cols-3 mt-5">
           <Link
             href="/dashboard/usuario/expenses"
             className="flex flex-col items-center justify-center text-3xl text-white border rounded-[40px] pb-2 gradiente shadow-[0_3px_10px_rgb(255,255,255,0.8)]"

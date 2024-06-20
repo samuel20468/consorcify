@@ -1,4 +1,6 @@
 "use client";
+
+// Estilos y componentes
 import {
   Button,
   ContainerDashboard,
@@ -6,12 +8,18 @@ import {
   Label,
   Title,
 } from "@/components/ui";
+import Swal from "sweetalert2";
+
+// Endpoints
 import { linkFunctionalUnit } from "@/helpers/fetch.helper.uf";
+
+// Hooks
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
-import { useRouter } from "next/navigation";
-import React, { useState } from "react";
-import Swal from "sweetalert2";
+
+// -------------------------
 
 const AddFU = () => {
   useAuth();

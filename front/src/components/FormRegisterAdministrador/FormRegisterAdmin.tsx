@@ -174,8 +174,8 @@ const FormRegisterAdmin = ({ update = false }) => {
       <div className="my-2 text-center">
         <h1 className="mb-2 text-2xl font-bold">
           {update
-            ? "Formulario de Actualizacion de Administrador"
-            : "Formulario de registro de Administrador"}
+            ? "Formulario de Actualización de Administrador"
+            : "Formulario de Registro de Administrador"}
         </h1>
       </div>
 

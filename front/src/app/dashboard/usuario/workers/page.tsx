@@ -1,23 +1,30 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import Swal from "sweetalert2";
-import { ISupplier } from "@/Interfaces/suppliers.interfaces";
-import SearchBar from "@/components/SearchBar/SearchBar";
+// Estilos y componentes
 import { ContainerDashboard, Title } from "@/components/ui";
 import SuppliersCards from "@/components/SuppliersCards/SuppliersCards";
+import SearchBar from "@/components/SearchBar/SearchBar";
+import { IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowUp } from "react-icons/io";
+import { CgArrowAlignV } from "react-icons/cg";
+import Swal from "sweetalert2";
 
 // Endpoints
 import { getSuppliersByConsortiumId } from "@/helpers/fetch.helper.supplier";
 import { useUfSesion } from "@/helpers/useUfSesion";
 
+// Interfaces
+import { ISupplier } from "@/Interfaces/suppliers.interfaces";
+
+// Hooks
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { IoIosArrowDown } from "react-icons/io";
-import { IoIosArrowUp } from "react-icons/io";
-import { CgArrowAlignV } from "react-icons/cg";
+import { useRouter } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
+
+// --------------------------------
+
 const Workers = () => {
   // Hooks de autenticación y sesión
   useAuth();

@@ -9,6 +9,8 @@ import { BsBuildingFillAdd } from "react-icons/bs";
 import useAuth from "@/helpers/useAuth";
 import Link from "next/link";
 
+// -------------------------
+
 const ConsorciosCrud = () => {
   useAuth();
   return (

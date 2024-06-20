@@ -1,9 +1,15 @@
 "use client";
-import { Button, ContainerDashboard, Title } from "@/components/ui";
+
+// Estilos y componentes
+import { ContainerDashboard, Title } from "@/components/ui";
+import { BiErrorCircle } from "react-icons/bi";
+
+// Hooks
 import useAuth from "@/helpers/useAuth";
 import Link from "next/link";
-import React from "react";
-import { BiErrorCircle } from "react-icons/bi";
+
+// --------------------------------
+
 const PaymentSuccess = () => {
   useAuth();
   return (

@@ -1,17 +1,27 @@
 "use client";
+
+// Estilos y componentes
+import "./consortiumstyle.css";
+import { ContainerDashboard, Title } from "@/components/ui";
+import { formatearNumero } from "@/helpers/functions.helper";
+import Map from "@/components/Map/Map";
+import Swal from "sweetalert2";
+
+// Endpoints
+import { getUserById } from "@/helpers/fetch.helper.user";
+import { useUfSesion } from "@/helpers/useUfSesion";
+
+// Interfaces
 import { IConsortium } from "@/Interfaces/consortium.interfaces";
 import { IUser } from "@/Interfaces/user.interfaces";
-import { ContainerDashboard, Title } from "@/components/ui";
-import { getUserById } from "@/helpers/fetch.helper.user";
+
+// Hooks
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
-import { useUfSesion } from "@/helpers/useUfSesion";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import Swal from "sweetalert2";
-import Map from "@/components/Map/Map";
-import { formatearNumero } from "@/helpers/functions.helper";
-import "./consortiumstyle.css";
+
+// -------------------------
 
 const Consortium = () => {
   useAuth();
@@ -66,7 +76,7 @@ const Consortium = () => {
   }
 
   return (
-    <div className="">
+    <div className="h-screen">
       <ContainerDashboard>
         <Title>
           Consorcios{" "}

@@ -171,6 +171,33 @@ Consorcify leverages various tools and libraries to enhance functionality:
 * Next.js
 * React
 
+
+## Collaborators
+
+Here are the GitHub profiles of the development Consorcify Team:
+
+1. **Juan Pérez**
+   - [![Juan Pérez](https://github.com/juanperez.png?size=100)](https://github.com/juanperez)
+
+2. **María García**
+   - [![María García](https://github.com/mariagarcia.png?size=100)](https://github.com/mariagarcia)
+
+3. **Carlos López**
+   - [![Carlos López](https://github.com/carloslopez.png?size=100)](https://github.com/carloslopez)
+
+4. **Ana Martínez**
+   - [![Ana Martínez](https://github.com/anamartinez.png?size=100)](https://github.com/anamartinez)
+
+5. **Pedro Rodríguez**
+   - [![Pedro Rodríguez](https://github.com/pedrorodriguez.png?size=100)](https://github.com/pedrorodriguez)
+
+6. **Sofía Hernández**
+   - [![Sofía Hernández](https://github.com/sofiahernandez.png?size=100)](https://github.com/sofiahernandez)
+
+7. **Luis Torres**
+   - [![Luis Torres](https://github.com/luistorres.png?size=100)](https://github.com/luistorres)
+
+
 ## Branching Strategy 🌿
 
 The main branch (`main`) is strictly for deployment purposes. Always use the develop branch for development activities. Create new branches for features or bug fixes from `develop` and merge them back into `develop` upon completion.

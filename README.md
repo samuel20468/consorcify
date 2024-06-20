@@ -2,7 +2,7 @@
 
 Consorcify is a comprehensive solution designed to simplify expense management for users and building administration for administrators. It provides seamless management capabilities to streamline your operations.
 
-![Consorcify Logo](https://asset.cloudinary.com/consorcify/94cdb1480c63f11af93d944f94fceacb)
+![Consorcify Logo](https://res.cloudinary.com/consorcify/image/upload/v1718844349/descarga_a0acun.png)
 
 ## Getting Started
 

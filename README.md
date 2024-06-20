@@ -174,10 +174,10 @@ Consorcify leverages various tools and libraries to enhance functionality:
 
 ## Collaborators
 
-<div style="display: flex;">
+<div style="display: flex; justify-content: space-around; flex-wrap: wrap;">
 
 <!-- Collaborator 1 -->
-<div style="text-align: center;">
+<div style="text-align: center; margin: 10px;">
     <a href="https://github.com/juanperez">
         <img src="https://github.com/juanperez.png?size=100" alt="Juan Pérez" style="width: 100px; height: 100px; border-radius: 50%;">
         <br>
@@ -186,7 +186,7 @@ Consorcify leverages various tools and libraries to enhance functionality:
 </div>
 
 <!-- Collaborator 2 -->
-<div style="text-align: center;">
+<div style="text-align: center; margin: 10px;">
     <a href="https://github.com/mariagarcia">
         <img src="https://github.com/mariagarcia.png?size=100" alt="María García" style="width: 100px; height: 100px; border-radius: 50%;">
         <br>
@@ -195,7 +195,7 @@ Consorcify leverages various tools and libraries to enhance functionality:
 </div>
 
 <!-- Collaborator 3 -->
-<div style="text-align: center;">
+<div style="text-align: center; margin: 10px;">
     <a href="https://github.com/carloslopez">
         <img src="https://github.com/carloslopez.png?size=100" alt="Carlos López" style="width: 100px; height: 100px; border-radius: 50%;">
         <br>
@@ -204,7 +204,7 @@ Consorcify leverages various tools and libraries to enhance functionality:
 </div>
 
 <!-- Collaborator 4 -->
-<div style="text-align: center;">
+<div style="text-align: center; margin: 10px;">
     <a href="https://github.com/anamartinez">
         <img src="https://github.com/anamartinez.png?size=100" alt="Ana Martínez" style="width: 100px; height: 100px; border-radius: 50%;">
         <br>
@@ -213,7 +213,7 @@ Consorcify leverages various tools and libraries to enhance functionality:
 </div>
 
 <!-- Collaborator 5 -->
-<div style="text-align: center;">
+<div style="text-align: center; margin: 10px;">
     <a href="https://github.com/pedrorodriguez">
         <img src="https://github.com/pedrorodriguez.png?size=100" alt="Pedro Rodríguez" style="width: 100px; height: 100px; border-radius: 50%;">
         <br>
@@ -222,7 +222,7 @@ Consorcify leverages various tools and libraries to enhance functionality:
 </div>
 
 <!-- Collaborator 6 -->
-<div style="text-align: center;">
+<div style="text-align: center; margin: 10px;">
     <a href="https://github.com/sofiahernandez">
         <img src="https://github.com/sofiahernandez.png?size=100" alt="Sofía Hernández" style="width: 100px; height: 100px; border-radius: 50%;">
         <br>
@@ -231,7 +231,7 @@ Consorcify leverages various tools and libraries to enhance functionality:
 </div>
 
 <!-- Collaborator 7 -->
-<div style="text-align: center;">
+<div style="text-align: center; margin: 10px;">
     <a href="https://github.com/luistorres">
         <img src="https://github.com/luistorres.png?size=100" alt="Luis Torres" style="width: 100px; height: 100px; border-radius: 50%;">
         <br>

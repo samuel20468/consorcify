@@ -1,9 +1,10 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+
+// Estilos y componentes
 import { Button, ContainerDashboard, Label, Title } from "../../components/ui";
-import { useRouter } from "next/navigation";
-import useSesion from "@/helpers/useSesion";
-import Image from "next/image";
+import Swal from "sweetalert2";
+
+// Endpoints
 import {
   handleDrop,
   handleErrorResponse,
@@ -13,15 +14,23 @@ import {
   uploadImage,
 } from "@/helpers/toUpdateImage/updateImage.helper";
 import { getUserById } from "@/helpers/fetch.helper.user";
-import Swal from "sweetalert2";
-import { IAdmin } from "@/Interfaces/admin.interfaces";
 import { getAdminById } from "@/helpers/fetch.helper.admin";
+
+// Interfaces
+import { IAdmin } from "@/Interfaces/admin.interfaces";
 import { IUser } from "@/Interfaces/user.interfaces";
+
+// Hooks
+import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import useSesion from "@/helpers/useSesion";
+import Image from "next/image";
+
+// ----------------
 
 const AddAvatar: React.FC = () => {
   const [image, setImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [userData, setUserData] = useState<any>(null);
   const router = useRouter();
   const { token, data } = useSesion();
   const [user, setUser] = useState<IUser>();

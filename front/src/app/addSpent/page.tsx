@@ -10,21 +10,20 @@ import useAuth from "@/helpers/useAuth";
 // ------------------
 
 const AddSpent = () => {
-    useAuth();
+  useAuth();
 
-    return (
-        <div className="h-screen">
-            <ContainerDashboard>
-                <Title>
-                    Gastos{" "}
-                    <span className="text-2xl font-thin">| Nuevo Gasto</span>
-                </Title>
-                <div className="w-[80%]">
-                    <FormSpent />
-                </div>
-            </ContainerDashboard>
+  return (
+    <div className="h-screen">
+      <ContainerDashboard>
+        <Title>
+          Gastos <span className="text-2xl font-thin">| Nuevo Gasto</span>
+        </Title>
+        <div className="w-[80%] mt-5">
+          <FormSpent />
         </div>
-    );
+      </ContainerDashboard>
+    </div>
+  );
 };
 
 export default AddSpent;

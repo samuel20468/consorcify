@@ -4,6 +4,7 @@ import useAuth from '@/helpers/useAuth';
 import Link from 'next/link';
 import React from 'react';
 import { BiErrorCircle } from 'react-icons/bi';
+
 const PaymentSuccess = () => {
     useAuth();
     return (

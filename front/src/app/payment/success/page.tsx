@@ -5,8 +5,10 @@ import Link from 'next/link';
 import React from 'react';
 import { IoMdCheckmarkCircleOutline } from 'react-icons/io';
 
+
 const PaymentSuccess = () => {
-    useAuth();
+  useAuth();
+
 
     return (
         <ContainerDashboard className="w-[90%] h-[90vh]">

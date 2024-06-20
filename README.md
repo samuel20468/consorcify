@@ -162,4 +162,4 @@ The main branch (`main`) is strictly for deployment purposes. Always use the dev
 
 ## Contact Us
 
-If you have any questions or require assistance, feel free to contact us at [consorcify@gmail.com ].
+If you have any questions or require assistance, feel free to contact us at consorcify@gmail.com.

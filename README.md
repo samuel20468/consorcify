@@ -175,12 +175,12 @@ Consorcify leverages various tools and libraries to enhance functionality:
 ## Collaborators
 
 [![Samuel Rivera](https://github.com/samuel20468.png?size=100)](https://github.com/samuel20468)&nbsp;
-[![María García](https://github.com/mariagarcia.png?size=100)](https://github.com/mariagarcia)&nbsp;
-[![Carlos López](https://github.com/carloslopez.png?size=100)](https://github.com/carloslopez)&nbsp;
-[![Ana Martínez](https://github.com/anamartinez.png?size=100)](https://github.com/anamartinez)&nbsp;
-[![Pedro Rodríguez](https://github.com/pedrorodriguez.png?size=100)](https://github.com/pedrorodriguez)&nbsp;
-[![Sofía Hernández](https://github.com/sofiahernandez.png?size=100)](https://github.com/sofiahernandez)&nbsp;
-[![Luis Torres](https://github.com/luistorres.png?size=100)](https://github.com/luistorres)
+[![Juan Molina](https://github.com/JuaniMolina.png?size=100)](https://github.com/JuaniMolina)&nbsp;
+[![Adriana Cuellar](https://github.com/cuellaradriana.png?size=100)](https://github.com/cuellaradriana)&nbsp;
+[![Marcos Lombardo](https://github.com/MarcosLombardo.png?size=100)](https://github.com/MarcosLombardo)&nbsp;
+[![Marcos Anselmo Portillo](https://github.com/MarcosAnselmoPortillo.png?size=100)](https://github.com/MarcosAnselmoPortillo)&nbsp;
+[![Leonel Nusdeo](https://github.com/LeonelNusdeo.png?size=100)](https://github.com/LeonelNusdeo)&nbsp;
+[![Angel Vázquez](https://github.com/iLxgh.png?size=100)](https://github.com/iLxgh)
 
 
 ## Branching Strategy 🌿

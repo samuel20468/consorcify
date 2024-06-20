@@ -1,4 +1,6 @@
 "use client";
+
+// Estilos y componentes
 import {
   Button,
   ContainerDashboard,
@@ -6,18 +8,24 @@ import {
   Label,
   Title,
 } from "@/components/ui";
+import { PiEye, PiEyeClosed } from "react-icons/pi";
+import { validatePwd } from "@/helpers/Validations/validate.password";
+import Swal from "sweetalert2";
+
+// Endpoints
+import { updatePassFetch } from "@/helpers/fetch.helper.updatePass";
+import { getUserById } from "@/helpers/fetch.helper.user";
+import { getAdminById } from "@/helpers/fetch.helper.admin";
+
+// Interfaces
+import { IUser } from "@/Interfaces/user.interfaces";
+import { IAdmin } from "@/Interfaces/admin.interfaces";
+
+// Hooks
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
-import { PiEye, PiEyeClosed } from "react-icons/pi";
-import { validatePwd } from "@/helpers/Validations/validate.password";
-import Swal from "sweetalert2";
-import { updatePassFetch } from "@/helpers/fetch.helper.updatePass";
-import { IUser } from "@/Interfaces/user.interfaces";
-import { IAdmin } from "@/Interfaces/admin.interfaces";
-import { getUserById } from "@/helpers/fetch.helper.user";
-import { getAdminById } from "@/helpers/fetch.helper.admin";
 
 // -------------------------
 

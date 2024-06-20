@@ -7,16 +7,15 @@ import FormRegisterAdmin from "@/components/FormRegisterAdministrador/FormRegist
 // Hooks
 import useAuth from "@/helpers/useAuth";
 
-const AddConsortium = () => {
+// --------------------
+
+const AddAdministrator = () => {
   useAuth();
 
   return (
     <div className="h-screen">
       <ContainerDashboard>
-        <Title>
-          Modificar administrador{" "}
-          <span className="text-xl font-thin">| Modificar administrador</span>
-        </Title>
+        <Title>Modificar administrador</Title>
         <div className="w-[80%] my-5">
           <FormRegisterAdmin update={true} />
         </div>
@@ -25,4 +24,4 @@ const AddConsortium = () => {
   );
 };
 
-export default AddConsortium;
+export default AddAdministrator;

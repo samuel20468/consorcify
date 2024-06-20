@@ -9,7 +9,10 @@ import Swal from "sweetalert2";
 
 // Endpoints
 import "./expenseDetail.css";
-import { expensesIdFu, functionalUnitExpensesId } from "@/helpers/fetch.helper.uf";
+import {
+  expensesIdFu,
+  functionalUnitExpensesId,
+} from "@/helpers/fetch.helper.uf";
 import { getUserById } from "@/helpers/fetch.helper.user";
 import { useUfSesion } from "@/helpers/useUfSesion";
 
@@ -68,49 +71,51 @@ const Expenses = () => {
     }
   }, [token, path]);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            if (!selectetUF) return;
-            try {
-                const responseExpenses = await expensesIdFu(selectetUF, token);
-                if (responseExpenses) {
-                    setfUnitExpenses(responseExpenses);
-                    const firstExpenseId = responseExpenses[0]?.id;
-                    if (firstExpenseId) {
-                        const responseDetails = await functionalUnitExpensesId(firstExpenseId, token);
-                        if (responseDetails) {
-                            setExpenses(responseDetails);
-                        } else {
-                            Swal.fire({
-                                title: "Error",
-                                text: "Error al obtener la unidad funcional",
-                                icon: "error",
-                                showConfirmButton: false,
-                                timer: 1500,
-                            });
-                        }
-                    }
-                } else {
-                    Swal.fire({
-                        title: "Error",
-                        text: "Error al obtener las expensas",
-                        icon: "error",
-                        showConfirmButton: false,
-                        timer: 1500,
-                    });
-                }
-            } catch (error) {
-                console.error(error);
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!selectetUF) return;
+      try {
+        const responseExpenses = await expensesIdFu(selectetUF, token);
+        if (responseExpenses) {
+          setfUnitExpenses(responseExpenses);
+          const firstExpenseId = responseExpenses[0]?.id;
+          if (firstExpenseId) {
+            const responseDetails = await functionalUnitExpensesId(
+              firstExpenseId,
+              token
+            );
+            if (responseDetails) {
+              setExpenses(responseDetails);
+            } else {
+              Swal.fire({
+                title: "Error",
+                text: "Error al obtener la unidad funcional",
+                icon: "error",
+                showConfirmButton: false,
+                timer: 1500,
+              });
             }
-        };
-        if (token && selectetUF !== "") {
-            fetchData();
+          }
+        } else {
+          Swal.fire({
+            title: "Error",
+            text: "Error al obtener las expensas",
+            icon: "error",
+            showConfirmButton: false,
+            timer: 1500,
+          });
         }
-    }, [selectetUF, token]);
-    
-    
-    const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const { value } = e.target;
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    if (token && selectetUF !== "") {
+      fetchData();
+    }
+  }, [selectetUF, token]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { value } = e.target;
 
     if (value === "") {
       setSelectetUF("");
@@ -141,22 +146,23 @@ const Expenses = () => {
             </div>
 
             <div className="flex justify-center w-1/3">
-                {fUnitExpenses.length > 0 && (
-                            fUnitExpenses[0]?.functional_unit?.balance > 0 ? (
-                                <Link href={`/dashboard/usuario/expenses/${fUnitExpenses[0]?.id}`}>
-                                    <Button className="w-24 py-2 rounded-[40px] disabled:pointer-events-none">
-                                        Pagar
-                                    </Button>
-                                </Link>
-                            ) : (
-                                <Button
-                                    className="w-24 py-2 rounded-[40px] opacity-50 cursor-not-allowed"
-                                    disabled
-                                >
-                                    Pagar
-                                </Button>
-                            )
-                )}
+              {fUnitExpenses.length > 0 &&
+                (fUnitExpenses[0]?.functional_unit?.balance > 0 ? (
+                  <Link
+                    href={`/dashboard/usuario/expenses/${fUnitExpenses[0]?.id}`}
+                  >
+                    <Button className="w-24 py-2 rounded-[40px] disabled:pointer-events-none">
+                      Pagar
+                    </Button>
+                  </Link>
+                ) : (
+                  <Button
+                    className="w-24 py-2 rounded-[40px] opacity-50 cursor-not-allowed"
+                    disabled
+                  >
+                    Pagar
+                  </Button>
+                ))}
             </div>
           </div>
 
@@ -176,8 +182,9 @@ const Expenses = () => {
                   name="id"
                   id="id"
                 >
-
-                  <option value="" disabled>Selecciona tu unidad Funcional</option>
+                  <option value="" disabled>
+                    Selecciona tu unidad Funcional
+                  </option>
                   {functionalUnit?.map((unit) => (
                     <option value={unit.id} key={unit.id}>
                       {unit.location}

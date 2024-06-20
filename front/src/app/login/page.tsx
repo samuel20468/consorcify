@@ -1,8 +1,9 @@
 // Estilos y componentes
 import Login from "@/components/Login/Login";
 
-const page = () => {
+// --------------------------------
 
+const page = () => {
   return (
     <div className="flex ">
       <Login />

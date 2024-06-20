@@ -1,0 +1,21 @@
+.gradienteUF {
+  background-image: linear-gradient(
+    180deg,
+    hsl(210deg 8% 5%) 20%,
+    hsl(211deg 2% 10%) 54%,
+    hsl(211deg 1% 14%) 65%,
+    hsl(211deg 1% 19%) 72%,
+    hsl(211deg 1% 23%) 76%,
+    hsl(211deg 0% 28%) 80%,
+    hsl(211deg 0% 33%) 83%,
+    hsl(211deg 0% 38%) 87%,
+    hsl(211deg 0% 43%) 91%,
+    hsl(211deg 0% 49%) 95%,
+    hsl(0, 0%, 54%) 100%
+  );
+  border-radius: 40px;
+  height: 400px;
+  width: 750px;
+  overflow: hidden;
+  transition: background-color 0.3s ease;
+}

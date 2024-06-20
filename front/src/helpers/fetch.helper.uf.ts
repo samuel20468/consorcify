@@ -198,11 +198,13 @@ export const functionalUnitExpensesId = async (
 //Obtener las expensas por unidad funcional
 export const expensesIdFu = async (
   id: string,
-  token: string
+  token: string,
+  page: number = 1,
+  limit: number = 20,
 ): Promise<IFunctionalUnitExpenses[] | any> => {
   try {
     const response = await fetch(
-      `${apiUrl}/functional-units-expenses/functional-unit/${id}`,
+      `${apiUrl}/functional-units-expenses/functional-unit/${id}?page=${page}&limit=${limit}`,
       {
         method: "GET",
         headers: {

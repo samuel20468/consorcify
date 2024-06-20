@@ -1,26 +1,28 @@
 // Estilos y componentes
-import { Button, Input, Label, Select } from "../ui";
-import Swal from "sweetalert2";
+import { Button, Input, Label, Select } from '../ui';
+import Swal from 'sweetalert2';
 
 // Validaciones
-import { validateCuit } from "@/helpers/Validations/validate.cuit";
+import { validateCuit } from '@/helpers/Validations/validate.cuit';
 
 // Interfaces
 import {
     INewSupplier,
     INewSupplierError,
-} from "@/Interfaces/suppliers.interfaces";
-import { IConsortium } from "@/Interfaces/consortium.interfaces";
+} from '@/Interfaces/suppliers.interfaces';
+import { IConsortium } from '@/Interfaces/consortium.interfaces';
 
 // Endpoints
-import { getConsortiumsByAdminId } from "@/helpers/fetch.helper.consortium";
-import { supplierFetch } from "@/helpers/fetch.helper.supplier";
+import { getConsortiumsByAdminId } from '@/helpers/fetch.helper.consortium';
+import { supplierFetch } from '@/helpers/fetch.helper.supplier';
 
 // Hooks
-import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
-import useAuth from "@/helpers/useAuth";
-import useSesion from "@/helpers/useSesion";
+import { useEffect, useState } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+import useAuth from '@/helpers/useAuth';
+import useSesion from '@/helpers/useSesion';
+import { validatePhoneNumber } from '@/helpers/Validations/validate.telephone';
+import { validateEmail } from '@/helpers/Validations/validate.email';
 
 // ---------------
 
@@ -30,13 +32,13 @@ const FormSupplier = () => {
     const pathname = useParams();
     const router = useRouter();
     const initialData = {
-        name: "",
-        cuit: "",
-        email: "",
-        phone_number: "",
-        address: "",
+        name: '',
+        cuit: '',
+        email: '',
+        phone_number: '',
+        address: '',
         balance: 0,
-        consortium_id: "",
+        consortium_id: '',
     };
     const [registerSupplier, setRegisterSupplier] =
         useState<INewSupplier>(initialData);
@@ -49,9 +51,9 @@ const FormSupplier = () => {
         setRegisterSupplier({
             ...registerSupplier,
             [name]:
-                name === "balance"
-                    ? value === ""
-                        ? ""
+                name === 'balance'
+                    ? value === ''
+                        ? ''
                         : Number(value)
                     : value,
         });
@@ -77,10 +79,10 @@ const FormSupplier = () => {
             !registerSupplier.balance === undefined
         ) {
             Swal.fire({
-                title: "Formulario incompleto",
-                text: "Asegúrate de completar todos los campos del formulario.",
-                icon: "error",
-                confirmButtonColor: "#0b0c0d",
+                title: 'Formulario incompleto',
+                text: 'Asegúrate de completar todos los campos del formulario.',
+                icon: 'error',
+                confirmButtonColor: '#0b0c0d',
             });
             return;
         }
@@ -89,10 +91,10 @@ const FormSupplier = () => {
             const response = await supplierFetch(registerSupplier, token);
             if (response?.ok) {
                 Swal.fire({
-                    title: "Excelente",
+                    title: 'Excelente',
                     text: `El proveedor ${registerSupplier.name} se creó correctamente`,
-                    icon: "success",
-                    confirmButtonColor: "#0b0c0d",
+                    icon: 'success',
+                    confirmButtonColor: '#0b0c0d',
                 }).then(async (res) => {
                     if (res.isConfirmed) {
                         const data = await response.json();
@@ -103,12 +105,12 @@ const FormSupplier = () => {
                     }
                 });
             }
-        } catch (error) {            
+        } catch (error) {
             Swal.fire({
-                title: "Error de información",
+                title: 'Error de información',
                 text: (error as Error).message,
-                icon: "error",
-                confirmButtonColor: "#0b0c0d",
+                icon: 'error',
+                confirmButtonColor: '#0b0c0d',
             });
         }
     };
@@ -132,9 +134,14 @@ const FormSupplier = () => {
 
     useEffect(() => {
         const cuitErrors = validateCuit(registerSupplier.cuit);
+        const phoneErrors = validatePhoneNumber(registerSupplier.phone_number);
+        const emailErrors = validateEmail(registerSupplier.email);
+
         setErrorSupplier((prevErrors) => ({
             ...prevErrors,
             ...cuitErrors,
+            ...emailErrors,
+            ...phoneErrors,
         }));
     }, [registerSupplier]);
 
@@ -200,7 +207,7 @@ const FormSupplier = () => {
                             placeholder="30123456789"
                         />
                         {errorSupplier.cuit && registerSupplier.cuit && (
-                            <span className="self-end text-xs text-red">
+                            <span className="self-end text-xs text-redd">
                                 {errorSupplier.cuit}
                             </span>
                         )}
@@ -215,6 +222,11 @@ const FormSupplier = () => {
                             onChange={handleChange}
                             placeholder="provedor@mail.com"
                         />
+                        {errorSupplier.email && registerSupplier.email && (
+                            <span className="self-end text-xs text-redd">
+                                {errorSupplier.email}
+                            </span>
+                        )}
                     </div>
                 </div>
 
@@ -240,6 +252,12 @@ const FormSupplier = () => {
                             onChange={handleChange}
                             placeholder="+541144332211"
                         />
+                        {errorSupplier.phone_number &&
+                            registerSupplier.phone_number && (
+                                <span className="self-end text-xs text-redd">
+                                    {errorSupplier.phone_number}
+                                </span>
+                            )}
                     </div>
                     <div className="flex flex-col w-1/4">
                         <Label htmlFor="balance">Saldo:</Label>

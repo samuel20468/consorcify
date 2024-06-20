@@ -3,6 +3,9 @@
 // Estilos y componentes
 import { Button, ContainerDashboard, Select, Title } from "@/components/ui";
 import ExpenditureCards from "@/components/ExpenditureCards/ExpenditureCards";
+import { IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowUp } from "react-icons/io";
+import { CgArrowAlignV } from "react-icons/cg";
 
 // Endpoints
 import { getExpenditures } from "@/helpers/fetch.helper.expenditure";
@@ -236,36 +239,104 @@ const Spent = () => {
                     </div>
                 </div>
                 <div className="w-[90%] border-t border-b border-white flex justify-between p-2 mt-5 text-center">
-                    <div className="w-1/4 text-xl">
+                    <div className="w-1/5 text-xl">
                         <h1
-                            className="cursor-pointer"
+                            className="flex items-center justify-center cursor-pointer"
+                            onClick={() => handleHeaderClick("date")}
+                        >
+                            Fecha de gasto{" "}
+                            {sortConfig?.field === "date" && (
+                                <>
+                                    {sortConfig.order === "asc" ? (
+                                        <IoIosArrowUp className="w-4 h-4 ml-1" />
+                                    ) : (
+                                        <IoIosArrowDown className="w-4 h-4 ml-1" />
+                                    )}
+                                </>
+                            )}
+                            {sortConfig?.field !== "date" && (
+                                <CgArrowAlignV className="w-4 h-4 ml-1 opacity-1" />
+                            )}
+                        </h1>
+                    </div>
+                    <div className="w-1/5 text-xl">
+                        <h1
+                            className="flex items-center justify-center cursor-pointer"
                             onClick={() => handleHeaderClick("description")}
                         >
-                            Descripción
+                            Descripción{" "}
+                            {sortConfig?.field === "description" && (
+                                <>
+                                    {sortConfig.order === "asc" ? (
+                                        <IoIosArrowUp className="w-4 h-4 ml-1" />
+                                    ) : (
+                                        <IoIosArrowDown className="w-4 h-4 ml-1" />
+                                    )}
+                                </>
+                            )}
+                            {sortConfig?.field !== "description" && (
+                                <CgArrowAlignV className="w-4 h-4 ml-1 opacity-1" />
+                            )}
                         </h1>
                     </div>
-                    <div className="w-1/4 text-xl">
+                    <div className="w-1/5 text-xl">
                         <h1
-                            className="cursor-pointer"
+                            className="flex items-center justify-center cursor-pointer"
                             onClick={() => handleHeaderClick("category")}
                         >
-                            Categoría
+                            Categoría{" "}
+                            {sortConfig?.field === "category" && (
+                                <>
+                                    {sortConfig.order === "asc" ? (
+                                        <IoIosArrowUp className="w-4 h-4 ml-1" />
+                                    ) : (
+                                        <IoIosArrowDown className="w-4 h-4 ml-1" />
+                                    )}
+                                </>
+                            )}
+                            {sortConfig?.field !== "category" && (
+                                <CgArrowAlignV className="w-4 h-4 ml-1 opacity-1" />
+                            )}
                         </h1>
                     </div>
-                    <div className="w-1/4 text-xl">
+                    <div className="w-1/5 text-xl">
                         <h1
-                            className="cursor-pointer"
+                            className="flex items-center justify-center cursor-pointer"
                             onClick={() => handleHeaderClick("supplier")}
                         >
-                            Proveedor
+                            Proveedor{" "}
+                            {sortConfig?.field === "supplier" && (
+                                <>
+                                    {sortConfig.order === "asc" ? (
+                                        <IoIosArrowUp className="w-4 h-4 ml-1" />
+                                    ) : (
+                                        <IoIosArrowDown className="w-4 h-4 ml-1" />
+                                    )}
+                                </>
+                            )}
+                            {sortConfig?.field !== "supplier" && (
+                                <CgArrowAlignV className="w-4 h-4 ml-1 opacity-1" />
+                            )}
                         </h1>
                     </div>
-                    <div className="w-1/4 text-xl">
+                    <div className="w-1/5 text-xl">
                         <h1
-                            className="cursor-pointer"
+                            className="flex items-center justify-center cursor-pointer"
                             onClick={() => handleHeaderClick("total_amount")}
                         >
-                            Monto
+                            Monto{" "}
+                            {sortConfig?.field === "total_amount" && (
+                                <>
+                                    {sortConfig.order === "asc" ? (
+                                        <IoIosArrowUp className="w-4 h-4 ml-1" />
+                                    ) : (
+                                        <IoIosArrowDown className="w-4 h-4 ml-1" />
+                                    )}
+                                </>
+                            )}
+                            {sortConfig?.field !== "total_amount" && (
+                                <CgArrowAlignV className="w-4 h-4 ml-1 opacity-1" />
+                            )}
                         </h1>
                     </div>
                 </div>

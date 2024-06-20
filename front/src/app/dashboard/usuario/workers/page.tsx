@@ -1,23 +1,30 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import Swal from "sweetalert2";
-import { ISupplier } from "@/Interfaces/suppliers.interfaces";
-import SearchBar from "@/components/SearchBar/SearchBar";
+// Estilos y componentes
 import { ContainerDashboard, Title } from "@/components/ui";
 import SuppliersCards from "@/components/SuppliersCards/SuppliersCards";
+import SearchBar from "@/components/SearchBar/SearchBar";
+import { IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowUp } from "react-icons/io";
+import { CgArrowAlignV } from "react-icons/cg";
+import Swal from "sweetalert2";
 
 // Endpoints
 import { getSuppliersByConsortiumId } from "@/helpers/fetch.helper.supplier";
 import { useUfSesion } from "@/helpers/useUfSesion";
 
+// Interfaces
+import { ISupplier } from "@/Interfaces/suppliers.interfaces";
+
+// Hooks
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { IoIosArrowDown } from "react-icons/io";
-import { IoIosArrowUp } from "react-icons/io";
-import { CgArrowAlignV } from "react-icons/cg";
+import { useRouter } from "next/navigation";
 import useAuth from "@/helpers/useAuth";
 import useSesion from "@/helpers/useSesion";
+
+// --------------------------------
+
 const Workers = () => {
   // Hooks de autenticación y sesión
   useAuth();
@@ -149,10 +156,10 @@ const Workers = () => {
   }
 
   return (
-    <div>
+    <div className="h-screen">
       <ContainerDashboard>
         <Title>Proveedores</Title>
-        <div className="w-[90%]">
+        <div className="w-2/3">
           <SearchBar onSearch={handleSearch} searchString="Proveedores" />
         </div>
         <div className="w-[90%] border-t border-b border-white flex justify-between p-2 mt-5 text-center">
@@ -178,7 +185,7 @@ const Workers = () => {
             className="flex items-center justify-center w-1/5 text-xl cursor-pointer"
             onClick={() => handleSortChange("cuit")}
           >
-            Cuit{" "}
+            CUIT{" "}
             {sortBy === "cuit" && (
               <>
                 {sortOrder === "asc" ? (
@@ -196,7 +203,7 @@ const Workers = () => {
             className="flex items-center justify-center w-1/5 text-xl cursor-pointer"
             onClick={() => handleSortChange("email")}
           >
-            E-mail{" "}
+            Email{" "}
             {sortBy === "email" && (
               <>
                 {sortOrder === "asc" ? (

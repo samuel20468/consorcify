@@ -1,55 +1,63 @@
-"use client";
+'use client';
 
 // Estilos y componentes
-import { Button, Input, Label, Select } from "../ui";
-import Swal from "sweetalert2";
+import { Button, Input, Label, Select } from '../ui';
+import Swal from 'sweetalert2';
 
 // Validaciones
-import { validateSuterh } from "@/helpers/Validations/validate.suterh";
-import { validateCuit } from "@/helpers/Validations/validate.cuit";
+import { validateSuterh } from '@/helpers/Validations/validate.suterh';
+import { validateCuit } from '@/helpers/Validations/validate.cuit';
 
 // Endpoints
-import { IUserData } from "@/Interfaces/user.interfaces";
-import { getAdmins } from "@/helpers/fetch.helper.admin";
+import { IUserData } from '@/Interfaces/user.interfaces';
+import { getAdmins } from '@/helpers/fetch.helper.admin';
 import {
     consortiumFetch,
     getConsortiumById,
     updateConsortium,
-} from "@/helpers/fetch.helper.consortium";
+} from '@/helpers/fetch.helper.consortium';
 
 // Iterfaces
-import { IAdmin } from "@/Interfaces/admin.interfaces";
+import { IAdmin } from '@/Interfaces/admin.interfaces';
 import {
     INewConsortium,
     INewConsortiumError,
-} from "@/Interfaces/consortium.interfaces";
+} from '@/Interfaces/consortium.interfaces';
 
 // Hooks
-import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
-import useAuth from "@/helpers/useAuth";
-import useSesion from "@/helpers/useSesion";
-import path from "path";
+import { useEffect, useState } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+import useAuth from '@/helpers/useAuth';
+import useSesion from '@/helpers/useSesion';
+import path from 'path';
+import { validateNumbers } from '@/helpers/Validations/validate.numbers';
 
 // -----------------
 
 const FormRegisterConsortium = ({ update = false }) => {
     const initialData = {
-        suterh_key: "",
-        name: "",
-        cuit: "",
-        street_name: "",
+        suterh_key: '',
+        name: '',
+        cuit: '',
+        street_name: '',
         building_number: 0,
-        zip_code: "",
-        country: "",
-        province: "",
-        city: "",
+        zip_code: '',
+        country: '',
+        province: '',
+        city: '',
         floors: 0,
         ufs: 0,
         category: 0,
         first_due_day: 0,
         interest_rate: 0,
-        c_admin: "" || ({ id: "" } as IAdmin),
+        c_admin: '' || ({ id: '' } as IAdmin),
+    };
+    const initialDataError = {
+        cuit: '',
+        first_due_day: '',
+        interest_rate: '',
+        category: '',
+        suterh_key: '',
     };
     useAuth();
     const { token, data }: { token: string; data: IUserData } = useSesion();
@@ -60,7 +68,7 @@ const FormRegisterConsortium = ({ update = false }) => {
     const [consortiumRegister, setConsortiumRegister] =
         useState<INewConsortium>(initialData);
     const [consortiumRegisterError, setConsortiumRegisterError] =
-        useState<INewConsortiumError>(initialData);
+        useState<INewConsortiumError>(initialDataError);
 
     useEffect(() => {
         const fetchConsortium = async () => {
@@ -70,7 +78,7 @@ const FormRegisterConsortium = ({ update = false }) => {
                     const data = await response?.json();
                     if (
                         data.c_admin !== null &&
-                        typeof data.c_admin === "object"
+                        typeof data.c_admin === 'object'
                     ) {
                         setConsortiumRegister((prevState) => ({
                             ...prevState,
@@ -108,17 +116,17 @@ const FormRegisterConsortium = ({ update = false }) => {
 
         let parsedValue: string | number = value;
 
-        if (name === "interest_rate") {
-            parsedValue = value === "" ? "" : parseFloat(value);
+        if (name === 'interest_rate') {
+            parsedValue = value === '' ? '' : parseFloat(value);
         } else if (
-            name === "building_number" ||
-            name === "floors" ||
-            name === "ufs" ||
-            name === "category" ||
-            name === "first_due_day" ||
-            name === "interest_rate"
+            name === 'building_number' ||
+            name === 'floors' ||
+            name === 'ufs' ||
+            name === 'category' ||
+            name === 'first_due_day' ||
+            name === 'interest_rate'
         ) {
-            parsedValue = value === "" ? 0 : parseInt(value, 10);
+            parsedValue = value === '' ? 0 : parseInt(value, 10);
         }
 
         setConsortiumRegister({
@@ -152,13 +160,14 @@ const FormRegisterConsortium = ({ update = false }) => {
             !consortiumRegister.street_name ||
             !consortiumRegister.ufs ||
             !consortiumRegister.zip_code ||
-            (consortiumRegister.interest_rate !== 0 && !consortiumRegister.interest_rate)
+            (consortiumRegister.interest_rate !== 0 &&
+                !consortiumRegister.interest_rate)
         ) {
             Swal.fire({
-                title: "Formulario incompleto",
-                text: "Asegúrate de completar todos los campos del formulario.",
-                icon: "error",
-                confirmButtonColor: "#0b0c0d",
+                title: 'Formulario incompleto',
+                text: 'Asegúrate de completar todos los campos del formulario.',
+                icon: 'error',
+                confirmButtonColor: '#0b0c0d',
             });
             return;
         }
@@ -166,7 +175,7 @@ const FormRegisterConsortium = ({ update = false }) => {
         const consortiumData = {
             ...consortiumRegister,
             c_admin:
-                typeof consortiumRegister.c_admin === "object"
+                typeof consortiumRegister.c_admin === 'object'
                     ? consortiumRegister.c_admin.id
                     : consortiumRegister.c_admin,
         };
@@ -180,13 +189,13 @@ const FormRegisterConsortium = ({ update = false }) => {
                 );
                 if (response?.ok) {
                     Swal.fire({
-                        title: "Excelente",
+                        title: 'Excelente',
                         text: `El consorcio ${consortiumData.name} se modificó correctamente`,
-                        icon: "success",
-                        confirmButtonColor: "#0b0c0d",
+                        icon: 'success',
+                        confirmButtonColor: '#0b0c0d',
                     }).then((res) => {
                         if (res.isConfirmed) {
-                            if (data?.roles?.[0] == "superadmin") {
+                            if (data?.roles?.[0] == 'superadmin') {
                                 router.push(
                                     `/dashboard/superadmin/consorcios/All/${params.id}`
                                 );
@@ -200,10 +209,10 @@ const FormRegisterConsortium = ({ update = false }) => {
                 }
             } catch (error) {
                 Swal.fire({
-                    title: "Error de información",
+                    title: 'Error de información',
                     text: (error as Error).message,
-                    icon: "error",
-                    confirmButtonColor: "#0b0c0d",
+                    icon: 'error',
+                    confirmButtonColor: '#0b0c0d',
                 });
             }
         } else {
@@ -211,14 +220,14 @@ const FormRegisterConsortium = ({ update = false }) => {
                 const response = await consortiumFetch(consortiumData, token);
                 if (response?.ok) {
                     Swal.fire({
-                        title: "Excelente",
+                        title: 'Excelente',
                         text: `El consorcio ${consortiumData.name} se creó correctamente`,
-                        icon: "success",
-                        confirmButtonColor: "#0b0c0d",
+                        icon: 'success',
+                        confirmButtonColor: '#0b0c0d',
                     }).then(async (res) => {
                         if (res.isConfirmed) {
                             const dato = await response.json();
-                            if (data?.roles?.[0] == "superadmin") {
+                            if (data?.roles?.[0] == 'superadmin') {
                                 router.push(
                                     `/dashboard/superadmin/consorcios/All/${dato.id}`
                                 );
@@ -232,17 +241,17 @@ const FormRegisterConsortium = ({ update = false }) => {
                 }
             } catch (error) {
                 Swal.fire({
-                    title: "Error de información",
+                    title: 'Error de información',
                     text: (error as Error).message,
-                    icon: "error",
-                    confirmButtonColor: "#0b0c0d",
+                    icon: 'error',
+                    confirmButtonColor: '#0b0c0d',
                 });
             }
         }
     };
 
     useEffect(() => {
-        if (data?.roles?.[0] == "cadmin") {
+        if (data?.roles?.[0] == 'cadmin') {
             setConsortiumRegister({
                 ...consortiumRegister,
                 c_admin: data.id,
@@ -252,10 +261,18 @@ const FormRegisterConsortium = ({ update = false }) => {
 
     useEffect(() => {
         const cuitErrors = validateCuit(consortiumRegister.cuit!);
+        const numberErrors = validateNumbers(
+            consortiumRegister.first_due_day!,
+            consortiumRegister.interest_rate!,
+            consortiumRegister.category!
+        );
+        const suterhErrors = validateSuterh(consortiumRegister.suterh_key!);
 
         setConsortiumRegisterError((prevErrors) => ({
             ...prevErrors,
             ...cuitErrors,
+            ...numberErrors,
+            ...suterhErrors,
         }));
     }, [consortiumRegister]);
 
@@ -263,7 +280,7 @@ const FormRegisterConsortium = ({ update = false }) => {
         <div className="w-full h-auto p-4 text-white border rounded-[40px]">
             <div className="my-2 text-center">
                 <h1 className="mb-2 text-2xl font-bold">
-                    {update ? " Modificar Consorcio" : " Crear Nuevo Consorcio"}
+                    {update ? ' Modificar Consorcio' : ' Crear Nuevo Consorcio'}
                 </h1>
             </div>
             <form
@@ -296,7 +313,7 @@ const FormRegisterConsortium = ({ update = false }) => {
                         />
                         {consortiumRegisterError.cuit &&
                             consortiumRegister.cuit && (
-                                <span className="self-end text-xs text-red">
+                                <span className="self-end text-xs text-redd">
                                     {consortiumRegisterError.cuit}
                                 </span>
                             )}
@@ -341,7 +358,7 @@ const FormRegisterConsortium = ({ update = false }) => {
                             placeholder="456"
                             value={
                                 consortiumRegister.building_number == 0
-                                    ? ""
+                                    ? ''
                                     : consortiumRegister.building_number
                             }
                             onChange={handleChange}
@@ -358,11 +375,17 @@ const FormRegisterConsortium = ({ update = false }) => {
                             placeholder="1"
                             value={
                                 consortiumRegister.category == 0
-                                    ? ""
+                                    ? ''
                                     : consortiumRegister.category
                             }
                             onChange={handleChange}
                         />
+                        {consortiumRegisterError.category &&
+                            consortiumRegister.category !== 0 && (
+                                <span className="self-end text-xs text-redd">
+                                    {consortiumRegisterError.category}
+                                </span>
+                            )}
                     </div>
                 </div>
 
@@ -423,7 +446,7 @@ const FormRegisterConsortium = ({ update = false }) => {
                             placeholder="5"
                             value={
                                 consortiumRegister.floors == 0
-                                    ? ""
+                                    ? ''
                                     : consortiumRegister.floors
                             }
                             onChange={handleChange}
@@ -438,7 +461,7 @@ const FormRegisterConsortium = ({ update = false }) => {
                             placeholder="17"
                             value={
                                 consortiumRegister.ufs == 0
-                                    ? ""
+                                    ? ''
                                     : consortiumRegister.ufs
                             }
                             onChange={handleChange}
@@ -454,11 +477,17 @@ const FormRegisterConsortium = ({ update = false }) => {
                             step="0.01"
                             value={
                                 consortiumRegister.interest_rate === 0
-                                    ? 0
+                                    ? ''
                                     : consortiumRegister.interest_rate
                             }
                             onChange={handleChange}
                         />
+                        {consortiumRegisterError.interest_rate &&
+                            consortiumRegister.interest_rate && (
+                                <span className="self-end text-xs text-redd">
+                                    {consortiumRegisterError.interest_rate}
+                                </span>
+                            )}
                     </div>
                     <div className="flex flex-col w-1/4">
                         <Label htmlFor="first_due_day">
@@ -469,29 +498,36 @@ const FormRegisterConsortium = ({ update = false }) => {
                             name="first_due_day"
                             type="number"
                             placeholder="10"
+                            step="1"
                             value={
-                                consortiumRegister.first_due_day == 0
-                                    ? ""
+                                consortiumRegister.first_due_day === 0
+                                    ? ''
                                     : consortiumRegister.first_due_day
                             }
                             onChange={handleChange}
                         />
+                        {consortiumRegisterError.first_due_day &&
+                            consortiumRegister.first_due_day !== 0 && (
+                                <span className="self-end text-xs text-redd">
+                                    {consortiumRegisterError.first_due_day}
+                                </span>
+                            )}
                     </div>
                 </div>
                 <div className="flex items-center w-full gap-2">
                     <div className="flex w-full">
                         <div className="flex flex-col w-full">
-                            {data?.roles?.[0] === "superadmin" && (
+                            {data?.roles?.[0] === 'superadmin' && (
                                 <Label htmlFor="c_admin">Administrador:</Label>
-                            )}{" "}
-                            {data?.roles?.[0] === "superadmin" && (
+                            )}{' '}
+                            {data?.roles?.[0] === 'superadmin' && (
                                 <Select
                                     id="c_admin"
                                     name="c_admin"
                                     value={
                                         consortiumRegister.c_admin &&
                                         typeof consortiumRegister.c_admin ===
-                                            "object"
+                                            'object'
                                             ? consortiumRegister.c_admin.id
                                             : consortiumRegister.c_admin
                                     }
@@ -518,7 +554,7 @@ const FormRegisterConsortium = ({ update = false }) => {
                 </div>
                 <div className="flex justify-center mt-5">
                     <Button type="submit" className="w-1/3 py-2 rounded-[40px]">
-                        {update ? "Modificar Consorcio" : "Crear Consorcio"}
+                        {update ? 'Modificar Consorcio' : 'Crear Consorcio'}
                     </Button>
                 </div>
             </form>

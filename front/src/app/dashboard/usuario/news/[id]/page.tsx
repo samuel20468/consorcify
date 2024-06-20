@@ -104,7 +104,7 @@ const MessageUser = () => {
         <Title>
           Mensajes <span className="text-2xl font-thin">| Mensaje enviado</span>
         </Title>
-        <div className="flex flex-col mt-20 p-10 border w-[950px] rounded-[50px] text-black bg-neutral-50">
+        <div className="flex flex-col mt-5 p-10 border w-[950px] rounded-[50px] text-black bg-neutral-50">
           <div>
             <h3 className="my-2 text-l">
               <span className="italic">Destinatario:</span> {message?.receiver}

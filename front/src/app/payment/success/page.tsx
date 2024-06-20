@@ -1,12 +1,14 @@
-"use client";
-import { Button, ContainerDashboard, Title } from "@/components/ui";
-import useAuth from "@/helpers/useAuth";
-import Link from "next/link";
-import React from "react";
-import { IoMdCheckmarkCircleOutline } from "react-icons/io";
+'use client';
+import { Button, ContainerDashboard, Title } from '@/components/ui';
+import useAuth from '@/helpers/useAuth';
+import Link from 'next/link';
+import React from 'react';
+import { IoMdCheckmarkCircleOutline } from 'react-icons/io';
+
 
 const PaymentSuccess = () => {
-    useAuth();
+  useAuth();
+
 
     return (
         <ContainerDashboard className="w-[90%] h-[90vh]">
@@ -17,7 +19,6 @@ const PaymentSuccess = () => {
                     size={100}
                 />
                 <p>Tu pago fue procesado correctamente</p>
-                <p>Detalles</p>
             </section>
             <div className="flex w-1/2 justify-around items-center mt-4">
                 <Link href="/dashboard">
@@ -25,9 +26,6 @@ const PaymentSuccess = () => {
                         Volver al Inicio
                     </button>
                 </Link>
-                <button className="w-44 py-2 bg-green-500 rounded-[40px] hover:text-black hover:bg-white">
-                    Ver detalle
-                </button>
             </div>
         </ContainerDashboard>
     );

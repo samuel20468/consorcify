@@ -1,19 +1,19 @@
 // Metadata
-import type { Metadata } from "next";
+import type { Metadata } from 'next';
 
 // Stilos y componentes
-import "./globals.css";
-import { Oswald } from "next/font/google";
-import Sidebars from "@/components/Sidebars/Sidebars";
-import NavbarDashboard from "@/components/NavbarDashboard/NavbarDashboard";
-import Footer from "@/components/Footer/Footer";
-import { Mostrar, Ocultar } from "@/components/ui";
+import './globals.css';
+import { Oswald } from 'next/font/google';
+import Sidebars from '@/components/Sidebars/Sidebars';
+import NavbarDashboard from '@/components/NavbarDashboard/NavbarDashboard';
+import Footer from '@/components/Footer/Footer';
+import { Mostrar, Ocultar } from '@/components/ui';
 
-const oswald = Oswald({ subsets: ["latin"] });
+const oswald = Oswald({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-    title: "Consorcify",
-    description: "Tus administraciones en un click",
+    title: 'Consorcify',
+    description: 'Tus administraciones en un click',
 };
 
 export default function RootLayout({

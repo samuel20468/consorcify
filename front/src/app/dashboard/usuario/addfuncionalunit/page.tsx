@@ -22,14 +22,30 @@ const AddFU = () => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        if (!code) {
+            Swal.fire({
+                title: "Error",
+                text: "Debe ingresar un codigo de la unidad funcional",
+                icon: "error",
+            });
+            return;
+        }
+        if (code.length !== 8) {
+            Swal.fire({
+                title: "Error",
+                text: "El codigo debe tener 8 caracteres",
+                icon: "error",
+            });
+            setCode("");
+            return;
+        }
 
         try {
             const response = await linkFunctionalUnit(data.id, token, code!);
-            console.log(response);
 
             if (response) {
                 router.push("/dashboard/usuario/information/UF");
-            } else {
+            } else if (response.status === 409) {
                 Swal.fire({
                     title: "Error",
                     text: "No se pudo vincular la unidad funcional a la cuenta",
@@ -37,7 +53,11 @@ const AddFU = () => {
                 });
             }
         } catch (error) {
-            console.error(error);
+            Swal.fire({
+                title: "Error",
+                text: (error as Error).message,
+                icon: "error",
+            });
         }
     };
 

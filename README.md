@@ -1,4 +1,4 @@
-## Consorcify
+## Welcome to Consorcify
 
 Consorcify is a comprehensive solution designed to simplify expense management for users and building administration for administrators. It provides seamless management capabilities to streamline your operations.
 

@@ -10,17 +10,9 @@ This guide will walk you through setting up the project locally. The backend and
 
 Before we begin, ensure you have the following installed on your machine:
 
-**Backend:**
-
 * Node.js (v14 or above)
 * npm (v6 or above)
 * PostgreSQL
-
-**Frontend:**
-
-* Node.js (v14 or above)
-* npm (v6 or above)
-
 ### Cloning the Repository
 
 1. Clone the repository using the following command:

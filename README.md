@@ -173,7 +173,7 @@ Consorcify leverages various tools and libraries to enhance functionality:
 
 
 ## Collaborators 🤝
-Here are the GitHub profiles of the development Consorcify Team:
+Here are the GitHub profiles of the Consorcify development Team:
 
 [![Samuel Rivera](https://github.com/samuel20468.png?size=100)](https://github.com/samuel20468)&nbsp;
 [![Juan Molina](https://github.com/JuaniMolina.png?size=100)](https://github.com/JuaniMolina)&nbsp;

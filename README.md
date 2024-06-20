@@ -103,7 +103,7 @@ cd consorcify
 2. Run the following command:
 
 ```bash
-npm run render
+npm run dev
 ```
 
 #### Running Individually

@@ -1,21 +1,21 @@
-## Welcome to Consorcify
+## Welcome to Consorcify 🎉
 
 Consorcify is a comprehensive solution designed to simplify expense management for users and building administration for administrators. It provides seamless management capabilities to streamline your operations.
 
 ![Consorcify Logo](https://res.cloudinary.com/consorcify/image/upload/v1718844349/descarga_a0acun.png)
 
-## Getting Started
+## Getting Started 🚀
 
 This guide will walk you through setting up the project locally. The backend and frontend are separate applications within the same repository, so they have distinct configurations.
 
-### Prerequisites
+### Prerequisites 🛠️
 
 Before we begin, ensure you have the following installed on your machine:
 
-* Node.js (v14 or above)
-* npm (v6 or above)
-* PostgreSQL
-### Cloning the Repository
+* Node.js (v14 or above) 🌐
+* npm (v6 or above) 📦
+* PostgreSQL 🐘
+### Cloning the Repository 📥
 
 1. Clone the repository using the following command:
 
@@ -30,7 +30,7 @@ cd consorcify
 git checkout develop
 ```
 
-### Installation
+### Installation ⚙️
 
 #### Backend
 
@@ -48,20 +48,32 @@ npm install
 
 3. Set up the environment variables:
 
-   Create a file named `.env` in the back directory and add your configuration details. Here's an example:
+   Create a file named `.env.development` in the back/src directory and add your configuration details. Here's an example:
 
 ```
-DATABASE_URL=postgres://username:password@localhost:5432/consorcify
+DB_NAME=consorcify
+DB_HOST=localhost
+DB_PORT=5432
+DB_USERNAME=username
+DB_PASSWORD=<your_database_password>
 JWT_SECRET=your_jwt_secret
-CLOUDINARY_URL=your_cloudinary_url
-NODEMAILER_EMAIL=your_email@example.com
-NODEMAILER_PASSWORD=your_email_password
-```
+CADMIN_PASS=<consorcify_admin_password>
+API_BASE_URL=<your_api_base_url>
+CLIENT_BASE_URL=<your_client_base_url>
+CLOUDINARY_CLOUD_NAME=<your_cloudinary_cloud_name>
+CLOUDINARY_API_KEY=<your_cloudinary_api_key>
+CLOUDINARY_API_SECRET=<your_cloudinary_api_secret>
+STRIPE_SECRET_KEY=<your_stripe_secret_key>
+STRIPE_PUBLISH_KEY=<your_stripe_publishable_key>
+GOOGLE_CLIENT_ID=<your_google_client_id>
+GOOGLE_CLIENT_SECRET=<your_google_client_secret>
+GOOGLE_MAPS_API_KEY=<your_google_maps_api_key>
+MAIL_HOST=<your_mail_host>
+MAIL_USER=<your_mail_username>
+MAIL_PASSWORD=<your_mail_password>
+MAIL_FROM=<your_mail_from_address>
+MAIL_REDIRECT_URL=<your_mail_redirect_url>
 
-4. Run the database migrations:
-
-```bash
-npm run typeorm migration:run
 ```
 
 #### Frontend
@@ -80,13 +92,14 @@ npm install
 
 3. Set up the environment variables:
 
-   Create a file named `.env` in the front directory and add your configuration details. Here's an example:
+   Create a file named `.env.local` in the front directory and add your configuration details. Here's an example:
 
 ```
 NEXT_PUBLIC_API_URL=your_api_url
+NEXT_PUBLIC_MAPS_API_KEY=<your_next_public_maps_api_key>
 ```
 
-### Running the Application
+### Running the Application 🏃‍♂️
 
 There are two options for running the application: using workspaces or running them individually.
 
@@ -138,7 +151,7 @@ cd front
 npm run dev
 ```
 
-## Tools and Libraries
+## Tools and Libraries 🛠️
 
 Consorcify leverages various tools and libraries to enhance functionality:
 
@@ -158,10 +171,11 @@ Consorcify leverages various tools and libraries to enhance functionality:
 * Next.js
 * React
 
-## Branching Strategy
+## Branching Strategy 🌿
 
 The main branch (`main`) is strictly for deployment purposes. Always use the develop branch for development activities. Create new branches for features or bug fixes from `develop` and merge them back into `develop` upon completion.
 
-## Contact Us
+## Contact Us 📧
 
 If you have any questions or require assistance, feel free to contact us at consorcify@gmail.com.
+We're here to help! 😊

@@ -1,7 +1,13 @@
 "use client";
 
 // Estilos y componentes
-import { Button, ContainerDashboard, Input, Label } from "@/components/ui";
+import {
+  Button,
+  ContainerDashboard,
+  Input,
+  Label,
+  Title,
+} from "@/components/ui";
 
 // Endpoints
 import { getUserById, updateUser } from "@/helpers/fetch.helper.user";
@@ -20,148 +26,156 @@ import Swal from "sweetalert2";
 // -------------------------
 
 const UpdateUser = () => {
-    useAuth();
-    const { token, data } = useSesion();
-    const path = usePathname();
-    const router = useRouter();
+  useAuth();
+  const { token, data } = useSesion();
+  const path = usePathname();
+  const router = useRouter();
 
-    const initialData = {
-        first_name: "",
-        last_name: "",
-        email: "",
-        password: "",
-    };
-    const [userData, setUserData] = useState<IRegister>(initialData);
-    const [errors, setErrors] = useState<IRegisterError>(initialData);
+  const initialData = {
+    first_name: "",
+    last_name: "",
+    email: "",
+    password: "",
+  };
+  const [userData, setUserData] = useState<IRegister>(initialData);
+  const [errors, setErrors] = useState<IRegisterError>(initialData);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await getUserById(data.id, token);
-                if (response?.ok) {
-                    const data = await response.json();
-                    setUserData(data);
-                }
-            } catch (error) {
-                console.error(error);
-            }
-        };
-        fetchData();
-    }, [token, path, data.id]);
-    console.log(userData);
-
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-
-        if (!areFieldsNotEmpty(userData)) {
-            Swal.fire({
-                title: "Error",
-                text: "Por favor, complete todos los campos.",
-                icon: "error",
-                showCancelButton: false,
-                confirmButtonText: "Ok",
-            });
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getUserById(data.id, token);
+        if (response?.ok) {
+          const data = await response.json();
+          setUserData(data);
         }
-
-        try {
-            const response = await updateUser(userData, data.id, token);
-            if (response?.ok) {
-                Swal.fire({
-                    title: "Cambios guardados",
-                    text: "Tu perfil ha sido actualizado correctamente",
-                    icon: "success",
-                    confirmButtonColor: "#0b0c0d",
-                }).then((res) => {
-                    if (res.isConfirmed) {
-                        router.push("/dashboard/profile");
-                    }
-                });
-            } else {
-                Swal.fire({
-                    title: "Error",
-                    text: "Ocurrió un error al actualizar tu perfil",
-                    icon: "error",
-                    confirmButtonColor: "#0b0c0d",
-                });
-            }
-        } catch (error) {
-            console.log(error);
-        }
+      } catch (error) {
+        console.error(error);
+      }
     };
+    fetchData();
+  }, [token, path, data.id]);
+  console.log(userData);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-        setUserData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
-    };
+    if (!areFieldsNotEmpty(userData)) {
+      Swal.fire({
+        title: "Error",
+        text: "Por favor, complete todos los campos.",
+        icon: "error",
+        showCancelButton: false,
+        confirmButtonText: "Ok",
+      });
+    }
 
-    const handleBack = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-        setUserData(initialData);
-        setErrors(initialData);
-        router.push("/dashboard/profile");
-    };
+    try {
+      const response = await updateUser(userData, data.id, token);
+      if (response?.ok) {
+        Swal.fire({
+          title: "Cambios guardados",
+          text: "Tu perfil ha sido actualizado correctamente",
+          icon: "success",
+          confirmButtonColor: "#0b0c0d",
+        }).then((res) => {
+          if (res.isConfirmed) {
+            router.push("/dashboard/profile");
+          }
+        });
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: "Ocurrió un error al actualizar tu perfil",
+          icon: "error",
+          confirmButtonColor: "#0b0c0d",
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-    return (
-        <ContainerDashboard className="w-[90%] h-[90vh]">
-            <div className="self-start mt-2 text-2xl">Modificar Datos</div>
-            <div className="flex flex-col items-center justify-center w-full h-full p-8">
-                <form
-                    onSubmit={handleSubmit}
-                    className=" flex flex-col w-1/2 h-[70%] border justify-between rounded-[40px] p-8 gap-3"
-                >
-                    <div className="flex justify-end w-full">
-                        <Button
-                            onClick={handleBack}
-                            className="py-2 w-24 rounded-[40px]"
-                        >
-                            Atras
-                        </Button>
-                    </div>
-                    <div>
-                        <Label>Nombre:</Label>
-                        <Input
-                            type="text"
-                            name="first_name"
-                            value={userData?.first_name}
-                            placeholder="Nombre"
-                            onChange={handleChange}
-                        />
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
 
-                        <Label>Apellido:</Label>
-                        <Input
-                            type="text"
-                            name="last_name"
-                            value={userData?.last_name}
-                            placeholder="Nombre"
-                            onChange={handleChange}
-                        />
+    setUserData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
 
-                        <Label>Email:</Label>
-                        <Input
-                            type="text"
-                            name="email"
-                            value={userData?.email}
-                            placeholder="Nombre"
-                            onChange={handleChange}
-                        />
-                    </div>
+  const handleBack = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setUserData(initialData);
+    setErrors(initialData);
+    router.push("/dashboard/profile");
+  };
 
-                    <div className="w-full">
-                        <Button
-                            type="submit"
-                            className="w-full py-2 rounded-[40px]"
-                        >
-                            Confirmar Cambios
-                        </Button>
-                    </div>
-                </form>
+  return (
+    <div className="h-screen">
+      <ContainerDashboard>
+        <Title>
+          {userData?.first_name + " " + userData?.last_name}{" "}
+          <span className="text-2xl font-thin">| Modificar datos</span>
+        </Title>
+        <div className="w-[50%] mt-5">
+          <div className="w-full h-auto p-4 text-white border rounded-[40px]">
+            <div className="my-2 text-center">
+              <h1 className="mb-2 text-2xl font-bold">Modificar usuario</h1>
             </div>
-        </ContainerDashboard>
-    );
+            <form
+              onSubmit={handleSubmit}
+              autoComplete="off"
+              className="mx-10 my-5"
+            >
+              <div className="flex flex-col gap-4">
+                <div className="flex flex-col">
+                  <Label htmlFor="first_name">Nombre:</Label>
+                  <Input
+                    id="first_name"
+                    name="first_name"
+                    type="text"
+                    value={userData?.first_name}
+                    placeholder="Nombre"
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <Label htmlFor="last_name">Apellido:</Label>
+                  <Input
+                    id="last_name"
+                    name="last_name"
+                    type="text"
+                    value={userData?.last_name}
+                    placeholder="Apellido"
+                    onChange={handleChange}
+                  />
+                </div>
+
+                <div className="flex flex-col">
+                  <Label htmlFor="email">Email:</Label>
+                  <Input
+                    id="email"
+                    name="email"
+                    type="text"
+                    value={userData?.email}
+                    placeholder="Email"
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+
+              <div className="flex justify-center mt-5">
+                <Button type="submit" className="w-1/3 py-2 rounded-[40px]">
+                  Modificar Usuario
+                </Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </ContainerDashboard>
+    </div>
+  );
 };
 
 export default UpdateUser;

@@ -54,7 +54,6 @@ const UpdateUser = () => {
     };
     fetchData();
   }, [token, path, data.id]);
-  console.log(userData);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -102,13 +101,6 @@ const UpdateUser = () => {
       ...prevData,
       [name]: value,
     }));
-  };
-
-  const handleBack = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    setUserData(initialData);
-    setErrors(initialData);
-    router.push("/dashboard/profile");
   };
 
   return (

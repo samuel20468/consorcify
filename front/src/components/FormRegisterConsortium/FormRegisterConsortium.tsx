@@ -56,6 +56,8 @@ const FormRegisterConsortium = ({ update = false }) => {
         cuit: '',
         first_due_day: '',
         interest_rate: '',
+        category: '',
+        suterh_key: '',
     };
     useAuth();
     const { token, data }: { token: string; data: IUserData } = useSesion();
@@ -261,13 +263,16 @@ const FormRegisterConsortium = ({ update = false }) => {
         const cuitErrors = validateCuit(consortiumRegister.cuit!);
         const numberErrors = validateNumbers(
             consortiumRegister.first_due_day!,
-            consortiumRegister.interest_rate!
+            consortiumRegister.interest_rate!,
+            consortiumRegister.category!
         );
+        const suterhErrors = validateSuterh(consortiumRegister.suterh_key!);
 
         setConsortiumRegisterError((prevErrors) => ({
             ...prevErrors,
             ...cuitErrors,
             ...numberErrors,
+            ...suterhErrors,
         }));
     }, [consortiumRegister]);
 
@@ -375,6 +380,12 @@ const FormRegisterConsortium = ({ update = false }) => {
                             }
                             onChange={handleChange}
                         />
+                        {consortiumRegisterError.category &&
+                            consortiumRegister.category !== 0 && (
+                                <span className="self-end text-xs text-redd">
+                                    {consortiumRegisterError.category}
+                                </span>
+                            )}
                     </div>
                 </div>
 

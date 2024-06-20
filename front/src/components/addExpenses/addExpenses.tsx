@@ -91,13 +91,6 @@ const AddExpenses = () => {
             });
             return;
         }
-        if (Object.keys(errorExpense).length > 0) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Corrige los campos por favor',
-            });
-            return;
-        }
 
         try {
             const response = await expenseFetch(token, expense);

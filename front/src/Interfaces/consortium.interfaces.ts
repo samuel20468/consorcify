@@ -38,7 +38,7 @@ export interface INewConsortiumError {
     city?: string;
     floors?: number;
     ufs?: number;
-    category?: number;
+    category?: number | string;
     first_due_day?: number | string;
     interest_rate?: number | string;
     c_admin?: string | IAdmin;

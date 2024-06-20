@@ -1,17 +1,18 @@
-"use client";
+'use client';
 import {
     Button,
     ContainerDashboard,
     Input,
     Label,
     Title,
-} from "@/components/ui";
-import { linkFunctionalUnit } from "@/helpers/fetch.helper.uf";
-import useAuth from "@/helpers/useAuth";
-import useSesion from "@/helpers/useSesion";
-import { useRouter } from "next/navigation";
-import React, { useState } from "react";
-import Swal from "sweetalert2";
+} from '@/components/ui';
+import { validateCode } from '@/helpers/Validations/validate.code';
+import { linkFunctionalUnit } from '@/helpers/fetch.helper.uf';
+import useAuth from '@/helpers/useAuth';
+import useSesion from '@/helpers/useSesion';
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
 
 const AddFU = () => {
     useAuth();
@@ -19,24 +20,25 @@ const AddFU = () => {
     const { token, data } = useSesion();
 
     const [code, setCode] = useState<string>();
+    const [error, setError] = useState<string>();
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (!code) {
             Swal.fire({
-                title: "Error",
-                text: "Debe ingresar un codigo de la unidad funcional",
-                icon: "error",
+                title: 'Error',
+                text: 'Debe ingresar un codigo de la unidad funcional',
+                icon: 'error',
             });
             return;
         }
         if (code.length !== 8) {
             Swal.fire({
-                title: "Error",
-                text: "El codigo debe tener 8 caracteres",
-                icon: "error",
+                title: 'Error',
+                text: 'El codigo debe tener 8 caracteres',
+                icon: 'error',
             });
-            setCode("");
+            setCode('');
             return;
         }
 
@@ -44,19 +46,19 @@ const AddFU = () => {
             const response = await linkFunctionalUnit(data.id, token, code!);
 
             if (response) {
-                router.push("/dashboard/usuario/information/UF");
+                router.push('/dashboard/usuario/information/UF');
             } else if (response.status === 409) {
                 Swal.fire({
-                    title: "Error",
-                    text: "No se pudo vincular la unidad funcional a la cuenta",
-                    icon: "error",
+                    title: 'Error',
+                    text: 'No se pudo vincular la unidad funcional a la cuenta',
+                    icon: 'error',
                 });
             }
         } catch (error) {
             Swal.fire({
-                title: "Error",
+                title: 'Error',
                 text: (error as Error).message,
-                icon: "error",
+                icon: 'error',
             });
         }
     };
@@ -64,6 +66,13 @@ const AddFU = () => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setCode(e.target.value);
     };
+
+    useEffect(() => {
+        if (code) {
+            const codeError = validateCode(code);
+            setError(codeError);
+        }
+    }, [code]);
 
     return (
         <ContainerDashboard className="w-[90%] h-[90vh] items-center ">
@@ -81,6 +90,11 @@ const AddFU = () => {
                             placeholder="Codigo de la unidad funcional"
                             onChange={handleChange}
                         />
+                        {error && code && (
+                            <div className="text-xs text-end text-redd font-normal">
+                                {error}
+                            </div>
+                        )}
                     </div>
                     <Button
                         type="submit"

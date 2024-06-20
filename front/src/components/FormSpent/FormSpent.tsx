@@ -53,6 +53,12 @@ const FormSpent = () => {
     const [consortiums, setConsortiums] = useState<IConsortium[]>([]);
     const [expenses, setExpenses] = useState<IExpense[]>([]);
     const [suppliers, setSuppliers] = useState<ISupplier[]>([]);
+    const maxDate = new Date();
+    maxDate.setMonth(maxDate.getMonth() + 2);
+    maxDate.setDate(0);
+    const minDate = new Date();
+    minDate.setMonth(minDate.getMonth() - 1);
+    minDate.setDate(1);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -203,6 +209,8 @@ const FormSpent = () => {
                             name="date"
                             value={registerExpenditure.date}
                             type="date"
+                            min={minDate.toISOString().split('T')[0]}
+                            max={maxDate.toISOString().split('T')[0]}
                             onChange={handleChange}
                         />
                     </div>
@@ -280,7 +288,7 @@ const FormSpent = () => {
                                 Mantenimiento de partes comunes
                             </option>
                             <option value="Gastos Bancarios">
-                                Gastos Bancarios
+                                Gastos bancarios
                             </option>
                             <option value="Gastos de limpieza">
                                 Gastos de limpieza
@@ -307,7 +315,7 @@ const FormSpent = () => {
                         />
                         {errorRegisterExpenditure.invoice_number &&
                             registerExpenditure.invoice_number && (
-                                <span className="self-end text-xs text-red">
+                                <span className="self-end text-xs text-redd">
                                     {errorRegisterExpenditure.invoice_number}
                                 </span>
                             )}

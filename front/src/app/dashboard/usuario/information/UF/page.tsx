@@ -30,7 +30,7 @@ const UnidadFuncional = () => {
     const [functional_units, setFunctionalUnits] =
         useState<IFunctionalUnits[]>();
     const router = useRouter();
-    const [index, setIndex] = useState<number | string>(0);
+    const [index, setIndex] = useState<number>(0);
 
     useEffect(() => {
         if (!isLoading && !haveUF) {
@@ -79,7 +79,7 @@ const UnidadFuncional = () => {
                 <div className="flex justify-between w-[90%]">
                     <div className="flex w-60">
                         <Select onChange={handleSelect}>
-                            <option value="">
+                            <option value="" disabled>
                                 Selecciona la unidad funcional
                             </option>
                             {functional_units?.map((uf, index) => (
@@ -102,7 +102,7 @@ const UnidadFuncional = () => {
                         </Link>
                     </div>
                 </div>
-                {user?.functional_units?.length! > 0 && index !== "" && (
+                {user?.functional_units?.length! > 0 && (
                     <div className="w-1/2 h-[60%] border rounded-[40px] flex justify-center items-center flex-col bg-neutral-100 mt-20">
                         <div className="w-[80%] flex flex-col gap-2">
                             <div className="flex items-center justify-center mb-8">

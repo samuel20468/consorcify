@@ -1,30 +1,33 @@
 // Estilos y componentes
-import { Button, Input, Label, Select } from "../ui";
-import Swal from "sweetalert2";
+import { Button, Input, Label, Select } from '../ui';
+import Swal from 'sweetalert2';
 
 // Validaciones
-import { validateInvoiceNumber } from "@/helpers/Validations/validate.invoice_number";
+import { validateInvoiceNumber } from '@/helpers/Validations/validate.invoice_number';
 
 // Interfaces
 import {
     INewExpenditure,
     INewExpenditureError,
-} from "@/Interfaces/expenditures.interfaces";
-import { IConsortium } from "@/Interfaces/consortium.interfaces";
-import { IExpense } from "@/Interfaces/expenses.interfaces";
-import { ISupplier } from "@/Interfaces/suppliers.interfaces";
+} from '@/Interfaces/expenditures.interfaces';
+import { IConsortium } from '@/Interfaces/consortium.interfaces';
+import { IExpense } from '@/Interfaces/expenses.interfaces';
+import { ISupplier } from '@/Interfaces/suppliers.interfaces';
 
 // Endpoints
-import { expenditureFetch } from "@/helpers/fetch.helper.expenditure";
-import { getConsortiumsByAdminId } from "@/helpers/fetch.helper.consortium";
-import { getSuppliersByConsortiumId } from "@/helpers/fetch.helper.supplier";
-import { getExpenses } from "@/helpers/fetch.helper.expense";
+import { expenditureFetch } from '@/helpers/fetch.helper.expenditure';
+import { getConsortiumsByAdminId } from '@/helpers/fetch.helper.consortium';
+import {
+    getSuppliers,
+    getSuppliersByConsortiumId,
+} from '@/helpers/fetch.helper.supplier';
+import { getExpenses } from '@/helpers/fetch.helper.expense';
 
 // Hooks
-import { useEffect, useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
-import useAuth from "@/helpers/useAuth";
-import useSesion from "@/helpers/useSesion";
+import { useEffect, useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import useAuth from '@/helpers/useAuth';
+import useSesion from '@/helpers/useSesion';
 
 // -------------------
 
@@ -34,14 +37,14 @@ const FormSpent = () => {
     const pathname = usePathname();
     const router = useRouter();
     const initialData = {
-        date: "",
+        date: '',
         total_amount: 0,
-        category: "",
-        invoice_number: "",
-        description: "",
-        expense_id: "",
-        supplier_id: "",
-        consortium_id: "",
+        category: '',
+        invoice_number: '',
+        description: '',
+        expense_id: '',
+        supplier_id: '',
+        consortium_id: '',
     };
     const [registerExpenditure, setRegisterExpenditure] =
         useState<INewExpenditure>(initialData);
@@ -70,7 +73,10 @@ const FormSpent = () => {
         const fetchExpenses = async () => {
             try {
                 if (registerExpenditure.consortium_id) {
-                    const response = await getExpenses(token, registerExpenditure.consortium_id);
+                    const response = await getExpenses(
+                        token,
+                        registerExpenditure.consortium_id
+                    );
                     if (response) {
                         const data = await response.json();
                         setExpenses(data);
@@ -87,7 +93,10 @@ const FormSpent = () => {
         const fetchSuppliers = async () => {
             try {
                 if (registerExpenditure.consortium_id) {
-                    const response = await getSuppliersByConsortiumId(registerExpenditure.consortium_id, token);
+                    const response = await getSuppliersByConsortiumId(
+                        registerExpenditure.consortium_id,
+                        token
+                    );
                     if (response) {
                         const data = await response.json();
                         setSuppliers(data);
@@ -106,7 +115,7 @@ const FormSpent = () => {
         const { name, value } = e.target;
         setRegisterExpenditure((prevState) => ({
             ...prevState,
-            [name]: name === "total_amount" ? parseFloat(value) : value,
+            [name]: name === 'total_amount' ? parseFloat(value) : value,
         }));
     };
 
@@ -124,10 +133,10 @@ const FormSpent = () => {
             !registerExpenditure.description
         ) {
             Swal.fire({
-                title: "Formulario incompleto",
-                text: "Asegúrate de completar todos los campos del formulario.",
-                icon: "error",
-                confirmButtonColor: "#0b0c0d",
+                title: 'Formulario incompleto',
+                text: 'Asegúrate de completar todos los campos del formulario.',
+                icon: 'error',
+                confirmButtonColor: '#0b0c0d',
             });
             return;
         }
@@ -135,27 +144,32 @@ const FormSpent = () => {
             const response = await expenditureFetch(token, registerExpenditure);
             if (response?.ok) {
                 Swal.fire({
-                    title: "Excelente",
+                    title: 'Excelente',
                     text: `El gasto se creó correctamente`,
-                    icon: "success",
-                    confirmButtonColor: "#0b0c0d",
+                    icon: 'success',
+                    confirmButtonColor: '#0b0c0d',
                 }).then(async (res) => {
                     if (res.isConfirmed) {
                         const data = await response.json();
                         setRegisterExpenditure(data);
-                        router.push("/dashboard/admin/spent");
+                        router.push('/dashboard/admin/spent');
                     }
                 });
             } else {
                 Swal.fire({
-                    title: "Error de información",
-                    text: "Los datos que nos proporcionaste son inválidos.",
-                    icon: "error",
-                    confirmButtonColor: "#0b0c0d",
+                    title: 'Error de información',
+                    text: 'Los datos que nos proporcionaste son inválidos.',
+                    icon: 'error',
+                    confirmButtonColor: '#0b0c0d',
                 });
             }
         } catch (error: any) {
-            console.error(error.message);
+            Swal.fire({
+                title: 'Error de información',
+                text: (error as Error).message,
+                icon: 'error',
+                confirmButtonColor: '#0b0c0d',
+            });
         }
     };
 
@@ -224,10 +238,14 @@ const FormSpent = () => {
                         >
                             <option value="" disabled>
                                 Seleccionar la expensa
-                            </option>{registerExpenditure.consortium_id &&
+                            </option>
+                            {registerExpenditure.consortium_id &&
                                 (expenses.length > 0 ? (
                                     expenses.map((expense) => (
-                                        <option value={expense.id} key={expense.id}>
+                                        <option
+                                            value={expense.id}
+                                            key={expense.id}
+                                        >
                                             {expense.name}
                                         </option>
                                     ))
@@ -321,7 +339,10 @@ const FormSpent = () => {
                             {registerExpenditure.consortium_id &&
                                 (suppliers.length > 0 ? (
                                     suppliers.map((supplier) => (
-                                        <option value={supplier.id} key={supplier.id}>
+                                        <option
+                                            value={supplier.id}
+                                            key={supplier.id}
+                                        >
                                             {supplier.name}
                                         </option>
                                     ))

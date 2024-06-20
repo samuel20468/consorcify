@@ -4,7 +4,7 @@ import React from 'react';
 
 const ExpenseDetailAdmin = (expense: IExpense) => {
     return (
-        <div className="w-full flex flex-col bg-neutral-100 rounded-[40px] p-10">
+        <div className="w-[90%] flex flex-col bg-neutral-100 rounded-[40px] p-8">
             <div className="w-full flex items-start text-blackk border-b-2 border-blackk pb-5">
                 <div className="w-1/2 bg-inherit flex flex-col justify-around mx-2 border-r border-blackk">
                     <h3 className="py-1 mb-2 text-xl">
